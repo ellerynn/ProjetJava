@@ -5,14 +5,18 @@ la relation UTILISATEUR) et est affecté à un groupe
 
 package projetjava;
 
+import java.util.ArrayList;
+
 public class Etudiant extends Utilisateur {
     private int numero;
     private Groupe groupe;
+    private ArrayList<Seance> seance; //Rajouté
     
     //Constructeur par défaut
     public Etudiant() {
         super();
         numero = 0;
         groupe = new Groupe();
+        seance = new ArrayList();
     }
 }

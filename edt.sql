@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 14 mai 2020 à 13:22
+-- Généré le :  jeu. 14 mai 2020 à 15:12
 -- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.3.12
 
@@ -33,7 +33,19 @@ CREATE TABLE IF NOT EXISTS `cours` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Nom` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `cours`
+--
+
+INSERT INTO `cours` (`ID`, `Nom`) VALUES
+(1, 'Web dynamique'),
+(2, 'Analyse'),
+(3, 'Thermodynamique'),
+(4, 'Java'),
+(5, 'Statistiques'),
+(6, 'Traitement de signal');
 
 -- --------------------------------------------------------
 
@@ -49,6 +61,18 @@ CREATE TABLE IF NOT EXISTS `enseignant` (
   KEY `ID_cours` (`ID_cours`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `enseignant`
+--
+
+INSERT INTO `enseignant` (`ID_utilisateur`, `ID_cours`) VALUES
+(16, 1),
+(16, 4),
+(17, 2),
+(17, 5),
+(18, 3),
+(18, 6);
+
 -- --------------------------------------------------------
 
 --
@@ -58,11 +82,29 @@ CREATE TABLE IF NOT EXISTS `enseignant` (
 DROP TABLE IF EXISTS `etudiant`;
 CREATE TABLE IF NOT EXISTS `etudiant` (
   `ID_utilisateur` int(11) NOT NULL,
-  `Numero` int(11) NOT NULL,
+  `Numero` varchar(255) NOT NULL,
   `ID_groupe` int(11) NOT NULL,
   PRIMARY KEY (`ID_utilisateur`),
   KEY `ID_groupe` (`ID_groupe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `etudiant`
+--
+
+INSERT INTO `etudiant` (`ID_utilisateur`, `Numero`, `ID_groupe`) VALUES
+(4, '0004', 1),
+(5, '0005', 1),
+(6, '0006', 2),
+(7, '0007', 2),
+(8, '0008', 3),
+(9, '0009', 3),
+(10, '0010', 4),
+(11, '0011', 4),
+(12, '0012', 5),
+(13, '0013', 5),
+(14, '0014', 6),
+(15, '0015', 6);
 
 -- --------------------------------------------------------
 
@@ -77,7 +119,19 @@ CREATE TABLE IF NOT EXISTS `groupe` (
   `ID_promotion` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `ID_promotion` (`ID_promotion`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `groupe`
+--
+
+INSERT INTO `groupe` (`ID`, `Nom`, `ID_promotion`) VALUES
+(1, 'TD01', 1),
+(2, 'TD02', 1),
+(3, 'TD01', 2),
+(4, 'TD02', 2),
+(5, 'TD01', 3),
+(6, 'TD02', 3);
 
 -- --------------------------------------------------------
 
@@ -90,7 +144,16 @@ CREATE TABLE IF NOT EXISTS `promotion` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Nom` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `promotion`
+--
+
+INSERT INTO `promotion` (`ID`, `Nom`) VALUES
+(1, '2021'),
+(2, '2022'),
+(3, '2023');
 
 -- --------------------------------------------------------
 
@@ -106,7 +169,19 @@ CREATE TABLE IF NOT EXISTS `salle` (
   `ID_site` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `ID_site` (`ID_site`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `salle`
+--
+
+INSERT INTO `salle` (`ID`, `Nom`, `Capacite`, `ID_site`) VALUES
+(1, '001', 15, 1),
+(2, '002', 15, 1),
+(3, '001', 15, 2),
+(4, '002', 15, 2),
+(5, '001', 15, 3),
+(6, '002', 15, 3);
 
 -- --------------------------------------------------------
 
@@ -182,7 +257,16 @@ CREATE TABLE IF NOT EXISTS `site` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Nom` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `site`
+--
+
+INSERT INTO `site` (`ID`, `Nom`) VALUES
+(1, 'Eiffel 1'),
+(2, 'Eiffel 2'),
+(3, 'Eiffel 3');
 
 -- --------------------------------------------------------
 
@@ -195,7 +279,19 @@ CREATE TABLE IF NOT EXISTS `type_cours` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Nom` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `type_cours`
+--
+
+INSERT INTO `type_cours` (`ID`, `Nom`) VALUES
+(1, 'Interactif'),
+(2, 'Magistral'),
+(3, 'TD'),
+(4, 'TP'),
+(5, 'Projet'),
+(6, 'Soutien');
 
 -- --------------------------------------------------------
 
@@ -212,14 +308,31 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `Prenom` varchar(255) NOT NULL,
   `Droit` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `utilisateur`
 --
 
 INSERT INTO `utilisateur` (`ID`, `Email`, `Passwd`, `Nom`, `Prenom`, `Droit`) VALUES
-(1, 'Admin@gmail.com', 'Admin', 'Admin', 'Admin', 1);
+(1, 'admin@gmail.com', 'admin', 'Admin', 'Admin', 1),
+(2, 'referent1@edu.ece.fr', 'referent', 'Referent1', 'Referent1', 2),
+(3, 'referent2@edu.ece.fr', 'referent', 'Referent2', 'Referent2', 3),
+(4, 'etudiant1@edu.ece.fr', 'etudiant', 'Etudiant1', 'Etudiant1', 5),
+(5, 'etudiant2@edu.ece.fr', 'etudiant', 'Etudiant2', 'Etudiant2', 4),
+(6, 'etudiant3@edu.ece.fr', 'etudiant', 'Etudiant3', 'Etudiant3', 4),
+(7, 'etudiant4@edu.ece.fr', 'etudiant', 'Etudiant4', 'Etudiant4', 4),
+(8, 'etudiant5@edu.ece.fr', 'etudiant', 'Etudiant5', 'Etudiant5', 4),
+(9, 'etudiant6@edu.ece.fr', 'etudiant', 'Etudiant6', 'Etudiant6', 4),
+(10, 'etudiant7@edu.ece.fr', 'etudiant', 'Etudiant7', 'Etudiant7', 4),
+(11, 'etudiant8@edu.ece.fr', 'etudiant', 'Etudiant8', 'Etudiant8', 4),
+(12, 'etudiant9@edu.ece.fr', 'etudiant', 'Etudiant9', 'Etudiant9', 4),
+(13, 'etudiant10@edu.ece.fr', 'etudiant', 'Etudiant10', 'Etudiant10', 4),
+(14, 'etudiant11@edu.ece.fr', 'etudiant', 'Etudiant11', 'Etudiant11', 4),
+(15, 'etudiant12@edu.ece.fr', 'etudiant', 'Etudiant12', 'Etudiant12', 4),
+(16, 'enseignant1@ece.edu.fr', 'enseignant', 'Enseignant1', 'Enseignant1', 3),
+(17, 'enseignant2@ece.edu.fr', 'enseignant', 'Enseignant2', 'Enseignant2', 3),
+(18, 'enseignant3@edu.ece.fr', 'enseignant', 'Enseignant3', 'Enseignant3', 3);
 
 --
 -- Contraintes pour les tables déchargées

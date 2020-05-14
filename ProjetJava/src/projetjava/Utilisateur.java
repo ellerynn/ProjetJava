@@ -11,12 +11,12 @@ que son emploi du temps et le récapitulatif de ses cours sur une période
 package projetjava;
 
 public class Utilisateur {
-    private int id;
-    private String email;
-    private String password;
-    private String nom;
-    private String prenom;
-    private int droit; //cf. Note début Utilisateur.java
+    protected int id;
+    protected String email;
+    protected String password;
+    protected String nom;
+    protected String prenom;
+    protected int droit;
     
     //Constructeur par défaut
     public Utilisateur() {

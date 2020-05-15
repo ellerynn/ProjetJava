@@ -14,4 +14,8 @@ public class Enseignant extends Utilisateur {
         super();
         cours = new ArrayList<>();
     }
+    
+    //Getters [en cours]
+    
+    //Setters [en cours]
 }

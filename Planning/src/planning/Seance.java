@@ -7,13 +7,13 @@ représenté par un numéro identifiant l’état de la séance.
 */
 
 public class Seance {
-    private int id;
-    private int semaine;
-    private String heure_debut;
-    private String heure_fin;
-    private int etat;
-    private Cours cours;
-    private TypeCours type;
+    protected int id;
+    protected int semaine;
+    protected String heure_debut;
+    protected String heure_fin;
+    protected int etat;
+    protected Cours cours;
+    protected TypeCours type;
     
     //Constructeur par défaut
     public Seance() {
@@ -24,5 +24,63 @@ public class Seance {
         etat = 0;
         cours = new Cours();
         type = new TypeCours();
+    }
+    
+    //Getters
+    public int getId() {
+        return id;
+    }
+    
+    public int getSemaine() {
+        return semaine;
+    }
+    
+    public String getHeureDebut() {
+        return heure_debut;
+    }
+    
+    public String getHeureFin() {
+        return heure_fin;
+    }
+    
+    public int getEtat() {
+        return etat;
+    }
+    
+    public Cours getCours() {
+        return cours;
+    }
+    
+    public TypeCours getTypeCours() {
+        return type;
+    }
+    
+    //Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setSemaine(int semaine) {
+        this.semaine = semaine;
+    }
+    
+    public void setHeureDebut(String heure_debut) {
+        this.heure_debut = heure_debut;
+    }
+    
+    public void setHeureFin(String heure_fin) {
+        this.heure_fin = heure_fin;
+    }
+    
+    public void setEtat(int etat) {
+        this.etat = etat;
+    }
+    
+    public void setCours(Cours cours) {
+        this.cours = cours;
+    }
+    
+    public void setTypeCours(TypeCours type) {
+        this.type = type;
     }
 }

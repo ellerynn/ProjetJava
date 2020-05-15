@@ -13,4 +13,22 @@ public class Site {
         id = 0;
         nom = new String();
     }
+    
+    //Getters
+    public int getId() {
+        return id;
+    }
+    
+    public String getNom() {
+        return nom;
+    }
+    
+    //Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 }

@@ -19,4 +19,22 @@ public class Etudiant extends Utilisateur {
         groupe = new Groupe();
         seance = new ArrayList();
     }
+    
+    //Getters [en cours]
+    public int getNumero() {
+        return numero;
+    }
+    
+    public Groupe getGroupe() {
+        return groupe;
+    }
+    
+    //Setters [en cours]
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+    
+    public void setGroupe(Groupe groupe) {
+        this.groupe = groupe;
+    }
 }

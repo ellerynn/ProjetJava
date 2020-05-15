@@ -13,5 +13,31 @@ public class Groupe {
         nom = new String();
         promotion = new Promotion();
     }
+    
+    //Getters
+    public int getId() {
+        return id;
+    }
+    
+    public String getNom() {
+        return nom;
+    }
+    
+    public Promotion getPromotion() {
+        return promotion;
+    }
+    
+    //Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
 }
 

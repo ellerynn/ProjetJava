@@ -28,5 +28,55 @@ public class Utilisateur {
         prenom = new String();
         droit = 0;
     }
+    
+    //Getters
+    public int getId() {
+        return id;
+    }
+    
+    public int getDroit() {
+        return droit;
+    }
+    
+    public String getNom() {
+        return nom;
+    }
+    
+    public String getPrenom() {
+        return prenom;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    //Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setDroit(int droit) {
+        this.droit = droit;
+    }
+    
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
 

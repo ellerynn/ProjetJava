@@ -17,4 +17,38 @@ public class Salle {
         capacite = 0;
         site = new Site();
     }
+    
+    //Getters
+    public int getId() {
+        return id;
+    }
+    
+    public String getNom() {
+        return nom;
+    }
+    
+    public int getCapacite() {
+        return capacite;
+    }
+    
+    public Site getSite() {
+        return site;
+    }
+    
+    //Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
+    }
+    
+    public void setSite(Site site) {
+        this.site = site;
+    }
 }

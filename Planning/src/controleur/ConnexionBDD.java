@@ -30,7 +30,7 @@ public class ConnexionBDD {
         //chargement du driver
         Class.forName("com.mysql.jdbc.Driver");
         //url de connexion : Camille 3307, Sutharsan 330?, Emilie 330?
-        String urlDatabase = "jdbc:mysql://localhost:3307/" + nameDatabase;
+        String urlDatabase = "jdbc:mysql://localhost:3306/" + nameDatabase;
         //création connexion JDBC a la base
         con = DriverManager.getConnection(urlDatabase, loginDatabase, passwordDatabase);
         //creation ordre SQL

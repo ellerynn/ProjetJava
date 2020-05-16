@@ -17,6 +17,11 @@ public class FormConnexion extends JPanel {
         initialisation();
     }
     
+    //Getters
+    public JButton getBouton() {
+        return bouton;
+    }
+    
     public void initialisation() {
         label1 = new JLabel("Connexion");
         champs = new JPanel();

@@ -28,7 +28,6 @@ public class Utilisateur {
         prenom = new String();
         droit = 0;
     }
-    
     //Getters
     public int getId() {
         return id;

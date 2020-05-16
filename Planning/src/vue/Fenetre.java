@@ -20,7 +20,7 @@ public class Fenetre extends JFrame {
     private CardLayout c = new CardLayout();
     private JPanel content = new JPanel();
     //Liste des noms de nos conteneurs pour la pile de cartes
-    private String[] listContent = {"FormConnexion", "CARD_2", "CARD_3"};
+    private String[] listContent = {"FormConnexion", "EmploiDuTemps", "CARD_3"};
     private int indice = 0;
     
     /*Constructeur*/      
@@ -33,27 +33,26 @@ public class Fenetre extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //Plusieurs panneaux superposés permet de ne pas avoir 50 pages
-        this.setTitle("CardLayout");
+        this.setTitle("Connexion");
 
         //On crée deux conteneurs : un pour la connexion, l'autre pour le reste (frame)
         FormConnexion connexion = new FormConnexion();
+        EmploiDuTemps edt = new EmploiDuTemps();
         
-        JPanel card2 = new JPanel();
-        card2.setBackground(Color.red);	
-
         //JPanel boutonPane = new JPanel();
         //JButton bouton = new JButton("Contenu suivant");
         //Définition de l'action du bouton
         connexion.getBouton().addActionListener((ActionEvent event) -> {
             //Via cette instruction, on passe au prochain conteneur de la pile
             c.next(content);
+            setTitle("Planning, [Année scolaire] - [icone] [NOM Prénom] (ECE Paris [Promo])");
         });
 
         //On définit le layout
         content.setLayout(c);
         //On ajoute les cartes à la pile avec un nom pour les retrouver
         content.add(connexion, listContent[0]);
-        content.add(card2, listContent[1]);
+        content.add(edt, listContent[1]);
 
         this.getContentPane().add(content, BorderLayout.CENTER);
         this.setVisible(true);        

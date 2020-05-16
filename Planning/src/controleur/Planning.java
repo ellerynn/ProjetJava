@@ -10,6 +10,7 @@ import java.util.*;
 
 public class Planning {
     public static void main(String[] args) {
+            Fenetre fenetre = new Fenetre();
             Connection con;
             String nameDatabase = "edt";
             String loginDatabase = "root";
@@ -19,7 +20,7 @@ public class Planning {
             //chargement du driver
             Class.forName("com.mysql.jdbc.Driver");
             //url de connexion
-            String urlDatabase = "jdbc:mysql://localhost:3306/" + nameDatabase;
+            String urlDatabase = "jdbc:mysql://localhost:3307/" + nameDatabase;
             //création connexion JDBC a la base
             con = DriverManager.getConnection(urlDatabase, loginDatabase, passwordDatabase);
             

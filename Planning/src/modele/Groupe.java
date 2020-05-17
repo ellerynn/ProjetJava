@@ -17,6 +17,10 @@ public class Groupe {
         promotion = new Promotion();
         seances = new ArrayList<>();
     }
+    //Méthodes
+    public void addSeances(Seance s){
+        seances.add(s);
+    }
     
     //Getters [en cours]
     public int getId() {
@@ -29,6 +33,10 @@ public class Groupe {
     
     public Promotion getPromotion() {
         return promotion;
+    }
+    
+    public ArrayList<Seance> getSeances() {
+        return seances;
     }
     
     //Setters [en cours]

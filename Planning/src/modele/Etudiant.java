@@ -20,6 +20,11 @@ public class Etudiant extends Utilisateur {
         seance = new ArrayList();
     }
     
+    //Méthodes
+    public void addSeances(Seance s){
+        seance.add(s);
+    }
+    
     //Getters [en cours]
     public int getNumero() {
         return numero;
@@ -29,6 +34,9 @@ public class Etudiant extends Utilisateur {
         return groupe;
     }
     
+    public ArrayList<Seance> getSeances() {
+        return seance;
+    }
     //Setters [en cours]
     public void setNumero(int numero) {
         this.numero = numero;

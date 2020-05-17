@@ -2,6 +2,7 @@ package modele;
 
 import java.sql.Array;
 import java.util.*;
+import modele.*;
 
 /*SEANCE (ID, SEMAINE, DATE, HEURE_DEBUT, HEURE_FIN, ETAT, #ID_COURS, #ID_TYPE) 
 Remarques : l’attribut SEMAINE indique le numéro de semaine dans une année civile. 
@@ -37,6 +38,17 @@ public class Seance {
         salles = new ArrayList<>();
     }
     
+    //Méthodes
+    public void addEnseignant(Enseignant e){
+        enseignants.add(e);
+    }
+    public void addGroupe(Groupe g){
+        groupes.add(g);
+    }
+    public void addSalle(Salle s){
+        salles.add(s);
+    }
+    
     //Getters [en cours]
     public int getId() {
         return id;
@@ -68,6 +80,15 @@ public class Seance {
     
     public TypeCours getTypeCours() {
         return type;
+    }
+    public ArrayList<Enseignant> getEnseignants() {
+        return enseignants;
+    }
+    public ArrayList<Salle> getSalles() {
+        return salles;
+    }
+    public ArrayList<Groupe> getGroupes() {
+        return groupes;
     }
     
     //Setters [en cours]

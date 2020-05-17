@@ -28,6 +28,15 @@ public class Utilisateur {
         prenom = new String();
         droit = 0;
     }
+    //Méthodes
+    public void copie(Utilisateur user){
+        id = user.getId();
+        email = user.getEmail();
+        password = user.getPassword();
+        nom = user.getNom();
+        prenom = user.getPrenom();
+        droit = user.getDroit();
+    }
     //Getters
     public int getId() {
         return id;

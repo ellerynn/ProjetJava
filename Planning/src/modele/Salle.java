@@ -21,6 +21,10 @@ public class Salle {
         site = new Site();
         seances = new ArrayList<>();
     }
+    //Méthodes
+    public void addSeances(Seance s){
+        seances.add(s);
+    }
     
     //Getters [en cours]
     public int getId() {
@@ -37,6 +41,9 @@ public class Salle {
     
     public Site getSite() {
         return site;
+    }
+    public ArrayList<Seance> getSeances() {
+        return seances;
     }
     
     //Setters [en cours]

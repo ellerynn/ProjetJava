@@ -47,7 +47,7 @@ public class Seance {
         this.type = type;
     }
     
-    //Getters [en cours]
+    //Getters
     public int getId() {
         return id;
     }
@@ -78,6 +78,18 @@ public class Seance {
     
     public TypeCours getTypeCours() {
         return type;
+    }
+    
+    public ArrayList<Enseignant> getEnseignants() {
+        return enseignants;
+    }
+    
+    public ArrayList<Salle> getSalles() {
+        return salles;
+    }
+    
+    public ArrayList<Groupe> getGroupes() {
+        return groupes;
     }
     
     //Setters [en cours]

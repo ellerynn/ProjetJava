@@ -38,7 +38,7 @@ public class Utilisateur {
         this.prenom = prenom;
         this.droit = droit;
     }
-    
+       
     //Getters
     public int getId() {
         return id;
@@ -87,6 +87,16 @@ public class Utilisateur {
     
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    //Méthodes
+    public void copierUtilisateur(Utilisateur utilisateur){
+        id = utilisateur.getId();
+        email = utilisateur.getEmail();
+        password = utilisateur.getPassword();
+        nom = utilisateur.getNom();
+        prenom = utilisateur.getPrenom();
+        droit = utilisateur.getDroit();
     }
 }
 

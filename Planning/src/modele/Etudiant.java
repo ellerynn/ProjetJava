@@ -37,6 +37,9 @@ public class Etudiant extends Utilisateur {
         return groupe;
     }
     
+    public ArrayList<Seance> getSeances() {
+        return seances;
+    }
     //Setters [en cours]
     public void setNumero(int numero) {
         this.numero = numero;

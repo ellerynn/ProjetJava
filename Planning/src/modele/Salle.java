@@ -21,6 +21,10 @@ public class Salle {
         site = new Site();
         seances = new ArrayList<>();
     }
+    //Méthodes
+    public void addSeances(Seance s){
+        seances.add(s);
+    }
     
     //Constructeur
     public Salle(String nom, int capacite, Site site) {
@@ -45,6 +49,9 @@ public class Salle {
     
     public Site getSite() {
         return site;
+    }
+    public ArrayList<Seance> getSeances() {
+        return seances;
     }
     
     //Setters [en cours]

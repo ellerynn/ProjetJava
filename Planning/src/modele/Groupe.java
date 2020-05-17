@@ -17,6 +17,10 @@ public class Groupe {
         promotion = new Promotion();
         seances = new ArrayList<>();
     }
+    //Méthodes
+    public void addSeances(Seance s){
+        seances.add(s);
+    }
     
     //Constructeur
     public Groupe(String nom, Promotion promotion) {
@@ -36,6 +40,10 @@ public class Groupe {
     
     public Promotion getPromotion() {
         return promotion;
+    }
+    
+    public ArrayList<Seance> getSeances() {
+        return seances;
     }
     
     //Setters [en cours]

@@ -9,11 +9,11 @@ import java.sql.Connection;
 import java.sql.*;
 import modele.Cours;
 
-
-public class CoursDAO extends DAO<Cours>{
-  public CoursDAO(Connection conn) {
-    super(conn);
-  }
+public class CoursDAO extends DAO<Cours> {
+    public CoursDAO(Connection conn) {
+      super(conn);
+    }
+    
     @Override
     public boolean create(Cours object) {
         return false;
@@ -29,27 +29,27 @@ public class CoursDAO extends DAO<Cours>{
         return false;
     }
     
+    @Override
     public Cours find(int id) {
-    Cours cours = new Cours();      
+        Cours cours = new Cours();      
 
-    try {
-        Statement st;
-        ResultSet result;
-        //creation ordre SQL
-        st = connect.createStatement();
-            
-            
-      result = st.executeQuery("SELECT * FROM cours WHERE ID = " + id);
-      if(result.first())
-      {
-          cours.setId(result.getInt("ID"));
-          cours.setNom(result.getString("Nom"));
-      }
-                 
-    }catch (SQLException e) {
-      e.printStackTrace();
-      System.out.println("pas trouvé");
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+
+            result = st.executeQuery("SELECT * FROM cours WHERE ID = " + id);
+            if(result.first())
+            {
+                cours.setId(result.getInt("ID"));
+                cours.setNom(result.getString("Nom"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return cours;
     }
-    return cours;
-  }
 }

@@ -18,6 +18,13 @@ public class Groupe {
         seances = new ArrayList<>();
     }
     
+    //Constructeur
+    public Groupe(String nom, Promotion promotion) {
+        //Un administrateur peut créer un nouveau groupe
+        this.nom = nom;
+        this.promotion = promotion;
+    }
+    
     //Getters [en cours]
     public int getId() {
         return id;
@@ -42,6 +49,11 @@ public class Groupe {
     
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
+    }
+    
+    //Méthodes
+    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un groupe
+        this.seances.add(seance);
     }
 }
 

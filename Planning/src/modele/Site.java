@@ -14,6 +14,11 @@ public class Site {
         nom = new String();
     }
     
+    //Constructeur
+    public Site(String nom) {
+        this.nom = nom;
+    }
+    
     //Getters
     public int getId() {
         return id;

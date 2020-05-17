@@ -10,14 +10,22 @@ import java.util.ArrayList;
 public class Etudiant extends Utilisateur {
     private int numero;
     private Groupe groupe;
-    private ArrayList<Seance> seance; //Rajouté
+    private ArrayList<Seance> seances;
     
     //Constructeur par défaut
     public Etudiant() {
         super();
         numero = 0;
         groupe = new Groupe();
-        seance = new ArrayList();
+        seances = new ArrayList();
+    }
+    
+    //Constructeur
+    public Etudiant(String email, String password, String nom, String prenom, int numero, Groupe groupe) {
+        //Un administrateur peut créer un nouvel étudiant
+        super(email, password, nom, prenom, 4);
+        this.numero = numero;
+        this.groupe = groupe;
     }
     
     //Getters [en cours]
@@ -36,5 +44,10 @@ public class Etudiant extends Utilisateur {
     
     public void setGroupe(Groupe groupe) {
         this.groupe = groupe;
+    }
+    
+    //Méthodes
+    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un étudiant
+        this.seances.add(seance);
     }
 }

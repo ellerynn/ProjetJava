@@ -12,6 +12,11 @@ public class TypeCours {
         nom = new String();
     }
     
+    //Constructeur
+    public TypeCours (String nom) {
+        this.nom = nom;
+    }
+    
     //Getters
     public int getId() {
         return id;

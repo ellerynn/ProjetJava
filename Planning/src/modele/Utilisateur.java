@@ -17,7 +17,7 @@ public class Utilisateur {
     protected String password;
     protected String nom;
     protected String prenom;
-    protected int droit;
+    protected int droit; //1 : administrateur ; 2 : référent pédagogique ; 3 : enseignant ; 4 : étudiant 
     
     //Constructeur par défaut
     public Utilisateur() {
@@ -28,6 +28,17 @@ public class Utilisateur {
         prenom = new String();
         droit = 0;
     }
+    
+    //Constructeur
+    public Utilisateur(String email, String password, String nom, String prenom, int droit) { 
+        //Un administrateur peut créer un nouvel utilisateur, id s'incrémente seul dans BDD
+        this.email = email;
+        this.password = password;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.droit = droit;
+    }
+    
     //Getters
     public int getId() {
         return id;

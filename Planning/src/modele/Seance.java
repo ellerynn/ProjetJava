@@ -1,6 +1,5 @@
 package modele;
 
-import java.sql.Array;
 import java.util.*;
 
 /*SEANCE (ID, SEMAINE, DATE, HEURE_DEBUT, HEURE_FIN, ETAT, #ID_COURS, #ID_TYPE) 
@@ -35,6 +34,17 @@ public class Seance {
         enseignants = new ArrayList<>();
         groupes = new ArrayList<>();
         salles = new ArrayList<>();
+    }
+    
+    //Constructeur
+    public Seance(int semaine, String heure_debut, String heure_fin, String date, Cours cours, TypeCours type) {
+        //Un administrateur peut créer un nouveau groupe
+        this.semaine = semaine;
+        this.heure_debut = heure_debut;
+        this.heure_fin = heure_fin;
+        this.date = date;
+        this.cours = cours;
+        this.type = type;
     }
     
     //Getters [en cours]
@@ -101,5 +111,18 @@ public class Seance {
     
     public void setTypeCours(TypeCours type) {
         this.type = type;
+    }
+    
+    //Méthodes
+    public void ajouterEnseignant(Enseignant enseignant) { //Un admin peut ajouter une séance à un enseignant
+        this.enseignants.add(enseignant);
+    }
+    
+    public void ajouterGroupe(Groupe groupe) { //Un admin peut ajouter une séance à un groupe
+        this.groupes.add(groupe);
+    }
+    
+    public void ajouterSalle(Salle salle) { //Un admin peut ajouter une séance à une salle
+        this.salles.add(salle);
     }
 }

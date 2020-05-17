@@ -17,7 +17,22 @@ public class Enseignant extends Utilisateur {
         seances = new ArrayList<>();
     }
     
+    //Constructeur
+    public Enseignant(String email, String password, String nom, String prenom) {
+        //Un administrateur peut créer un nouvel enseignant
+        super(email, password, nom, prenom, 3);
+    }
+    
     //Getters [en cours]
     
     //Setters [en cours]
+    
+    //Méthodes
+    public void ajouterCours(Cours cours) { //Un admin peut ajouter un cours à un enseignant
+        this.cours.add(cours);        
+    }
+    
+    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un enseignant
+        this.seances.add(seance);
+    }
 }

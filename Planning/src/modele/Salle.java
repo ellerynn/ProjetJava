@@ -22,6 +22,14 @@ public class Salle {
         seances = new ArrayList<>();
     }
     
+    //Constructeur
+    public Salle(String nom, int capacite, Site site) {
+        //Un administrateur peut créer une nouvelle salle
+        this.nom = nom;
+        this.capacite = capacite;
+        this.site = site;
+    }
+    
     //Getters [en cours]
     public int getId() {
         return id;
@@ -54,5 +62,10 @@ public class Salle {
     
     public void setSite(Site site) {
         this.site = site;
+    }
+    
+    //Méthodes
+    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à une salle
+        this.seances.add(seance);
     }
 }

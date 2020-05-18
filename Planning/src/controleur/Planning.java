@@ -162,8 +162,65 @@ public class Planning {
             cou = coursDAO.update(cou); // Avant c't Analyse, mtn c'est Maths
             System.out.println("le cours : "+ cou.getNom());
             System.out.println("***********************************4UPDATE");
-        
-        /*Fenetre fenetre = new Fenetre();
+                
+            /******UPDATE NON FINI manque tout les autres classes**********/
+            
+            /*************************RECHERCHE*************/
+            /***Un Lambda cherche Seance par semaine ******/
+            System.out.println("Recherche les séances pour un User et une semaine:"); //Marche pour prof et étudiant
+            ArrayList<Seance> mesSeancesOnWeek = new ArrayList<>();
+            SeanceDAO scDAO = new SeanceDAO();
+            mesSeancesOnWeek = scDAO.findSeancesByUserAndWeek(9,1); //Si on connait le nom de l'user, on connait l'id de l'Utilisateur car sinon la personne n'existe pas
+            for (int i = 0 ; i < mesSeancesOnWeek.size() ; i++) //Pour chaque séance de cette semaine de ce prof :
+            {
+               System.out.println("Cours en cours de validation/valider/annuler : "+ mesSeancesOnWeek.get(i).getEtat()); 
+               //Faudra trier en fct de getEtat(), si on veut afficher que ceux annuler
+               System.out.println("la date : "+ mesSeancesOnWeek.get(i).getDate());
+               System.out.println("Heure debut: "+  mesSeancesOnWeek.get(i).getHeureDebut());
+               System.out.println("Heure fin: "+  mesSeancesOnWeek.get(i).getHeureFin());
+               
+               for (int a = 0 ; a < mesSeancesOnWeek.get(i).getSalles().size() ; a++) //Les salles
+               {
+                   System.out.println("Salle :"+ mesSeancesOnWeek.get(i).getSalles().get(a).getNom());
+                   System.out.println("Le site de cette salle : "+ mesSeancesOnWeek.get(i).getSalles().get(a).getSite().getNom());
+               }
+               
+               System.out.println("cours de : "+ mesSeancesOnWeek.get(i).getCours().getNom());
+               System.out.println("Type de cours :"+ mesSeancesOnWeek.get(i).getTypeCours().getNom());
+               
+               for (int a = 0; a< mesSeancesOnWeek.get(i).getEnseignants().size(); a++) //Les profs
+               {
+                   System.out.println("Prof qui anime : "+mesSeancesOnWeek.get(i).getEnseignants().get(a).getNom());
+               }
+               for (int a = 0; a< mesSeancesOnWeek.get(i).getGroupes().size(); a++) //Les groupes
+               {
+                   System.out.println("TD présent : "+mesSeancesOnWeek.get(i).getGroupes().get(a).getNom());
+                   System.out.println("Appartient à promo :"+ mesSeancesOnWeek.get(i).getGroupes().get(a).getPromotion().getNom());
+               }
+            }
+            System.out.println("\nRecherche les séances pour un Groupe et une semaine:"); //Si on connait le TD, on connait l'id du Groupe car sinon on connait pas groupe
+            //SeanceDAO est dj créé dans une des simulations
+            ArrayList<Seance> seancesByTD = new ArrayList<>();
+            seancesByTD = scDAO.findSeancesByGroupAndWeek(3, 1);
+            System.out.println(seancesByTD.size() +" a/ont été trouvé(s) [Pour extraire données, voir exemple de mesSeancesOnWeek]");
+            
+            System.out.println("\nRecherche les séances pour une promotion et une semaine:"); //Si on connait la promo, on connait l'id de la Promo car sinon on connait pas la promo
+            ArrayList<Seance> seancesByPromo = new ArrayList<>();
+            seancesByPromo = scDAO.findSeancesByPromoAndWeek(2, 1);
+            System.out.println(seancesByPromo.size() +" a/ont été trouvé(s) [Pour extraire données, voir exemple de mesSeancesOnWeek]");
+            
+            System.out.println("\nRecherche edt d'une salle (occupés ou/et annulés) et une semaine:"); ///Il s'agit d'afficher les horaires occupés/annulés
+            ArrayList<Seance> seancesBySalle = new ArrayList<>();
+            seancesBySalle = scDAO.findSeancesBySalle(3, 1);
+            for (int i = 0 ; i < seancesBySalle.size() ; i++) //Pour chaque séance de cette semaine de ce prof :
+            {
+                System.out.println("Occupée ou annulée (getEtat()) : "+ seancesBySalle.get(i).getEtat()); 
+                System.out.println("Pour des exemples d'extraction d'autres données, se référer à la partie mesSeancesOnWeek");
+            }
+            UtilisateurDAO uDAO= new UtilisateurDAO();
+            System.out.println("Le nombre total de gens dans cette école : "+uDAO.nombreMax()+ " ouai c'pas bcp :/");
+            
+            /*Fenetre fenetre = new Fenetre();
             
         try {
             ConnexionBDD c = new ConnexionBDD("edt","root","");

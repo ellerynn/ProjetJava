@@ -57,4 +57,23 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
           System.out.println("pas trouvé");
         }
     }
+    public int nombreMax(){
+        int nb = 0;
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+            result = st.executeQuery("SELECT COUNT(ID) FROM utilisateur");
+            if(result.first())
+            {
+                nb = result.getInt("COUNT(ID)");
+            }              
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+          System.out.println("pas trouvé");
+        }
+        return nb;
+    }
 }

@@ -1,6 +1,8 @@
 package vue;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import javax.swing.*;
 
@@ -15,10 +17,6 @@ public class FormConnexion extends JPanel {
     private JPasswordField password;
     
     public FormConnexion() {
-        initialisation();
-    }
-    
-    public void initialisation() {
         label1 = new JLabel("Connexion");
         champs = new JPanel();
         label2 = new JLabel("Identifiant");

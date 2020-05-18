@@ -21,6 +21,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return object;
     }
     
+    @Override
     public Utilisateur find(int id) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE ID = " + id;

@@ -8,7 +8,14 @@ import dao.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Planning implements ActionListener {
+public class Controle {
+    private Fenetre fenetre;
+    
+    //Constructeur
+    public Controle() {
+        fenetre = new Fenetre(this);
+    }
+    
     public static void main(String[] args) {
         //Connexion BDD
         Connection con;
@@ -17,15 +24,8 @@ public class Planning implements ActionListener {
         String passwordDatabase = "";    
         
         //Ouverture interface graphique
-        Fenetre fenetre = new Fenetre();
-        String email = new String();
-        String password = new String();
-        //La fenetre ecoute le bouton connexion
-        //fenetre.getBoutonConnexion().addActionListener((ActionListener)fenetre);
-        fenetre.getBoutonConnexion().addActionListener((ActionEvent evt) -> {
-            //email = fenetre.getConnexion().getEmail();
-        });
-
+        Controle controle = new Controle();
+        
         /*
             *TYPECOURSDAO recuperation du nom
             */
@@ -186,9 +186,24 @@ public class Planning implements ActionListener {
            System.out.println("class exception");
         }*/
     }
+    
+    public void demandeConnexion() {
+        String email = new String();
+        String password = new String();
+        
+        email = fenetre.getConnexion().getEmail();
+        password = fenetre.getConnexion().getPassword();
 
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //UTILISATEURDAO recuperation de toutes les données
+        UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+        Utilisateur utilisateur = utilisateurDAO.find(email,password);
+        
+        //System.out.println("le mail : "+ email);
+        //System.out.println("le password : "+ password);
+        
+        System.out.println("le mail : "+ utilisateur.getEmail());
+        System.out.println("le password : "+ utilisateur.getPassword());
+        
+        //On a trouvé un utilisateur, on peut passer a la suite
     }
 }

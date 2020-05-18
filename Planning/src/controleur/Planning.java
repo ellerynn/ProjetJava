@@ -1,6 +1,5 @@
 package controleur;
 
-import controleur.ConnexionBDD;
 import vue.*;
 import java.sql.*;
 

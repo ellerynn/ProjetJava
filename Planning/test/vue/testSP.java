@@ -29,297 +29,229 @@ public class testSP extends javax.swing.JPanel {
 
         groupeDroitSP = new javax.swing.ButtonGroup();
         groupeDroitModifSP = new javax.swing.ButtonGroup();
+        groupeEtatSP = new javax.swing.ButtonGroup();
+        groupeEtatModifSP = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         tabbedPaneServicePlanification = new javax.swing.JTabbedPane();
-        paneGererUtilisateursSP = new javax.swing.JScrollPane();
-        containerSP = new javax.swing.JPanel();
-        splitGererUtilisateursSP = new javax.swing.JSplitPane();
-        paneListeSP = new javax.swing.JPanel();
-        scrollListeSP = new javax.swing.JScrollPane();
-        listeUtilisateursSP = new javax.swing.JList<>();
-        paneGererSP = new javax.swing.JPanel();
-        paneModificationSP = new javax.swing.JPanel();
-        emailSP = new javax.swing.JLabel();
-        nomSP = new javax.swing.JLabel();
-        prenomSP = new javax.swing.JLabel();
-        droitSP = new javax.swing.JLabel();
-        referentSP = new javax.swing.JRadioButton();
-        enseignantSP = new javax.swing.JRadioButton();
-        etudiantSP = new javax.swing.JRadioButton();
-        numeroSP = new javax.swing.JLabel();
-        modifierTextSP = new javax.swing.JLabel();
-        boutonSupp = new javax.swing.JButton();
-        selectionProfilSP = new javax.swing.JComboBox<>();
-        paneModificationSP2 = new javax.swing.JPanel();
-        emailTextSP = new javax.swing.JLabel();
-        nomTextSP = new javax.swing.JLabel();
-        prenomTextSP = new javax.swing.JLabel();
-        droitTextSP = new javax.swing.JLabel();
-        referentAddSP = new javax.swing.JRadioButton();
-        enseignantAddSP = new javax.swing.JRadioButton();
-        etudiantAddSP = new javax.swing.JRadioButton();
-        emailAddSP = new javax.swing.JTextField();
-        nomAddSP = new javax.swing.JTextField();
-        prenomAddSP1 = new javax.swing.JTextField();
-        validerSP = new javax.swing.JButton();
-        ajouterTextSP = new javax.swing.JLabel();
+        paneGererCoursSP = new javax.swing.JSplitPane();
+        paneGererSiteSP = new javax.swing.JPanel();
+        paneSitesSP = new javax.swing.JPanel();
+        siteSalleSP = new javax.swing.JLabel();
+        selectionnerSiteSP = new javax.swing.JComboBox<>();
+        paneListeSallesSP = new javax.swing.JScrollPane();
+        listeSallesSP = new javax.swing.JList<>();
+        salleSP = new javax.swing.JLabel();
+        capaciteSP = new javax.swing.JLabel();
+        siteSP = new javax.swing.JLabel();
+        supprimerSalleSP = new javax.swing.JButton();
+        supprimerSiteSP = new javax.swing.JButton();
+        modifierCapaciteSP = new javax.swing.JButton();
+        paneAjouterSiteSP = new javax.swing.JPanel();
+        ajouterSiteSP = new javax.swing.JLabel();
+        siteAddSP = new javax.swing.JLabel();
+        siteTFSP = new javax.swing.JTextField();
+        validerSiteSP = new javax.swing.JButton();
+        paneAjouterSalleSP = new javax.swing.JPanel();
+        ajouterSalleSP = new javax.swing.JLabel();
+        salleAddSP = new javax.swing.JLabel();
+        salleTFSP = new javax.swing.JTextField();
+        validerSalleSP = new javax.swing.JButton();
+        selectionnerSiteSP2 = new javax.swing.JComboBox<>();
+        capaciteAddSP = new javax.swing.JLabel();
+        capaciteSpinnerSP = new javax.swing.JSpinner();
 
-        paneGererUtilisateursSP.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        paneGererCoursSP.setResizeWeight(0.5);
+        tabbedPaneServicePlanification.addTab("Gérer les cours", paneGererCoursSP);
 
-        splitGererUtilisateursSP.setResizeWeight(0.5);
-        splitGererUtilisateursSP.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        splitGererUtilisateursSP.setOneTouchExpandable(true);
+        siteSalleSP.setText("Sites et salles :");
 
-        listeUtilisateursSP.setModel(new javax.swing.AbstractListModel<String>() {
+        selectionnerSiteSP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Site", "Eiffel 1", "Eiffel 2", "Eiffel 3", "Eiffel 4", "Eiffel 5", "CNAM" }));
+
+        listeSallesSP.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        listeUtilisateursSP.setAutoscrolls(false);
-        scrollListeSP.setViewportView(listeUtilisateursSP);
+        paneListeSallesSP.setViewportView(listeSallesSP);
 
-        javax.swing.GroupLayout paneListeSPLayout = new javax.swing.GroupLayout(paneListeSP);
-        paneListeSP.setLayout(paneListeSPLayout);
-        paneListeSPLayout.setHorizontalGroup(
-            paneListeSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollListeSP, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-        );
-        paneListeSPLayout.setVerticalGroup(
-            paneListeSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paneListeSPLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(scrollListeSP, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
-        );
+        salleSP.setText("Salle : [Salle]");
 
-        splitGererUtilisateursSP.setRightComponent(paneListeSP);
-        paneListeSP.getAccessibleContext().setAccessibleName("");
+        capaciteSP.setText("Capacité : [Cap.]");
 
-        emailSP.setText("Adresse mail :        [email]");
+        siteSP.setText("Site : [Site]");
 
-        nomSP.setText("Nom :                     [NOM]");
-
-        prenomSP.setText("Prénom :                [Prénom]");
-
-        droitSP.setText("Droit d'accès :");
-
-        groupeDroitSP.add(referentSP);
-        referentSP.setText("Référent pédagogique");
-
-        groupeDroitSP.add(enseignantSP);
-        enseignantSP.setText("Enseignant");
-
-        groupeDroitSP.add(etudiantSP);
-        etudiantSP.setText("Etudiant");
-
-        numeroSP.setText("Numéro étudiant : [numéro]");
-
-        modifierTextSP.setText("Modifier les utilisateurs");
-
-        boutonSupp.setText("Supprimer");
-        boutonSupp.addActionListener(new java.awt.event.ActionListener() {
+        supprimerSalleSP.setText("Supprimer");
+        supprimerSalleSP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boutonSuppActionPerformed(evt);
+                supprimerSalleSPActionPerformed(evt);
             }
         });
 
-        selectionProfilSP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Veuillez sélectionner", "Référent", "Enseignant", "Etudiant" }));
-        selectionProfilSP.addActionListener(new java.awt.event.ActionListener() {
+        supprimerSiteSP.setText("Supprimer");
+        supprimerSiteSP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectionProfilSPActionPerformed(evt);
+                supprimerSiteSPActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout paneModificationSPLayout = new javax.swing.GroupLayout(paneModificationSP);
-        paneModificationSP.setLayout(paneModificationSPLayout);
-        paneModificationSPLayout.setHorizontalGroup(
-            paneModificationSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paneModificationSPLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(paneModificationSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(paneModificationSPLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(boutonSupp))
-                    .addGroup(paneModificationSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(prenomSP, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                        .addComponent(nomSP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(emailSP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(paneModificationSPLayout.createSequentialGroup()
-                        .addComponent(droitSP)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(referentSP)
-                        .addGap(0, 0, 0)
-                        .addComponent(enseignantSP)
-                        .addGap(0, 0, 0)
-                        .addComponent(etudiantSP))
-                    .addComponent(numeroSP, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(modifierTextSP, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectionProfilSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-        paneModificationSPLayout.setVerticalGroup(
-            paneModificationSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paneModificationSPLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(modifierTextSP)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectionProfilSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(emailSP)
-                .addGap(13, 13, 13)
-                .addComponent(nomSP)
-                .addGap(13, 13, 13)
-                .addComponent(prenomSP)
-                .addGap(13, 13, 13)
-                .addComponent(numeroSP)
-                .addGap(13, 13, 13)
-                .addGroup(paneModificationSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(droitSP)
-                    .addComponent(referentSP)
-                    .addComponent(enseignantSP)
-                    .addComponent(etudiantSP))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(boutonSupp)
-                .addGap(0, 9, Short.MAX_VALUE))
-        );
+        modifierCapaciteSP.setText("Modifier");
 
-        emailTextSP.setText("Adresse mail :");
+        ajouterSiteSP.setText("Ajouter un site :");
 
-        nomTextSP.setText("Nom :");
+        siteAddSP.setText("Site : ");
 
-        prenomTextSP.setText("Prénom :");
+        validerSiteSP.setText("Valider");
 
-        droitTextSP.setText("Droit d'accès :");
-
-        groupeDroitModifSP.add(referentAddSP);
-        referentAddSP.setText("Référent pédagogique");
-        referentAddSP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                referentAddSPActionPerformed(evt);
-            }
-        });
-
-        groupeDroitModifSP.add(enseignantAddSP);
-        enseignantAddSP.setText("Enseignant");
-
-        groupeDroitModifSP.add(etudiantAddSP);
-        etudiantAddSP.setText("Etudiant");
-
-        emailAddSP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailAddSPActionPerformed(evt);
-            }
-        });
-
-        validerSP.setText("Valider");
-
-        ajouterTextSP.setText("Ajouter un utilisateur");
-
-        javax.swing.GroupLayout paneModificationSP2Layout = new javax.swing.GroupLayout(paneModificationSP2);
-        paneModificationSP2.setLayout(paneModificationSP2Layout);
-        paneModificationSP2Layout.setHorizontalGroup(
-            paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paneModificationSP2Layout.createSequentialGroup()
-                .addGroup(paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(paneModificationSP2Layout.createSequentialGroup()
-                            .addComponent(emailTextSP)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(emailAddSP))
-                        .addGroup(paneModificationSP2Layout.createSequentialGroup()
-                            .addComponent(nomTextSP)
-                            .addGap(43, 43, 43)
-                            .addComponent(nomAddSP))
-                        .addGroup(paneModificationSP2Layout.createSequentialGroup()
-                            .addComponent(prenomTextSP)
-                            .addGap(28, 28, 28)
-                            .addComponent(prenomAddSP1))
-                        .addGroup(paneModificationSP2Layout.createSequentialGroup()
-                            .addComponent(droitTextSP)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(referentAddSP)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(enseignantAddSP)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(etudiantAddSP)))
-                    .addComponent(ajouterTextSP))
-                .addGap(0, 10, Short.MAX_VALUE))
-            .addGroup(paneModificationSP2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(validerSP)
+        javax.swing.GroupLayout paneAjouterSiteSPLayout = new javax.swing.GroupLayout(paneAjouterSiteSP);
+        paneAjouterSiteSP.setLayout(paneAjouterSiteSPLayout);
+        paneAjouterSiteSPLayout.setHorizontalGroup(
+            paneAjouterSiteSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneAjouterSiteSPLayout.createSequentialGroup()
+                .addComponent(ajouterSiteSP)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        paneModificationSP2Layout.setVerticalGroup(
-            paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paneModificationSP2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ajouterTextSP)
+            .addGroup(paneAjouterSiteSPLayout.createSequentialGroup()
+                .addComponent(siteAddSP)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(emailTextSP)
-                    .addComponent(emailAddSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nomTextSP)
-                    .addComponent(nomAddSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(prenomTextSP)
-                    .addComponent(prenomAddSP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(paneModificationSP2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(droitTextSP)
-                    .addComponent(referentAddSP)
-                    .addComponent(enseignantAddSP)
-                    .addComponent(etudiantAddSP))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(validerSP)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(siteTFSP, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(validerSiteSP, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
+        );
+        paneAjouterSiteSPLayout.setVerticalGroup(
+            paneAjouterSiteSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneAjouterSiteSPLayout.createSequentialGroup()
+                .addComponent(ajouterSiteSP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(paneAjouterSiteSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(siteAddSP)
+                    .addComponent(siteTFSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(validerSiteSP))
+                .addContainerGap())
         );
 
-        javax.swing.GroupLayout paneGererSPLayout = new javax.swing.GroupLayout(paneGererSP);
-        paneGererSP.setLayout(paneGererSPLayout);
-        paneGererSPLayout.setHorizontalGroup(
-            paneGererSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paneGererSPLayout.createSequentialGroup()
-                .addComponent(paneModificationSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        ajouterSalleSP.setText("Ajouter une salle :");
+
+        salleAddSP.setText("Salle :");
+
+        validerSalleSP.setText("Valider");
+
+        selectionnerSiteSP2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Site", "Eiffel 1", "Eiffel 2", "Eiffel 3", "Eiffel 4", "Eiffel 5", "CNAM" }));
+
+        capaciteAddSP.setText("Capacité :");
+
+        javax.swing.GroupLayout paneAjouterSalleSPLayout = new javax.swing.GroupLayout(paneAjouterSalleSP);
+        paneAjouterSalleSP.setLayout(paneAjouterSalleSPLayout);
+        paneAjouterSalleSPLayout.setHorizontalGroup(
+            paneAjouterSalleSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
+                .addGroup(paneAjouterSalleSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ajouterSalleSP)
+                    .addComponent(selectionnerSiteSP2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
+                .addComponent(capaciteAddSP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(capaciteSpinnerSP, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(validerSalleSP, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
+                .addComponent(salleAddSP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(salleTFSP, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(paneGererSPLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(paneModificationSP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        paneGererSPLayout.setVerticalGroup(
-            paneGererSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(paneGererSPLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(paneModificationSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        paneAjouterSalleSPLayout.setVerticalGroup(
+            paneAjouterSalleSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
+                .addComponent(ajouterSalleSP)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paneModificationSP2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(selectionnerSiteSP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(paneAjouterSalleSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(salleAddSP)
+                    .addComponent(salleTFSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(paneAjouterSalleSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(capaciteAddSP)
+                    .addComponent(validerSalleSP)
+                    .addComponent(capaciteSpinnerSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        splitGererUtilisateursSP.setLeftComponent(paneGererSP);
-
-        javax.swing.GroupLayout containerSPLayout = new javax.swing.GroupLayout(containerSP);
-        containerSP.setLayout(containerSPLayout);
-        containerSPLayout.setHorizontalGroup(
-            containerSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, containerSPLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(splitGererUtilisateursSP)
-                .addGap(0, 0, 0))
+        javax.swing.GroupLayout paneSitesSPLayout = new javax.swing.GroupLayout(paneSitesSP);
+        paneSitesSP.setLayout(paneSitesSPLayout);
+        paneSitesSPLayout.setHorizontalGroup(
+            paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneSitesSPLayout.createSequentialGroup()
+                .addComponent(siteSalleSP)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(paneSitesSPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(paneListeSallesSP, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selectionnerSiteSP, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, paneSitesSPLayout.createSequentialGroup()
+                        .addGroup(paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(salleSP)
+                            .addComponent(capaciteSP))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(supprimerSalleSP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(modifierCapaciteSP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(paneSitesSPLayout.createSequentialGroup()
+                        .addComponent(siteSP)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(supprimerSiteSP))
+                    .addComponent(paneAjouterSiteSP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paneAjouterSalleSP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        containerSPLayout.setVerticalGroup(
-            containerSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(containerSPLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(splitGererUtilisateursSP, javax.swing.GroupLayout.PREFERRED_SIZE, 422, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+        paneSitesSPLayout.setVerticalGroup(
+            paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneSitesSPLayout.createSequentialGroup()
+                .addComponent(siteSalleSP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(paneSitesSPLayout.createSequentialGroup()
+                        .addComponent(selectionnerSiteSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(siteSP)
+                            .addComponent(supprimerSiteSP))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(salleSP)
+                            .addComponent(supprimerSalleSP))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(paneSitesSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(modifierCapaciteSP)
+                            .addComponent(capaciteSP))
+                        .addGap(18, 18, 18)
+                        .addComponent(paneAjouterSiteSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(paneAjouterSalleSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 64, Short.MAX_VALUE))
+                    .addComponent(paneListeSallesSP))
+                .addContainerGap())
         );
 
-        paneGererUtilisateursSP.setViewportView(containerSP);
+        javax.swing.GroupLayout paneGererSiteSPLayout = new javax.swing.GroupLayout(paneGererSiteSP);
+        paneGererSiteSP.setLayout(paneGererSiteSPLayout);
+        paneGererSiteSPLayout.setHorizontalGroup(
+            paneGererSiteSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneGererSiteSPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(paneSitesSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(448, Short.MAX_VALUE))
+        );
+        paneGererSiteSPLayout.setVerticalGroup(
+            paneGererSiteSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneGererSiteSPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(paneSitesSP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
-        tabbedPaneServicePlanification.addTab("Gérer les utilisateurs", paneGererUtilisateursSP);
+        tabbedPaneServicePlanification.addTab("Gérer le site", paneGererSiteSP);
 
         jTabbedPane1.addTab("tab1", tabbedPaneServicePlanification);
 
@@ -327,67 +259,55 @@ public class testSP extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void selectionProfilSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectionProfilSPActionPerformed
+    private void supprimerSiteSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supprimerSiteSPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_selectionProfilSPActionPerformed
+    }//GEN-LAST:event_supprimerSiteSPActionPerformed
 
-    private void boutonSuppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonSuppActionPerformed
+    private void supprimerSalleSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supprimerSalleSPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_boutonSuppActionPerformed
-
-    private void emailAddSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailAddSPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailAddSPActionPerformed
-
-    private void referentAddSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_referentAddSPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_referentAddSPActionPerformed
+    }//GEN-LAST:event_supprimerSalleSPActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ajouterTextSP;
-    private javax.swing.JButton boutonSupp;
-    private javax.swing.JPanel containerSP;
-    private javax.swing.JLabel droitSP;
-    private javax.swing.JLabel droitTextSP;
-    private javax.swing.JTextField emailAddSP;
-    private javax.swing.JLabel emailSP;
-    private javax.swing.JLabel emailTextSP;
-    private javax.swing.JRadioButton enseignantAddSP;
-    private javax.swing.JRadioButton enseignantSP;
-    private javax.swing.JRadioButton etudiantAddSP;
-    private javax.swing.JRadioButton etudiantSP;
+    private javax.swing.JLabel ajouterSalleSP;
+    private javax.swing.JLabel ajouterSiteSP;
+    private javax.swing.JLabel capaciteAddSP;
+    private javax.swing.JLabel capaciteSP;
+    private javax.swing.JSpinner capaciteSpinnerSP;
     private javax.swing.ButtonGroup groupeDroitModifSP;
     private javax.swing.ButtonGroup groupeDroitSP;
+    private javax.swing.ButtonGroup groupeEtatModifSP;
+    private javax.swing.ButtonGroup groupeEtatSP;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JList<String> listeUtilisateursSP;
-    private javax.swing.JLabel modifierTextSP;
-    private javax.swing.JTextField nomAddSP;
-    private javax.swing.JLabel nomSP;
-    private javax.swing.JLabel nomTextSP;
-    private javax.swing.JLabel numeroSP;
-    private javax.swing.JPanel paneGererSP;
-    private javax.swing.JScrollPane paneGererUtilisateursSP;
-    private javax.swing.JPanel paneListeSP;
-    private javax.swing.JPanel paneModificationSP;
-    private javax.swing.JPanel paneModificationSP2;
-    private javax.swing.JTextField prenomAddSP1;
-    private javax.swing.JLabel prenomSP;
-    private javax.swing.JLabel prenomTextSP;
-    private javax.swing.JRadioButton referentAddSP;
-    private javax.swing.JRadioButton referentSP;
-    private javax.swing.JScrollPane scrollListeSP;
-    private javax.swing.JComboBox<String> selectionProfilSP;
-    private javax.swing.JSplitPane splitGererUtilisateursSP;
+    private javax.swing.JList<String> listeSallesSP;
+    private javax.swing.JButton modifierCapaciteSP;
+    private javax.swing.JPanel paneAjouterSalleSP;
+    private javax.swing.JPanel paneAjouterSiteSP;
+    private javax.swing.JSplitPane paneGererCoursSP;
+    private javax.swing.JPanel paneGererSiteSP;
+    private javax.swing.JScrollPane paneListeSallesSP;
+    private javax.swing.JPanel paneSitesSP;
+    private javax.swing.JLabel salleAddSP;
+    private javax.swing.JLabel salleSP;
+    private javax.swing.JTextField salleTFSP;
+    private javax.swing.JComboBox<String> selectionnerSiteSP;
+    private javax.swing.JComboBox<String> selectionnerSiteSP2;
+    private javax.swing.JLabel siteAddSP;
+    private javax.swing.JLabel siteSP;
+    private javax.swing.JLabel siteSalleSP;
+    private javax.swing.JTextField siteTFSP;
+    private javax.swing.JButton supprimerSalleSP;
+    private javax.swing.JButton supprimerSiteSP;
     private javax.swing.JTabbedPane tabbedPaneServicePlanification;
-    private javax.swing.JButton validerSP;
+    private javax.swing.JButton validerSalleSP;
+    private javax.swing.JButton validerSiteSP;
     // End of variables declaration//GEN-END:variables
 }

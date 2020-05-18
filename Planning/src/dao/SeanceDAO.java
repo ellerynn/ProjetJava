@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
 import modele.*;
 
 public class SeanceDAO extends DAO<Seance> {
@@ -37,6 +38,7 @@ public class SeanceDAO extends DAO<Seance> {
                 //recuperation données utilisateur
                 seance.setId(result.getInt("ID"));
                 seance.setSemaine(result.getInt("Semaine"));
+                seance.setDate(result.getString("Date"));
                 seance.setHeureDebut(result.getString("Heure_Debut"));
                 seance.setHeureFin(result.getString("Heure_Fin"));
                 seance.setEtat(result.getInt("Etat"));
@@ -100,5 +102,108 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
         return seance;
+    }
+    public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        try{
+        ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
+        if(result.first())
+        {
+            String requete = new String();
+            if (result.getInt("Droit") == 3){ //Professeur, trouver les séances de ce prof
+                requete = "SELECT ID FROM Seance \n"
+                        +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
+                        +"WHERE Seance.Semaine = "+semaine+"AND SE.ID_enseignant = "+id;
+            }
+            if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
+                requete = "SELECT ID FROM Seance \n" +
+                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
+                            "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
+                            "WHERE Seance.Semaine = "+semaine+" AND user.ID_utilisateur = "+id;
+            }
+            ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+            
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    SeanceDAO sDAO = new SeanceDAO();
+                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                }
+            }
+        }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
+    }
+    public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
+    {
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        try{
+            ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT seance.ID FROM seance\n" +
+                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
+                                                            "WHERE seance.Semaine = "+semaine+" AND SG.ID_groupe = "+id);
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    SeanceDAO sDAO = new SeanceDAO();
+                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                }
+            }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
+    }
+    public ArrayList<Seance> findSeancesByPromoAndWeek(int id, int semaine)
+    {
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        try{
+            ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT DISTINCT seance.ID FROM seance\n" +
+                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
+                                                            "LEFT JOIN groupe G ON G.ID = SG.ID_groupe\n" +
+                                                            "WHERE seance.Semaine = "+semaine+" AND G.ID_promotion = "+id);
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    SeanceDAO sDAO = new SeanceDAO();
+                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                }
+            }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
+    }
+    public ArrayList<Seance> findSeancesBySalle(int id, int semaine)
+    {
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        try
+        {
+            ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT seance.ID FROM seance\n" +
+                                                            "LEFT JOIN seance_salles SS ON SS.ID_seance = seance.ID\n" +
+                                                            "WHERE seance.Semaine = "+semaine+" AND SS.ID_salle = "+id);
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    SeanceDAO sDAO = new SeanceDAO();
+                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                }
+            }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
     }
 }

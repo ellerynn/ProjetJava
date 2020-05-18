@@ -1,7 +1,9 @@
 package vue;
 
-import java.util.Vector;
+import java.util.*;
 import javax.swing.*;
+import javax.swing.GroupLayout.*;
+import javax.swing.LayoutStyle.*;
 
 public class OngletServicePlanification extends JTabbedPane {
     //SP -> Gérer les utilisateurs
@@ -93,7 +95,6 @@ public class OngletServicePlanification extends JTabbedPane {
     private JLabel capaciteAddSP;
     private JLabel capaciteSP;
     private JSpinner capaciteSpinnerSP;
-    private JTabbedPane jTabbedPane1;
     private JList<String> listeSallesSP;
     private JButton modifierCapaciteSP;
     private JPanel paneAjouterSalleSP;
@@ -166,7 +167,7 @@ public class OngletServicePlanification extends JTabbedPane {
 
         paneGererCoursSP.setRightComponent(scrollListeSeancesSP);
 
-        dateSeanceSP.setModel(new SpinnerDateModel(new java.util.Date(1598940000000L), new java.util.Date(1598940000000L), new java.util.Date(1627797600000L), java.util.Calendar.DAY_OF_MONTH));
+        dateSeanceSP.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
 
         groupeEtatSP.add(enCoursSP);
         groupeEtatSP.add(valideeSP);
@@ -174,91 +175,91 @@ public class OngletServicePlanification extends JTabbedPane {
         remplirComboBox(selectionnerCoursSP, "Veuillez sélectionner", "Cours");
         remplirComboBoxType(selectionnerTypeSP);
         
-        GroupLayout c11 = new GroupLayout(paneAjouterSeanceSP);
-        paneAjouterSeanceSP.setLayout(c11);
-        c11.setHorizontalGroup(
-            c11.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c11.createSequentialGroup()
+        GroupLayout c1 = new GroupLayout(paneAjouterSeanceSP);
+        paneAjouterSeanceSP.setLayout(c1);
+        c1.setHorizontalGroup(
+            c1.createParallelGroup(Alignment.LEADING)
+            .addGroup(c1.createSequentialGroup()
                 .addComponent(ajouterSeanceSP)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(c11.createSequentialGroup()
+            .addGroup(c1.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(c11.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(c11.createSequentialGroup()
+                .addGroup(c1.createParallelGroup(Alignment.LEADING)
+                    .addGroup(c1.createSequentialGroup()
                         .addComponent(dateHeureSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(dateSeanceSP, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(c11.createSequentialGroup()
+                    .addGroup(c1.createSequentialGroup()
                         .addComponent(etatSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(enCoursSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(ComponentPlacement.RELATED)
                         .addComponent(valideeSP))
-                    .addGroup(c11.createSequentialGroup()
-                        .addGroup(c11.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(c1.createSequentialGroup()
+                        .addGroup(c1.createParallelGroup(Alignment.LEADING)
                             .addComponent(coursSP)
                             .addComponent(typeSP))
                         .addGap(18, 18, 18)
-                        .addGroup(c11.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                        .addGroup(c1.createParallelGroup(Alignment.LEADING, false)
                             .addComponent(selectionnerCoursSP, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(selectionnerTypeSP, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
+                        .addPreferredGap(ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                         .addComponent(ajouterBoutonSP))))
         );
-        c11.setVerticalGroup(
-            c11.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c11.createSequentialGroup()
+        c1.setVerticalGroup(
+            c1.createParallelGroup(Alignment.LEADING)
+            .addGroup(c1.createSequentialGroup()
                 .addComponent(ajouterSeanceSP)
                 .addGap(12, 12, 12)
-                .addGroup(c11.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(c1.createParallelGroup(Alignment.BASELINE)
                     .addComponent(dateHeureSP)
                     .addComponent(dateSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c11.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c1.createParallelGroup(Alignment.BASELINE)
                     .addComponent(etatSP)
                     .addComponent(enCoursSP)
                     .addComponent(valideeSP))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c11.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c1.createParallelGroup(Alignment.BASELINE)
                     .addComponent(coursSP)
                     .addComponent(selectionnerCoursSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c11.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c1.createParallelGroup(Alignment.BASELINE)
                     .addComponent(typeSP)
                     .addComponent(selectionnerTypeSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(ajouterBoutonSP))
                 .addGap(10, 10, 10))
         );
 
-        GroupLayout c12 = new GroupLayout(paneAjouterCoursSP);
-        paneAjouterCoursSP.setLayout(c12);
-        c12.setHorizontalGroup(
-            c12.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c12.createSequentialGroup()
+        GroupLayout c2 = new GroupLayout(paneAjouterCoursSP);
+        paneAjouterCoursSP.setLayout(c2);
+        c2.setHorizontalGroup(
+            c2.createParallelGroup(Alignment.LEADING)
+            .addGroup(c2.createSequentialGroup()
                 .addComponent(ajouterCoursSP)
                 .addGap(0, 0, 0))
-            .addGroup(c12.createSequentialGroup()
+            .addGroup(c2.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(intituleCoursSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(intituleTextP, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(validerCoursSP)
                 .addContainerGap())
         );
-        c12.setVerticalGroup(
-            c12.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c12.createSequentialGroup()
+        c2.setVerticalGroup(
+            c2.createParallelGroup(Alignment.LEADING)
+            .addGroup(c2.createSequentialGroup()
                 .addComponent(ajouterCoursSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(c12.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.UNRELATED)
+                .addGroup(c2.createParallelGroup(Alignment.BASELINE)
                     .addComponent(intituleCoursSP)
                     .addComponent(intituleTextP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(validerCoursSP))
                 .addGap(0, 12, Short.MAX_VALUE))
         );
 
-        dateSeanceModifSP.setModel(new SpinnerDateModel(new java.util.Date(1598940000000L), new java.util.Date(1598940000000L), new java.util.Date(1627797600000L), java.util.Calendar.DAY_OF_MONTH));
+        dateSeanceModifSP.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
 
         groupeEtatModifSP.add(enCoursModifSP);
         groupeEtatModifSP.add(valideeModifSP);
@@ -268,89 +269,89 @@ public class OngletServicePlanification extends JTabbedPane {
 
         groupeEtatModifSP.add(anuleeBoutonModifSP);
 
-        GroupLayout c13 = new GroupLayout(paneModifSeanceSP);
-        paneModifSeanceSP.setLayout(c13);
-        c13.setHorizontalGroup(
-            c13.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c13.createSequentialGroup()
-                .addGroup(c13.createParallelGroup(GroupLayout.Alignment.LEADING)
+        GroupLayout c3 = new GroupLayout(paneModifSeanceSP);
+        paneModifSeanceSP.setLayout(c3);
+        c3.setHorizontalGroup(
+            c3.createParallelGroup(Alignment.LEADING)
+            .addGroup(c3.createSequentialGroup()
+                .addGroup(c3.createParallelGroup(Alignment.LEADING)
                     .addComponent(modifierSeanceSP)
-                    .addGroup(c13.createSequentialGroup()
+                    .addGroup(c3.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(c13.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(c13.createSequentialGroup()
-                                .addGroup(c13.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(c3.createParallelGroup(Alignment.LEADING)
+                            .addGroup(c3.createSequentialGroup()
+                                .addGroup(c3.createParallelGroup(Alignment.LEADING)
                                     .addComponent(coursModifSP)
                                     .addComponent(typeModifSP))
                                 .addGap(18, 18, 18)
-                                .addGroup(c13.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                .addGroup(c3.createParallelGroup(Alignment.LEADING, false)
                                     .addComponent(selectionnerCoursModifSP, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(selectionnerTypeModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(c13.createSequentialGroup()
+                            .addGroup(c3.createSequentialGroup()
                                 .addComponent(dateHeureModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(dateSeanceModifSP, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(c13.createSequentialGroup()
+                            .addGroup(c3.createSequentialGroup()
                                 .addComponent(etatModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addComponent(enCoursModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(valideeModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(anuleeBoutonModifSP)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(32, 32, 32)
                 .addComponent(ajouterBoutonModifSP)
                 .addContainerGap())
         );
-        c13.setVerticalGroup(
-            c13.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c13.createSequentialGroup()
+        c3.setVerticalGroup(
+            c3.createParallelGroup(Alignment.LEADING)
+            .addGroup(c3.createSequentialGroup()
                 .addComponent(modifierSeanceSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c13.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(dateHeureModifSP)
                     .addComponent(dateSeanceModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c13.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(etatModifSP)
                     .addComponent(enCoursModifSP)
                     .addComponent(valideeModifSP)
                     .addComponent(anuleeBoutonModifSP))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c13.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(coursModifSP)
                     .addComponent(selectionnerCoursModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c13.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(typeModifSP)
                     .addComponent(selectionnerTypeModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(ajouterBoutonModifSP))
                 .addGap(0, 9, Short.MAX_VALUE))
         );
 
-        GroupLayout c14 = new GroupLayout(containerSP2);
-        containerSP2.setLayout(c14);
-        c14.setHorizontalGroup(
-            c14.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c14.createSequentialGroup()
+        GroupLayout c4 = new GroupLayout(containerSP2);
+        containerSP2.setLayout(c4);
+        c4.setHorizontalGroup(
+            c4.createParallelGroup(Alignment.LEADING)
+            .addGroup(c4.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(c14.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(c4.createParallelGroup(Alignment.LEADING)
                     .addComponent(paneAjouterCoursSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(c14.createSequentialGroup()
+                    .addGroup(c4.createSequentialGroup()
                         .addComponent(paneAjouterSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(paneModifSeanceSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-        c14.setVerticalGroup(
-            c14.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c14.createSequentialGroup()
+        c4.setVerticalGroup(
+            c4.createParallelGroup(Alignment.LEADING)
+            .addGroup(c4.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(paneAjouterSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(paneAjouterCoursSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(paneModifSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(82, Short.MAX_VALUE))
         );
@@ -393,26 +394,26 @@ public class OngletServicePlanification extends JTabbedPane {
         
         paneListeSallesSP.setViewportView(listeSallesSP);
 
-        GroupLayout paneAjouterSiteSPLayout = new GroupLayout(paneAjouterSiteSP);
-        paneAjouterSiteSP.setLayout(paneAjouterSiteSPLayout);
-        paneAjouterSiteSPLayout.setHorizontalGroup(
-            paneAjouterSiteSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneAjouterSiteSPLayout.createSequentialGroup()
+        GroupLayout c1 = new GroupLayout(paneAjouterSiteSP);
+        paneAjouterSiteSP.setLayout(c1);
+        c1.setHorizontalGroup(
+            c1.createParallelGroup(Alignment.LEADING)
+            .addGroup(c1.createSequentialGroup()
                 .addComponent(ajouterSiteSP)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(paneAjouterSiteSPLayout.createSequentialGroup()
+            .addGroup(c1.createSequentialGroup()
                 .addComponent(siteAddSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(siteTFSP, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(validerSiteSP, GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
         );
-        paneAjouterSiteSPLayout.setVerticalGroup(
-            paneAjouterSiteSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneAjouterSiteSPLayout.createSequentialGroup()
+        c1.setVerticalGroup(
+            c1.createParallelGroup(Alignment.LEADING)
+            .addGroup(c1.createSequentialGroup()
                 .addComponent(ajouterSiteSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneAjouterSiteSPLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c1.createParallelGroup(Alignment.BASELINE)
                     .addComponent(siteAddSP)
                     .addComponent(siteTFSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(validerSiteSP))
@@ -421,114 +422,114 @@ public class OngletServicePlanification extends JTabbedPane {
 
         selectionnerSiteSP2.setModel(new DefaultComboBoxModel<>(new String[] { "Site", "Eiffel 1", "Eiffel 2", "Eiffel 3", "Eiffel 4", "Eiffel 5", "CNAM" }));
 
-        GroupLayout paneAjouterSalleSPLayout = new GroupLayout(paneAjouterSalleSP);
-        paneAjouterSalleSP.setLayout(paneAjouterSalleSPLayout);
-        paneAjouterSalleSPLayout.setHorizontalGroup(
-            paneAjouterSalleSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
-                .addGroup(paneAjouterSalleSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        GroupLayout c2 = new GroupLayout(paneAjouterSalleSP);
+        paneAjouterSalleSP.setLayout(c2);
+        c2.setHorizontalGroup(
+            c2.createParallelGroup(Alignment.LEADING)
+            .addGroup(c2.createSequentialGroup()
+                .addGroup(c2.createParallelGroup(Alignment.LEADING)
                     .addComponent(ajouterSalleSP)
                     .addComponent(selectionnerSiteSP2, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
+            .addGroup(c2.createSequentialGroup()
                 .addComponent(capaciteAddSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(capaciteSpinnerSP, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(validerSalleSP, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE))
-            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
+            .addGroup(c2.createSequentialGroup()
                 .addComponent(salleAddSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(ComponentPlacement.UNRELATED)
                 .addComponent(salleTFSP, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-        paneAjouterSalleSPLayout.setVerticalGroup(
-            paneAjouterSalleSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneAjouterSalleSPLayout.createSequentialGroup()
+        c2.setVerticalGroup(
+            c2.createParallelGroup(Alignment.LEADING)
+            .addGroup(c2.createSequentialGroup()
                 .addComponent(ajouterSalleSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(selectionnerSiteSP2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(paneAjouterSalleSPLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.UNRELATED)
+                .addGroup(c2.createParallelGroup(Alignment.BASELINE)
                     .addComponent(salleAddSP)
                     .addComponent(salleTFSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(paneAjouterSalleSPLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(c2.createParallelGroup(Alignment.BASELINE)
                     .addComponent(capaciteAddSP)
                     .addComponent(validerSalleSP)
                     .addComponent(capaciteSpinnerSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
         );
 
-        GroupLayout paneSitesSPLayout = new GroupLayout(paneSitesSP);
-        paneSitesSP.setLayout(paneSitesSPLayout);
-        paneSitesSPLayout.setHorizontalGroup(
-            paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneSitesSPLayout.createSequentialGroup()
+        GroupLayout c3 = new GroupLayout(paneSitesSP);
+        paneSitesSP.setLayout(c3);
+        c3.setHorizontalGroup(
+            c3.createParallelGroup(Alignment.LEADING)
+            .addGroup(c3.createSequentialGroup()
                 .addComponent(siteSalleSP)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(paneSitesSPLayout.createSequentialGroup()
+            .addGroup(c3.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(paneListeSallesSP, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c3.createParallelGroup(Alignment.LEADING)
                     .addComponent(selectionnerSiteSP, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-                    .addGroup(GroupLayout.Alignment.TRAILING, paneSitesSPLayout.createSequentialGroup()
-                        .addGroup(paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(Alignment.TRAILING, c3.createSequentialGroup()
+                        .addGroup(c3.createParallelGroup(Alignment.LEADING)
                             .addComponent(salleSP)
                             .addComponent(capaciteSP))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                        .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(c3.createParallelGroup(Alignment.LEADING, false)
                             .addComponent(supprimerSalleSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(modifierCapaciteSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(paneSitesSPLayout.createSequentialGroup()
+                    .addGroup(c3.createSequentialGroup()
                         .addComponent(siteSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(supprimerSiteSP))
                     .addComponent(paneAjouterSiteSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(paneAjouterSalleSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        paneSitesSPLayout.setVerticalGroup(
-            paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneSitesSPLayout.createSequentialGroup()
+        c3.setVerticalGroup(
+            c3.createParallelGroup(Alignment.LEADING)
+            .addGroup(c3.createSequentialGroup()
                 .addComponent(siteSalleSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(paneSitesSPLayout.createSequentialGroup()
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c3.createParallelGroup(Alignment.LEADING)
+                    .addGroup(c3.createSequentialGroup()
                         .addComponent(selectionnerSiteSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                        .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                             .addComponent(siteSP)
                             .addComponent(supprimerSiteSP))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                        .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                             .addComponent(salleSP)
                             .addComponent(supprimerSalleSP))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(paneSitesSPLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                        .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                             .addComponent(modifierCapaciteSP)
                             .addComponent(capaciteSP))
                         .addGap(18, 18, 18)
                         .addComponent(paneAjouterSiteSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(ComponentPlacement.RELATED)
                         .addComponent(paneAjouterSalleSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 64, Short.MAX_VALUE))
                     .addComponent(paneListeSallesSP))
                 .addContainerGap())
         );
 
-        GroupLayout paneGererSiteSPLayout = new GroupLayout(paneGererSiteSP);
-        paneGererSiteSP.setLayout(paneGererSiteSPLayout);
-        paneGererSiteSPLayout.setHorizontalGroup(
-            paneGererSiteSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneGererSiteSPLayout.createSequentialGroup()
+        GroupLayout c4 = new GroupLayout(paneGererSiteSP);
+        paneGererSiteSP.setLayout(c4);
+        c4.setHorizontalGroup(
+            c4.createParallelGroup(Alignment.LEADING)
+            .addGroup(c4.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(paneSitesSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(448, Short.MAX_VALUE))
         );
-        paneGererSiteSPLayout.setVerticalGroup(
-            paneGererSiteSPLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(paneGererSiteSPLayout.createSequentialGroup()
+        c4.setVerticalGroup(
+            c4.createParallelGroup(Alignment.LEADING)
+            .addGroup(c4.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(paneSitesSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -592,15 +593,15 @@ public class OngletServicePlanification extends JTabbedPane {
         
         scrollListeSP.setViewportView(listeUtilisateursSP);
 
-        GroupLayout c5 = new GroupLayout(paneListeSP);
-        paneListeSP.setLayout(c5);
-        c5.setHorizontalGroup(
-            c5.createParallelGroup(GroupLayout.Alignment.LEADING)
+        GroupLayout c1 = new GroupLayout(paneListeSP);
+        paneListeSP.setLayout(c1);
+        c1.setHorizontalGroup(
+            c1.createParallelGroup(Alignment.LEADING)
             .addComponent(scrollListeSP, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
         );
-        c5.setVerticalGroup(
-            c5.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c5.createSequentialGroup()
+        c1.setVerticalGroup(
+            c1.createParallelGroup(Alignment.LEADING)
+            .addGroup(c1.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(scrollListeSP, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
@@ -613,23 +614,23 @@ public class OngletServicePlanification extends JTabbedPane {
   
         selectionProfilSP.setModel(new DefaultComboBoxModel<>(new String[] { "Veuillez sélectionner", "Référent", "Enseignant", "Etudiant" }));
     
-        GroupLayout c6 = new GroupLayout(paneModificationSP);
-        paneModificationSP.setLayout(c6);
-        c6.setHorizontalGroup(
-            c6.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c6.createSequentialGroup()
+        GroupLayout c2 = new GroupLayout(paneModificationSP);
+        paneModificationSP.setLayout(c2);
+        c2.setHorizontalGroup(
+            c2.createParallelGroup(Alignment.LEADING)
+            .addGroup(c2.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(c6.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(c6.createSequentialGroup()
+                .addGroup(c2.createParallelGroup(Alignment.LEADING)
+                    .addGroup(c2.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(boutonSupp))
-                    .addGroup(c6.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(c2.createParallelGroup(Alignment.TRAILING, false)
                         .addComponent(prenomSP, GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                        .addComponent(nomSP, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(emailSP, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(c6.createSequentialGroup()
+                        .addComponent(nomSP, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(emailSP, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(c2.createSequentialGroup()
                         .addComponent(droitSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(referentSP)
                         .addGap(0, 0, 0)
                         .addComponent(enseignantSP)
@@ -640,14 +641,14 @@ public class OngletServicePlanification extends JTabbedPane {
                     .addComponent(selectionProfilSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
-        c6.setVerticalGroup(
-            c6.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c6.createSequentialGroup()
+        c2.setVerticalGroup(
+            c2.createParallelGroup(Alignment.LEADING)
+            .addGroup(c2.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(modifierTextSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(selectionProfilSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(ComponentPlacement.UNRELATED)
                 .addComponent(emailSP)
                 .addGap(13, 13, 13)
                 .addComponent(nomSP)
@@ -656,12 +657,12 @@ public class OngletServicePlanification extends JTabbedPane {
                 .addGap(13, 13, 13)
                 .addComponent(numeroSP)
                 .addGap(13, 13, 13)
-                .addGroup(c6.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(c2.createParallelGroup(Alignment.BASELINE)
                     .addComponent(droitSP)
                     .addComponent(referentSP)
                     .addComponent(enseignantSP)
                     .addComponent(etudiantSP))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(ComponentPlacement.UNRELATED)
                 .addComponent(boutonSupp)
                 .addGap(0, 9, Short.MAX_VALUE))
         );
@@ -670,64 +671,64 @@ public class OngletServicePlanification extends JTabbedPane {
         groupeDroitModifSP.add(enseignantAddSP);
         groupeDroitModifSP.add(etudiantAddSP);
 
-        GroupLayout c7 = new GroupLayout(paneAjoutSP);
-        paneAjoutSP.setLayout(c7);
-        c7.setHorizontalGroup(
-            c7.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c7.createSequentialGroup()
-                .addGroup(c7.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(c7.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addGroup(c7.createSequentialGroup()
+        GroupLayout c3 = new GroupLayout(paneAjoutSP);
+        paneAjoutSP.setLayout(c3);
+        c3.setHorizontalGroup(
+            c3.createParallelGroup(Alignment.LEADING)
+            .addGroup(c3.createSequentialGroup()
+                .addGroup(c3.createParallelGroup(Alignment.LEADING)
+                    .addGroup(c3.createParallelGroup(Alignment.LEADING, false)
+                        .addGroup(c3.createSequentialGroup()
                             .addComponent(emailTextSP)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addPreferredGap(ComponentPlacement.RELATED)
                             .addComponent(emailAddSP))
-                        .addGroup(c7.createSequentialGroup()
+                        .addGroup(c3.createSequentialGroup()
                             .addComponent(nomTextSP)
                             .addGap(43, 43, 43)
                             .addComponent(nomAddSP))
-                        .addGroup(c7.createSequentialGroup()
+                        .addGroup(c3.createSequentialGroup()
                             .addComponent(prenomTextSP)
                             .addGap(28, 28, 28)
                             .addComponent(prenomAddSP1))
-                        .addGroup(c7.createSequentialGroup()
+                        .addGroup(c3.createSequentialGroup()
                             .addComponent(droitTextSP)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addPreferredGap(ComponentPlacement.UNRELATED)
                             .addComponent(referentAddSP)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addPreferredGap(ComponentPlacement.RELATED)
                             .addComponent(enseignantAddSP)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addPreferredGap(ComponentPlacement.UNRELATED)
                             .addComponent(etudiantAddSP)))
                     .addComponent(ajouterTextSP))
                 .addGap(0, 10, Short.MAX_VALUE))
-            .addGroup(c7.createSequentialGroup()
+            .addGroup(c3.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(validerSP)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        c7.setVerticalGroup(
-            c7.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c7.createSequentialGroup()
+        c3.setVerticalGroup(
+            c3.createParallelGroup(Alignment.LEADING)
+            .addGroup(c3.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ajouterTextSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c7.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(emailTextSP)
                     .addComponent(emailAddSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addGroup(c7.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(nomTextSP)
                     .addComponent(nomAddSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addGroup(c7.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(prenomTextSP)
                     .addComponent(prenomAddSP1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addGroup(c7.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(c3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(droitTextSP)
                     .addComponent(referentAddSP)
                     .addComponent(enseignantAddSP)
                     .addComponent(etudiantAddSP))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(ComponentPlacement.UNRELATED)
                 .addComponent(validerSP)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -742,97 +743,97 @@ public class OngletServicePlanification extends JTabbedPane {
         groupeTFSP.setBackground(new java.awt.Color(240, 240, 240));
         groupeTFSP.setBorder(null);
 
-        GroupLayout c = new GroupLayout(paneGroupeSP);
-        paneGroupeSP.setLayout(c);
-        c.setHorizontalGroup(
-            c.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c.createSequentialGroup()
-                .addGroup(c.createParallelGroup(GroupLayout.Alignment.LEADING)
+        GroupLayout c4 = new GroupLayout(paneGroupeSP);
+        paneGroupeSP.setLayout(c4);
+        c4.setHorizontalGroup(
+            c4.createParallelGroup(Alignment.LEADING)
+            .addGroup(c4.createSequentialGroup()
+                .addGroup(c4.createParallelGroup(Alignment.LEADING)
                     .addComponent(groupeTextSP)
-                    .addGroup(c.createSequentialGroup()
+                    .addGroup(c4.createSequentialGroup()
                         .addComponent(selectionnerGroupeSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(ComponentPlacement.RELATED)
                         .addComponent(selectionnerPromoSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(c.createSequentialGroup()
+                    .addGroup(c4.createSequentialGroup()
                         .addComponent(promoTextSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(promoTFSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(c.createSequentialGroup()
+                    .addGroup(c4.createSequentialGroup()
                         .addComponent(groupeLabelSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(groupeTFSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(c.createSequentialGroup()
+                    .addGroup(c4.createSequentialGroup()
                         .addComponent(boutonSuppSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(boutonAddSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(ComponentPlacement.UNRELATED)
                         .addComponent(boutonModSP)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-        c.setVerticalGroup(
-            c.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c.createSequentialGroup()
+        c4.setVerticalGroup(
+            c4.createParallelGroup(Alignment.LEADING)
+            .addGroup(c4.createSequentialGroup()
                 .addComponent(groupeTextSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c4.createParallelGroup(Alignment.BASELINE)
                     .addComponent(selectionnerGroupeSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(selectionnerPromoSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(c.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.UNRELATED)
+                .addGroup(c4.createParallelGroup(Alignment.BASELINE)
                     .addComponent(promoTextSP)
                     .addComponent(promoTFSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c4.createParallelGroup(Alignment.BASELINE)
                     .addComponent(groupeLabelSP)
                     .addComponent(groupeTFSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(c4.createParallelGroup(Alignment.BASELINE)
                     .addComponent(boutonSuppSP)
                     .addComponent(boutonAddSP)
                     .addComponent(boutonModSP))
                 .addGap(0, 32, Short.MAX_VALUE))
         );
         
-        GroupLayout c8 = new GroupLayout(paneGererSP);
-        paneGererSP.setLayout(c8);
-        c8.setHorizontalGroup(
-            c8.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c8.createSequentialGroup()
+        GroupLayout c5 = new GroupLayout(paneGererSP);
+        paneGererSP.setLayout(c5);
+        c5.setHorizontalGroup(
+            c5.createParallelGroup(Alignment.LEADING)
+            .addGroup(c5.createSequentialGroup()
                 .addComponent(paneModificationSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 10, Short.MAX_VALUE))
-            .addGroup(c8.createSequentialGroup()
+            .addGroup(c5.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(c8.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .addGroup(c5.createParallelGroup(Alignment.LEADING, false)
                     .addComponent(paneAjoutSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(paneGroupeSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        c8.setVerticalGroup(
-            c8.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c8.createSequentialGroup()
+        c5.setVerticalGroup(
+            c5.createParallelGroup(Alignment.LEADING)
+            .addGroup(c5.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(paneModificationSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(paneAjoutSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(paneGroupeSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         splitGererUtilisateursSP.setLeftComponent(paneGererSP);
 
-        GroupLayout c9 = new GroupLayout(containerSP);
-        containerSP.setLayout(c9);
-        c9.setHorizontalGroup(
-            c9.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, c9.createSequentialGroup()
+        GroupLayout c6 = new GroupLayout(containerSP);
+        containerSP.setLayout(c6);
+        c6.setHorizontalGroup(
+            c6.createParallelGroup(Alignment.LEADING)
+            .addGroup(Alignment.TRAILING, c6.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(splitGererUtilisateursSP)
                 .addGap(0, 0, 0))
         );
-        c9.setVerticalGroup(
-            c9.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c9.createSequentialGroup()
+        c6.setVerticalGroup(
+            c6.createParallelGroup(Alignment.LEADING)
+            .addGroup(c6.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(splitGererUtilisateursSP, GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
                 .addGap(0, 0, 0))

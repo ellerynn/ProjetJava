@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class FormConnexion extends JPanel {
@@ -15,11 +16,6 @@ public class FormConnexion extends JPanel {
     
     public FormConnexion() {
         initialisation();
-    }
-    
-    //Getters
-    public JButton getBouton() {
-        return bouton;
     }
     
     public void initialisation() {
@@ -87,5 +83,18 @@ public class FormConnexion extends JPanel {
                 .addComponent(bouton)
                 .addContainerGap(97, Short.MAX_VALUE))
         );
+    }
+    
+    //Getters
+    public JButton getBouton() { //Pour passer au site lorsqu'on appuie sur le bouton connexion
+        return bouton;
+    }
+    
+    public String getEmail() {
+        return email.getText();
+    }
+    
+    public String getPassword() {
+        return Arrays.toString(password.getPassword());
     }
 }

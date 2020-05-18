@@ -24,7 +24,7 @@ public class EmploiDuTemps extends JTabbedPane implements ActionListener {
         this.add("Service planification", ongletSP);
     }
     
-    //Pour le lien du bouton linkCoursHome
+    //Pour le lien du bouton de l'onglet Home vers l'onglet Cours
     @Override
     public void actionPerformed(ActionEvent arg0) {
         this.setSelectedIndex(1);

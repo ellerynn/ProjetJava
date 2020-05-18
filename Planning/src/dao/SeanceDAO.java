@@ -5,13 +5,9 @@ import java.sql.*;
 import modele.*;
 
 public class SeanceDAO extends DAO<Seance> {
-    public SeanceDAO(Connection conn) {
-         super(conn);
-    }
-    
     @Override
-    public boolean create(Seance object) {
-        return false;
+    public Seance create(Seance object) {
+        return object;
     }
 
     @Override
@@ -20,8 +16,8 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     @Override
-    public boolean update(Seance object) {
-        return false;
+    public Seance update(Seance object) {
+        return object;
     }
     
     @Override
@@ -45,22 +41,22 @@ public class SeanceDAO extends DAO<Seance> {
                 seance.setHeureFin(result.getString("Heure_Fin"));
                 seance.setEtat(result.getInt("Etat"));
 
-                CoursDAO cDAO = new CoursDAO(connect);
-                TypeCoursDAO tDAO = new TypeCoursDAO(connect);
+                CoursDAO cDAO = new CoursDAO();
+                TypeCoursDAO tDAO = new TypeCoursDAO();
                 seance.setCours(cDAO.find(result.getInt("ID_cours")));
                 seance.setTypeCours(tDAO.find(result.getInt("ID_type")));
             }
 
             //On recupère les enseignants de la séance
             ResultSet resultEnseignants =  st.executeQuery("SELECT * FROM Seance\n" + // Pour les enseignants de la séance
-                                          "LEFT JOIN seance_enseigants ON seance.ID = seance_enseigants.ID_seance\n" +
-                                          "LEFT JOIN enseignant ON seance_enseigants.ID_enseignant = enseignant.ID_utilisateur\n" +
+                                          "LEFT JOIN seance_enseignants ON seance.ID = seance_enseignants.ID_seance\n" +
+                                          "LEFT JOIN enseignant ON seance_enseignants.ID_enseignant = enseignant.ID_utilisateur\n" +
                                           "WHERE Seance.ID ="+ id +" AND enseignant.ID_cours = seance.ID_cours");
             
             if (resultEnseignants.first())
             {
 
-                EnseignantDAO eDAO = new EnseignantDAO(connect);
+                EnseignantDAO eDAO = new EnseignantDAO();
                 seance.ajouterEnseignant(eDAO.find(resultEnseignants.getInt("ID_enseignant")));
                 
                 while(resultEnseignants.next()) {
@@ -76,7 +72,7 @@ public class SeanceDAO extends DAO<Seance> {
 
             if (resultSalles.first())
             {
-                SalleDAO sDAO = new SalleDAO(connect);
+                SalleDAO sDAO = new SalleDAO();
                 seance.ajouterSalle(sDAO.find(resultSalles.getInt("ID_salle")));
                 
                 while(resultSalles.next()) {
@@ -91,7 +87,7 @@ public class SeanceDAO extends DAO<Seance> {
                                                       "WHERE Seance.ID = "+id);
             if (resultGroupes.first())
             {
-                GroupeDAO gDAO = new GroupeDAO(connect);
+                GroupeDAO gDAO = new GroupeDAO();
                 seance.ajouterGroupe(gDAO.find(resultGroupes.getInt("ID_groupe")));
                 
                 while(resultGroupes.next()) {

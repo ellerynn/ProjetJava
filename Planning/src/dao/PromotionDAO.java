@@ -11,13 +11,9 @@ import modele.Promotion;
 
 
 public class PromotionDAO extends DAO<Promotion> {
-    public PromotionDAO(Connection conn) {
-      super(conn);
-    }
-    
     @Override
-    public boolean create(Promotion object) {
-        return false;
+    public Promotion create(Promotion object) {
+        return object;
     }
 
     @Override
@@ -26,8 +22,8 @@ public class PromotionDAO extends DAO<Promotion> {
     }
 
     @Override
-    public boolean update(Promotion object) {
-        return false;
+    public Promotion update(Promotion object) {
+        return object;
     }
     
     @Override

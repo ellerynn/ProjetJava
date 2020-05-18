@@ -5,13 +5,9 @@ import java.sql.*;
 import modele.Site;
 
 public class SiteDAO extends DAO<Site> {
-    public SiteDAO(Connection conn) {
-      super(conn);
-    }
-    
     @Override
-    public boolean create(Site object) {
-        return false;
+    public Site create(Site object) {
+        return object;
     }
 
     @Override
@@ -20,8 +16,8 @@ public class SiteDAO extends DAO<Site> {
     }
 
     @Override
-    public boolean update(Site object) {
-        return false;
+    public Site update(Site object) {
+        return object;
     }
     
     @Override

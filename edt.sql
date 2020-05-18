@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 14 mai 2020 à 15:12
+-- Généré le :  lun. 18 mai 2020 à 01:54
 -- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.3.12
 
@@ -71,7 +71,9 @@ INSERT INTO `enseignant` (`ID_utilisateur`, `ID_cours`) VALUES
 (17, 2),
 (17, 5),
 (18, 3),
-(18, 6);
+(18, 6),
+(19, 1),
+(19, 4);
 
 -- --------------------------------------------------------
 
@@ -151,9 +153,9 @@ CREATE TABLE IF NOT EXISTS `promotion` (
 --
 
 INSERT INTO `promotion` (`ID`, `Nom`) VALUES
-(1, '2021'),
-(2, '2022'),
-(3, '2023');
+(1, 'Ing1'),
+(2, 'Ing2'),
+(3, 'Ing3');
 
 -- --------------------------------------------------------
 
@@ -207,11 +209,11 @@ CREATE TABLE IF NOT EXISTS `seance` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `seance_enseigants`
+-- Structure de la table `seance_enseignants`
 --
 
-DROP TABLE IF EXISTS `seance_enseigants`;
-CREATE TABLE IF NOT EXISTS `seance_enseigants` (
+DROP TABLE IF EXISTS `seance_enseignants`;
+CREATE TABLE IF NOT EXISTS `seance_enseignants` (
   `ID_seance` int(11) NOT NULL,
   `ID_enseignant` int(11) NOT NULL,
   PRIMARY KEY (`ID_seance`,`ID_enseignant`),
@@ -308,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `Prenom` varchar(255) NOT NULL,
   `Droit` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `utilisateur`
@@ -332,7 +334,8 @@ INSERT INTO `utilisateur` (`ID`, `Email`, `Passwd`, `Nom`, `Prenom`, `Droit`) VA
 (15, 'etudiant12@edu.ece.fr', 'etudiant', 'Etudiant12', 'Etudiant12', 4),
 (16, 'enseignant1@ece.edu.fr', 'enseignant', 'Enseignant1', 'Enseignant1', 3),
 (17, 'enseignant2@ece.edu.fr', 'enseignant', 'Enseignant2', 'Enseignant2', 3),
-(18, 'enseignant3@edu.ece.fr', 'enseignant', 'Enseignant3', 'Enseignant3', 3);
+(18, 'enseignant3@edu.ece.fr', 'enseignant', 'Enseignant3', 'Enseignant3', 3),
+(19, 'enseignant4@edu.ece.fr', 'enseignant', 'Enseignant4', 'Enseignant4', 3);
 
 --
 -- Contraintes pour les tables déchargées
@@ -372,11 +375,11 @@ ALTER TABLE `seance`
   ADD CONSTRAINT `seance_ibfk_2` FOREIGN KEY (`ID_type`) REFERENCES `type_cours` (`ID`);
 
 --
--- Contraintes pour la table `seance_enseigants`
+-- Contraintes pour la table `seance_enseignants`
 --
-ALTER TABLE `seance_enseigants`
-  ADD CONSTRAINT `seance_enseigants_ibfk_1` FOREIGN KEY (`ID_enseignant`) REFERENCES `enseignant` (`ID_utilisateur`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `seance_enseigants_ibfk_2` FOREIGN KEY (`ID_seance`) REFERENCES `seance` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `seance_enseignants`
+  ADD CONSTRAINT `seance_enseignants_ibfk_1` FOREIGN KEY (`ID_enseignant`) REFERENCES `enseignant` (`ID_utilisateur`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `seance_enseignants_ibfk_2` FOREIGN KEY (`ID_seance`) REFERENCES `seance` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `seance_groupes`

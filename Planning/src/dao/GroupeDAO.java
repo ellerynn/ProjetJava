@@ -12,13 +12,9 @@ import modele.Promotion;
 
 
 public class GroupeDAO extends DAO<Groupe> {
-    public GroupeDAO(Connection conn) {
-      super(conn);
-    }
-    
     @Override
-    public boolean create(Groupe object) {
-        return false;
+    public Groupe create(Groupe object) {
+        return object;
     }
 
     @Override
@@ -27,8 +23,8 @@ public class GroupeDAO extends DAO<Groupe> {
     }
 
     @Override
-    public boolean update(Groupe object) {
-        return false;
+    public Groupe update(Groupe object) {
+        return object;
     }
     
     public Groupe find(int id) {
@@ -51,13 +47,8 @@ public class GroupeDAO extends DAO<Groupe> {
 
                 int cle = result.getInt(4); //ID de promotion d'après la BDD quand on tape la requete dans phpmyadmin
                 
-                PromotionDAO pDAO = new PromotionDAO(connect);
-                //Essayer ca :
-                //groupe.setPromotion(pDAO.find(cle));
-                //Au lieu de ces trois lignes :
-                Promotion promo;
-                promo = pDAO.find(cle);
-                groupe.setPromotion(promo);
+                PromotionDAO pDAO = new PromotionDAO();
+                groupe.setPromotion(pDAO.find(cle));
             }
         }
         catch (SQLException e) {

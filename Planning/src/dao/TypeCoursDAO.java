@@ -5,13 +5,9 @@ import java.sql.*;
 import modele.TypeCours;
 
 public class TypeCoursDAO extends DAO<TypeCours> {
-    public TypeCoursDAO(Connection conn) {
-      super(conn);
-    } 
-    
     @Override
-    public boolean create(TypeCours object) {
-        return false;
+    public TypeCours create(TypeCours object) {
+        return object;
     }
 
     @Override
@@ -20,8 +16,8 @@ public class TypeCoursDAO extends DAO<TypeCours> {
     }
 
     @Override
-    public boolean update(TypeCours object) {
-        return false;
+    public TypeCours update(TypeCours object) {
+        return object;
     }
     
     @Override

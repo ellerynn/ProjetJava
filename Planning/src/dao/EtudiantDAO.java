@@ -5,13 +5,9 @@ import java.sql.*;
 import modele.*;
 
 public class EtudiantDAO extends DAO<Etudiant> {
-    public EtudiantDAO(Connection conn) {
-        super(conn);
-    }
-    
     @Override
-    public boolean create(Etudiant object) {
-        return false;
+    public Etudiant create(Etudiant object) {
+        return object;
     }
 
     @Override
@@ -20,8 +16,8 @@ public class EtudiantDAO extends DAO<Etudiant> {
     }
 
     @Override
-    public boolean update(Etudiant object) {
-        return false;
+    public Etudiant update(Etudiant object) {
+        return object;
     }
     
     @Override
@@ -44,19 +40,15 @@ public class EtudiantDAO extends DAO<Etudiant> {
                 //recuperation données utilisateur
                 int cle = result.getInt("ID");//ID de groupe d'après la BDD quand on tape la requete dans phpmyadmin
                 etudiant.setNumero(result.getInt("Numero"));
-                UtilisateurDAO userDAO = new UtilisateurDAO(connect);
-                
-                //Essayer ca :
-                //etudiant = (Etudiant)userDAO.find(cle);
-                //Au lieu de ces deux lignes :
+                UtilisateurDAO userDAO = new UtilisateurDAO();
                 Utilisateur user = userDAO.find(cle);
                 etudiant.copierUtilisateur(user); //copie de utilisateur dans enseignant pour pouvoir les afficher
 
-                GroupeDAO dDAO = new GroupeDAO(connect);
+                GroupeDAO dDAO = new GroupeDAO();
                 etudiant.setGroupe(dDAO.find(result.getInt("ID_groupe")));
 
                 result.beforeFirst(); // retourne à la première ligne
-                SeanceDAO sDAO = new SeanceDAO(connect);
+                SeanceDAO sDAO = new SeanceDAO();
                 while(result.next()) {
                     if (result.getInt("ID_seance") != 0)
                         etudiant.ajouterSeance(sDAO.find(result.getInt("ID_seance")));

@@ -6,6 +6,31 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 
 public class ConnexionBDD {
+    
+    private static Connection connect;
+    private static String nomBDD = "edt";
+    private static String user = "root";
+    private static String url = "jdbc:mysql://localhost:3306/"+nomBDD;
+    private static String passwd = "";
+    
+    public static Connection getInstance(){
+        
+        if(connect == null){
+                try {
+                    Class.forName("com.mysql.jdbc.Driver"); 
+                    connect = DriverManager.getConnection(url, user, passwd);
+                }catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println("BDD non trouvé, est ce bien edt ?");
+                }
+                    catch(ClassNotFoundException tm) {
+                    System.out.println("VERIFICATION : 3306 ou 3307 ?");
+                }
+        }		
+        return connect;	
+    }
+}
+    /*
     //attribut privé
     private Connection con;
     private Statement stat;
@@ -26,6 +51,7 @@ public class ConnexionBDD {
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
+/*
     public ConnexionBDD(String nameDatabase, String loginDatabase, String passwordDatabase) throws SQLException, ClassNotFoundException {
         //chargement du driver
         Class.forName("com.mysql.jdbc.Driver");
@@ -41,7 +67,7 @@ public class ConnexionBDD {
      * methode ajout table en paramtre arraylist
      *
      * @param table
-     */
+     *//*
     public void ajouterTable(String table) {
         tables.add(table);
     }
@@ -50,7 +76,7 @@ public class ConnexionBDD {
      * methode ajoute requete selection en parametre Arraylist
      *
      * @param requete
-     */
+     *//*
     public void ajouterRequete(String requete) {
         requetes.add(requete);
     }
@@ -59,9 +85,10 @@ public class ConnexionBDD {
      * methode ajoute requete maj en parametre Arraylist
      *
      * @param requete
-     */
+     *//*
     public void ajouterRequeteMaj(String requete) {
         requetesMaj.add(requete);
     }
 }
+*/
 

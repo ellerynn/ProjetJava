@@ -10,13 +10,9 @@ import java.sql.*;
 import modele.Cours;
 
 public class CoursDAO extends DAO<Cours> {
-    public CoursDAO(Connection conn) {
-      super(conn);
-    }
-    
     @Override
-    public boolean create(Cours object) {
-        return false;
+    public Cours create(Cours object) {
+        return object;
     }
 
     @Override
@@ -25,8 +21,23 @@ public class CoursDAO extends DAO<Cours> {
     }
 
     @Override
-    public boolean update(Cours object) {
-        return false;
+    public Cours update(Cours object) {
+        try {
+
+            this.connect	
+                 .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                    "UPDATE cours SET Nom = '" + object.getNom() + "'"+
+                    " WHERE ID = " + object.getId()
+                 );
+                object = this.find(object.getId());
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return object;
     }
     
     @Override

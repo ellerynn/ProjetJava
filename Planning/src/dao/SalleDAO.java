@@ -5,13 +5,9 @@ import java.sql.*;
 import modele.*;
 
 public class SalleDAO extends DAO<Salle>{
-    public SalleDAO(Connection conn) {
-      super(conn);
-    }
-    
     @Override
-    public boolean create(Salle object) {
-        return false;
+    public Salle create(Salle object) {
+        return object;
     }
 
     @Override
@@ -20,8 +16,8 @@ public class SalleDAO extends DAO<Salle>{
     }
 
     @Override
-    public boolean update(Salle object) {
-        return false;
+    public Salle update(Salle object) {
+        return object;
     }
     
     public Salle find(int id) {
@@ -43,14 +39,8 @@ public class SalleDAO extends DAO<Salle>{
                 salle.setCapacite(result.getInt("Capacite"));
 
                 int cle = (result.getInt("ID_site")); //ID de promotion d'après la BDD quand on tape la requete dans phpmyadmin
-                
-                SiteDAO pDAO = new SiteDAO(connect);
-                //Essayer ca :
-                //salle.setSite(pDAO.find(cle));
-                //Au lieu de ces trois lignes :
-                Site site;
-                site = pDAO.find(cle);
-                salle.setSite(site);
+                SiteDAO pDAO = new SiteDAO();
+                salle.setSite(pDAO.find(cle));
             }
         }
         catch (SQLException e) {

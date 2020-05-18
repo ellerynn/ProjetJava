@@ -5,13 +5,10 @@ import java.sql.*;
 import modele.Utilisateur;
 
 public class UtilisateurDAO extends DAO<Utilisateur> {
-    public UtilisateurDAO(Connection conn) {
-      super(conn);
-    }
     
     @Override
-    public boolean create(Utilisateur object) {
-        return false;
+    public Utilisateur create(Utilisateur object) {
+        return object;
     }
 
     @Override
@@ -20,8 +17,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
 
     @Override
-    public boolean update(Utilisateur object) {
-        return false;
+    public Utilisateur update(Utilisateur object) {
+        return object;
     }
     
     public Utilisateur find(int id) {

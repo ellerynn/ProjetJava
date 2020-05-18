@@ -15,41 +15,32 @@ public class Planning {
             String nameDatabase = "edt";
             String loginDatabase = "root";
             String passwordDatabase = "";
-        try {
-            
-            //chargement du driver
-            Class.forName("com.mysql.jdbc.Driver");
-            //url de connexion
-            //String urlDatabase = "jdbc:mysql://localhost:3306/" + nameDatabase; //SUT & EM
-            String urlDatabase = "jdbc:mysql://localhost:3307/" + nameDatabase; //CAM (la relou :))
-            //création connexion JDBC a la base
-            con = DriverManager.getConnection(urlDatabase, loginDatabase, passwordDatabase);
             
             /*
             *TYPECOURSDAO recuperation du nom
             */
-            DAO<TypeCours> typecoursDAO = new TypeCoursDAO(con);
+            DAO<TypeCours> typecoursDAO = new TypeCoursDAO();
             TypeCours lol = typecoursDAO.find(5);
             System.out.println("le type de cours : "+ lol.getNom());
             System.out.println("***********************************1");
             /*
             *PromotionDAO recuperation du nom
             */
-            DAO<Promotion> promotionDAO = new PromotionDAO(con);
+            DAO<Promotion> promotionDAO = new PromotionDAO();
             Promotion pro = promotionDAO.find(2);
             System.out.println("la promo : "+ pro.getNom());
             System.out.println("***********************************2");
             /*
             *SITEDAO recuperation du nom
             */
-            DAO<Site> siteDAO = new SiteDAO(con);
+            DAO<Site> siteDAO = new SiteDAO();
             Site sit = siteDAO.find(2);
             System.out.println("le site : "+ sit.getNom());
             System.out.println("***********************************3");
             /*
             *COURSDAO recuperation du nom
             */
-            DAO<Cours> coursDAO = new CoursDAO(con);
+            DAO<Cours> coursDAO = new CoursDAO();
             Cours cou = coursDAO.find(2);
             System.out.println("le cours : "+ cou.getNom());
             System.out.println("***********************************4");
@@ -58,7 +49,7 @@ public class Planning {
             */
             //DAO<Utilisateur> utilisateurDAO = new UtilisateurDAO(con);
             //Utilisateur uti = utilisateurDAO.find(5);
-            UtilisateurDAO utilisateurDAO = new UtilisateurDAO(con);
+            UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
             Utilisateur uti = utilisateurDAO.find("etudiant3@edu.ece.fr","etudiant");
             
             System.out.println("l'id : "+ uti.getId());
@@ -71,7 +62,7 @@ public class Planning {
             /*
             *GROUPEDAO recuperation de toutes les données
             */
-            DAO<Groupe> groupeDAO = new GroupeDAO(con);
+            DAO<Groupe> groupeDAO = new GroupeDAO();
             Groupe gro = groupeDAO.find(4);
             System.out.println("l'id du groupe : "+ gro.getId());
             System.out.println("le nom du groupe : "+ gro.getNom());
@@ -82,7 +73,7 @@ public class Planning {
             /*
             *SALLEDAO recuperation de toutes les données
             */
-            DAO<Salle> salleDAO = new SalleDAO(con);
+            DAO<Salle> salleDAO = new SalleDAO();
             Salle sal = salleDAO.find(4);
             System.out.println("l'id de la salle : "+ sal.getId());
             System.out.println("le nom de la salle : "+ sal.getNom());
@@ -94,7 +85,7 @@ public class Planning {
             *ENSEIGNANTDAO recuperation de toutes les données
             */
             
-            DAO<Enseignant> enseignantDAO = new EnseignantDAO(con);
+            DAO<Enseignant> enseignantDAO = new EnseignantDAO();
             Enseignant ens = enseignantDAO.find(16);
             System.out.println("l'id de l'enseignant : "+ ens.getId());
             System.out.println("l'id : "+ ens.getId());
@@ -118,7 +109,7 @@ public class Planning {
             *SEANCEDAO recuperation de toutes les données
             */
             
-            DAO<Seance> seanceDAO = new SeanceDAO(con);
+            DAO<Seance> seanceDAO = new SeanceDAO();
             Seance sea = seanceDAO.find(1);
             
             System.out.println("l'id de la seance : "+ sea.getId());
@@ -154,7 +145,7 @@ public class Planning {
             /*
             *ETUDIANTDAO recuperation de toutes les données
             */
-            DAO<Etudiant> etudiantDAO = new EtudiantDAO(con);
+            DAO<Etudiant> etudiantDAO = new EtudiantDAO();
             Etudiant etu = etudiantDAO.find(4);
             System.out.println("l'id de l'etudiant : "+ etu.getId());
             System.out.println("le numero de l'etudiant : "+ etu.getNumero());
@@ -165,14 +156,13 @@ public class Planning {
             System.out.println("l'id du groupe dans table groupe: "+ groupe.getId());
             System.out.println("***********************************10");
 
-        }
-
-        catch(SQLException sql){
-           System.out.println("exception");
-        }
-        catch(ClassNotFoundException tm) {
-           System.out.println("class exception");
-        }
+            /**************************UPDATE ***************/
+            //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
+            cou.setNom("Maths");
+            cou = coursDAO.update(cou); // Avant c't Analyse, mtn c'est Maths
+            System.out.println("le cours : "+ cou.getNom());
+            System.out.println("***********************************4UPDATE");
+        
         /*Fenetre fenetre = new Fenetre();
             
         try {

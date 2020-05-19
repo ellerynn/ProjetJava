@@ -17,8 +17,24 @@ public class SiteDAO extends DAO<Site> {
 
     @Override
     public Site update(Site object) {
+        try {
+
+            this.connect	
+                 .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                    "UPDATE site SET Nom = '" + object.getNom() + "'"+
+                    " WHERE ID = " + object.getId()
+                 );
+                object = this.find(object.getId());
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         return object;
     }
+
     
     @Override
     public Site find(int id) {

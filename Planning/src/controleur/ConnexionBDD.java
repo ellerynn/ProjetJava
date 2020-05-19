@@ -8,7 +8,7 @@ public class ConnexionBDD {
     private static Connection connect;
     private static String nomBDD = "edt";
     private static String user = "root";
-    private static String url = "jdbc:mysql://localhost:3307/"+nomBDD;
+    private static String url = "jdbc:mysql://localhost:3306/"+nomBDD;
     //private static String url = "jdbc:mysql://localhost:3306/"+nomBDD;
     private static String passwd = "";
     

@@ -166,12 +166,30 @@ public class Controle {
             System.out.println("l'id du groupe dans table groupe: "+ groupe.getId());
             System.out.println("***********************************10");
 
-            /**************************UPDATE ***************/
+            /**************************UPDATE COURS***************/
             //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
             cou.setNom("Maths");
             cou = coursDAO.update(cou); // Avant c't Analyse, mtn c'est Maths
-            System.out.println("le cours : "+ cou.getNom());
-            System.out.println("***********************************4UPDATE");
+            System.out.println("la cours update : "+ cou.getNom());
+            System.out.println("***********************************UPDATE COURS");
+            /**************************UPDATE PROMOTION***************/
+            //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
+            pro.setNom("Ing1");
+            pro = promotionDAO.update(pro); 
+            System.out.println("la promotion update : "+ pro.getNom());
+            System.out.println("***********************************UPDATE PROMOTION");
+             /**************************UPDATE SITE***************/
+            //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
+            sit.setNom("Eiffel 1");
+            sit = siteDAO.update(sit); 
+            System.out.println("le site update : "+ sit.getNom());
+            System.out.println("***********************************UPDATE SITE");
+             /**************************UPDATE TYPESCOURS***************/
+            //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
+            lol.setNom("TD");
+            lol = typecoursDAO.update(lol); 
+            System.out.println("le type de cours update : "+ lol.getNom());
+            System.out.println("***********************************UPDATE Type de Cours");
             
             /*************************RECHERCHE*************/
             /***Un Lambda cherche Seance par semaine ******/

@@ -113,13 +113,14 @@ public class SeanceDAO extends DAO<Seance> {
             if (result.getInt("Droit") == 3){ //Professeur, trouver les séances de ce prof
                 requete = "SELECT ID FROM Seance \n"
                         +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
-                        +"WHERE Seance.Semaine = "+semaine+"AND SE.ID_enseignant = "+id;
+                        +"WHERE Seance.Semaine = "+semaine+" AND SE.ID_enseignant = "+id +" ORDER BY Seance.Date, seance.Heure_debut";
             }
             if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
                 requete = "SELECT ID FROM Seance \n" +
                             "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
                             "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
-                            "WHERE Seance.Semaine = "+semaine+" AND user.ID_utilisateur = "+id;
+                            "WHERE Seance.Semaine = "+semaine+" AND user.ID_utilisateur = "+id+ 
+                            " ORDER BY Seance.Date, seance.Heure_debut";
             }
             ResultSet resultSeances = connect.createStatement().executeQuery(requete);
             
@@ -145,7 +146,8 @@ public class SeanceDAO extends DAO<Seance> {
             ResultSet resultSeances = connect.createStatement()
                                              .executeQuery("SELECT seance.ID FROM seance\n" +
                                                             "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
-                                                            "WHERE seance.Semaine = "+semaine+" AND SG.ID_groupe = "+id);
+                                                            "WHERE seance.Semaine = "+semaine+" AND SG.ID_groupe = "+id+ 
+                                                            " ORDER BY Seance.Date, seance.Heure_debut");
             if(resultSeances.first()) //On regarde si une ligne existe
             {
                 resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
@@ -168,7 +170,8 @@ public class SeanceDAO extends DAO<Seance> {
                                              .executeQuery("SELECT DISTINCT seance.ID FROM seance\n" +
                                                             "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
                                                             "LEFT JOIN groupe G ON G.ID = SG.ID_groupe\n" +
-                                                            "WHERE seance.Semaine = "+semaine+" AND G.ID_promotion = "+id);
+                                                            "WHERE seance.Semaine = "+semaine+" AND G.ID_promotion = "+id+
+                                                            " ORDER BY Seance.Date, seance.Heure_debut");
             if(resultSeances.first()) //On regarde si une ligne existe
             {
                 resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
@@ -191,7 +194,8 @@ public class SeanceDAO extends DAO<Seance> {
             ResultSet resultSeances = connect.createStatement()
                                              .executeQuery("SELECT seance.ID FROM seance\n" +
                                                             "LEFT JOIN seance_salles SS ON SS.ID_seance = seance.ID\n" +
-                                                            "WHERE seance.Semaine = "+semaine+" AND SS.ID_salle = "+id);
+                                                            "WHERE seance.Semaine = "+semaine+" AND SS.ID_salle = "+id+
+                                                            " ORDER BY Seance.Date, seance.Heure_debut");
             if(resultSeances.first()) //On regarde si une ligne existe
             {
                 resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes

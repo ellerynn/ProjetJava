@@ -77,7 +77,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         }
         catch (SQLException e) {
           e.printStackTrace();
-          System.out.println("pas trouvé");
+          System.out.println("Utilisateur pas trouvé");
         }
         return nb;
     }

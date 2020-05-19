@@ -32,9 +32,13 @@ public class Enseignant extends Utilisateur {
         return seances;
     }
     
-    //Setters [en cours]
+    //Setters 
     public void setCours(ArrayList<Cours> cours){
         this.cours = cours;
+    }
+    
+    public void setSeances(ArrayList<Seance> seances){
+        this.seances = seances;
     }
     
     //Méthodes

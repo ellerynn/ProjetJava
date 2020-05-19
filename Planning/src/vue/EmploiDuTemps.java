@@ -3,30 +3,27 @@ package vue;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class EmploiDuTemps extends JTabbedPane implements ActionListener {
+//La classe EmploiDuTemps correspond à l'application à proprement parlé
+//Après connexion de l'utilisateur, on ouvre cette interface
+public class EmploiDuTemps extends JTabbedPane {
     /*Constructeur*/
     public EmploiDuTemps() {
-        //Onglet Home
-        OngletHome ongletHome = new OngletHome();
-        ongletHome.getBouton().addActionListener(this);
-        this.add("Home", ongletHome);
+        OngletHome ongletHome = new OngletHome(); //Onglet Home
+        //On écoute le bouton du panneau Home, celui en haut a droite du sous panneau Emploi du temps
+        ongletHome.getBouton().addActionListener((ActionEvent event) -> {
+             this.setSelectedIndex(1); //Crée un lien entre l'emploi du temps du jours avec l'onglet Cours
+        });
         
-        //Onglet Cours
-        OngletCours ongletCours = new OngletCours();
+        this.add("Home", ongletHome); //Ajout de l'onglet Home a mon JTabbedPane principal (this)
+        
+        OngletCours ongletCours = new OngletCours(); //Onglet Cours
         this.add("Cours", ongletCours);
         
-        //Onglet Salles
-        OngletSalles ongletSalles = new OngletSalles();
+        OngletSalles ongletSalles = new OngletSalles(); //Onglet Salles
         this.add("Salles", ongletSalles);
         
-        //Onglet Service planification
-        OngletServicePlanification ongletSP = new OngletServicePlanification();
+        //A BLINDER ! Ne doit apparaitre que quand droit utilisateur = 1
+        OngletServicePlanification ongletSP = new OngletServicePlanification(); //Onglet Service planification
         this.add("Service planification", ongletSP);
     }
-    
-    //Pour le lien du bouton de l'onglet Home vers l'onglet Cours
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
-        this.setSelectedIndex(1);
-    }  
 }

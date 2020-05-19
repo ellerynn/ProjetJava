@@ -58,7 +58,7 @@ public class EtudiantDAO extends DAO<Etudiant> {
         }
         catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("pas trouvé");
+            System.out.println("Etudiant pas trouvé");
         }
         return etudiant;
     }

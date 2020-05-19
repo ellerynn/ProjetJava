@@ -20,11 +20,27 @@ public class PromotionDAO extends DAO<Promotion> {
     public boolean delete(Promotion object) {
         return false;
     }
-
+    
     @Override
     public Promotion update(Promotion object) {
+        try {
+
+            this.connect	
+                 .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                    "UPDATE promotion SET Nom = '" + object.getNom() + "'"+
+                    " WHERE ID = " + object.getId()
+                 );
+                object = this.find(object.getId());
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         return object;
     }
+
     
     @Override
     public Promotion find(int id) {

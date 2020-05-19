@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.*;
+import modele.Site;
 import modele.TypeCours;
 
 public class TypeCoursDAO extends DAO<TypeCours> {
@@ -17,6 +18,21 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 
     @Override
     public TypeCours update(TypeCours object) {
+        try {
+
+            this.connect	
+                 .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                    "UPDATE type_cours SET Nom = '" + object.getNom() + "'"+
+                    " WHERE ID = " + object.getId()
+                 );
+                object = this.find(object.getId());
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         return object;
     }
     

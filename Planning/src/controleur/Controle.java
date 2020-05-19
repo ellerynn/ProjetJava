@@ -269,7 +269,7 @@ public class Controle {
         }*/
     }
     
-    public void demandeConnexion() {
+    public Boolean demandeConnexion() {
         String email = new String();
         String password = new String();
         
@@ -286,6 +286,12 @@ public class Controle {
         System.out.println("le mail : "+ utilisateur.getEmail());
         System.out.println("le password : "+ utilisateur.getPassword());
         
+        if(!(utilisateur.getEmail().isEmpty() && utilisateur.getPassword().isEmpty())) {
+            //On a trouvé un utilisateur, on peut passer a la suite
+            return true;
+        }
+              
         //On a trouvé un utilisateur, on peut passer a la suite
+        return false;
     }
 }

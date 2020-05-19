@@ -34,10 +34,11 @@ public class Fenetre extends JFrame {
         
         //Définition de l'action du bouton
         connexion.getBouton().addActionListener((ActionEvent event) -> {
-            actionBouton();
-            //Via cette instruction, on passe au prochain conteneur de la pile
-            c.next(content);
-            setTitle("Planning, [Année scolaire] - [icone] [NOM Prénom] (ECE Paris [Promo])");
+            if(actionBouton()) {
+                //Via cette instruction, on passe au prochain conteneur de la pile
+                c.next(content);
+                setTitle("Planning, [Année scolaire] - [icone] [NOM Prénom] (ECE Paris [Promo])");
+            }
         });
 
         //On définit le layout
@@ -60,7 +61,7 @@ public class Fenetre extends JFrame {
     }
     
     //Méthodes
-    public void actionBouton() {
-        controle.demandeConnexion();
+    public Boolean actionBouton() {
+        return controle.demandeConnexion();
     }
 }

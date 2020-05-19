@@ -93,6 +93,6 @@ public class FormConnexion extends JPanel {
     }
     
     public String getPassword() {
-        return Arrays.toString(password.getPassword());
+        return String.valueOf(password.getPassword());
     }
 }

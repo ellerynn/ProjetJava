@@ -43,6 +43,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
             //creation ordre SQL
             st = connect.createStatement();
             result = st.executeQuery(requete);
+            
             if(result.first())
             {
                 utilisateur.setId(result.getInt("ID"));
@@ -51,7 +52,10 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
                 utilisateur.setNom(result.getString("Nom"));
                 utilisateur.setPrenom(result.getString("Prenom"));
                 utilisateur.setDroit(result.getInt("Droit"));
-            }              
+            }    
+            
+            else
+                System.out.println("Aucun utilisateur");
         }
         catch (SQLException e) {
           e.printStackTrace();

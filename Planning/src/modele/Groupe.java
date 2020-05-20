@@ -8,18 +8,12 @@ public class Groupe {
     private int id;
     private String nom;
     private Promotion promotion;
-    private ArrayList<Seance> seances;
     
     //Constructeur par défaut
     public Groupe() {
         id = 0;
         nom = new String();
         promotion = new Promotion();
-        seances = new ArrayList<>();
-    }
-    //Méthodes
-    public void addSeances(Seance s){
-        seances.add(s);
     }
     
     //Constructeur
@@ -42,10 +36,6 @@ public class Groupe {
         return promotion;
     }
     
-    public ArrayList<Seance> getSeances() {
-        return seances;
-    }
-    
     //Setters [en cours]
     public void setId(int id) {
         this.id = id;
@@ -57,11 +47,6 @@ public class Groupe {
     
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
-    }
-    
-    //Méthodes
-    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un groupe
-        this.seances.add(seance);
     }
 }
 

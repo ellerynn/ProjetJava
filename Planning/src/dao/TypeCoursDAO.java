@@ -8,6 +8,25 @@ import modele.TypeCours;
 public class TypeCoursDAO extends DAO<TypeCours> {
     @Override
     public TypeCours create(TypeCours object) {
+        try{
+            //On insère les nouvelles données dans la BDD
+            PreparedStatement requete = this.connect
+                                            .prepareStatement(
+                                                "INSERT INTO type_cours (Nom) VALUES(?)"
+                                            );
+            requete.setString(1, object.getNom());
+            requete.executeUpdate();
+            
+            //On récupère l'Id
+             ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM type_cours");
+             if (result.first())
+             {
+                 //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
+                 object = this.find(result.getInt("MAX(ID)"));
+             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 

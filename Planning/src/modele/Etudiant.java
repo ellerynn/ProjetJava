@@ -21,14 +21,15 @@ public class Etudiant extends Utilisateur {
     }
     
     //Constructeur
-    public Etudiant(String email, String password, String nom, String prenom, int numero, Groupe groupe) {
+    public Etudiant(String email, String password, String nom, String prenom, int numero, Groupe groupe, Promotion promotion) {
         //Un administrateur peut créer un nouvel étudiant
         super(email, password, nom, prenom, 4);
         this.numero = numero;
         this.groupe = groupe;
+        seances = new ArrayList();
     }
     
-    //Getters [en cours]
+    //Getters
     public int getNumero() {
         return numero;
     }
@@ -40,13 +41,18 @@ public class Etudiant extends Utilisateur {
     public ArrayList<Seance> getSeances() {
         return seances;
     }
-    //Setters [en cours]
+    
+    //Setters
     public void setNumero(int numero) {
         this.numero = numero;
     }
     
     public void setGroupe(Groupe groupe) {
         this.groupe = groupe;
+    }
+    
+    public void setSeances(ArrayList<Seance> seances) {
+        this.seances = seances;
     }
     
     //Méthodes

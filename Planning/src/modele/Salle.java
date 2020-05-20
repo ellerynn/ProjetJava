@@ -32,6 +32,7 @@ public class Salle {
         this.nom = nom;
         this.capacite = capacite;
         this.site = site;
+        seances = new ArrayList<>();
     }
     
     //Getters [en cours]

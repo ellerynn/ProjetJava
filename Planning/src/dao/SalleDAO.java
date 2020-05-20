@@ -8,6 +8,33 @@ import modele.*;
 public class SalleDAO extends DAO<Salle>{
     @Override
     public Salle create(Salle object) {
+        try{
+            //Si le site de la salle n'existe pas, on le crée			
+            if(object.getSite().getId() == 0){
+                SiteDAO siteDAO = new SiteDAO();
+                object.setSite(siteDAO.create(object.getSite())); //On crée le site non existant dans la BDD et on le récup
+            }
+            //On insère les données de la nouvelle salle
+            PreparedStatement requete = this.connect
+                                        .prepareStatement(
+                                                    "INSERT INTO salle (Nom, Capacite, ID_site)"+
+                                                    "VALUES(?, ?, ?)"
+                                        );
+            requete.setString(1, object.getNom());
+            requete.setInt(2, object.getCapacite());
+            requete.setInt(3, object.getSite().getId());
+            requete.executeUpdate();
+            
+            //On cherche la dernière clée enregistré dans la BDD pour la récupérer
+            ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM salle");
+            if (result.first())
+            {
+                //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
+                object = this.find(result.getInt("MAX(ID)"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 

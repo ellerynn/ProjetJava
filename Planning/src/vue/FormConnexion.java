@@ -1,21 +1,19 @@
 package vue;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
 import javax.swing.*;
 
+//La classe FormConnexion crée le panneau de connexion pour un utilisateur
 public class FormConnexion extends JPanel {
    //Attributs                    
-    private JButton bouton;
-    private JPanel champs;
-    private JTextField email;
+    private JButton bouton; //Bouton connexion écouté dans Fenetre
+    private JPanel champs; //Conteneur
+    private JTextField email; //Champ de saisie utilisateur
     private JLabel label1;
     private JLabel label2;
     private JLabel label3;
-    private JPasswordField password;
+    private JPasswordField password; //Champ de saisie utilisateur, mode mot de passe (caractères cachés)
     
+    /*Constructeur*/
     public FormConnexion() {
         label1 = new JLabel("Connexion");
         champs = new JPanel();
@@ -24,12 +22,9 @@ public class FormConnexion extends JPanel {
         label3 = new JLabel("Mot de passe");
         password = new JPasswordField();
         bouton = new JButton("Se connecter");
-        
-        label2.setHorizontalAlignment(SwingConstants.LEFT);
-        label3.setHorizontalAlignment(SwingConstants.LEFT);
-        
+            
         GroupLayout c1 = new GroupLayout(champs);
-        champs.setLayout(c1);
+        champs.setLayout(c1); //On défini le layout qui gère l'affichage
         c1.setHorizontalGroup(
             c1.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(email)
@@ -39,8 +34,7 @@ public class FormConnexion extends JPanel {
                     .addComponent(label3))
                 .addGap(0, 211, Short.MAX_VALUE))
             .addComponent(password)
-        );
-        
+        ); 
         c1.setVerticalGroup(
             c1.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(c1.createSequentialGroup()
@@ -93,6 +87,6 @@ public class FormConnexion extends JPanel {
     }
     
     public String getPassword() {
-        return String.valueOf(password.getPassword());
+        return String.valueOf(password.getPassword()); //On renvoie une String et non pas un char[]
     }
 }

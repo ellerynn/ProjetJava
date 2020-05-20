@@ -38,12 +38,10 @@ public class OngletHome extends JSplitPane {
         scrollPaneHome.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); //Scrollbar toujours présente même quand pas utile
 
         tabCoursHome.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Horaires", "Cours du jour"})); //Contenu = Objet, entêtes = String
-        tabCoursHome.getTableHeader().setReorderingAllowed(false); //A TESTER
+        tabCoursHome.getTableHeader().setReorderingAllowed(false); 
         
         scrollPaneHome.setViewportView(tabCoursHome); //Rend le tableau visible
         
-        //DANS EMPLOI DU TEMPS
-        //linkCoursHome.addActionListener(this); //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
         linkCoursHome.setIcon(new ImageIcon("images\\icon_redimensionner.png")); //Ajout d'une image dans le bouton
 
         GroupLayout c1 = new GroupLayout(container1Home); //Plusieurs éléments dans un container global --> gérer les alignements

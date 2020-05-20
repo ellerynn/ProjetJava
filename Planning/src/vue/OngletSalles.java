@@ -1,5 +1,6 @@
 package vue;
 
+import java.util.*;
 import javax.swing.*;
 import javax.swing.GroupLayout.*;
 import javax.swing.LayoutStyle.*;
@@ -39,10 +40,12 @@ public class OngletSalles extends JTabbedPane {
         remplirComboBox(rechercheSalle, "[Bat. N°]", "[Bat. N°]");
 
         remplirComboBoxSemaine(semaineSalle);
+        Calendar cal = Calendar.getInstance();  // date du jour
+        semaineSalle.setSelectedItem(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR))); //Valeur par défaut de ma JComboBox
 
         scrollPaneSalle.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        tabSalle.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Horaires", "[Date]", "[Date]", "[Date]", "[Date]", "[Date]", "[Date]"}));
+        setTableauEdt();
         tabSalle.getTableHeader().setReorderingAllowed(false);
         
         scrollPaneSalle.setViewportView(tabSalle);
@@ -112,4 +115,103 @@ public class OngletSalles extends JTabbedPane {
             box.addItem(String.valueOf(i));
         }
     }
+    
+    public void setTableauEdt() {  
+        Calendar cal = Calendar.getInstance(); //Date du jour
+        int mois = cal.get(Calendar.MONTH)+1; //Mois courant = mois retourné + 1
+        int jour = cal.get(Calendar.DAY_OF_MONTH); //Jour courant = jour retourné 
+        int jour_semaine = cal.get(Calendar.DAY_OF_WEEK); //Jour courant = jour retourné (1 = dimanche)
+        String[] semaine = {"lun. ", "mar.", "mer.", "jeu.", "ven.", "sam."};
+        String mois_nom = new String();
+        
+        //Convertir les int mois en string -> 1 = janvier
+        switch(mois) {
+            case 1: //JANVIER
+                mois_nom = " janvier";
+                break;
+            case 2: //FEVRIER
+                mois_nom = " février";
+                break;
+            case 3: //MARS
+                mois_nom = " mars";
+                break;
+            case 4: //AVRIL
+                mois_nom = " avril";
+                break;
+            case 5: //MAI
+                mois_nom = " mai";
+                break;
+            case 6: //JUIN
+                mois_nom = " juin";
+                break;
+            case 7: //JUILLET
+                mois_nom = " juillet";
+                break;
+            case 8: //AOUT
+                mois_nom = " août";
+                break;
+            case 9: //SEPTEMBRE
+                mois_nom = " septembre";
+                break;
+            case 10: //OCTOBRE
+                mois_nom = " octobre";
+                break;
+            case 11: //NOVEMBRE
+                mois_nom = " novembre";
+                break;
+            case 12: //DECEMBRE
+                mois_nom = " décembre";
+                break;
+        }
+        
+        switch(jour_semaine) {
+            //SI DIMANCHE OU LUNDI, ON NE FAIT RIEN
+            case 3: //MARDI
+                jour = jour - 1; 
+                break;
+            case 4: //MERCREDI
+                jour = jour - 2;
+                break;
+            case 5: //JEUDI
+                jour = jour - 3;
+                break;
+            case 6: //VENDREDI
+                jour = jour - 4; 
+                break;
+            case 7: //SAMEDI
+                jour = jour - 5; 
+                break;
+        }
+        
+        for (int i=0;i<6;i++) {
+            semaine[i] = semaine[i] + " " + jour++ + mois_nom;
+        }
+        
+        tabSalle.setModel(new DefaultTableModel(new Object [][] { {"08h00"}, {"09h00"}, {"10h00"}, {"11h00"}, 
+                                                                  {"12h00"}, {"13h00"}, {"14h00"}, {"15h00"}, 
+                                                                  {"16h00"}, {"17h00"}, {"18h00"}, {"19h00"}, 
+                                                                  {"20h00"}},
+                                                new String[]{ "Horaires", semaine[0], semaine[1], semaine[2], 
+                                                              semaine[3], semaine[4],  semaine[5]}) 
+        { 
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        tabSalle.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tabSalle.getColumnModel().getColumnCount() > 0) {
+            tabSalle.getColumnModel().getColumn(0).setResizable(false);
+            tabSalle.getColumnModel().getColumn(0).setPreferredWidth(20);
+        }
+        
+        DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
+        custom.setHorizontalAlignment(JLabel.CENTER);
+        tabSalle.getColumnModel().getColumn(0).setCellRenderer(custom);
+    }     
 }

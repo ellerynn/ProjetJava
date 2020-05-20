@@ -45,6 +45,9 @@ public class Seance {
         this.date = date;
         this.cours = cours;
         this.type = type;
+        enseignants = new ArrayList<>();
+        groupes = new ArrayList<>();
+        salles = new ArrayList<>();
     }
     
     //Getters

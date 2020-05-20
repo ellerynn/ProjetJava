@@ -48,8 +48,30 @@ public class GroupeDAO extends DAO<Groupe> {
         return false;
     }
 
-    @Override
+     @Override
     public Groupe update(Groupe object) {
+        try {
+ 
+                this.connect	
+                 .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                    "UPDATE groupe SET Nom = '" + object.getNom() + "'"+
+                    " WHERE ID = " + object.getId()
+                 );
+            object = this.find(object.getId());
+                
+            DAO<Promotion> promotionDAO = new PromotionDAO();
+            Promotion pro = object.getPromotion();
+            pro = promotionDAO.find(pro.getId());
+            promotionDAO.update(pro);
+                  
+            
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         return object;
     }
     

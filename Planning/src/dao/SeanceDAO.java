@@ -98,8 +98,38 @@ public class SeanceDAO extends DAO<Seance> {
         return false;
     }
 
-    @Override
+     @Override
     public Seance update(Seance object) {
+        try {
+ 
+                this.connect	
+                 .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                    "UPDATE seance SET Semaine = '" + object.getSemaine() + "'"+
+                    ", Date = '" + object.getDate() + "'"+
+                    ", Heure_Debut = '" + object.getHeureDebut() + "'"+
+                    ", Heure_Fin = '" + object.getHeureFin() + "'"+
+                    ", Etat = '" + object.getEtat() + "'"+
+                    " WHERE ID = " + object.getId()
+                 );
+            object = this.find(object.getId());
+                
+            DAO<Cours> coursDAO = new CoursDAO();
+            Cours cou = object.getCours();
+            cou = coursDAO.find(cou.getId());
+            coursDAO.update(cou);
+            
+            DAO<TypeCours> typescoursDAO = new TypeCoursDAO();
+            TypeCours tp = object.getTypeCours();
+            tp = typescoursDAO.find(tp.getId());
+            typescoursDAO.update(tp);   
+                  
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         return object;
     }
     

@@ -5,7 +5,6 @@
  */
 package dao;
 
-import java.sql.Connection;
 import java.sql.*;
 import modele.*;
 
@@ -99,11 +98,11 @@ public class EnseignantDAO extends DAO<Enseignant> {
             
             /*ResultSet resultSeances = st.executeQuery("SELECT ID_seance FROM Seance_enseignants WHERE ID_enseignant = "+id);
             
-"SELECT * FROM Utilisateur\n" +
-"LEFT JOIN enseignant ON utilisateur.ID = enseignant.ID_utilisateur\n" +
-"LEFT JOIN Cours ON Enseignant.ID_cours=Cours.ID\n" +
-"LEFT JOIN seance_enseignants ON Enseignant.ID_utilisateur = seance_enseignants.ID_enseignant "+
-"WHERE Enseignant.ID_utilisateur = " + id
+            "SELECT * FROM Utilisateur\n" +
+            "LEFT JOIN enseignant ON utilisateur.ID = enseignant.ID_utilisateur\n" +
+            "LEFT JOIN Cours ON Enseignant.ID_cours=Cours.ID\n" +
+            "LEFT JOIN seance_enseignants ON Enseignant.ID_utilisateur = seance_enseignants.ID_enseignant "+
+            "WHERE Enseignant.ID_utilisateur = " + id
             
             if(resultSeances.first()) {
                 if (resultSeances.getInt("ID_seance") != 0) {

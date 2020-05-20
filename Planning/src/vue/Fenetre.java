@@ -65,7 +65,6 @@ public class Fenetre extends JFrame {
     public String calculAnneeScolaire() {
         Calendar cal = Calendar.getInstance(); //Date du jour
         int annee = cal.get(Calendar.YEAR); //Année courante
-        System.out.println(cal.get(Calendar.MONTH)); //En mai, retourne 4
         if(cal.get(Calendar.MONTH)+1 >= 9 && cal.get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre
             return annee + "/" + (annee+1);
         return (annee-1) + "/" + annee;

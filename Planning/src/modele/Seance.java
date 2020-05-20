@@ -128,6 +128,18 @@ public class Seance {
         this.type = type;
     }
     
+    public void setEnseignants(ArrayList<Enseignant> enseignants) {
+        this.enseignants = enseignants;
+    }
+    
+    public void setGroupes(ArrayList<Groupe> groupes) {
+        this.groupes = groupes;
+    }
+    
+    public void setSalles(ArrayList<Salle> salles) {
+        this.salles = salles;
+    }
+    
     //Méthodes
     public void ajouterEnseignant(Enseignant enseignant) { //Un admin peut ajouter une séance à un enseignant
         this.enseignants.add(enseignant);

@@ -53,25 +53,25 @@ public class GroupeDAO extends DAO<Groupe> {
         return object;
     }
     
+    @Override
     public Groupe find(int id) {
         Groupe groupe = new Groupe();      
-
         try {
             Statement st;
             ResultSet result;
             //creation ordre SQL
             st = connect.createStatement();
 
-            result = st.executeQuery("SELECT * FROM groupe\n" +
-                                      "LEFT JOIN promotion ON groupe.ID_promotion=promotion.ID\n" +
+            result = st.executeQuery("SELECT * FROM groupe " +
+                                     "LEFT JOIN promotion ON groupe.ID_promotion=promotion.ID\n" +
                                       "WHERE groupe.ID = " + id);
             
             if(result.first())
             {
-                groupe.setId(result.getInt(1)); //ID de groupe d'après la BDD quand on tape la requete dans phpmyadmin
+                groupe.setId(result.getInt("ID")); //ID de groupe d'après la BDD quand on tape la requete dans phpmyadmin
                 groupe.setNom(result.getString("Nom"));
 
-                int cle = result.getInt(4); //ID de promotion d'après la BDD quand on tape la requete dans phpmyadmin
+                int cle = result.getInt("ID_promotion"); //ID de promotion d'après la BDD quand on tape la requete dans phpmyadmin
                 
                 PromotionDAO pDAO = new PromotionDAO();
                 groupe.setPromotion(pDAO.find(cle));

@@ -132,14 +132,10 @@ public class SeanceDAO extends DAO<Seance> {
             }
 
             //On recupère les enseignants de la séance
-            ResultSet resultEnseignants =  st.executeQuery("SELECT * FROM Seance\n" + // Pour les enseignants de la séance
-                                          "LEFT JOIN seance_enseignants ON seance.ID = seance_enseignants.ID_seance\n" +
-                                          "LEFT JOIN enseignant ON seance_enseignants.ID_enseignant = enseignant.ID_utilisateur\n" +
-                                          "WHERE Seance.ID ="+ id +" AND enseignant.ID_cours = seance.ID_cours");
+            ResultSet resultEnseignants =  st.executeQuery("SELECT * FROM seance_enseignants WHERE ID_seance = " + id);
             
             if (resultEnseignants.first())
             {
-
                 EnseignantDAO eDAO = new EnseignantDAO();
                 seance.ajouterEnseignant(eDAO.find(resultEnseignants.getInt("ID_enseignant")));
                 
@@ -223,54 +219,37 @@ public class SeanceDAO extends DAO<Seance> {
         return listSeancesbyWeek;
     }
     
-    public ArrayList<Seance> findSeancesByGroupForStudent(int id) {
-        ArrayList<Seance> listSeances = new ArrayList<>();
-        try{
-            ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT seance.ID FROM seance\n" +
-                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
-                                                            "WHERE SG.ID_groupe = " + id + 
-                                                            " ORDER BY Seance.Date, seance.Heure_debut");
-            if(resultSeances.first()) //On regarde si une ligne existe
-            {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
-                {
-                    SeanceDAO sDAO = new SeanceDAO();
-                    listSeances.add(sDAO.find(resultSeances.getInt("ID")));
-                }
+    public ArrayList<Seance> findSeanceByClassForTeacher(int id) {
+        ArrayList<Seance> seances = new ArrayList();
+        Seance seance = new Seance(); 
+        
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+
+            //On récupère les champs des la table Séance
+            result = st.executeQuery("SELECT * FROM Seance WHERE ID_cours = " + id); // Pour récupérer les champs de séances
+
+            if(result.first())
+            {     
+                result.beforeFirst();
+                while(result.next()) { 
+                    SeanceDAO sDAO = new SeanceDAO(); 
+                    //recuperation données utilisateur
+                    seance = sDAO.find(result.getInt("ID"));
+                    
+                    seances.add(seance);
+                } 
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Probleme sql seances by group");
+            System.out.println("pas trouvé dans find seance by class");
         }
-        return listSeances;
-    }
-    
-    public ArrayList<Seance> findSeancesByClassForTeacher(int id) {
-        ArrayList<Seance> listSeances = new ArrayList<>();
-        try{
-            ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT seance.ID FROM seance\n" +
-                                                            "LEFT JOIN enseignant SG ON SG.ID_cours = seance.ID_cours\n" +
-                                                            "WHERE SG.ID_utilisateur = " + id + 
-                                                            " ORDER BY Seance.Date, seance.Heure_debut");
-            if(resultSeances.first()) //On regarde si une ligne existe
-            {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
-                {
-                    SeanceDAO sDAO = new SeanceDAO();
-                    listSeances.add(sDAO.find(resultSeances.getInt("ID")));
-                }
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Probleme sql seances by group");
-        }
-        return listSeances;
+        
+        return seances; 
     }
     
     public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)

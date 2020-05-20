@@ -6,8 +6,90 @@ import java.util.ArrayList;
 import modele.*;
 
 public class SeanceDAO extends DAO<Seance> {
+    
     @Override
     public Seance create(Seance object) {
+        try
+        {
+            if(object.getCours().getId() == 0) //Si un cours est crée mais que son ID est 0
+            {
+                CoursDAO coursDAO = new CoursDAO();
+                object.setCours(coursDAO.create(object.getCours())); //On crée le cours dans la BDD, on récupère l'ID
+            }
+            if(object.getTypeCours().getId() == 0) //Si le type est nouveau, son ID est 0
+            {
+                TypeCoursDAO typeDAO = new TypeCoursDAO();
+                object.setTypeCours(typeDAO.create(object.getTypeCours())); //On crée le type dans la BDD, on récupère l'ID
+            }
+            PreparedStatement requete = this.connect
+                                .prepareStatement(
+                                            "INSERT INTO seance (Semaine, Date, Heure_debut, Heure_fin, Etat, ID_cours, ID_type)"+
+                                            "VALUES(?,?,?,?,?,?,?)"
+                                    );
+            requete.setInt(1,object.getSemaine());
+            requete.setString(2,object.getDate());
+            requete.setString(3,object.getHeureDebut());
+            requete.setString(4,object.getHeureFin());
+            requete.setInt(5,object.getEtat());
+            requete.setInt(6,object.getCours().getId());
+            requete.setInt(7,object.getTypeCours().getId());
+            requete.executeUpdate();
+            
+            ResultSet result = this.connect.createStatement().executeQuery(
+                                    		"SELECT MAX(ID) FROM seance"
+                                                );
+            if (result.first())
+            {
+                //On crée les données dans la table seance_enseignants
+                for(Enseignant ens : object.getEnseignants()){
+                    if (ens.getId() == 0) //Si cet enseignant est nouveau
+                    {
+                        EnseignantDAO ensDAO = new EnseignantDAO();
+                        ens = ensDAO.create(ens); //Les données de la BDD, on le crée, on le récupère.
+                    }
+                    requete = this.connect.prepareStatement( //Création de la ligne dans la BDD
+                                                "INSERT INTO seance_enseignants (ID_seance, ID_enseignant)"+
+                                                " VALUES(?, ?)"
+                                                );
+                    requete.setInt(1, result.getInt("MAX(ID)"));
+                    requete.setInt(2, ens.getId());
+                    requete.executeUpdate();
+                }
+                //On crée les données dans la table seance_groupes
+                for(Groupe grp : object.getGroupes()){
+                    if(grp.getId() == 0) //Si le groupe est nv et qu'il n'est pas créé
+                    {
+                        GroupeDAO grpDAO = new GroupeDAO();
+                        grp = grpDAO.create(grp); //On crée dans la BDD, on récupère
+                    }
+                    requete = this.connect.prepareStatement( //Création de la ligne dans la BDD
+                                                "INSERT INTO seance_groupes (ID_seance, ID_groupe)"+
+                                                " VALUES(?, ?)"
+                                                );
+                    requete.setInt(1, result.getInt("MAX(ID)"));
+                    requete.setInt(2, grp.getId());
+                    requete.executeUpdate();
+                }
+                //On crée les données dans la table seance_salles
+                for(Salle salle : object.getSalles()){
+                    if(salle.getId() == 0){ //Si la salle est nouvelle et qu'il n'est pas créé
+                        SalleDAO salleDAO = new SalleDAO();
+                        salle = salleDAO.create(salle); //On crée dans la BDD, on récupère
+                    }
+                    requete = this.connect.prepareStatement( //Création de la ligne dans la BDD
+                                                "INSERT INTO seance_salles (ID_seance, ID_salle)"+
+                                                " VALUES(?, ?)"
+                                                );
+                    requete.setInt(1, result.getInt("MAX(ID)"));
+                    requete.setInt(2, salle.getId());
+                    requete.executeUpdate();
+                }
+                object = this.find(result.getInt("MAX(ID)")); //On récupère TOUT pour être sûr de n'avoir rien oublier
+            }
+        } catch (SQLException e) 
+        {
+            e.printStackTrace();
+        }
         return object;
     }
 

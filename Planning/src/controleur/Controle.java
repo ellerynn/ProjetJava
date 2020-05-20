@@ -28,11 +28,48 @@ public class Controle {
         String nameDatabase = "edt";
         String loginDatabase = "root";
         String passwordDatabase = "";    
-        
+        //exempleCreationSeance();
         //Ouverture interface graphique
         Controle controle = new Controle();
     }
-    
+    public static void exempleCreationSeance()
+    {
+        //Déclaration des DAOs:
+        SeanceDAO sDAO = new SeanceDAO();
+        TypeCoursDAO tDAO = new TypeCoursDAO();
+        CoursDAO cDAO = new CoursDAO();
+        EnseignantDAO eDAO = new EnseignantDAO();
+        GroupeDAO gDAO = new GroupeDAO();
+        SalleDAO salleDAO = new SalleDAO();
+        //Variables issus des saisies de l'utilisateur dans l'interface graphique:
+        int Semaine = 1;
+        String HeureDebut = "18:00:00";
+        String HeureFin = "19:00:00";
+        String Date = "2020:05:20";
+        int CoursID = 1; //Si l'user voit le nom d'une matière, ça veut dire qu'on l'avait récup de la BDD, donc ID connu avec getID()
+        int TypeID = 5; //Si l'user voit le nom d'une matière, ça veut dire qu'on l'avait récup de la BDD, donc ID connu avec getID()
+        int EnseignantID = 17; // Faudra bien vérifier si l'enseignant enseigne ce cours
+        int GroupeID = 2; //
+        int GroupeBIS = 1; //On peut avoir 2 groupes par exemple
+        int SalleID = 1; //
+        
+        
+        //Création de ma séance
+        Seance seance = new Seance(Semaine,HeureDebut,HeureFin,Date,cDAO.find(CoursID),tDAO.find(TypeID));
+        seance.ajouterEnseignant(eDAO.find(EnseignantID));
+        seance.ajouterGroupe(gDAO.find(GroupeID));
+        seance.ajouterGroupe(gDAO.find(GroupeBIS));
+        seance.ajouterSalle(salleDAO.find(SalleID));
+        //On le stock dans la BDD
+        seance = sDAO.create(seance);
+        //On regarde si on a tout
+        /*
+        System.out.println("ID de la matiere: "+ seance.getCours().getId());
+        System.out.println("ID animateur(s) (j'en ai affiché qu'un: "+ seance.getEnseignants().get(0).getNom());
+        System.out.println("ID des groupe présent (J'en ai qu'affiché qu'un) : "+ seance.getGroupes().get(0).getId());
+        System.out.println("ID de la salle (J'en ai qu'affiché qu'un): "+ seance.getSalles().get(0).getId());
+        */
+    }
     //Getters
     public Utilisateur getUtilisateur() {
         return utilisateur;

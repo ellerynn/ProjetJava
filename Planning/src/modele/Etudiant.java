@@ -26,6 +26,7 @@ public class Etudiant extends Utilisateur {
         super(email, password, nom, prenom, 4);
         this.numero = numero;
         this.groupe = groupe;
+        seances = new ArrayList();
     }
     
     //Getters

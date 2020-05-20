@@ -18,6 +18,29 @@ public class SalleDAO extends DAO<Salle>{
 
     @Override
     public Salle update(Salle object) {
+        try {
+ 
+                this.connect	
+                 .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                    ResultSet.CONCUR_UPDATABLE
+                 ).executeUpdate(
+                    "UPDATE salle SET Nom = '" + object.getNom() + "'"+
+                    " , Capacite = '" + object.getCapacite() + "'"+
+                    " WHERE ID = " + object.getId()
+                 );
+            object = this.find(object.getId());
+                
+            DAO<Site> siteDAO = new SiteDAO();
+            Site sit = object.getSite();
+            sit = siteDAO.find(sit.getId());
+            siteDAO.update(sit);
+                   
+            
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         return object;
     }
     

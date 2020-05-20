@@ -173,24 +173,46 @@ public class Controle {
             System.out.println("la cours update : "+ cou.getNom());
             System.out.println("***********************************UPDATE COURS");
             /**************************UPDATE PROMOTION***************/
-            //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
+            //Par exemple promotion, en reprenant un promotion déjà créer dans le main (et son dao aussi dj créer)
             pro.setNom("Ing1");
             pro = promotionDAO.update(pro); 
             System.out.println("la promotion update : "+ pro.getNom());
             System.out.println("***********************************UPDATE PROMOTION");
              /**************************UPDATE SITE***************/
-            //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
+            //Par exemple site, en reprenant un site déjà créer dans le main (et son dao aussi dj créer)
             sit.setNom("Eiffel 1");
             sit = siteDAO.update(sit); 
             System.out.println("le site update : "+ sit.getNom());
             System.out.println("***********************************UPDATE SITE");
              /**************************UPDATE TYPESCOURS***************/
-            //Par exemple cours, en reprenant un cours déjà créer dans le main (et son dao aussi dj créer)
+            //Par exemple typescours, en reprenant un typescours déjà créer dans le main (et son dao aussi dj créer)
             lol.setNom("TD");
             lol = typecoursDAO.update(lol); 
             System.out.println("le type de cours update : "+ lol.getNom());
             System.out.println("***********************************UPDATE Type de Cours");
             
+            /**************************UPDATE SALLE***************/
+            //Par exemple salle, en reprenant un salle déjà créer dans le main (et son dao aussi dj créer)
+            sal.setNom("002");
+            sal.setCapacite(25);
+            sal = salleDAO.update(sal); 
+            System.out.println("l'id de la salle : "+ sal.getId());
+            System.out.println("le nom de la salle update : "+ sal.getNom());
+            System.out.println("la capacite de la salle : "+ sal.getCapacite());
+            
+            System.out.println("le nom du site : "+ site.getNom());
+            System.out.println("***********************************UPDATE SALLE");
+            /**************************UPDATE Groupe***************/
+            //Par exemple groupe, en reprenant un groupe déjà créer dans le main (et son dao aussi dj créer)
+            gro.setNom("TD05");
+            gro = groupeDAO.update(gro); 
+            System.out.println("l'id du groupe : "+ gro.getId());
+            System.out.println("le nom du groupe update : "+ gro.getNom());
+            
+            System.out.println("le nom de la promotion du groupe : "+ promo.getNom());
+            System.out.println("***********************************UPDATE Groupe");
+
+
             /*************************RECHERCHE*************/
             /***Un Lambda cherche Seance par semaine ******/
             System.out.println("*********Recherche les séances pour un User et une semaine:*********"); //Marche pour prof et étudiant

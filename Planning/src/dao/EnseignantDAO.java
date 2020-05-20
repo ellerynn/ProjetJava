@@ -8,7 +8,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.*;
 import modele.*;
-
+import java.util.ArrayList;
 
 public class EnseignantDAO extends DAO<Enseignant> {
     @Override

@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/controleur/ConnexionBDD.java</file>
-            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/modele/Cours.java</file>
-            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/dao/CoursDAO.java</file>
-            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/dao/EnseignantDAO.java</file>
-            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/modele/Enseignant.java</file>
+            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/dao/GroupeDAO.java</file>
             <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/dao/SeanceDAO.java</file>
-            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/dao/DAO.java</file>
+            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/modele/Seance.java</file>
+            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/controleur/Controle.java</file>
+            <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/dao/EnseignantDAO.java</file>
         </group>
     </open-files>
 </project-private>

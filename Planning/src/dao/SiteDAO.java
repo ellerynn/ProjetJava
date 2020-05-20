@@ -7,6 +7,25 @@ import modele.Site;
 public class SiteDAO extends DAO<Site> {
     @Override
     public Site create(Site object) {
+        try{
+            //On insère les données dans la BDD
+            PreparedStatement requete = this.connect
+                                            .prepareStatement(
+                                                "INSERT INTO site (Nom) VALUES(?)"
+                                            );
+            requete.setString(1, object.getNom());
+            requete.executeUpdate();
+            
+            //On recupère l'id
+            ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM site");
+            if (result.first())
+            {
+                //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
+                object = this.find(result.getInt("MAX(ID)"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 

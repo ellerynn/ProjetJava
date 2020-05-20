@@ -21,6 +21,8 @@ public class Enseignant extends Utilisateur {
     public Enseignant(String email, String password, String nom, String prenom) {
         //Un administrateur peut créer un nouvel enseignant
         super(email, password, nom, prenom, 3);
+        cours = new ArrayList<>();
+        seances = new ArrayList<>();
     }
     
     //Getters

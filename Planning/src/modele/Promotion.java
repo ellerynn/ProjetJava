@@ -11,6 +11,9 @@ public class Promotion {
         id = 0;
         nom = new String();
     }
+    public Promotion(String nom) {
+        this.nom = nom;
+    }
     
     //Getters
     public int getId() {

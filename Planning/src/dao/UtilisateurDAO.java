@@ -8,6 +8,29 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     
     @Override
     public Utilisateur create(Utilisateur object) {
+        try{
+            //On insère les nouvelles données dans la BDD
+            PreparedStatement requete = this.connect
+                                            .prepareStatement(
+                                                "INSERT INTO utilisateur (Email, Passwd, Nom, Prenom, Droit) VALUES(?,?,?,?,?)"
+                                            );
+            requete.setString(1, object.getEmail());
+            requete.setString(2, object.getPassword());
+            requete.setString(3, object.getNom());
+            requete.setString(4, object.getPrenom());
+            requete.setInt(5, object.getDroit());
+            requete.executeUpdate();
+            
+            //On récupère l'Id
+             ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM utilisateur");
+             if (result.first())
+             {
+                 //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
+                 object = this.find(result.getInt("MAX(ID)"));
+             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 

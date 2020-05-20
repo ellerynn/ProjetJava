@@ -7,6 +7,39 @@ import modele.*;
 public class EtudiantDAO extends DAO<Etudiant> {
     @Override
     public Etudiant create(Etudiant object) {
+        try{
+            //Si l'utilisateur n'existe pas, on le crée			
+            if(object.getId() == 0){
+                UtilisateurDAO userDAO= new UtilisateurDAO();
+                object.copierUtilisateur(userDAO.create(object.getUtilisateur())); //On crée le site non existant dans la BDD et on le récup
+            }
+            //Si le groupe n'existe pas
+            if(object.getGroupe().getId() == 0){
+                GroupeDAO gDAO = new GroupeDAO();
+                object.setGroupe(gDAO.create(object.getGroupe()));
+            }
+            
+            //On insère les données de la nouvelle salle
+            PreparedStatement requete = this.connect
+                                        .prepareStatement(
+                                                    "INSERT INTO etudiant (ID_utilisateur, Numero, ID_groupe)"+
+                                                    "VALUES(?, ?, ?)"
+                                        );
+            requete.setInt(1, object.getId());
+            requete.setInt(2, object.getNumero());
+            requete.setInt(3, object.getGroupe().getId());
+            requete.executeUpdate();
+            
+            //On cherche la dernière clée enregistré dans la BDD pour la récupérer
+            ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID_utilisateur) FROM etudiant");
+            if (result.first())
+            {
+                //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
+                object = this.find(result.getInt("MAX(ID_utilisateur)"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 
@@ -30,11 +63,13 @@ public class EtudiantDAO extends DAO<Etudiant> {
             //creation ordre SQL
             st = connect.createStatement();
 
-            result = st.executeQuery("SELECT * FROM Utilisateur "+
-                                    "LEFT JOIN etudiant ON utilisateur.ID = etudiant.ID_utilisateur "+
-                                    "LEFT JOIN Groupe ON Etudiant.ID_groupe=Groupe.ID "+
-                                    "LEFT JOIN seance_groupes ON Etudiant.ID_groupe = seance_groupes.ID_groupe "+
-                                    "WHERE Etudiant.ID_utilisateur =" + id);
+            result = st.executeQuery("SELECT * FROM Utilisateur\n" +
+                                    "LEFT JOIN etudiant ON utilisateur.ID = etudiant.ID_utilisateur\n" +
+                                    "LEFT JOIN Groupe ON Etudiant.ID_groupe=Groupe.ID\n" +
+                                    "LEFT JOIN seance_groupes ON Etudiant.ID_groupe = seance_groupes.ID_groupe\n" +
+                                    "LEFT JOIN seance ON seance.ID = seance_groupes.ID_seance\n" +
+                                    "WHERE Etudiant.ID_utilisateur = " + id +
+                                    " ORDER BY Seance.Date, seance.Heure_debut");
             
             if(result.first()) {
                 //recuperation données utilisateur

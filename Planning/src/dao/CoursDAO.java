@@ -14,6 +14,25 @@ import modele.Seance;
 public class CoursDAO extends DAO<Cours> {
     @Override
     public Cours create(Cours object) {
+        try{
+            //On insère les données dans la BDD
+            PreparedStatement requete = this.connect
+                                            .prepareStatement(
+                                                "INSERT INTO cours (Nom) VALUES(?)"
+                                            );
+            requete.setString(1, object.getNom());
+            requete.executeUpdate();
+            
+            //On récupère l'id
+            ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM cours");
+            if (result.first())
+            {
+                //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
+                object = this.find(result.getInt("MAX(ID)")); //On récupère les nouvelles données
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 

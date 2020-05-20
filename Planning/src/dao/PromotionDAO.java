@@ -13,6 +13,25 @@ import modele.Promotion;
 public class PromotionDAO extends DAO<Promotion> {
     @Override
     public Promotion create(Promotion object) {
+        try{
+            //On insère les données dans la BDD
+            PreparedStatement requete = this.connect
+                                            .prepareStatement(
+                                                "INSERT INTO promotion (Nom) VALUES(?)"
+                                            );
+            requete.setString(1, object.getNom());
+            requete.executeUpdate();
+            
+            //On récupère l'id de la BDD
+            ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM promotion");
+            if (result.first())
+            {
+                //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
+                object = this.find(result.getInt("MAX(ID)"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return object;
     }
 

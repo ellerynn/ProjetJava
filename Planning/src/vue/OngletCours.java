@@ -1,9 +1,12 @@
+/*
+*SOURCE : https://waytolearnx.com/2020/03/tester-si-une-annee-est-bissextile-en-java.html
+*/
+
 package vue;
 
 import java.util.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 
 //La classe OngletCours correspond à l'onglet Cours de notre planning (classe EmploiDuTemps)
 public class OngletCours extends JTabbedPane {
@@ -39,11 +42,11 @@ public class OngletCours extends JTabbedPane {
         return semaineCours;
     }
     
-    public JTextField rechercheBarreCours() {
+    public JTextField getRechercheBarreCours() {
         return rechercheBarreCours;
     }
     
-    public JButton rechercheBoutonCours() {
+    public JButton getRechercheBoutonCours() {
         return rechercheBoutonCours;
     }
     
@@ -79,6 +82,9 @@ public class OngletCours extends JTabbedPane {
         remplirComboBox(rechercheCours, "[NOM Prénom]", "[NOM Prénom]"); //Tous les étudiants de la BDD
 
         rechercheBoutonCours.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
+        rechercheBarreCours.setVisible(false);
+        rechercheBoutonCours.setVisible(false);
+        rechercheCours.setVisible(false);
         
         remplirComboBoxSemaine(semaineCours); //Remplir ma comboBox avec 52 valeurs
         Calendar cal = Calendar.getInstance();  //Date du jour        
@@ -86,7 +92,8 @@ public class OngletCours extends JTabbedPane {
                
         scrollPaneCours.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); //Barre de scroll toujours la
 
-        setTableauEdt(); //Remplir le tableau Emploi du temps
+        int semaine = cal.get(Calendar.WEEK_OF_YEAR);
+        setTableauEdt(semaine); //Remplir le tableau Emploi du temps
         
         tabCours.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
         
@@ -145,7 +152,7 @@ public class OngletCours extends JTabbedPane {
     
     public void remplirComboBoxSemaine(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{"Semaine"})); 
-        for(int i = 1; i < 53; i++) {
+        for(int i = 1; i < 54; i++) {
             box.addItem(String.valueOf(i));
         }
     }
@@ -157,83 +164,65 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
-    public void setTableauEdt() {  
+    public void setTableauEdt(int semaine) {
+        //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
         Calendar cal = Calendar.getInstance(); //Date du jour
+        int anneeScolaire = calculAnneeScolaire(); //2019
+        
+        cal.setWeekDate(cal.get(Calendar.YEAR), semaine, 2); //2 pour lundi ?
+        
+        if(cal.get(Calendar.MONTH)+1 >= 1 && cal.get(Calendar.MONTH)+1 <= 8 || semaine == 1)
+            cal.setWeekDate(anneeScolaire+1, semaine, 2); //2 pour lundi ?
+        
+        else 
+            cal.setWeekDate(anneeScolaire, semaine, 2); //2 pour lundi ?
+                       
+        //Maintenant, si j'affiche la date du jour, il me dira que nous sommes le lundi de la semaine (int semaine) de l'année courante
         int mois = cal.get(Calendar.MONTH)+1; //Mois courant = mois retourné + 1
         int jour = cal.get(Calendar.DAY_OF_MONTH); //Jour courant = jour retourné 
-        int jour_semaine = cal.get(Calendar.DAY_OF_WEEK); //Jour courant = jour retourné (1 = dimanche)
-        String[] semaine = {"lun. ", "mar.", "mer.", "jeu.", "ven.", "sam."};
-        String mois_nom = new String();
+        String[] dates = {"lun. ", "mar.", "mer.", "jeu.", "ven.", "sam."};
+        String[] month = {" janvier", " février", " mars", " avril", " mai", " juin", 
+                          " juillet", " août", " septembre", " octobre", " novembre", " décembre", " janvier"};
+                
+        String mois_nom = month[mois-1];
         
-        //Convertir les int mois en string -> 1 = janvier
-        switch(mois) {
-            case 1: //JANVIER
-                mois_nom = " janvier";
-                break;
-            case 2: //FEVRIER
-                mois_nom = " février";
-                break;
-            case 3: //MARS
-                mois_nom = " mars";
-                break;
-            case 4: //AVRIL
-                mois_nom = " avril";
-                break;
-            case 5: //MAI
-                mois_nom = " mai";
-                break;
-            case 6: //JUIN
-                mois_nom = " juin";
-                break;
-            case 7: //JUILLET
-                mois_nom = " juillet";
-                break;
-            case 8: //AOUT
-                mois_nom = " août";
-                break;
-            case 9: //SEPTEMBRE
-                mois_nom = " septembre";
-                break;
-            case 10: //OCTOBRE
-                mois_nom = " octobre";
-                break;
-            case 11: //NOVEMBRE
-                mois_nom = " novembre";
-                break;
-            case 12: //DECEMBRE
-                mois_nom = " décembre";
-                break;
-        }
-        
-        switch(jour_semaine) {
-            //SI DIMANCHE OU LUNDI, ON NE FAIT RIEN
-            case 3: //MARDI
-                jour = jour - 1; 
-                break;
-            case 4: //MERCREDI
-                jour = jour - 2;
-                break;
-            case 5: //JEUDI
-                jour = jour - 3;
-                break;
-            case 6: //VENDREDI
-                jour = jour - 4; 
-                break;
-            case 7: //SAMEDI
-                jour = jour - 5; 
-                break;
-        }
-        
-        for (int i=0;i<6;i++) {
-            semaine[i] = semaine[i] + " " + jour++ + mois_nom;
+        for (int i=0;i<6;i++) {         
+            //Blindage fin de mois !
+            if(anneeBissextile(cal.get(Calendar.YEAR))) { //Si c'est une année bissextile
+                if((jour > 29) && (cal.get(Calendar.MONTH) == 2)) {
+                    jour = 1;
+                    mois_nom = month[mois];
+                }               
+            }
+            else {
+                if((jour > 28) && (cal.get(Calendar.MONTH) == 2)) {
+                    jour = 1;
+                    mois_nom = month[mois];
+                }
+            }
+                
+            if((jour > 30) && (mois == 4 
+                               || mois == 6 
+                               || mois == 9 
+                               || mois == 11)) {
+                jour = 1;
+                mois_nom = month[mois];
+            }
+
+            if(jour > 31) {
+                jour = 1;
+                mois_nom = month[mois];
+            }  
+            
+            dates[i] = dates[i] + " " + jour++ + mois_nom;
         }
         
         tabCours.setModel(new DefaultTableModel(new Object [][] { {"08h00"}, {"09h00"}, {"10h00"}, {"11h00"}, 
                                                                   {"12h00"}, {"13h00"}, {"14h00"}, {"15h00"}, 
                                                                   {"16h00"}, {"17h00"}, {"18h00"}, {"19h00"}, 
                                                                   {"20h00"}},
-                                                new String[]{ "Horaires", semaine[0], semaine[1], semaine[2], 
-                                                              semaine[3], semaine[4],  semaine[5]}) 
+                                                new String[]{ "Horaires", dates[0], dates[1], dates[2], 
+                                                              dates[3], dates[4],  dates[5]}) 
         { 
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
@@ -254,4 +243,31 @@ public class OngletCours extends JTabbedPane {
         custom.setHorizontalAlignment(JLabel.CENTER);
         tabCours.getColumnModel().getColumn(0).setCellRenderer(custom);
     }    
+    
+    public Boolean anneeBissextile(int annee) {
+        if(annee%4 == 0) { 
+            if(annee%100 == 0) { 
+                if(annee%400 == 0)
+                    return true;
+                else 
+                    return false;
+            }
+            else 
+                return true;
+        }
+        return false;
+    }
+    
+    public int calculAnneeScolaire() {
+        Calendar cal = Calendar.getInstance();
+        int annee;
+        
+        if(cal.get(Calendar.MONTH)+1 >= 9 && cal.get(Calendar.MONTH)+1 <= 12) { //Entre septembre et décembre
+            annee = cal.get(Calendar.YEAR);
+        }
+        
+        else
+            annee = cal.get(Calendar.YEAR)-1;
+        return annee;
+    }
 }

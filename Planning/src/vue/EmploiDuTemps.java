@@ -38,8 +38,48 @@ public class EmploiDuTemps extends JTabbedPane {
         return ongletCours;
     }
     
+    public JTextField getRechercheBarreCours() {
+        return ongletCours.getRechercheBarreCours();
+    }
+    
+    public JButton getRechercheBoutonCours() {
+        return ongletCours.getRechercheBoutonCours();
+    }
+    
+    public JComboBox getRechercheCours() {
+        return ongletCours.getRechercheCours();
+    }
+    
+    public JComboBox getSemaineCours() {
+        return ongletCours.getSemaineCours();
+    }
+    
+    public JTable getTabCours() {
+        return ongletCours.getTabCours();
+    }
+    
     public JTabbedPane getOngletSalles() {
         return ongletSalles;
+    }
+    
+    public JTextField getRechercheBarreSalle() {
+        return ongletSalles.getRechercheBarreSalle();
+    }
+    
+    public JButton getRechercheBoutonSalle() {
+        return ongletSalles.getRechercheBoutonSalle();
+    }
+    
+    public JComboBox getRechercheSalle() {
+        return ongletSalles.getRechercheSalle();
+    }
+    
+    public JTable getTabSalles() {
+        return ongletSalles.getTabSalles();
+    }
+    
+    public JComboBox getSemaineSalles() {
+        return ongletSalles.getSemaineSalle();
     }
     
     public JTabbedPane getOngletServicePlanification() {
@@ -50,5 +90,13 @@ public class EmploiDuTemps extends JTabbedPane {
     public void addOngletServicePlanification() {
         ongletSP = new OngletServicePlanification(); //Onglet Service planification
         this.add("Service planification", ongletSP);
+    }
+    
+    public void setTabCours(int semaine) {
+        ongletCours.setTableauEdt(semaine);
+    }
+    
+    public void setTabSalles(int semaine) {
+        ongletSalles.setTableauEdt(semaine);
     }
 }

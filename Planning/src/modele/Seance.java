@@ -152,4 +152,54 @@ public class Seance {
     public void ajouterSalle(Salle salle) { //Un admin peut ajouter une séance à une salle
         this.salles.add(salle);
     }
+    public String calculDuree()
+    {
+        String duree = new String();
+        int heureDebut = 0;
+        int minuteDebut = 0;
+        int heureFin = 0;
+        int minuteFin = 0;
+        
+        //On récupère les segments.
+        String tronqHeureDebut = getHeureDebut().substring(0, 2);
+        String tronqMinuteDebut = getHeureDebut().substring(3, 5);
+        String tronqHeureFin = getHeureFin().substring(0,2);
+        String tronqMinuteFin = getHeureFin().substring(3, 5);
+           
+        //On les convertie en int pour pouvoir le calculer la durée de cette séance
+        heureDebut += Integer.parseInt(tronqHeureDebut);
+        minuteDebut += Integer.parseInt(tronqMinuteDebut);
+        heureFin += Integer.parseInt(tronqHeureFin);
+        minuteFin += Integer.parseInt(tronqMinuteFin);
+        
+        //La différence de chaque heure et chaque minute
+        int heure = heureFin - heureDebut;
+        int minute = minuteFin - minuteDebut;
+        duree = orderingHour(heure+"h"+minute);
+        return duree;
+    }
+    
+    public String orderingHour(String duree)
+    {
+        int pos = duree.indexOf('h'); //Première occurence de la lettre h
+        int heure = Integer.parseInt(duree.substring(0,pos));
+        int minute = Integer.parseInt(duree.substring(pos+1, duree.length()));
+        if (minute >= 60)
+        {
+            heure += minute/60; //La partie entière est le surplus d'heure dans minute
+            minute = minute%60; //On récupère le reste
+        }
+        if (minute < 0)
+        {
+            minute = -minute;
+            heure -= minute/60; //La partie entière représente les heures à soustraire
+            if (minute%60 != 0)
+            {
+               heure--;
+               minute = 60 - (minute%60);
+            }
+        }
+        duree = heure+"h"+minute;
+        return duree;
+    }
 }

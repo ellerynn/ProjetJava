@@ -462,19 +462,22 @@ public class SeanceDAO extends DAO<Seance> {
                                                             "AND Seance.Date >= '"+debut+ "' "+
                                                             "AND Seance.Date <= '"+fin+ "' " +
                                                             "ORDER BY cours.Nom, Date, Heure_debut");
+            
             //Selectionne les id des séances de la personne rangé par matière ->Date ->Heure de début
             if(resultSeances.first()) //On regarde si une ligne existe
             {
                 resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
                 while(resultSeances.next())  //On recupère les données de toute les lignes
                 {
-                    unFourreTout.add(this.find(resultSeances.getInt("ID")));
+                    unFourreTout.add(this.find(resultSeances.getInt("Seance.ID")));
                 }
             }
             
             //On trie
             ArrayList<Object> toCompare = new ArrayList<>();
-            do{ //Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables 
+            while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
+            {
+                System.out.println(unFourreTout.get(0).getCours().getNom());
                 toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
                 toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
                 ArrayList<Seance> SeancesSameCourseAndGroupes= rec1(unFourreTout,0,toCompare); //appel fct réccursive pour trouver
@@ -485,7 +488,7 @@ public class SeanceDAO extends DAO<Seance> {
                 {
                     System.out.println(SeancesSameCourseAndGroupes.get(i).getId());
                 }
-            }while(!unFourreTout.isEmpty());
+            }
             
         }catch (SQLException e) {
                 e.printStackTrace();
@@ -565,62 +568,8 @@ public class SeanceDAO extends DAO<Seance> {
         //La différence de chaque heure et chaque minute
         int heure = heureFin - heureDebut;
         int minute = minuteFin - minuteDebut;
-        if (minute >= 60)
-        {
-            heure += minute/60; //La partie entière est le surplus d'heure dans minute
-            minute = minute%60; //On récupère le reste
-        }
-        if (minute < 0)
-        {
-            minute = -minute;
-            heure -= minute/60; //La partie entière représente les heures à soustraire
-                if (minute%60 != 0)
-                {
-                   heure--;
-                   minute = 60 - minute%60;
-                }
-        }
-        
-        String heureTotal = heure+"h"+minute;
-        return heureTotal;
-    }
-    public String heureOneSeance(Seance seance){
-        int heureDebut = 0;
-        int minuteDebut = 0;
-        int heureFin = 0;
-        int minuteFin = 0;
-        
-        //On récupère les segments.
-           String tronqHeureDebut = seance.getHeureDebut().substring(0, 2);
-           String tronqMinuteDebut = seance.getHeureDebut().substring(3, 5);
-           String tronqHeureFin = seance.getHeureFin().substring(0,2);
-           String tronqMinuteFin = seance.getHeureFin().substring(3, 5);
-           
-           //On les convertie en int pour pouvoir le calculer la durée de cette séance
-           heureDebut += Integer.parseInt(tronqHeureDebut);
-           minuteDebut += Integer.parseInt(tronqMinuteDebut);
-           heureFin += Integer.parseInt(tronqHeureFin);
-           minuteFin += Integer.parseInt(tronqMinuteFin);
-                   
-        //La différence de chaque heure et chaque minute
-        int heure = heureFin - heureDebut;
-        int minute = minuteFin - minuteDebut;
-        if (minute >= 60)
-        {
-            heure += minute/60; //La partie entière est le surplus d'heure dans minute
-            minute = minute%60; //On récupère le reste
-        }
-        if (minute < 0)
-        {
-            minute = -minute;
-            heure -= minute/60; //La partie entière représente les heures à soustraire
-                if (minute%60 != 0)
-                {
-                   heure--;
-                   minute = 60 - minute%60;
-                }
-        }
-        String heureTotal = heure+"h"+minute;
+        Seance s = new Seance();
+        String heureTotal = s.orderingHour(heure+"h"+minute);
         return heureTotal;
     }
 }

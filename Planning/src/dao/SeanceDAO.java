@@ -211,7 +211,93 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return seance;
     }
-    
+    public void insertInJonction(int idSeance, int idAutre, int table)
+    {
+        try{
+            switch(table)
+            {
+                case 1: //add un enseignant
+                {
+                    PreparedStatement requete = this.connect
+                                    .prepareStatement(
+                                                "INSERT INTO seance_enseignants (ID_seance,ID_enseignant)"+
+                                                "VALUES(?,?)"
+                                        );
+                    requete.setInt(1,idSeance);
+                    requete.setInt(2,idAutre);
+                    requete.executeUpdate();
+                    break;
+                }
+                    
+                case 2: //add un groupe 
+                {
+                    PreparedStatement requete = this.connect
+                                    .prepareStatement(
+                                                "INSERT INTO seance_groupes (ID_seance,ID_groupe)"+
+                                                "VALUES(?,?)"
+                                        );
+                    requete.setInt(1,idSeance);
+                    requete.setInt(2,idAutre);
+                    requete.executeUpdate();
+                    break;
+                }
+                case 3:
+                {
+                    PreparedStatement requete = this.connect
+                                    .prepareStatement(
+                                                "INSERT INTO seance_salles (ID_seance,ID_salle)"+
+                                                "VALUES(?,?)"
+                                        );
+                    requete.setInt(1,idSeance);
+                    requete.setInt(2,idAutre);
+                    requete.executeUpdate();
+                    break;
+                }
+                default:
+                    System.out.println("Non add");
+                    break;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+    }
+    public void DeleteInJonction(int idSeance, int idAutre, int table)
+    {
+        try{
+            switch(table)
+            {
+                case 1: //add un enseignant
+                {
+                    connect.createStatement().executeUpdate(
+                           "DELETE FROM seance_enseignants WHERE ID_seance = "+idSeance+" AND ID_enseignant = "+ idAutre
+                    );
+                    break;
+                }
+                    
+                case 2: //add un groupe 
+                {
+                    connect.createStatement().executeUpdate(
+                           "DELETE FROM seance_groupes WHERE ID_seance = "+idSeance+" AND ID_groupe = "+ idAutre
+                    );
+                    break;
+                }
+                case 3:
+                {
+                    connect.createStatement().executeUpdate(
+                           "DELETE FROM seance_salles WHERE ID_seance = "+idSeance+" AND ID_salle = "+ idAutre
+                    );
+                    break;
+                }
+                default:
+                    System.out.println("Non delete");
+                    break;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+    }
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
         try{

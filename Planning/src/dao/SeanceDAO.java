@@ -211,7 +211,93 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return seance;
     }
-    
+    public void insertInJonction(int idSeance, int idAutre, int table)
+    {
+        try{
+            switch(table)
+            {
+                case 1: //add un enseignant
+                {
+                    PreparedStatement requete = this.connect
+                                    .prepareStatement(
+                                                "INSERT INTO seance_enseignants (ID_seance,ID_enseignant)"+
+                                                "VALUES(?,?)"
+                                        );
+                    requete.setInt(1,idSeance);
+                    requete.setInt(2,idAutre);
+                    requete.executeUpdate();
+                    break;
+                }
+                    
+                case 2: //add un groupe 
+                {
+                    PreparedStatement requete = this.connect
+                                    .prepareStatement(
+                                                "INSERT INTO seance_groupes (ID_seance,ID_groupe)"+
+                                                "VALUES(?,?)"
+                                        );
+                    requete.setInt(1,idSeance);
+                    requete.setInt(2,idAutre);
+                    requete.executeUpdate();
+                    break;
+                }
+                case 3:
+                {
+                    PreparedStatement requete = this.connect
+                                    .prepareStatement(
+                                                "INSERT INTO seance_salles (ID_seance,ID_salle)"+
+                                                "VALUES(?,?)"
+                                        );
+                    requete.setInt(1,idSeance);
+                    requete.setInt(2,idAutre);
+                    requete.executeUpdate();
+                    break;
+                }
+                default:
+                    System.out.println("Non add");
+                    break;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+    }
+    public void DeleteInJonction(int idSeance, int idAutre, int table)
+    {
+        try{
+            switch(table)
+            {
+                case 1: //add un enseignant
+                {
+                    connect.createStatement().executeUpdate(
+                           "DELETE FROM seance_enseignants WHERE ID_seance = "+idSeance+" AND ID_enseignant = "+ idAutre
+                    );
+                    break;
+                }
+                    
+                case 2: //add un groupe 
+                {
+                    connect.createStatement().executeUpdate(
+                           "DELETE FROM seance_groupes WHERE ID_seance = "+idSeance+" AND ID_groupe = "+ idAutre
+                    );
+                    break;
+                }
+                case 3:
+                {
+                    connect.createStatement().executeUpdate(
+                           "DELETE FROM seance_salles WHERE ID_seance = "+idSeance+" AND ID_salle = "+ idAutre
+                    );
+                    break;
+                }
+                default:
+                    System.out.println("Non delete");
+                    break;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+    }
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
         try{
@@ -352,5 +438,186 @@ public class SeanceDAO extends DAO<Seance> {
                 e.printStackTrace();
         }
         return listSeancesbyWeek;
+    }
+    
+    //Récupère tout l'edt de l'utilisateur rangé
+     public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
+    {
+        //Explication de cette array d'array:
+        //à Chaque .get(i) se trouve une liste de séance de même matière et même groupes
+        //à chaque .get(i).get(j) se trouve les séances de même matière et de même groupes rangé par date et heure
+        ArrayList<ArrayList<Seance>> seancesOrdered = new ArrayList<>();
+        
+        ArrayList<Seance> unFourreTout = new ArrayList<>();
+        try
+        {
+            ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT Seance.ID FROM Seance\n" +
+                                                            "LEFT JOIN seance_enseignants SE ON SE.ID_seance = Seance.ID\n" +
+                                                            "LEFT JOIN cours ON cours.ID = Seance.ID_cours\n" +
+                                                            "WHERE SE.ID_enseignant = "+id+ " "+
+                                                            "AND Seance.Date >= '"+debut+ "' "+
+                                                            "AND Seance.Date <= '"+fin+ "' " +
+                                                            "ORDER BY cours.Nom, Date, Heure_debut");
+            //Selectionne les id des séances de la personne rangé par matière ->Date ->Heure de début
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    unFourreTout.add(this.find(resultSeances.getInt("ID")));
+                }
+            }
+            
+            //On trie
+            ArrayList<Object> toCompare = new ArrayList<>();
+            do{ //Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables 
+                toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
+                toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
+                ArrayList<Seance> SeancesSameCourseAndGroupes= rec1(unFourreTout,0,toCompare); //appel fct réccursive pour trouver
+                toCompare.clear(); //On efface pour faire un nouveau add
+                seancesOrdered.add(SeancesSameCourseAndGroupes); //On récupère la liste dans une liste de liste de séance
+                
+                for (int i = 0 ; i < SeancesSameCourseAndGroupes.size() ; i++)
+                {
+                    System.out.println(SeancesSameCourseAndGroupes.get(i).getId());
+                }
+            }while(!unFourreTout.isEmpty());
+            
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return seancesOrdered;
+    }
+    //Renvoie un array liste avec que les séances d'une matière avec les mêmes Groupes
+    public ArrayList<Seance> rec1 (ArrayList<Seance> fourreTout, int indice, ArrayList<Object> toCompare)
+    {
+        ArrayList<Seance> identique = new ArrayList<>();
+        rec2(fourreTout,identique,indice,toCompare);
+        return identique;
+    }
+    public void rec2 (ArrayList<Seance> fourreTout ,ArrayList<Seance> identique, int indice, ArrayList<Object> toCompare)
+    {
+        if (indice < fourreTout.size()) //Si pas encore vers la fin
+        {
+            String matiere = fourreTout.get(indice).getCours().getNom();
+            String matiereToCompare = (String)toCompare.get(0);
+            ArrayList<Groupe> groupes= fourreTout.get(indice).getGroupes();
+            ArrayList<Groupe> groupesToCompare = new ArrayList<>();
+            groupesToCompare= (ArrayList<Groupe>)toCompare.get(1);
+            boolean sameValues = true;
+            if (matiere.equals(matiereToCompare)) 
+            {
+                if (groupes.size() == groupesToCompare.size())
+                {
+                    for(int i = 0 ; i < groupes.size() ; i++)
+                    {
+                        if(groupes.get(i).getId() != groupesToCompare.get(i).getId())
+                        {   //
+                            sameValues = false;
+                            i = groupes.size(); //Pour terminer for
+                        }
+                    }
+                }
+                else
+                {
+                    sameValues = false;
+                }
+            }
+            else{
+                sameValues = false;
+            }
+            
+            if(sameValues)
+            {
+                identique.add(fourreTout.get(indice)); //Ajouter
+                fourreTout.remove(indice);//Supprimer du général
+                rec2(fourreTout,identique,indice,toCompare); //Répéter
+            }
+            if (indice+1 < fourreTout.size() && !sameValues){   //Si pas encore vers la fin
+                rec2(fourreTout,identique,indice+1,toCompare);
+            }
+        }
+    }
+    public String heureTotalSeances(ArrayList<Seance> liste)
+    {
+        int heureDebut = 0;
+        int minuteDebut = 0;
+        int heureFin = 0;
+        int minuteFin = 0;
+        for (int i = 0 ; i <liste.size() ; i++)
+        {
+           //On récupère les segments.
+           String tronqHeureDebut = liste.get(i).getHeureDebut().substring(0, 2);
+           String tronqMinuteDebut = liste.get(i).getHeureDebut().substring(3, 5);
+           String tronqHeureFin = liste.get(i).getHeureFin().substring(0,2);
+           String tronqMinuteFin = liste.get(i).getHeureFin().substring(3, 5);
+           
+           //On les convertie en int pour pouvoir le calculer la durée de cette séance
+           heureDebut += Integer.parseInt(tronqHeureDebut);
+           minuteDebut += Integer.parseInt(tronqMinuteDebut);
+           heureFin += Integer.parseInt(tronqHeureFin);
+           minuteFin += Integer.parseInt(tronqMinuteFin);
+        }
+        //La différence de chaque heure et chaque minute
+        int heure = heureFin - heureDebut;
+        int minute = minuteFin - minuteDebut;
+        if (minute >= 60)
+        {
+            heure += minute/60; //La partie entière est le surplus d'heure dans minute
+            minute = minute%60; //On récupère le reste
+        }
+        if (minute < 0)
+        {
+            minute = -minute;
+            heure -= minute/60; //La partie entière représente les heures à soustraire
+                if (minute%60 != 0)
+                {
+                   heure--;
+                   minute = 60 - minute%60;
+                }
+        }
+        
+        String heureTotal = heure+"h"+minute;
+        return heureTotal;
+    }
+    public String heureOneSeance(Seance seance){
+        int heureDebut = 0;
+        int minuteDebut = 0;
+        int heureFin = 0;
+        int minuteFin = 0;
+        
+        //On récupère les segments.
+           String tronqHeureDebut = seance.getHeureDebut().substring(0, 2);
+           String tronqMinuteDebut = seance.getHeureDebut().substring(3, 5);
+           String tronqHeureFin = seance.getHeureFin().substring(0,2);
+           String tronqMinuteFin = seance.getHeureFin().substring(3, 5);
+           
+           //On les convertie en int pour pouvoir le calculer la durée de cette séance
+           heureDebut += Integer.parseInt(tronqHeureDebut);
+           minuteDebut += Integer.parseInt(tronqMinuteDebut);
+           heureFin += Integer.parseInt(tronqHeureFin);
+           minuteFin += Integer.parseInt(tronqMinuteFin);
+                   
+        //La différence de chaque heure et chaque minute
+        int heure = heureFin - heureDebut;
+        int minute = minuteFin - minuteDebut;
+        if (minute >= 60)
+        {
+            heure += minute/60; //La partie entière est le surplus d'heure dans minute
+            minute = minute%60; //On récupère le reste
+        }
+        if (minute < 0)
+        {
+            minute = -minute;
+            heure -= minute/60; //La partie entière représente les heures à soustraire
+                if (minute%60 != 0)
+                {
+                   heure--;
+                   minute = 60 - minute%60;
+                }
+        }
+        String heureTotal = heure+"h"+minute;
+        return heureTotal;
     }
 }

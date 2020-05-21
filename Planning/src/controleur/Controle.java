@@ -30,11 +30,38 @@ public class Controle {
         String nameDatabase = "edt";
         String loginDatabase = "root";
         String passwordDatabase = "";    
-        //exempleCreationSeance();
         //Ouverture interface graphique
         Controle controle = new Controle();
     }
-    
+    public static void exempleRecapitulationDesSeances()
+    {   
+        int id = 19;
+        String dateDebut = "2020-05-18";
+        String dateFin = "2020-05-20";
+        SeanceDAO sDAO = new SeanceDAO();
+        
+        ArrayList<ArrayList<Seance>> seances = sDAO.findSeancesOfUserByDate(19, dateDebut, dateFin);
+        for (int i = 0 ; i < seances.size() ; i++)
+        {
+            System.out.println("******************************************");
+            System.out.println("Matiere - Public:");
+            System.out.println(seances.get(i).get(0).getCours().getNom());
+            System.out.println("Premiere séance:");
+            System.out.println(seances.get(i).get(0).getDate() + " de "+ seances.get(i).get(0).getHeureDebut() +" à "+ seances.get(i).get(0).getHeureFin());
+            System.out.println("Dernière séance:");
+            int dernier = seances.get(i).size()-1;
+            System.out.println(seances.get(i).get(dernier).getDate() + " de "+ seances.get(i).get(dernier).getHeureDebut() +" à "+ seances.get(i).get(dernier).getHeureFin());
+            System.out.println("Durée");
+            System.out.println(sDAO.heureTotalSeances(seances.get(i)));
+            System.out.println("Nb");
+            System.out.println(dernier+1);
+            System.out.println("SI ON CLIQUE SUR L'ICONE PLUS DE DETAIL:");
+            for (int a = 0 ; a < seances.get(i).size() ; a++)
+            {
+                System.out.println(seances.get(i).get(a).getDate() + " de "+ seances.get(i).get(a).getHeureDebut() +" à "+ seances.get(i).get(a).getHeureFin() + " ("+sDAO.heureOneSeance(seances.get(i).get(a)) +")");
+            }
+        }
+    }
     public static void exempleCreationSeance()
     {
         //Déclaration des DAOs:

@@ -5,7 +5,6 @@ import java.sql.*;
 
 import modele.*;
 import dao.*;
-import java.util.ArrayList;
 
 public class Controle {
     private Fenetre fenetre;

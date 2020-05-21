@@ -12,19 +12,53 @@ public class OngletSalles extends JTabbedPane {
     private JTextField rechercheBarreSalle;
     private JButton rechercheBoutonSalle;
     private JComboBox<String> rechercheSalle;
-    private JScrollPane scrollPaneRecapSalle;
     private JScrollPane scrollPaneSalle;
     private JComboBox<String> semaineSalle;
     private JComboBox<String> vueSalle;
     private JTable tabSalle;
     //Salles -> Salles libres
     private JTable tabLibresSalle;
+    private JScrollPane scrollPaneRecapSalle;
     
     public OngletSalles() {
         emploiDuTempsSalle();
         sallesLibres();
     }
-
+    
+    //Getters
+    public JPanel getPaneSalle() {
+        return paneSalle;
+    }
+    
+    public JTextField rechercheBarreSalle() {
+        return rechercheBarreSalle;
+    }
+    
+    public JButton rechercheBoutonSalle() {
+        return rechercheBoutonSalle;
+    }
+    
+    public JComboBox<String> getRechercheSalle() {
+        return rechercheSalle;
+    }
+    
+    public JComboBox<String> getSemaineSalle() {
+        return semaineSalle;
+    }
+    
+    public JComboBox<String> getVueSalle() {
+        return vueSalle;
+    }
+    
+    public JScrollPane getScrollPaneRecapSalle() {
+        return scrollPaneRecapSalle;
+    }
+    
+    public JTable getTabLibresSalle() {
+        return tabLibresSalle;
+    }
+    
+    //Méthodes
     public void emploiDuTempsSalle() {
         paneSalle = new JPanel(); 
         vueSalle = new JComboBox<>(); 

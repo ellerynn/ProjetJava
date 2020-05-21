@@ -298,38 +298,41 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
     }
+    
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
-        try{
-        ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
-        if(result.first())
-        {
-            String requete = new String();
-            if (result.getInt("Droit") == 3){ //Professeur, trouver les séances de ce prof
-                requete = "SELECT ID FROM Seance \n"
-                        +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
-                        +"WHERE Seance.Semaine = "+semaine+" AND SE.ID_enseignant = "+id +" ORDER BY Seance.Date, seance.Heure_debut";
-            }
-            if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
-                requete = "SELECT ID FROM Seance \n" +
-                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
-                            "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
-                            "WHERE Seance.Semaine = "+semaine+" AND user.ID_utilisateur = "+id+ 
-                            " ORDER BY Seance.Date, seance.Heure_debut";
-            }
-            ResultSet resultSeances = connect.createStatement().executeQuery(requete);
-            
-            if(resultSeances.first()) //On regarde si une ligne existe
+        
+        try {
+            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
+            if(result.first())
             {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
+                String requete = new String();
+                if (result.getInt("Droit") == 3){ //Professeur, trouver les séances de ce prof
+                    requete = "SELECT ID FROM Seance \n"
+                            +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
+                            +"WHERE Seance.Semaine = " + semaine + " AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
+                    requete = "SELECT ID FROM Seance \n" +
+                                "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
+                                "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
+                                "WHERE Seance.Semaine = " + semaine + " AND user.ID_utilisateur = " + id + 
+                                " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+
+                if(resultSeances.first()) //On regarde si une ligne existe
                 {
-                    SeanceDAO sDAO = new SeanceDAO();
-                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                    while(resultSeances.next())  //On recupère les données de toute les lignes
+                    {
+                        SeanceDAO sDAO = new SeanceDAO();
+                        listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                    }
                 }
             }
         }
-        }catch (SQLException e) {
+        catch (SQLException e) {
                 e.printStackTrace();
         }
         return listSeancesbyWeek;

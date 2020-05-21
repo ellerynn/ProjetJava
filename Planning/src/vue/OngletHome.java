@@ -93,7 +93,23 @@ public class OngletHome extends JSplitPane {
     }
     
     //Getter
+    public JPanel getContainer1Home() {
+        return container1Home;
+    }
+    
     public JButton getBouton() {
         return linkCoursHome; //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
+    }
+    
+    public JSpinner getDateHome() {
+        return dateHome;
+    }
+    
+    public JTable getTabCoursHome() {
+        return tabCoursHome;
+    }
+    
+    public JPanel getContainer2Home() {
+        return container2Home;
     }
 }

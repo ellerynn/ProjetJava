@@ -34,7 +34,7 @@ public class Fenetre extends JFrame {
         this.setTitle("Connexion"); //Titre de la frame
        
         connexion.getBouton().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
-            if(actionBouton()) { 
+            if(controle.demandeConnexion()) { 
                 c.next(content); //Via cette instruction, on passe au prochain conteneur de la pile
                 setTitle("Planning, " + calculAnneeScolaire() + " - " + utilisateurCourant() + " (ECE Paris " + recupInfo() + ")"); //Nouveau titre de la frame
             }     
@@ -48,21 +48,17 @@ public class Fenetre extends JFrame {
         this.setVisible(true);        
     }	  
     
-    //Getters
-    public JButton getBoutonConnexion() {
-        return connexion.getBouton();
-    }
-    
+    //Getters    
     public FormConnexion getConnexion() {
         return connexion;
     }
     
-    //Méthodes
-    public Boolean actionBouton() { //actionBouton renvoie true si on trouve dans la BDD un utilisateur après clic
-        return controle.demandeConnexion();
+    public EmploiDuTemps getEDT() {
+        return edt;
     }
     
-    public String calculAnneeScolaire() {
+    //Méthodes    
+    public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
         Calendar cal = Calendar.getInstance(); //Date du jour
         int annee = cal.get(Calendar.YEAR); //Année courante
         if(cal.get(Calendar.MONTH)+1 >= 9 && cal.get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre
@@ -70,11 +66,11 @@ public class Fenetre extends JFrame {
         return (annee-1) + "/" + annee;
     }
     
-    public String utilisateurCourant() {
+    public String utilisateurCourant() { //Pour affichage dans titre de la frame
         return controle.getUtilisateur().getNom() + " " + controle.getUtilisateur().getPrenom();
     }
     
-    public String recupInfo() {
+    public String recupInfo() { //Pour affichage dans titre de la frame
         String info = new String();
         //Si etudiant -> Promo
         if(controle.getUtilisateur().getDroit() == 4) {
@@ -92,6 +88,7 @@ public class Fenetre extends JFrame {
         //Si admin -> "Administrateur"
         if(controle.getUtilisateur().getDroit() == 1) {
             info = "Administrateur";
+            edt.addOngletServicePlanification(); //On ajoute l'onglet administration = service planification
         }
         
         return info;

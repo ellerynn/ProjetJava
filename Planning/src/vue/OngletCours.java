@@ -4,7 +4,6 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 //La classe OngletCours correspond à l'onglet Cours de notre planning (classe EmploiDuTemps)
 public class OngletCours extends JTabbedPane {
@@ -27,8 +26,45 @@ public class OngletCours extends JTabbedPane {
         recapCours();
     }
     
-    //Construit l'onglet Emploi du temps
-    public void emploiDuTempsCours() {
+    //Getters 
+    public JPanel getPaneCours() {
+        return paneCours;
+    }
+    
+    public JComboBox<String> getVueEdt() {
+        return vueEdt;
+    }
+    
+    public JComboBox<String> getSemaineCours() {
+        return semaineCours;
+    }
+    
+    public JTextField rechercheBarreCours() {
+        return rechercheBarreCours;
+    }
+    
+    public JButton rechercheBoutonCours() {
+        return rechercheBoutonCours;
+    }
+    
+    public JComboBox<String> getRechercheCours() {
+        return rechercheCours;
+    }
+    
+    public JTable getTabCours() {
+        return tabCours;
+    }
+    
+    public JScrollPane getScrollPaneRecapCours() {
+        return scrollPaneRecapCours;
+    }
+    
+    public JTable getTabRecapCours() {
+        return tabRecapCours;
+    }
+    
+    //Méthodes
+    public void emploiDuTempsCours() { //Construit l'onglet Emploi du temps
         paneCours = new JPanel();
         vueEdt = new JComboBox<>(); //Menu déroulant -> en grille ou en liste
         rechercheCours = new JComboBox<>(); //Pour sélectionner un élève -> A BLINDER

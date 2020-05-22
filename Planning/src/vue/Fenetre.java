@@ -38,7 +38,7 @@ public class Fenetre extends JFrame {
         content.add(edt);
 
         this.getContentPane().add(content, BorderLayout.CENTER); //Affichage contenu actif
-        this.setVisible(true);    
+        this.setVisible(true);               
         
         //Listeners
         connexion.getBouton().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion

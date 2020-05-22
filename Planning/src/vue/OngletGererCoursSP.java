@@ -1,281 +1,301 @@
 package vue;
 
+//https://bbclone.developpez.com/fr/java/tutoriels/uiswing/gridbaglayout/?page=page_2
+
+import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
 public class OngletGererCoursSP extends JSplitPane {
-    //private JSplitPane paneGererCoursSP;
-    private JButton ajouterBoutonModifSP;
-    private JButton ajouterBoutonSP;
-    private JLabel ajouterCoursSP;
-    private JLabel ajouterSeanceSP;
-    private JRadioButton anuleeBoutonModifSP;
-    private JPanel containerSP2;
-    private JLabel coursModifSP;
-    private JLabel coursSP;
-    private JLabel dateHeureModifSP;
-    private JLabel dateHeureSP;
-    private JSpinner dateSeanceModifSP;
-    private JSpinner dateSeanceSP;
-    private JRadioButton enCoursModifSP;
-    private JRadioButton enCoursSP;
-    private JLabel etatModifSP;
-    private JLabel etatSP;
-    private ButtonGroup groupeEtatModifSP;
-    private ButtonGroup groupeEtatSP;
-    private JLabel intituleCoursSP;
-    private JTextField intituleTextP;
-    private JList<String> listeSeancesSP;
-    private JLabel modifierSeanceSP;
-    private JPanel paneAjouterCoursSP;
-    private JPanel paneAjouterSeanceSP;
-    private JPanel paneModifSeanceSP;
-    private JScrollPane scrollListeSeancesSP;
-    private JComboBox<String> selectionnerCoursModifSP;
-    private JComboBox<String> selectionnerCoursSP;
-    private JComboBox<String> selectionnerTypeModifSP;
-    private JComboBox<String> selectionnerTypeSP;
-    private JLabel typeModifSP;
-    private JLabel typeSP;
-    private JRadioButton valideeModifSP;
-    private JRadioButton valideeSP;
-    private JButton validerCoursSP;
+    //Ajouter une seance
+    private JList<String> listeSeances;
+    private JSpinner date;
+    private JRadioButton etatEC;
+    private JRadioButton etatV;
+    private JComboBox<String> selectCours;
+    private JComboBox<String> selectType;
+    private JList<String> listeEnseignants;
+    private JList<String> listeGroupes;
+    private JList<String> listeSalles;
+    private JButton valider;
+    //Modifier une seance
+    private JList<String> listeSeances2;
+    private JSpinner date2;
+    private JRadioButton etatEC2;
+    private JRadioButton etatV2;
+    private JRadioButton etatA;
+    private JComboBox<String> selectCours2;
+    private JComboBox<String> selectType2;
+    private JList<String> listeEnseignants2;
+    private JList<String> listeGroupes2;
+    private JList<String> listeSalles2;
+    private JButton valider2;
+    //Ajouter un cours
+    private JTextField intitule;
+    private JButton valider3;
+    //Supprimer un cours
+    private JComboBox<String> selectCours3;
+    private JButton supprimer;
     
     public OngletGererCoursSP() {
-        scrollListeSeancesSP = new JScrollPane();
-        listeSeancesSP = new JList<>();
-        containerSP2 = new JPanel();
-        paneAjouterSeanceSP = new JPanel();
-        dateSeanceSP = new JSpinner();
-        dateHeureSP = new JLabel("Date et heure :");
-        etatSP = new JLabel("Etat :");
-        enCoursSP = new JRadioButton("En cours de validation");
-        valideeSP = new JRadioButton("Validée");
-        coursSP = new JLabel("Cours :");
-        selectionnerCoursSP = new JComboBox<>();
-        typeSP = new JLabel("Type :");
-        selectionnerTypeSP = new JComboBox<>();
-        ajouterSeanceSP = new JLabel("Ajouter une seance");
-        ajouterBoutonSP = new JButton("Valider");
-        paneAjouterCoursSP = new JPanel();
-        ajouterCoursSP = new JLabel("Ajouter un cours");
-        intituleCoursSP = new JLabel("Intitulé du cours :");
-        intituleTextP = new JTextField();
-        validerCoursSP = new JButton("Valider");
-        paneModifSeanceSP = new JPanel();
-        modifierSeanceSP = new JLabel("Modifier une séance");
-        dateHeureModifSP = new JLabel("Date et heure :");
-        dateSeanceModifSP = new JSpinner();
-        etatModifSP = new JLabel("Etat :");
-        enCoursModifSP = new JRadioButton("En cours de validation");
-        valideeModifSP = new JRadioButton("Validée");
-        coursModifSP = new JLabel("Cours :");
-        selectionnerCoursModifSP = new JComboBox<>();
-        typeModifSP = new JLabel("Type :");
-        selectionnerTypeModifSP = new JComboBox<>();
-        anuleeBoutonModifSP = new JRadioButton("Annulée");
-        ajouterBoutonModifSP = new JButton("Valider");
-        groupeEtatSP = new ButtonGroup();
-        groupeEtatModifSP = new ButtonGroup();
+        listeSeances = new JList<>();
+        date = new JSpinner();
+        etatEC = new JRadioButton("En cours de validation");
+        etatV = new JRadioButton("Validée");
+        selectCours = new JComboBox<>();
+        selectType = new JComboBox<>();
+        listeEnseignants = new JList<>();
+        listeGroupes = new JList<>();
+        listeSalles = new JList<>();
+        valider = new JButton("Valider");
         
-        this.setResizeWeight(0.5);
-
-        remplirListe(listeSeancesSP);
+        listeSeances2 = new JList<>();
+        date2 = new JSpinner();
+        etatEC2 = new JRadioButton("En cours de validation");
+        etatV2 = new JRadioButton("Validée");
+        etatA = new JRadioButton("Annulée");
+        selectCours2 = new JComboBox<>();
+        selectType2 = new JComboBox<>();
+        listeEnseignants2 = new JList<>();
+        listeGroupes2 = new JList<>();
+        listeSalles2 = new JList<>();
+        valider2 = new JButton("Valider");
         
-        scrollListeSeancesSP.setViewportView(listeSeancesSP);
-
-        this.setRightComponent(scrollListeSeancesSP);
-
-        dateSeanceSP.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
-
-        groupeEtatSP.add(enCoursSP);
-        groupeEtatSP.add(valideeSP);
-
-        remplirComboBox(selectionnerCoursSP, "Veuillez sélectionner", "Cours");
-        remplirComboBoxType(selectionnerTypeSP);
+        intitule = new JTextField();
+        valider3 = new JButton("Valider");
         
-        GroupLayout c1 = new GroupLayout(paneAjouterSeanceSP);
-        paneAjouterSeanceSP.setLayout(c1);
-        c1.setHorizontalGroup(
-            c1.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c1.createSequentialGroup()
-                .addComponent(ajouterSeanceSP)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(c1.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(c1.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(c1.createSequentialGroup()
-                        .addComponent(dateHeureSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dateSeanceSP, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(c1.createSequentialGroup()
-                        .addComponent(etatSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(enCoursSP)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(valideeSP))
-                    .addGroup(c1.createSequentialGroup()
-                        .addGroup(c1.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(coursSP)
-                            .addComponent(typeSP))
-                        .addGap(18, 18, 18)
-                        .addGroup(c1.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                            .addComponent(selectionnerCoursSP, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(selectionnerTypeSP, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
-                        .addComponent(ajouterBoutonSP))))
-        );
-        c1.setVerticalGroup(
-            c1.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c1.createSequentialGroup()
-                .addComponent(ajouterSeanceSP)
-                .addGap(12, 12, 12)
-                .addGroup(c1.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateHeureSP)
-                    .addComponent(dateSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c1.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(etatSP)
-                    .addComponent(enCoursSP)
-                    .addComponent(valideeSP))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c1.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(coursSP)
-                    .addComponent(selectionnerCoursSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c1.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(typeSP)
-                    .addComponent(selectionnerTypeSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ajouterBoutonSP))
-                .addGap(10, 10, 10))
-        );
+        selectCours3 = new JComboBox<String>();
+        supprimer = new JButton("Supprimer");
+                
+        //Liste des séances a droite
+        JScrollPane container1 = new JScrollPane(listeSeances);
+        remplirListe(listeSeances);
+        this.setRightComponent(container1);
+        
+        //A gauche
+        JPanel container2 = new JPanel();
+        container2.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints c = new GridBagConstraints(); //Contraintes d'ajout des composants
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.weighty = 1;
+        
+        /***********************************AJOUTER UNE SEANCE***********************************/
+        c.insets = new Insets(0,10,0,0);
+        JLabel titre1 = new JLabel("Ajouter une seance"); //JLabel titre
+        
+        c.gridx = 0; c.gridy = 0; //Position
+        container2.add(titre1, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        JLabel dateHeure = new JLabel("Date et heure :"); //Sous-titre
+        c.gridx = 1; c.gridy = 1; //On décalle tout de 1
+        container2.add(dateHeure, c);
+        
+        c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
+        date.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
+        container2.add(date, c);
+        
+        JLabel etats = new JLabel("Etat :");
+        c.gridy = 2; c.gridx  = 1;
+        container2.add(etats, c);
+        
+        ButtonGroup groupeEtat = new ButtonGroup();
+        groupeEtat.add(etatEC);
+        groupeEtat.add(etatV);
+        
+        c.gridx  = 2;
+        container2.add(etatEC, c);
+        c.gridx = 3;
+        container2.add(etatV, c);
+        
+        JLabel cours = new JLabel("Cours :");
+        c.gridy = 3; c.gridx = 1;
+        container2.add(cours, c);
+        
+        c.gridx = 2;
+        remplirComboBox(selectCours, "Veuillez sélectionner", "Cours");
+        container2.add(selectCours, c);
+        
+        JLabel type = new JLabel("Type du cours : ");
+        c.gridy = 4; c.gridx = 1;
+        container2.add(type, c);
+        
+        c.gridx = 2;
+        remplirComboBoxType(selectType);
+        container2.add(selectType, c);
+        
+        c.gridy = 5; c.gridx = 1;
+        JLabel profs = new JLabel("Enseignants : ");
+        container2.add(profs, c);
+        
+        c.gridx = 2;
+        JLabel tds = new JLabel("Groupes : ");
+        container2.add(tds, c);
+        
+        c.gridx = 3;
+        JLabel salles = new JLabel("Salles : ");
+        container2.add(salles, c);
+        
+        JScrollPane container3 = new JScrollPane(listeEnseignants);
+        listeEnseignants.setVisibleRowCount(2);
+        remplirListe(listeEnseignants);
+	c.insets = new Insets(5,0,10,10);  //padding
+	c.gridx = 1;       //aligned with date
+	c.gridwidth = 1;   //2 columns wide
+        c.gridy = 6;       //third row
+        container2.add(container3, c);
+        
+        JScrollPane container4 = new JScrollPane(listeGroupes);
+        listeGroupes.setVisibleRowCount(2);
+        remplirListe(listeGroupes);
+	c.gridx = 2;       //aligned with date
+        container2.add(container4, c);
+        
+        JScrollPane container5 = new JScrollPane(listeSalles);
+        listeSalles.setVisibleRowCount(2);
+        remplirListe(listeSalles);
+        c.gridwidth = 2;
+	c.gridx = 3;       //aligned with date
+        container2.add(container5, c);
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 6;
+        c.insets = new Insets(0,0,10,10);
+        container2.add(valider, c);
+        
+        c.insets = new Insets(0,0,0,0);  //padding
+        
+        /***********************************MODIFIER UNE SEANCE***********************************/
+        c.insets = new Insets(0,10,0,0);
+        JLabel titre2 = new JLabel("Modifier une seance"); //JLabel titre
 
-        GroupLayout c2 = new GroupLayout(paneAjouterCoursSP);
-        paneAjouterCoursSP.setLayout(c2);
-        c2.setHorizontalGroup(
-            c2.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c2.createSequentialGroup()
-                .addComponent(ajouterCoursSP)
-                .addGap(0, 0, 0))
-            .addGroup(c2.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(intituleCoursSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(intituleTextP, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(validerCoursSP)
-                .addContainerGap())
-        );
-        c2.setVerticalGroup(
-            c2.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c2.createSequentialGroup()
-                .addComponent(ajouterCoursSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(c2.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(intituleCoursSP)
-                    .addComponent(intituleTextP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(validerCoursSP))
-                .addGap(0, 12, Short.MAX_VALUE))
-        );
+        c.gridx = 0; c.gridy = 7; //Position
+        container2.add(titre2, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        JLabel dateHeure2 = new JLabel("Date et heure :"); //Sous-titre
+        c.gridx = 1; c.gridy = 8; //On décalle tout de 1
+        container2.add(dateHeure2, c);
+        
+        c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
+        date2.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
+        container2.add(date2, c);
+        
+        JLabel etats2 = new JLabel("Etat :");
+        c.gridy = 9; c.gridx  = 1;
+        container2.add(etats2, c);
+        
+        ButtonGroup groupeEtat2 = new ButtonGroup();
+        groupeEtat2.add(etatEC2);
+        groupeEtat2.add(etatV2);
+        groupeEtat2.add(etatA);
+        
+        c.gridx  = 2;
+        container2.add(etatEC2, c);
+        c.gridx = 3;
+        container2.add(etatV2, c);
+        c.gridx = 4;
+        container2.add(etatA, c);
+        
+        JLabel cours2 = new JLabel("Cours :");
+        c.gridy = 10; c.gridx = 1;
+        container2.add(cours2, c);
+        
+        c.gridx = 2;
+        remplirComboBox(selectCours2, "Veuillez sélectionner", "Cours");
+        container2.add(selectCours2, c);
+        
+        JLabel type2 = new JLabel("Type du cours : ");
+        c.gridy = 11; c.gridx = 1;
+        container2.add(type2, c);
+        
+        c.gridx = 2;
+        remplirComboBoxType(selectType2);
+        container2.add(selectType2, c);
+        
+        c.gridy = 12; c.gridx = 1;
+        JLabel profs2 = new JLabel("Enseignants : ");
+        container2.add(profs2, c);
+        
+        c.gridy = 12; c.gridx = 2;
+        JLabel tds2 = new JLabel("Groupes : ");
+        container2.add(tds2, c);
+        
+        c.gridy = 12; c.gridx = 3;
+        JLabel salles2 = new JLabel("Salles : ");
+        container2.add(salles2, c);
+        
+        JScrollPane container6 = new JScrollPane(listeEnseignants2);
+        listeEnseignants2.setVisibleRowCount(2);
+        remplirListe(listeEnseignants2);
+	c.insets = new Insets(5,0,10,10);  //padding
+	c.gridx = 1;       //aligned with date
+        c.gridy = 13;       //third row
+        container2.add(container6, c);
+        
+        JScrollPane container7 = new JScrollPane(listeGroupes2);
+        listeGroupes2.setVisibleRowCount(2);
+        remplirListe(listeGroupes2);
+	c.gridx = 2;       //aligned with date
+        container2.add(container7, c);
+        
+        JScrollPane container8 = new JScrollPane(listeSalles2);
+        listeSalles2.setVisibleRowCount(2);
+        remplirListe(listeSalles2);
+        c.gridwidth = 2;   //2 columns wide
+	c.gridx = 3;       //aligned with date
+        container2.add(container8, c);  
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 13;
+        c.insets = new Insets(0,0,10,10);
+        container2.add(valider2, c);
+        
+        c.insets = new Insets(0,10,0,0);  //padding
+        
+        /***********************************AJOUTER UN COURS***********************************/
+        JLabel titre3 = new JLabel("Ajouter un cours"); //JLabel titre
 
-        dateSeanceModifSP.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
+        c.gridx = 0; c.gridy = 14; //Position
+        container2.add(titre3, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        JLabel cours3 = new JLabel("Intitulé du cours : "); //Sous-titre
+        c.gridx = 1; c.gridy = 15;  //On décalle tout de 1
+        container2.add(cours3, c);
+        
+        c.gridx = 2; c.gridwidth = 4;
+        c.insets = new Insets(0,0,0,10);
+        container2.add(intitule, c);
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 15;
+        c.insets = new Insets(0,0,0,10);
+        container2.add(valider3, c);
+        
+        /***********************************SUPPRIMER UN COURS***********************************/
+        c.insets = new Insets(0,10,0,0);
+        JLabel titre4 = new JLabel("Supprimer un cours"); //JLabel titre
 
-        groupeEtatModifSP.add(enCoursModifSP);
-        groupeEtatModifSP.add(valideeModifSP);
-
-        remplirComboBox(selectionnerCoursModifSP, "Veuillez sélectionner", "Cours");
-        remplirComboBoxType(selectionnerTypeModifSP);
-
-        groupeEtatModifSP.add(anuleeBoutonModifSP);
-
-        GroupLayout c3 = new GroupLayout(paneModifSeanceSP);
-        paneModifSeanceSP.setLayout(c3);
-        c3.setHorizontalGroup(
-            c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c3.createSequentialGroup()
-                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(modifierSeanceSP)
-                    .addGroup(c3.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(c3.createSequentialGroup()
-                                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(coursModifSP)
-                                    .addComponent(typeModifSP))
-                                .addGap(18, 18, 18)
-                                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(selectionnerCoursModifSP, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(selectionnerTypeModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(c3.createSequentialGroup()
-                                .addComponent(dateHeureModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(dateSeanceModifSP, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(c3.createSequentialGroup()
-                                .addComponent(etatModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(enCoursModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(valideeModifSP)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(anuleeBoutonModifSP)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(32, 32, 32)
-                .addComponent(ajouterBoutonModifSP)
-                .addContainerGap())
-        );
-        c3.setVerticalGroup(
-            c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c3.createSequentialGroup()
-                .addComponent(modifierSeanceSP)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateHeureModifSP)
-                    .addComponent(dateSeanceModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(etatModifSP)
-                    .addComponent(enCoursModifSP)
-                    .addComponent(valideeModifSP)
-                    .addComponent(anuleeBoutonModifSP))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(coursModifSP)
-                    .addComponent(selectionnerCoursModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(typeModifSP)
-                    .addComponent(selectionnerTypeModifSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ajouterBoutonModifSP))
-                .addGap(0, 9, Short.MAX_VALUE))
-        );
-
-        GroupLayout c4 = new GroupLayout(containerSP2);
-        containerSP2.setLayout(c4);
-        c4.setHorizontalGroup(
-            c4.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c4.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(c4.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(paneAjouterCoursSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(c4.createSequentialGroup()
-                        .addComponent(paneAjouterSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(paneModifSeanceSP, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        c4.setVerticalGroup(
-            c4.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c4.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(paneAjouterSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paneAjouterCoursSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paneModifSeanceSP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
-        );
-
-        this.setLeftComponent(containerSP2);
+        c.gridx = 0; c.gridy = 16; //Position
+        container2.add(titre4, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        remplirComboBox(selectCours3, "Veuillez sélectionner", "Cours");
+        c.gridx = 1; c.gridy = 17; c.gridwidth = 1; //On décalle tout de 1
+        container2.add(selectCours3, c);
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 17;
+        c.insets = new Insets(0,0,0,10);
+        container2.add(supprimer, c);
+                
+        this.setLeftComponent(container2);
     }
     
     public void remplirListe(JList liste) {

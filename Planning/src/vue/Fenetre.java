@@ -123,8 +123,5 @@ public class Fenetre extends JFrame {
         edt.getRechercheBarreCours().setVisible(true);
         edt.getRechercheBoutonCours().setVisible(true);
         edt.getRechercheCours().setVisible(true);
-        edt.getRechercheBarreSalle().setVisible(true);
-        edt.getRechercheBoutonSalle().setVisible(true);
-        edt.getRechercheSalle().setVisible(true);
     }
 }

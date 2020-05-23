@@ -4,6 +4,7 @@
 
 package vue;
 
+import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -12,144 +13,120 @@ import javax.swing.table.*;
 public class OngletCours extends JTabbedPane {
     //Onglet Cours
     //Cours -> Emploi du temps
-    private JPanel paneCours;
     private JComboBox<String> vueEdt;
-    private JTextField rechercheBarreCours;
-    private JButton rechercheBoutonCours;
-    private JComboBox<String> rechercheCours;
-    private JScrollPane scrollPaneCours;
-    private JComboBox<String> semaineCours;
-    private JTable tabCours;
+    private JTextField rechercheBarre;
+    private JButton rechercheBouton;
+    private JComboBox<String> selectRecherche;
+    private JComboBox<String> semaine;
+    private JTable tabEdt;
     //Cours -> Récapitulatifs des cours
-    private JScrollPane scrollPaneRecapCours;
-    private JTable tabRecapCours;
+    private JTable tabRecap;
     
     public OngletCours() { //Division en deux public void pour plus de clarté
-        emploiDuTempsCours();
-        recapCours();
-    }
-    
-    //Getters 
-    public JPanel getPaneCours() {
-        return paneCours;
-    }
-    
-    public JComboBox<String> getVueEdt() {
-        return vueEdt;
-    }
-    
-    public JComboBox<String> getSemaineCours() {
-        return semaineCours;
-    }
-    
-    public JTextField getRechercheBarreCours() {
-        return rechercheBarreCours;
-    }
-    
-    public JButton getRechercheBoutonCours() {
-        return rechercheBoutonCours;
-    }
-    
-    public JComboBox<String> getRechercheCours() {
-        return rechercheCours;
-    }
-    
-    public JTable getTabCours() {
-        return tabCours;
-    }
-    
-    public JScrollPane getScrollPaneRecapCours() {
-        return scrollPaneRecapCours;
-    }
-    
-    public JTable getTabRecapCours() {
-        return tabRecapCours;
-    }
-    
-    //Méthodes
-    public void emploiDuTempsCours() { //Construit l'onglet Emploi du temps
-        paneCours = new JPanel();
-        vueEdt = new JComboBox<>(); //Menu déroulant -> en grille ou en liste
-        rechercheCours = new JComboBox<>(); //Pour sélectionner un élève -> A BLINDER
-        rechercheBarreCours = new JTextField(); //Pour rechercher un élève avec son nom/prénom -> A BLINDER N'apparait que pour un référent ou admin
-        rechercheBoutonCours = new JButton(); //Bouton rechercher -> A BLINDER
-        semaineCours = new JComboBox<>(); //Pour sélectionner la semaine
-        scrollPaneCours = new JScrollPane(); 
-        tabCours = new JTable(); //Tableau affichage des groupes
+        //Cours -> Emploi du temps
+        vueEdt = new JComboBox<String>();
+        rechercheBarre = new JTextField();
+        rechercheBouton = new JButton();
+        selectRecherche = new JComboBox<String>();
+        semaine = new JComboBox<String>();
+        tabEdt = new JTable();
+        //Cours -> Récapitulatifs des cours
+        tabRecap = new JTable();
         
+        /*************************EMPLOI DU TEMPS*************************/
+        JPanel cours = new JPanel();
+        cours.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints c = new GridBagConstraints(); //Contraintes d'ajout des composants
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        
+        c.insets = new Insets(10,10,10,10);
+        
+        c.gridx = 0; c.gridy = 0; //Position
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.LINE_START;
         vueEdt.setModel(new DefaultComboBoxModel<>(new String[]{"en grille", "en liste"})); //Ajout des items au menu déroulant
-
-        remplirComboBox(rechercheCours, "[NOM Prénom]", "[NOM Prénom]"); //Tous les étudiants de la BDD
-
-        rechercheBoutonCours.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
-        rechercheBarreCours.setVisible(false);
-        rechercheBoutonCours.setVisible(false);
-        rechercheCours.setVisible(false);
+        cours.add(vueEdt, c); //Ajout au conteneur     
         
-        remplirComboBoxSemaine(semaineCours); //Remplir ma comboBox avec 52 valeurs
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        remplirComboBox(selectRecherche, "[NOM Prénom]", "[NOM Prénom]"); //Tous les étudiants de la BDD
+        cours.add(selectRecherche, c);
+        
+        c.gridx = 2;
+        rechercheBarre.setPreferredSize(new Dimension(250, 20));
+        cours.add(rechercheBarre, c);
+        
+        c.gridx = 3; 
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.LINE_START;
+        rechercheBouton.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
+        rechercheBouton.setPreferredSize(new Dimension(28, 28));
+        cours.add(rechercheBouton, c);
+        rechercheBarre.setVisible(false);
+        rechercheBouton.setVisible(false);
+        selectRecherche.setVisible(false);
+        
+        c.anchor = GridBagConstraints.LINE_END;
+        c.gridx = 7;
+        remplirComboBoxSemaine(semaine); //Remplir ma comboBox avec 52 valeurs
         Calendar cal = Calendar.getInstance();  //Date du jour        
-        semaineCours.setSelectedItem(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR))); //Valeur par défaut de ma JComboBox = semaine courante
-               
-        scrollPaneCours.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); //Barre de scroll toujours la
-
-        int semaine = cal.get(Calendar.WEEK_OF_YEAR);
-        setTableauEdt(semaine); //Remplir le tableau Emploi du temps
+        semaine.setSelectedItem(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR))); //Valeur par défaut de ma JComboBox = semaine courante
+        cours.add(semaine, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
         
-        tabCours.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        int week = cal.get(Calendar.WEEK_OF_YEAR);
+        setTableauEdt(week); //Remplir le tableau Emploi du temps
         
-        scrollPaneCours.setViewportView(tabCours);
+        tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        tabEdt.setRowHeight(100);
+        c.gridwidth = 8;   //2 columns wide
+        c.gridx = 0; c.gridy = 1;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+        cours.add(new JScrollPane(tabEdt), c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+          
+        this.add("Emploi du temps", cours);
         
-        GroupLayout c3 = new GroupLayout(paneCours); //Gérer l'affichage
-        paneCours.setLayout(c3);
-        c3.setHorizontalGroup(
-                c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(c3.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(scrollPaneCours)
-                                        .addGroup(c3.createSequentialGroup()
-                                                .addComponent(vueEdt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(rechercheCours, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(rechercheBarreCours, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(rechercheBoutonCours, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
-                                                .addComponent(semaineCours, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
-        );
-        c3.setVerticalGroup(
-                c3.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(c3.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(c3.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(vueEdt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(rechercheCours, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(rechercheBarreCours, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(rechercheBoutonCours, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(semaineCours, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, 0)
-                                .addComponent(scrollPaneCours, GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
-
-        this.addTab("Emploi du temps", paneCours); //On ajoute l'emploi du temps à l'onglet Cours
+        /*************************RECAPITULATIF DES COURS*************************/
+        JPanel recapCours = new JPanel();
+        recapCours.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
+        t.weightx = 1;
+        
+        t.insets = new Insets(10,10,10,10);
+        
+        tabRecap.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", "Première séance", "Dernière séance", "Durée", "Nb."}));       
+        tabRecap.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        tabRecap.setRowHeight(100);
+        
+        t.gridwidth = 8;   //2 columns wide
+        t.gridx = 0; c.gridy = 1;
+        t.fill = GridBagConstraints.BOTH;
+        recapCours.add(new JScrollPane(tabRecap), c);
+        
+        this.add("Récapitulatif des cours", recapCours);
     }
     
-    public void recapCours() {
-        scrollPaneRecapCours = new JScrollPane(); 
-        tabRecapCours = new JTable(); 
-        
-        scrollPaneRecapCours.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        tabRecapCours.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", "Première séance", "Dernière séance", "Durée", "Nb."}));
-        tabRecapCours.getTableHeader().setReorderingAllowed(false);
-        scrollPaneRecapCours.setViewportView(tabRecapCours);
-
-        this.addTab("Récapitulatif cours", scrollPaneRecapCours);
+    //Getters    
+    public JTextField getRechercheBarre() {
+        return this.rechercheBarre;
     }
     
+    public JButton getRechercheBouton() {
+        return this.rechercheBouton;
+    }
+    
+    public JComboBox getRecherche() {
+        return this.selectRecherche;
+    }
+    
+    public JComboBox getSemaine() {
+        return this.semaine;
+    }
+
+    //Méthodes
     public void remplirComboBoxSemaine(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{"Semaine"})); 
         for(int i = 1; i < 54; i++) {
@@ -217,7 +194,7 @@ public class OngletCours extends JTabbedPane {
             dates[i] = dates[i] + " " + jour++ + mois_nom;
         }
         
-        tabCours.setModel(new DefaultTableModel(new Object [][] { {"08h00"}, {"09h00"}, {"10h00"}, {"11h00"}, 
+        tabEdt.setModel(new DefaultTableModel(new Object [][] { {"08h00"}, {"09h00"}, {"10h00"}, {"11h00"}, 
                                                                   {"12h00"}, {"13h00"}, {"14h00"}, {"15h00"}, 
                                                                   {"16h00"}, {"17h00"}, {"18h00"}, {"19h00"}, 
                                                                   {"20h00"}},
@@ -234,14 +211,14 @@ public class OngletCours extends JTabbedPane {
             }
         });
         
-        tabCours.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        if (tabCours.getColumnModel().getColumnCount() > 0) {
-            tabCours.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tabEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tabEdt.getColumnModel().getColumnCount() > 0) {
+            tabEdt.getColumnModel().getColumn(0).setPreferredWidth(20);
         }
         
         DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
         custom.setHorizontalAlignment(JLabel.CENTER);
-        tabCours.getColumnModel().getColumn(0).setCellRenderer(custom);
+        tabEdt.getColumnModel().getColumn(0).setCellRenderer(custom);
     }    
     
     public Boolean anneeBissextile(int annee) {
@@ -271,3 +248,4 @@ public class OngletCours extends JTabbedPane {
         return annee;
     }
 }
+

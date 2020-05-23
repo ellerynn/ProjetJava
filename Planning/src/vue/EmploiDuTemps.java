@@ -29,61 +29,25 @@ public class EmploiDuTemps extends JTabbedPane {
         this.add("Salles", ongletSalles);
     }
     
-    //Getters
-    public JSplitPane getOngletHome() {
-        return ongletHome;
-    }
-    
-    public JTabbedPane getOngletCours() {
-        return ongletCours;
-    }
-    
+    //Getters    
     public JTextField getRechercheBarreCours() {
-        return ongletCours.getRechercheBarreCours();
+        return ongletCours.getRechercheBarre();
     }
     
     public JButton getRechercheBoutonCours() {
-        return ongletCours.getRechercheBoutonCours();
+        return ongletCours.getRechercheBouton();
     }
     
     public JComboBox getRechercheCours() {
-        return ongletCours.getRechercheCours();
+        return ongletCours.getRecherche();
     }
     
     public JComboBox getSemaineCours() {
-        return ongletCours.getSemaineCours();
-    }
-    
-    public JTable getTabCours() {
-        return ongletCours.getTabCours();
-    }
-    
-    public JTabbedPane getOngletSalles() {
-        return ongletSalles;
-    }
-    
-    public JTextField getRechercheBarreSalle() {
-        return ongletSalles.getRechercheBarreSalle();
-    }
-    
-    public JButton getRechercheBoutonSalle() {
-        return ongletSalles.getRechercheBoutonSalle();
-    }
-    
-    public JComboBox getRechercheSalle() {
-        return ongletSalles.getRechercheSalle();
-    }
-    
-    public JTable getTabSalles() {
-        return ongletSalles.getTabSalles();
+        return ongletCours.getSemaine();
     }
     
     public JComboBox getSemaineSalles() {
-        return ongletSalles.getSemaineSalle();
-    }
-    
-    public JTabbedPane getOngletServicePlanification() {
-        return ongletSP;
+        return ongletSalles.getSemaine();
     }
     
     //Setters

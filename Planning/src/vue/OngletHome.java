@@ -2,114 +2,75 @@ package vue;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.*;
 
 public class OngletHome extends JSplitPane {
     //Variables onglet Home                     
-    private JPanel container1Home;
-    private JPanel container2Home;
-    private JTextField cursusTextHome;
-    private JSpinner dateHome;
-    private JTextField edtTextHome;
-    private JButton linkCoursHome;
-    private JScrollPane scrollPaneHome;
-    private JTable tabCoursHome;
+    private JSpinner date;
+    private JButton linkCours;
+    private JTable tabEdt;
     
     public OngletHome() {
-        container1Home = new JPanel(); //Panneau
-        edtTextHome = new JTextField("Emploi du temps"); //Texte
-        dateHome = new JSpinner();
-        linkCoursHome = new JButton(); //Bouton
-        scrollPaneHome = new JScrollPane(); //Panneau avec scroll vertical
-        tabCoursHome = new JTable(); //Tableau
-        container2Home = new JPanel(); 
-        cursusTextHome = new JTextField("Mon cursus"); 
+        date = new JSpinner();
+        linkCours = new JButton(); //Bouton
+        tabEdt = new JTable(); //Tableau 
+              
+        //Gauche
+        JPanel container1 = new JPanel();
+        container1.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints c = new GridBagConstraints(); //Contraintes d'ajout des composants
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(10,10,10,10);
         
-        edtTextHome.setEditable(false); //L'utilisateur ne peut pas éditer le texte
-        edtTextHome.setBorder(null); //Pas de bordure
-
-        dateHome.setModel(new SpinnerDateModel()); //Contient une date
-        dateHome.setBorder(null); 
-
-        scrollPaneHome.setBackground(new Color(255, 255, 255)); //Blanc
-        scrollPaneHome.setForeground(new Color(255, 255, 255));
-        scrollPaneHome.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); //Scrollbar toujours présente même quand pas utile
-
-        tabCoursHome.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Horaires", "Cours du jour"})); //Contenu = Objet, entêtes = String
-        tabCoursHome.getTableHeader().setReorderingAllowed(false); 
+        JLabel edt = new JLabel("Emploi du temps");
+        c.gridx = 0; c.gridy = 0;
+        container1.add(edt, c);
         
-        scrollPaneHome.setViewportView(tabCoursHome); //Rend le tableau visible
+        date.setModel(new SpinnerDateModel()); //Contient une date
+        c.gridx = 1;
+        container1.add(date, c);
         
-        linkCoursHome.setIcon(new ImageIcon("images\\icon_redimensionner.png")); //Ajout d'une image dans le bouton
-
-        GroupLayout c1 = new GroupLayout(container1Home); //Plusieurs éléments dans un container global --> gérer les alignements
-        container1Home.setLayout(c1);
-        c1.setHorizontalGroup(
-                c1.createParallelGroup(Alignment.LEADING)
-                        .addGroup(c1.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(edtTextHome, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(dateHome, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
-                                .addComponent(linkCoursHome, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-                        .addComponent(scrollPaneHome, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        );
-        c1.setVerticalGroup(
-                c1.createParallelGroup(Alignment.LEADING)
-                        .addGroup(c1.createSequentialGroup()
-                                .addGroup(c1.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(edtTextHome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(dateHome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(linkCoursHome, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, 0)
-                                .addComponent(scrollPaneHome, GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
-                                .addGap(0, 0, 0))
-        );
-
-        this.setLeftComponent(container1Home); //Container gauche
-
-        cursusTextHome.setEditable(false);
-        cursusTextHome.setBackground(new Color(255, 255, 255));
-        cursusTextHome.setHorizontalAlignment(JTextField.CENTER); //Texte centré
-        cursusTextHome.setBorder(null);
-
-        GroupLayout c2 = new GroupLayout(container2Home);
-        container2Home.setLayout(c2);
-        c2.setHorizontalGroup(
-                c2.createParallelGroup(Alignment.LEADING)
-                        .addComponent(cursusTextHome, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-        );
-        c2.setVerticalGroup(
-                c2.createParallelGroup(Alignment.LEADING)
-                        .addGroup(c2.createSequentialGroup()
-                                .addComponent(cursusTextHome, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(464, Short.MAX_VALUE))
-        );
-
-        this.setRightComponent(container2Home); //Container droit
+        linkCours.setIcon(new ImageIcon("images\\icon_redimensionner.png")); //Ajout d'une image dans le bouton
+        c.gridx = 2;
+        c.anchor = GridBagConstraints.LINE_END;
+        c.fill = GridBagConstraints.NONE;
+        linkCours.setPreferredSize(new Dimension(18,18));
+        c.insets = new Insets(10,100,10,10);
+        container1.add(linkCours, c);
+        
+        c.insets = new Insets(10,10,10,10);
+        c.gridwidth = 3;   //2 columns wide
+        c.gridx = 0; c.gridy = 1;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+        
+        tabEdt.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Horaires", "Cours du jour"})); //Contenu = Objet, entêtes = String
+        tabEdt.getTableHeader().setReorderingAllowed(false);
+        
+        container1.add(new JScrollPane(tabEdt), c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        this.setLeftComponent(container1);
+        
+        //Droite
+        JPanel container2 = new JPanel();
+        
+        JLabel cursus = new JLabel("Graphes");
+        container2.add(cursus, c);
+        
+        this.setRightComponent(container2);
     }
     
-    //Getter
-    public JPanel getContainer1Home() {
-        return container1Home;
-    }
-    
+    //Getter    
     public JButton getBouton() {
-        return linkCoursHome; //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
+        return linkCours; //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
     }
     
     public JSpinner getDateHome() {
-        return dateHome;
+        return date;
     }
     
     public JTable getTabCoursHome() {
-        return tabCoursHome;
-    }
-    
-    public JPanel getContainer2Home() {
-        return container2Home;
+        return tabEdt;
     }
 }

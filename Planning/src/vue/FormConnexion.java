@@ -1,80 +1,51 @@
 package vue;
 
+import java.awt.*;
 import javax.swing.*;
 
 //La classe FormConnexion crée le panneau de connexion pour un utilisateur
 public class FormConnexion extends JPanel {
    //Attributs                    
     private JButton bouton; //Bouton connexion écouté dans Fenetre
-    private JPanel champs; //Conteneur
     private JTextField email; //Champ de saisie utilisateur
-    private JLabel label1;
-    private JLabel label2;
-    private JLabel label3;
     private JPasswordField password; //Champ de saisie utilisateur, mode mot de passe (caractères cachés)
     
     /*Constructeur*/
     public FormConnexion() {
-        label1 = new JLabel("Connexion");
-        champs = new JPanel();
-        label2 = new JLabel("Identifiant");
-        email = new JTextField();
-        label3 = new JLabel("Mot de passe");
-        password = new JPasswordField();
         bouton = new JButton("Se connecter");
-            
-        GroupLayout c1 = new GroupLayout(champs);
-        champs.setLayout(c1); //On défini le layout qui gère l'affichage
-        c1.setHorizontalGroup(
-            c1.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(email)
-            .addGroup(c1.createSequentialGroup()
-                .addGroup(c1.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(label2)
-                    .addComponent(label3))
-                .addGap(0, 211, Short.MAX_VALUE))
-            .addComponent(password)
-        ); 
-        c1.setVerticalGroup(
-            c1.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c1.createSequentialGroup()
-                .addComponent(label2)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(email, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label3)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(password, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        );
+        email = new JTextField();
+        password = new JPasswordField();
         
-        GroupLayout c2 = new GroupLayout(this);
-        this.setLayout(c2);
-        c2.setHorizontalGroup(
-            c2.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c2.createSequentialGroup()
-                .addContainerGap(88, Short.MAX_VALUE)
-                .addComponent(champs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
-            .addGroup(c2.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(label1)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(GroupLayout.Alignment.TRAILING, c2.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bouton)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        c2.setVerticalGroup(
-            c2.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(c2.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
-                .addComponent(label1)
-                .addGap(18, 18, 18)
-                .addComponent(champs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(bouton)
-                .addContainerGap(97, Short.MAX_VALUE))
-        );
+        this.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints c = new GridBagConstraints(); //Contraintes d'ajout des composants
+        c.insets = new Insets(10,10,10,10);
+        
+        JLabel titre1 = new JLabel("Connexion"); //JLabel titre
+        JLabel douille = new JLabel("              "); 
+        JLabel titre2 = new JLabel("Identifiant   ");
+        JLabel titre3 = new JLabel("Mot de passe  ");
+        
+        c.gridx = 1; c.gridy = 0; //Position
+        this.add(titre1, c); //Ajout au conteneur
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridy = 1; c.gridx = 0;
+        this.add(titre2, c); //Ajout au conteneur
+        c.gridx = 1;
+        email.setPreferredSize(new Dimension(250, 20));
+        this.add(email, c);
+        
+        c.gridx = 0; c.gridy = 2;
+        this.add(titre3, c); //Ajout au conteneur
+        c.gridx = 1;
+        this.add(password, c);
+        
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 1; c.gridy = 3; //Position
+        this.add(bouton, c);
+        
+        c.gridx = 2; c.gridy = 1;
+        this.add(douille, c);
     }
     
     //Getters

@@ -97,11 +97,11 @@ public class SeanceDAO extends DAO<Seance> {
     public boolean delete(Seance object) {
         return false;
     }
+    
 
      @Override
     public Seance update(Seance object) {
         try {
- 
                 this.connect	
                  .createStatement(
                     ResultSet.TYPE_SCROLL_INSENSITIVE, 
@@ -112,6 +112,8 @@ public class SeanceDAO extends DAO<Seance> {
                     ", Heure_Debut = '" + object.getHeureDebut() + "'"+
                     ", Heure_Fin = '" + object.getHeureFin() + "'"+
                     ", Etat = '" + object.getEtat() + "'"+
+                    ", ID_cours = '" + object.getCours().getId() + "'"+
+                    ", ID_type = '" + object.getTypeCours().getId() + "'"+
                     " WHERE ID = " + object.getId()
                  );
             object = this.find(object.getId());
@@ -173,15 +175,12 @@ public class SeanceDAO extends DAO<Seance> {
                     seance.ajouterEnseignant(eDAO.find(resultEnseignants.getInt("ID_enseignant")));
                 }
             }
-
             //On récupère les salles de la séance
             ResultSet resultSalles =  st.executeQuery("SELECT * FROM Seance\n" +
                                                       "LEFT JOIN seance_salles ON seance.ID = seance_salles.ID_seance\n" +
                                                       "LEFT JOIN salle ON seance_salles.ID_salle = salle.ID\n" +
                                                       "WHERE Seance.ID = "+id);
-
-            if (resultSalles.first())
-            {
+            if (resultSalles.first()){
                 SalleDAO sDAO = new SalleDAO();
                 seance.ajouterSalle(sDAO.find(resultSalles.getInt("ID_salle")));
                 
@@ -195,11 +194,9 @@ public class SeanceDAO extends DAO<Seance> {
                                                       "LEFT JOIN seance_groupes ON seance.ID = seance_groupes.ID_seance\n" +
                                                       "LEFT JOIN groupe ON seance_groupes.ID_groupe = groupe.ID\n" +
                                                       "WHERE Seance.ID = "+id);
-            if (resultGroupes.first())
-            {
+            if (resultGroupes.first()){
                 GroupeDAO gDAO = new GroupeDAO();
                 seance.ajouterGroupe(gDAO.find(resultGroupes.getInt("ID_groupe")));
-                
                 while(resultGroupes.next()) {
                     seance.ajouterGroupe(gDAO.find(resultGroupes.getInt("ID_groupe")));
                 }
@@ -211,6 +208,161 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return seance;
     }
+    
+    //methode pour recuperer table seance_groupes pour faire verification MAJ
+    public Boolean find_seance_groupe(int id_seance, int id_groupe) {
+        try{
+            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes WHERE ID_seance = '" + id_seance + "'"+ 
+                           " AND ID_groupe = " + id_groupe );
+            if(maRequete.first())
+                return true;
+            else
+                return false; 
+        }
+        catch (SQLException e){
+          e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public Boolean find_seance_groupe_valider(int id_seance) {
+        try{
+            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes WHERE ID_seance = " + id_seance );
+            if(maRequete.first()){
+                return true;
+            }else
+                return false; 
+        }
+        catch (SQLException e){
+          e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public int find_seance_groupe_enlever_blindage(int id_seance) {
+        int nombre = 0;//utile pour blindage, minimum 1 groupe dans la table seance_groupe, dons si superieur a 1, donc on va stocker le nombre de seance
+        try{
+            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes WHERE ID_seance = " + id_seance );
+            if(maRequete.first()){
+                maRequete.beforeFirst(); // retourne à la première ligne
+                while(maRequete.next()) {
+                    nombre++;
+                }  
+            }
+        }
+        catch (SQLException e){
+          e.printStackTrace();
+        }
+        return nombre;
+    }
+    
+    public int find_seance_enseignant_enlever_blindage(int id_seance) {
+        int nombre = 0;//utile pour blindage, minimum 1 groupe dans la table seance_groupe, dons si superieur a 1, donc on va stocker le nombre de seance
+        try
+        {
+            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_enseignants WHERE ID_seance = " + id_seance );
+            if(maRequete.first())
+            {
+                maRequete.beforeFirst(); // retourne à la première ligne
+                while(maRequete.next()) {
+                    nombre++;
+                }  
+            }
+        }
+        catch (SQLException e) 
+        {
+          e.printStackTrace();
+        }
+        return nombre;
+    }
+    
+    public Boolean find_seance_enseignant_valider(int id_seance) {
+        int nombre = 0;
+        try
+        {
+            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_enseignants WHERE ID_seance = " + id_seance );
+            if(maRequete.first())
+            {
+                maRequete.beforeFirst(); // retourne à la première ligne
+                while(maRequete.next()) {
+                    nombre++;
+                }  
+                return true;
+            }
+            else
+                return false; 
+        }
+        catch (SQLException e) 
+        {
+          e.printStackTrace();
+        }
+        return false;
+    }
+
+    
+    public Boolean find_seance_creneau (int id_groupe, Seance seance ){
+        try
+        {
+            ResultSet maRequete = this.connect.createStatement()
+                    .executeQuery("SELECT * FROM seance\n" +
+                                "LEFT JOIN seance_groupes SG ON seance.ID = SG.ID_seance\n" +
+                                "WHERE SG.ID_groupe = "+id_groupe+" AND seance.Date = '"+ seance.getDate()+"' "+
+                                "AND ((seance.Heure_fin >= '"+seance.getHeureDebut()+"' AND seance.Heure_fin <= '"+seance.getHeureFin()+"') " +
+                                "OR (seance.Heure_debut >= '"+seance.getHeureDebut()+"' AND seance.Heure_debut <= '"+seance.getHeureFin()+"'))");
+            if(maRequete.first())
+                return true;
+                //return true; //Des séances sont éxistant dans le créneau 
+            else
+                return false; //Ok, feu vert
+        }
+        catch (SQLException e) 
+        {
+          e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public int find_capacite_groupe_total(int id_groupe, int id_seance ){
+        int cap = 0;
+        try
+        {
+            ResultSet maRequete = this.connect.createStatement()
+                    .executeQuery("SELECT DISTINCT ID_utilisateur FROM etudiant\n" +
+                                    "LEFT JOIN seance_groupes SG ON SG.ID_groupe = etudiant.ID_groupe\n" +
+                                    "WHERE SG.ID_seance = "+id_seance+" OR etudiant.ID_groupe = "+id_groupe);
+            while(maRequete.next())
+            {
+                cap++;
+            }
+        }
+        catch (SQLException e) 
+        {
+          e.printStackTrace();
+        }
+        return cap;
+    }
+        
+    public void requeteFind(String requete, Seance seance) {
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+            result = st.executeQuery(requete);
+            
+            if(!result.first())
+            {
+                
+                seance.setId_seance(result.getInt("ID_seance"));
+                seance.setId_groupe(result.getInt("ID_groupe"));
+            }    
+            
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+        }
+    }
+   
     public void insertInJonction(int idSeance, int idAutre, int table)
     {
         try{

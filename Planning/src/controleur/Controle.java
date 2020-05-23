@@ -113,7 +113,7 @@ public class Controle {
                 System.out.println("L'enseignant a été enlevée, la séance est toujours disponible !");
             }
             if(sDAO.find_seance_enseignant_enlever_blindage(id_seance)==1){
-                sDAO.DeleteInJonction(id_seance, id_groupe, 2);
+                sDAO.DeleteInJonction(id_seance, id_enseignant, 1);
                 seance2.setEtat(1);
                 sDAO.update(seance2);
                 System.out.println("Le groupe a été enlevée, la seéance est en cours de validation !");

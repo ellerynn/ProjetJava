@@ -85,10 +85,6 @@ public class Controle {
 
         DAO<Enseignant> enseignantDAO = new EnseignantDAO(); //Récupération des données de l'enseignant via DAO
         enseignant = enseignantDAO.find(enseignant.getId());
-
-        //On ne récupère que les séances de la semaine courante
-        SeanceDAO seanceDAO = new SeanceDAO(); //Récupération des données de l'enseignant via DAO
-        enseignant.setSeances(seanceDAO.findSeancesByUserAndWeek(enseignant.getId(), semaine()));
     }
     
     public void recupEtudiant() {
@@ -98,10 +94,22 @@ public class Controle {
         etudiant.setEmail(utilisateur.getEmail());
         etudiant.setPassword(utilisateur.getPassword());
         etudiant.setDroit(utilisateur.getDroit());
-
-        //On ne récupère que les séances de la semaine courante
-        SeanceDAO seanceDAO = new SeanceDAO(); //Récupération des données de l'étudiant via DAO
-        etudiant.setSeances(seanceDAO.findSeancesByUserAndWeek(etudiant.getId(), semaine()));
+    }
+    
+    public void recupSeances(int semaine) {
+        SeanceDAO seanceDAO = new SeanceDAO();
+        ArrayList<Seance> seances = seanceDAO.findSeancesByUserAndWeek(etudiant.getId(), semaine);
+        
+        if(utilisateur.getDroit() == 3 || utilisateur.getDroit() == 2) {
+            //On ne récupère que les séances de la semaine courante
+            enseignant.setSeances(seanceDAO.findSeancesByUserAndWeek(enseignant.getId(), semaine));
+                
+        }
+        
+        if(utilisateur.getDroit() == 4) {
+            //On ne récupère que les séances de la semaine courante
+            etudiant.setSeances(seanceDAO.findSeancesByUserAndWeek(etudiant.getId(), semaine));
+        }
     }
     
     public int semaine() {

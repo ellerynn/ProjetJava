@@ -60,4 +60,10 @@ public class FormConnexion extends JPanel {
     public String getPassword() {
         return String.valueOf(password.getPassword()); //On renvoie une String et non pas un char[]
     }
+    
+    //Setters
+    public void setEmailPassWord(String email, String password) {
+        this.email.setText(email);
+        this.password.setText(password);
+    }
 }

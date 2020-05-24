@@ -4,6 +4,7 @@
 
 package vue;
 
+import controleur.Controle;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
@@ -19,6 +20,7 @@ public class OngletCours extends JTabbedPane {
     private JComboBox<String> selectRecherche;
     private JComboBox<String> semaine;
     private JTable tabEdt;
+    private TableRendererPanel p;
     //Cours -> Récapitulatifs des cours
     private JTable tabRecap;
     
@@ -30,6 +32,7 @@ public class OngletCours extends JTabbedPane {
         selectRecherche = new JComboBox<String>();
         semaine = new JComboBox<String>();
         tabEdt = new JTable();
+        p = new TableRendererPanel(tabEdt);
         //Cours -> Récapitulatifs des cours
         tabRecap = new JTable();
         
@@ -70,21 +73,19 @@ public class OngletCours extends JTabbedPane {
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx = 7;
         remplirComboBoxSemaine(semaine); //Remplir ma comboBox avec 52 valeurs
-        Calendar cal = Calendar.getInstance();  //Date du jour        
+        Calendar cal = Calendar.getInstance();  //Date du jour  
         semaine.setSelectedItem(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR))); //Valeur par défaut de ma JComboBox = semaine courante
         cours.add(semaine, c);
         c.fill = GridBagConstraints.HORIZONTAL;
         
         int week = cal.get(Calendar.WEEK_OF_YEAR);
-        setTableauEdt(week); //Remplir le tableau Emploi du temps
+        setEdt(week); //Remplir le tableau Emploi du temps
         
-        tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
-        tabEdt.setRowHeight(100);
         c.gridwidth = 8;   //2 columns wide
         c.gridx = 0; c.gridy = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        cours.add(new JScrollPane(tabEdt), c);
+        cours.add(p, c);
         c.fill = GridBagConstraints.HORIZONTAL;
           
         this.add("Emploi du temps", cours);
@@ -99,7 +100,7 @@ public class OngletCours extends JTabbedPane {
         
         tabRecap.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", "Première séance", "Dernière séance", "Durée", "Nb."}));       
         tabRecap.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
-        tabRecap.setRowHeight(100);
+        //tabRecap.setRowHeight(100);
         
         t.gridwidth = 8;   //2 columns wide
         t.gridx = 0; c.gridy = 1;
@@ -125,6 +126,10 @@ public class OngletCours extends JTabbedPane {
     public JComboBox getSemaine() {
         return this.semaine;
     }
+    
+    public JTable getEdt() {
+        return this.tabEdt;
+    }
 
     //Méthodes
     public void remplirComboBoxSemaine(JComboBox box) {
@@ -141,7 +146,7 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
-    public void setTableauEdt(int semaine) {
+    public void setEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
         Calendar cal = Calendar.getInstance(); //Date du jour
         int anneeScolaire = calculAnneeScolaire(); //2019
@@ -157,7 +162,7 @@ public class OngletCours extends JTabbedPane {
         //Maintenant, si j'affiche la date du jour, il me dira que nous sommes le lundi de la semaine (int semaine) de l'année courante
         int mois = cal.get(Calendar.MONTH)+1; //Mois courant = mois retourné + 1
         int jour = cal.get(Calendar.DAY_OF_MONTH); //Jour courant = jour retourné 
-        String[] dates = {"lun. ", "mar.", "mer.", "jeu.", "ven.", "sam."};
+        String[] dates = {"lun.", "mar.", "mer.", "jeu.", "ven.", "sam."};
         String[] month = {" janvier", " février", " mars", " avril", " mai", " juin", 
                           " juillet", " août", " septembre", " octobre", " novembre", " décembre", " janvier"};
                 
@@ -194,10 +199,19 @@ public class OngletCours extends JTabbedPane {
             dates[i] = dates[i] + " " + jour++ + mois_nom;
         }
         
-        tabEdt.setModel(new DefaultTableModel(new Object [][] { {"08h00"}, {"09h00"}, {"10h00"}, {"11h00"}, 
-                                                                  {"12h00"}, {"13h00"}, {"14h00"}, {"15h00"}, 
-                                                                  {"16h00"}, {"17h00"}, {"18h00"}, {"19h00"}, 
-                                                                  {"20h00"}},
+        tabEdt.setModel(new DefaultTableModel(new Object [][] { {"08h00"},{"08h15"},{"08h30"},{"08h45"}, 
+                                                                {"09h00"},{"09h15"},{"09h30"},{"09h45"}, 
+                                                                {"10h00"},{"10h15"},{"10h30"},{"10h45"}, 
+                                                                {"11h00"},{"11h15"},{"11h30"},{"11h45"}, 
+                                                                {"12h00"},{"12h15"},{"12h30"},{"12h45"}, 
+                                                                {"13h00"},{"13h15"},{"13h30"},{"13h45"}, 
+                                                                {"14h00"},{"14h15"},{"14h30"},{"14h45"}, 
+                                                                {"15h00"},{"15h15"},{"15h30"},{"15h45"}, 
+                                                                {"16h00"},{"16h15"},{"16h30"},{"16h45"}, 
+                                                                {"17h00"},{"17h15"},{"17h30"},{"17h45"}, 
+                                                                {"18h00"},{"18h15"},{"18h30"},{"18h45"}, 
+                                                                {"19h00"},{"19h15"},{"19h30"},{"19h45"}, 
+                                                                {"20h00"},{"20h15"},{"20h30"},{"20h45"}},
                                                 new String[]{ "Horaires", dates[0], dates[1], dates[2], 
                                                               dates[3], dates[4],  dates[5]}) 
         { 
@@ -213,8 +227,11 @@ public class OngletCours extends JTabbedPane {
         
         tabEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tabEdt.getColumnModel().getColumnCount() > 0) {
-            tabEdt.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabEdt.getColumnModel().getColumn(0).setMaxWidth(50);
         }
+        
+        tabEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
         
         DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
         custom.setHorizontalAlignment(JLabel.CENTER);

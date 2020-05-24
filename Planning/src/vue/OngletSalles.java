@@ -73,7 +73,7 @@ public class OngletSalles extends JTabbedPane {
         c.fill = GridBagConstraints.HORIZONTAL;
         
         int week = cal.get(Calendar.WEEK_OF_YEAR);
-        setTableauEdt(week); //Remplir le tableau Emploi du temps
+        setEdt(week); //Remplir le tableau Emploi du temps
         
         tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
         tabEdt.setRowHeight(100);
@@ -125,7 +125,7 @@ public class OngletSalles extends JTabbedPane {
         }
     }
     
-    public void setTableauEdt(int semaine) {
+    public void setEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
         Calendar cal = Calendar.getInstance(); //Date du jour
         int anneeScolaire = calculAnneeScolaire(); //2019
@@ -141,7 +141,7 @@ public class OngletSalles extends JTabbedPane {
         //Maintenant, si j'affiche la date du jour, il me dira que nous sommes le lundi de la semaine (int semaine) de l'année courante
         int mois = cal.get(Calendar.MONTH)+1; //Mois courant = mois retourné + 1
         int jour = cal.get(Calendar.DAY_OF_MONTH); //Jour courant = jour retourné 
-        String[] dates = {"lun. ", "mar.", "mer.", "jeu.", "ven.", "sam."};
+        String[] dates = {"lun.", "mar.", "mer.", "jeu.", "ven.", "sam."};
         String[] month = {" janvier", " février", " mars", " avril", " mai", " juin", 
                           " juillet", " août", " septembre", " octobre", " novembre", " décembre", " janvier"};
                 
@@ -178,10 +178,19 @@ public class OngletSalles extends JTabbedPane {
             dates[i] = dates[i] + " " + jour++ + mois_nom;
         }
         
-        tabEdt.setModel(new DefaultTableModel(new Object [][] { {"08h00"}, {"09h00"}, {"10h00"}, {"11h00"}, 
-                                                                  {"12h00"}, {"13h00"}, {"14h00"}, {"15h00"}, 
-                                                                  {"16h00"}, {"17h00"}, {"18h00"}, {"19h00"}, 
-                                                                  {"20h00"}},
+        tabEdt.setModel(new DefaultTableModel(new Object [][] { {"08h00"},{"08h15"},{"08h30"},{"08h45"}, 
+                                                                {"09h00"},{"09h15"},{"09h30"},{"09h45"}, 
+                                                                {"10h00"},{"10h15"},{"10h30"},{"10h45"}, 
+                                                                {"11h00"},{"11h15"},{"11h30"},{"11h45"}, 
+                                                                {"12h00"},{"12h15"},{"12h30"},{"12h45"}, 
+                                                                {"13h00"},{"13h15"},{"13h30"},{"13h45"}, 
+                                                                {"14h00"},{"14h15"},{"14h30"},{"14h45"}, 
+                                                                {"15h00"},{"15h15"},{"15h30"},{"15h45"}, 
+                                                                {"16h00"},{"16h15"},{"16h30"},{"16h45"}, 
+                                                                {"17h00"},{"17h15"},{"17h30"},{"17h45"}, 
+                                                                {"18h00"},{"18h15"},{"18h30"},{"18h45"}, 
+                                                                {"19h00"},{"19h15"},{"19h30"},{"19h45"}, 
+                                                                {"20h00"},{"20h15"},{"20h30"},{"20h45"}},
                                                 new String[]{ "Horaires", dates[0], dates[1], dates[2], 
                                                               dates[3], dates[4],  dates[5]}) 
         { 

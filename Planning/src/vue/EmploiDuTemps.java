@@ -2,7 +2,9 @@ package vue;
 
 import controleur.Controle;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
+import modele.*;
 
 //La classe EmploiDuTemps correspond à l'application à proprement parlé
 //Après connexion de l'utilisateur, on ouvre cette interface
@@ -29,7 +31,7 @@ public class EmploiDuTemps extends JTabbedPane {
         this.add("Salles", ongletSalles);
     }
     
-    //Getters    
+    //Getters      
     public JTextField getRechercheBarreCours() {
         return ongletCours.getRechercheBarre();
     }
@@ -46,6 +48,10 @@ public class EmploiDuTemps extends JTabbedPane {
         return ongletCours.getSemaine();
     }
     
+    public JTable getEdtCours() {
+        return ongletCours.getEdt();
+    }
+    
     public JComboBox getSemaineSalles() {
         return ongletSalles.getSemaine();
     }
@@ -56,11 +62,11 @@ public class EmploiDuTemps extends JTabbedPane {
         this.add("Service planification", ongletSP);
     }
     
-    public void setTabCours(int semaine) {
-        ongletCours.setTableauEdt(semaine);
+    public void setEdtCours(int semaine) {
+        ongletCours.setEdt(semaine);
     }
     
-    public void setTabSalles(int semaine) {
-        ongletSalles.setTableauEdt(semaine);
+    public void setEdtSalles(int semaine) {
+        ongletSalles.setEdt(semaine);
     }
 }

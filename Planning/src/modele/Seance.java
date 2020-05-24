@@ -152,6 +152,7 @@ public class Seance {
     public void ajouterSalle(Salle salle) { //Un admin peut ajouter une séance à une salle
         this.salles.add(salle);
     }
+    
     public String calculDuree()
     {
         String duree = new String();
@@ -201,5 +202,93 @@ public class Seance {
         }
         duree = heure+"h"+minute;
         return duree;
+    }
+    
+    @Override
+    public String toString() {
+        String str1 = new String(); //Enseignants
+        for(int i=0;i<enseignants.size();i++) {
+            str1 = str1 + " " + enseignants.get(i).getPrenom() + " " + enseignants.get(i).getNom(); 
+            if(i != enseignants.size()-1)
+                str1 = str1 + ", ";
+        }
+            
+        String str2 = new String(); //Groupes
+        for(int i=0;i<groupes.size();i++) {
+            str2 = str2 + " " + groupes.get(i).getNom();
+            if(i != groupes.size()-1)
+                str2 = str2 + ", ";
+        }
+        
+        String str3 = new String(); //Salles
+        for(int i=0;i<salles.size();i++) {
+            str3 = str3 + " " + salles.get(i).getNom() + " à " + salles.get(i).getSite().getNom();
+            if(i != salles.size()-1)
+                str3 = str3 + ", ";
+        }
+        
+        String seance = new String();
+        
+        if(etat == 3)
+            seance = "ANNULEE\n";
+        
+        if(etat == 1)
+            seance = "EN COURS DE VALIDATION\n";
+            
+        seance = seance + " " + cours.getNom() + "\n" //Cours
+                        + str1 + "\n" //Enseignants
+                        + str2 + "\n" //Groupes
+                        + str3 + "\n" //Salles
+                        + type.getNom() //Type du cours
+        ;        
+        return seance;
+    }
+    
+    public ArrayList<String> toArrayListOfString() {      
+        ArrayList<String> seance = new ArrayList<>();
+        
+        if(etat == 3)
+            seance.add("ANNULEE");
+        
+        if(etat == 2)
+            seance.add("VALIDEE");
+        
+        if(etat == 1)
+            seance.add("EN COURS DE VALIDATION");
+            
+        seance.add(" " + cours.getNom());
+        
+        String str1 = new String(); //Enseignants
+        for(int i=0;i<enseignants.size();i++) {
+            str1 = str1 + " " + enseignants.get(i).getPrenom() + " " + enseignants.get(i).getNom(); 
+            if(i != enseignants.size()-1)
+                str1 = str1 + ", ";
+        }
+        
+        seance.add(str1);
+            
+        String str2 = new String(); //Groupes
+        for(int i=0;i<groupes.size();i++) {
+            str2 = str2 + " " + groupes.get(i).getNom();
+            if(i != groupes.size()-1)
+                str2 = str2 + ", ";
+        }
+        
+        seance.add(str2);
+        
+        String str3 = new String(); //Salles
+        for(int i=0;i<salles.size();i++) {
+            str3 = str3 + " " + salles.get(i).getNom() + " à " + salles.get(i).getSite().getNom();
+            if(i != salles.size()-1)
+                str3 = str3 + ", ";
+        }
+        
+        seance.add(str3);
+        
+        seance.add(type.getNom());
+        
+        //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
+        //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
+        return seance;
     }
 }

@@ -40,7 +40,8 @@ public class Controle {
         //controle.EnleverEnseignantSeance(1, 16);
         //controle.AffecterEnseignantSeance(1,18);
         //controle.AjouterEnseignantSeance(1,17);
-        //controle.AffecterSalleSeance(2,4);
+        //controle.AffecterSalleSeance(13,2);
+        //controle.AffecterGroupeSeance(4,5);
     }
     
     //MODULE MAJ(Mise a Jour)/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,6 +65,34 @@ public class Controle {
             }else{
                     sDAO.insertInJonction(id_seance, id_enseignant, 1);//METHODE N°18 DANS SEANCEDAO
                     System.out.println("L'enseignant a bien été affecté à cette séance ! ");
+            }         
+        }    
+    }
+/*
+    * MODULE MAJ N°2  AFFECTER UN GROUPE A UNE SEANCE
+*/
+    public void AffecterGroupeSeance(int id_seance, int id_groupe) {
+        SeanceDAO sDAO = new SeanceDAO();
+        Seance seance = sDAO.find(id_seance);
+        
+        sDAO.find_seance_groupe(id_seance,id_groupe);//METHODE N°4 DANS SEANCEDAO
+
+        if(sDAO.find_seance_affecter_groupe(id_seance)){//METHODE N°21 DANS SEANCEDAO
+            
+            System.out.println("La groupe que vous essayez d'affecter ne peut pas etre affecter.");
+        }
+        else{
+            if(sDAO.find_seance_creneau_groupe(id_groupe, seance)){//METHODE N°13 DANS SEANCEDAO
+                System.out.println("Impossible de rajouter ce groupe car un cours est deja attitre dans ce créneaux");
+            }else{
+                int capacite = 0;
+                for (int i = 0 ; i < seance.getSalles().size() ; i ++){
+                    capacite += seance.getSalles().get(i).getCapacite();
+                }
+                if(capacite >= sDAO.find_capacite_groupe_total(id_groupe, id_seance)){//METHODE N°16 DANS SEANCEDAO
+                    sDAO.insertInJonction(id_seance, id_groupe, 2);//METHODE N°18 DANS SEANCEDAO
+                    System.out.println("Le groupe a bien été ajouté à cette seance ! ");
+                }else{System.out.println("Le nombre d'eleves dans le groupe depasse la capacité maximale de la seance");}
             }         
         }    
     }
@@ -97,22 +126,35 @@ public class Controle {
         sDAO.find_seance_salle(id_seance,id_salle);//METHODE N°6 DANS SEANCEDAO
 
         if(sDAO.find_seance_affecter_salle(id_seance)){ //METHODE N°8 DANS SEANCEDAO
-            System.out.println("La salle que vous essayez d'affecter ne peut pas etre affecter, veuillez AJOUTER une salle");
+            System.out.println("La salle que vous essayez d'affecter ne peut pas etre affecter.");
         }
         else{
             if(sDAO.find_seance_creneau_salle(id_salle, seance)){ //METHODE N°15 DANS SEANCEDAO
                 System.out.println("Impossible d'affecter cet salle à cette séance car il est deja attitre dans ce créneau");
             }else{
-                int capacite = 0;
-                for (int i = 0 ; i < seance.getGroupes().size() ; i ++){
-                    capacite += seance.getSalles().get(i).getCapacite();
-                }
-                if(capacite >= sDAO.find_capacite_salle_total(id_salle, id_seance)){ //METHODE N°17 DANS SEANCEDAO
+
+                SalleDAO salledao = new SalleDAO();
+                Salle salle = salledao.find(id_salle);
+
+                if(salle.getCapacite() >= sDAO.find_capacite_salle_total(id_seance)){ //METHODE N°17 DANS SEANCEDAO
                     sDAO.insertInJonction(id_seance, id_salle, 3); //METHODE N°18 DANS SEANCEDAO
                     System.out.println("La salle a bien été affecté à cette séance ! ");
                 }else{System.out.println("Le nombre d'eleves pour cette seance depasse la capacité maximale de la seance, veuillez affecter une salle avec une capacité plus grande");}         
             }         
         }    
+    }
+/*
+    * MODULE MAJ N°5 DEPLACER UNE SEANCE DE COURS
+*/
+    public void DeplacerSeance(int id_seance,int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat) {
+        SeanceDAO sDAO = new SeanceDAO();
+        Seance seance = sDAO.find(id_seance);
+        seance.setSemaine(Semaine);
+        seance.setDate(Date);
+        seance.setHeureDebut(Heure_Debut);
+        seance.setHeureFin(Heure_Fin);
+        seance.setEtat(Etat);
+        seance = sDAO.update(seance);
     }
 /*
     * MODULE MAJ N°6 AJOUTER UNE SEANCE

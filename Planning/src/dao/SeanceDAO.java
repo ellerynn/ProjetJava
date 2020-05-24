@@ -516,15 +516,14 @@ public class SeanceDAO extends DAO<Seance> {
     * METHODE BLINDAGE CAPCAITE GROUPE ET SALLE
     * METHODE N°17 POUR MODULE MAJ N°4 AFFECTER UNE SALLE A UNE SEANCE
 */
-    public int find_capacite_salle_total(int id_salle, int id_seance ){
+    public int find_capacite_salle_total(int id_seance ){
         int cap = 0;
         try
         {
             ResultSet maRequete = this.connect.createStatement()
                     .executeQuery("SELECT DISTINCT ID_utilisateur FROM etudiant\n" +
                                     "LEFT JOIN seance_groupes SG ON SG.ID_groupe = etudiant.ID_groupe\n" +
-                                    "LEFT JOIN seance_salles SS ON SS.ID_seance = SG.ID_seance\n" +
-                                    "WHERE SG.ID_seance = "+id_seance+" OR SS.ID_salle = "+id_salle);
+                                    "WHERE SG.ID_seance = "+id_seance);
             while(maRequete.next())
             {
                 cap++;
@@ -685,6 +684,27 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
     }
+    /*
+    * FIND_SEANCE_AFFECTER_GROUPE METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE POUR SAVOIR SI UN GROUPE A DEJA ETE AFFECTER A LA SEANCE
+    *CAR ON PEUT AFFECTER QUE SI UNE SEANCE N'A PAS DE GROUPE
+    * METHODE N°21 POUR MODULE MAJ N°2  AFFECTER UN GROUPE A UNE SEANCE
+*/
+    public Boolean find_seance_affecter_groupe(int id_seance) {
+        try{
+            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes " +
+                                                                             "LEFT JOIN seance ON seance.ID = seance_groupes.ID_seance " 
+                                                                             + " WHERE seance.ID = " + id_seance );
+            if(maRequete.first())
+                return true;
+            else
+                return false; 
+        }
+        catch (SQLException e){
+          e.printStackTrace();
+        }
+        return false;
+    }
+    
     
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();

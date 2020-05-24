@@ -21,6 +21,9 @@ public class Seance {
     private ArrayList<Groupe> groupes;
     private ArrayList<Salle> salles;
     
+    protected int id_seance;
+    protected int id_groupe;
+    
     //Constructeur par défaut
     public Seance() {
         id = 0;
@@ -83,6 +86,14 @@ public class Seance {
         return type;
     }
     
+    public int getId_seance() {
+        return id_seance;
+    }
+    
+    public int getId_groupe() {
+        return id_groupe;
+    }
+    
     public ArrayList<Enseignant> getEnseignants() {
         return enseignants;
     }
@@ -98,6 +109,14 @@ public class Seance {
     //Setters [en cours]
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setId_seance(int id) {
+        this.id_seance = id;
+    }
+    
+    public void setId_groupe(int id) {
+        this.id_groupe = id;
     }
     
     public void setSemaine(int semaine) {

@@ -1,10 +1,8 @@
 package vue;
 
-import controleur.Controle;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import modele.*;
 
 //La classe EmploiDuTemps correspond à l'application à proprement parlé
 //Après connexion de l'utilisateur, on ouvre cette interface
@@ -68,5 +66,9 @@ public class EmploiDuTemps extends JTabbedPane {
     
     public void setEdtSalles(int semaine) {
         ongletSalles.setEdt(semaine);
+    }
+    
+    public void setRechercheCours(ArrayList<String> string) {
+        ongletCours.remplirComboBox(ongletCours.getRecherche(), string);
     }
 }

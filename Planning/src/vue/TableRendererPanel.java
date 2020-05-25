@@ -8,16 +8,13 @@ import java.util.Calendar;
 import javax.swing.*;
 import javax.swing.table.*;
  
-public class TableRendererPanel extends JScrollPane
-{   
+public class TableRendererPanel extends JScrollPane {   
     private MultiLabelRenderer renderer;
     
     public TableRendererPanel(JTable table)
     {
         this.setViewportView(table);
-        
         renderer = new MultiLabelRenderer();
-        
         table.setDefaultRenderer(Object.class, renderer);
     }
 }

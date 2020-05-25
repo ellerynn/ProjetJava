@@ -224,6 +224,7 @@ public class Seance {
     }
     
     @Override
+    //CETTE METHODE NE SERA PEUT ETRE PAS UTILISEE
     public String toString() {
         String str1 = new String(); //Enseignants
         for(int i=0;i<enseignants.size();i++) {
@@ -269,11 +270,8 @@ public class Seance {
         if(etat == 3)
             seance.add("ANNULEE");
         
-        if(etat == 2)
-            seance.add("VALIDEE");
-        
         if(etat == 1)
-            seance.add("EN COURS DE VALIDATION");
+            seance.add("EN COURS DE VALIDATION"); //Blinder l'affichage dans ce cas la aussi
             
         seance.add(" " + cours.getNom());
         

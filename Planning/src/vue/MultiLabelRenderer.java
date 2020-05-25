@@ -5,14 +5,9 @@
  */
 package vue;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.table.*;
 
 /**
  *
@@ -20,13 +15,12 @@ import javax.swing.table.TableCellRenderer;
  */
 public class MultiLabelRenderer implements TableCellRenderer {
     private JPanel panel;
-    private JLabel red;
+    private JLabel label;
 
     public MultiLabelRenderer()
     {
         panel = new JPanel(new BorderLayout());
-        red = new JLabel();
-        red.setForeground(Color.RED);
+        label = new JLabel();
     }
 
     @Override
@@ -45,14 +39,35 @@ public class MultiLabelRenderer implements TableCellRenderer {
                 return panel;
 
             String text = value.toString(); //Si on setValueAt, récupère la String envoyée dans la cellule
+          
+            label.setText(text); //Design
+            label.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Color.red)); //Design} 
+            label.setBackground(new Color(255, 204, 204));
+            label.setOpaque(true);
 
-            red.setText(text); //Design
-            red.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Color.red)); //Design} 
-            red.setBackground(new Color(255, 204, 204));
-            red.setOpaque(true);
-
+            /* ON ENTRE JAMAIS DANS CE CAS VU QU'ON MODIFIE JAMAIS LA PREMIERE COLONNE
+                if(column == 0) { //On va rendre certaines heures blanches pour ne pas les voir, mais pouvoir les recupérer si besoin
+                System.out.println("colonne 0 !");
+                if(row%2 != 0)
+                    label.setForeground(Color.white);
+                else
+                    label.setForeground(Color.red);
+            }*/
+            
             if(column != 0) {
-                panel.add(red);
+                if(text.equals("ANNULEE")) {
+                    Font bold = new Font(label.getFont().getFontName(), Font.BOLD, label.getFont().getSize());
+                    label.setFont(bold);
+                    label.setForeground(Color.yellow);
+                }
+                
+                else {
+                    Font bold = new Font(label.getFont().getFontName(), Font.PLAIN, label.getFont().getSize());
+                    label.setFont(bold);
+                    label.setForeground(Color.red);
+                }
+                    
+                panel.add(label);
             }
 
         return panel;

@@ -15,6 +15,5 @@ public abstract class DAO<T> {
 
     public abstract T update(T object);
     
-
     public abstract T find(int id);
 }

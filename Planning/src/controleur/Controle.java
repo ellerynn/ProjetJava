@@ -37,8 +37,7 @@ public class Controle {
     }
     
     public String utilisateurCourant(String email, String password) {
-        UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
-        Utilisateur utilisateur = utilisateurDAO.find(email,password);
+        Utilisateur utilisateur = recupUtilisateur(email, password);
         
         return utilisateur.getPrenom() + " " + utilisateur.getNom();
     }
@@ -80,6 +79,7 @@ public class Controle {
         //Si référent pédagogique -> "Enseignant - Référent pédagogique"
         if(u.getDroit() == 2) {
             info = "Enseignant - Référent pédagogique";
+            fenetre.rendreVisible();
         }
         //Si admin -> "Administrateur"
         if(u.getDroit() == 1) {
@@ -88,8 +88,17 @@ public class Controle {
         
         return info;
     }
+     
+    public void majSeancesEdt(int semaine, String prenom, String nom) {
+        UtilisateurDAO uDAO = new UtilisateurDAO();
+        Utilisateur u = uDAO.findByName(prenom, nom);
+        
+        seancesEdt(semaine, u.getEmail(), u.getPassword());
+    }
         
     public void seancesEdt(int semaine, String email, String password) {
+        System.out.println("On veut afficher les seances de " + email);
+        
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -113,13 +122,13 @@ public class Controle {
             
             //Ne doit pas voir les séances en cours de validation (etat = 1)
             for(int i=0;i<seances.size();i++) {
-                System.out.println("Taille seances = " + seances.size());
+                /*System.out.println("Taille seances = " + seances.size());
                 System.out.print("Etat = " + seances.get(i).getEtat() + " ");
                 System.out.println(seances.get(i).toString());
-                System.out.println("Tour de boucle" + i);
+                System.out.println("Tour de boucle" + i);*/
                 if(seances.get(i).getEtat() == 1) {
                     seances.remove(i); //Effacer la séance
-                    System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
+                    //System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
                     i--; //On retourne une case en arrière
                 }
             }
@@ -130,32 +139,32 @@ public class Controle {
         
         for(int j=0;j<seances.size();j++) { //Pour toutes les seances
             String heure1 = seances.get(j).getHeureDebut();
-            System.out.println("Heure début de la seance " + heure1);
+            //System.out.println("Heure début de la seance " + heure1);
             
             String heure2 = seances.get(j).getHeureFin();
-            System.out.println("Heure fin de la seance " + heure2);
+            //System.out.println("Heure fin de la seance " + heure2);
             
             //Convertir l'heure1BDD en heureEdt : 12:00:00 -> 12h00
             String heure1BDD = heure1.substring(0, 2) + "h" + heure1.substring(3, 5); 
-            System.out.println(heure1BDD);
+            //System.out.println(heure1BDD);
             
             //Convertir l'heure2BDD en heureEdt : 12:00:00 -> 12h00
             String heure2BDD = heure2.substring(0, 2) + "h" + heure2.substring(3, 5); 
-            System.out.println(heure2BDD);
+            //System.out.println(heure2BDD);
             
             String date = seances.get(j).getDate();
-            System.out.println(date); //AAAA-MM-JJ
+            //System.out.println(date); //AAAA-MM-JJ
                 
             //Convertir la dateBDD en jour
             String jourBDD = date.substring(8, 10); 
-            System.out.println(jourBDD);
+            //System.out.println(jourBDD);
             
             //LIGNE DEBUT
             for(int i=0;i<fenetre.getEdtCours().getRowCount();i++) { 
                 String heureEdt = fenetre.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure1BDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
+                    //System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
                     ligne1 = i;
                 }
             }
@@ -165,7 +174,7 @@ public class Controle {
                 String heureEdt = fenetre.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure2BDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
+                    //System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
                     ligne2 = i;
                 }
             }
@@ -175,7 +184,7 @@ public class Controle {
                 String jourEdt = entete.substring(5, 7);
                 
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
+                    //System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     colonne = i;
                 }
             }

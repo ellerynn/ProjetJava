@@ -23,24 +23,39 @@ public class Fenetre extends JFrame {
         this.controle = controle;
         connexion = new FormConnexion();
         edt = new EmploiDuTemps();
+                
+        initContent(); //Initialisation du contenu actif de la frame (CardLayout et JPanel)
+        initFrame(); //Initialisation de la frame au 2/3 de l'écran
+        initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
+        
+        //TRICHE CO RAPIDE
+        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
+    }
+    
+    //Getters
+    public JTable getEdtCours() {
+        return edt.getEdtCours();
+    }
+    
+    //Méthodes
+    public void initContent() {
         c = new CardLayout(); //CardLayout pour "superposer" plusieurs pages (conteneurs)
         content = new JPanel(); //Contenu actif du CardLayout
-        
+        content.setLayout(c); //On définit le layout
+        content.add(connexion); //On ajoute les conteneurs à la pile
+        content.add(edt);
+    }
+    
+    public void initFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //Récupérer la taille de l'écran
         this.setSize(screenSize.width*2/3, screenSize.height*2/3); //Donne une taille en hauteur et largeur à la fenêtre -> 2/3 de l'écran       
         this.setLocationRelativeTo(null); //Positionner au centre
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Termine le processus lorsqu'on clique sur la croix rouge
         this.setTitle("Connexion"); //Titre de la frame
-                
-        content.setLayout(c); //On définit le layout
-        content.add(connexion); //On ajoute les conteneurs à la pile
-        content.add(edt);
-        
         this.getContentPane().add(content, BorderLayout.CENTER); //Affichage contenu actif
+    }
     
-        //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
-        
+    public void initListeners() {
         //Listeners
         connexion.getBouton().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
             connect(connexion.getEmail(), connexion.getPassword());     
@@ -48,23 +63,12 @@ public class Fenetre extends JFrame {
         
         //COMBOBOX DES SEMAINES
         edt.getSemaineCours().addActionListener((ActionEvent event) -> {
-            //On récupère la semaine sélectionnée
-            String semaine = edt.getSemaineCours().getSelectedItem().toString();
-            if (semaine == "Semaine") {
-                edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-                controle.seancesEdt(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), connexion.getEmail(), connexion.getPassword());
-            }
-            
-            else {
-                edt.setEdtCours(Integer.parseInt(semaine));
-                controle.seancesEdt(Integer.parseInt(semaine), connexion.getEmail(), connexion.getPassword());
-            }
+            chargerEdt();
         });
         
         edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
             //On récupère la semaine sélectionnée
             String semaine = edt.getSemaineSalles().getSelectedItem().toString();
-            System.out.println(edt.getSemaineSalles().getSelectedItem().toString());
             if (semaine.equals("Semaine")) 
                 edt.setEdtSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
             
@@ -74,25 +78,8 @@ public class Fenetre extends JFrame {
         
         //COMBOBOX DE RECHERCHE POUR LES REFERENTS ET ADMIN
         edt.getRechercheCours().addActionListener((ActionEvent event) -> {
-            String user = edt.getRechercheCours().getSelectedItem().toString();
-           
-            //Récupérer le nom et le nom de famille
-            String prenom = new String();
-            String nom = new String();
-             
-            int pos = user.indexOf(' ');
-            System.out.println(user + " position " + pos);
-            
-            prenom = user.substring(0, pos);
-            nom = user.substring(pos+1);
-            
-            //EN ATTENTE
+            chargerEdt();
         });
-    }
-    
-    //Getters
-    public JTable getEdtCours() {
-        return edt.getEdtCours();
     }
     
     public void connect(String email, String password) {
@@ -104,13 +91,16 @@ public class Fenetre extends JFrame {
                     + " (ECE Paris " + controle.recupInfo(email, password) + ")"); 
             controle.seancesEdt(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), email, password); //On ajoute les séances a l'edt
             //On rempli la combobox de recherche avec tous les utilisateurs de la BDD, pour un référent
-            remplirComboRecherche();
+            remplirComboRecherche(email, password);
         }
     }
     
-    public void remplirComboRecherche() {
+    public void remplirComboRecherche(String email, String password) {
         ArrayList<String> ttLeMonde = controle.allUsersToStrings();
-        edt.setRechercheCours(ttLeMonde);        
+        edt.setRechercheCours(ttLeMonde); 
+        
+        String utilisateur = controle.utilisateurCourant(email, password);
+        edt.getRechercheCours().setSelectedItem(utilisateur);
     }
     
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
@@ -118,6 +108,42 @@ public class Fenetre extends JFrame {
         if(Calendar.getInstance().get(Calendar.MONTH)+1 >= 9 && Calendar.getInstance().get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre
             return annee + "/" + (annee+1);
         return (annee-1) + "/" + annee;
+    }
+    
+    public void rendreVisible() {
+        edt.getRechercheCours().setVisible(true);
+        edt.getRechercheBarreCours().setVisible(true);
+        edt.getRechercheBoutonCours().setVisible(true);
+    }
+
+    public void majEdt() {
+        String user = edt.getRechercheCours().getSelectedItem().toString();
+           
+        //Récupérer le nom et le nom de famille
+        String prenom = new String();
+        String nom = new String();
+
+        int pos = user.indexOf(' ');
+        System.out.println(user + " position " + pos);
+
+        prenom = user.substring(0, pos);
+        nom = user.substring(pos+1);
+
+        controle.majSeancesEdt(Integer.parseInt(edt.getSemaineSalles().getSelectedItem().toString()), prenom, nom);
+    }
+    
+    public void chargerEdt() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineCours().getSelectedItem().toString();
+        if (semaine == "Semaine") {
+            edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majEdt();
+        }
+
+        else {
+            edt.setEdtCours(Integer.parseInt(semaine));
+            majEdt();
+        }
     }
 }
 

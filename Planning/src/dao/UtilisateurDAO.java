@@ -62,10 +62,9 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateur;  
     }
     
-    //SELECT * FROM `utilisateur` WHERE Nom LIKE "%ega%"; Pour une recherche partielle
     public Utilisateur findByName(String prenom, String nom) {
         Utilisateur utilisateur = new Utilisateur();      
-        String maRequete = "SELECT * FROM utilisateur WHERE Prenom = " + prenom + "' AND Nom = '" + nom +"'";
+        String maRequete = "SELECT * FROM utilisateur WHERE Prenom LIKE '%" + prenom + "%' AND Nom LIKE '%" + nom +"%'";
         requeteFind(maRequete, utilisateur);
         return utilisateur;  
     }

@@ -196,7 +196,10 @@ public class Controle {
             for(int i=0;i<fenetre.getEdtCours().getColumnCount();i++) { //Pour chaque ligne
                 String entete = fenetre.getEdtCours().getModel().getColumnName(i);
                 String jourEdt = entete.substring(5, 7);
-                
+                if(jourEdt.endsWith(" ")) {
+                    jourEdt = "0" + jourEdt.substring(0, 1);
+                }
+                                    
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
                     //System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     colonne = i;
@@ -215,6 +218,7 @@ public class Controle {
             //!! SI LA SEANCE EST VALIDEE = 5 CASES
             
             if(colonne != 0)  {
+                System.out.println("dans le if colonne");
                 for(int i=0;i<strSeances.size();i++) {
                     fenetre.getEdtCours().setValueAt(strSeances.get(i), ligne1+i, colonne);
                     System.out.println("ajout de " + strSeances.get(i) + " l." + (ligne1+i) + " c." + colonne);

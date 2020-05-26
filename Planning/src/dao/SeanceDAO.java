@@ -682,59 +682,77 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return listSeancesbyWeek;
     }
-    
+       
     //Récupère tout l'edt de l'utilisateur rangé
-     public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
+    public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
     {
         //Explication de cette array d'array:
         //à Chaque .get(i) se trouve une liste de séance de même matière et même groupes
         //à chaque .get(i).get(j) se trouve les séances de même matière et de même groupes rangé par date et heure
         ArrayList<ArrayList<Seance>> seancesOrdered = new ArrayList<>();
-        
         ArrayList<Seance> unFourreTout = new ArrayList<>();
+        System.out.println("id " + id);
         try
         {
-            ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT Seance.ID FROM Seance\n" +
-                                                            "LEFT JOIN seance_enseignants SE ON SE.ID_seance = Seance.ID\n" +
-                                                            "LEFT JOIN cours ON cours.ID = Seance.ID_cours\n" +
-                                                            "WHERE SE.ID_enseignant = "+id+ " "+
-                                                            "AND Seance.Date >= '"+debut+ "' "+
-                                                            "AND Seance.Date <= '"+fin+ "' " +
-                                                            "ORDER BY cours.Nom, Date, Heure_debut");
-            
-            //Selectionne les id des séances de la personne rangé par matière ->Date ->Heure de début
-            if(resultSeances.first()) //On regarde si une ligne existe
+            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
+            if(result.first())
             {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
+                String requete = new String();
+                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2) { //Professeur, trouver les séances de ce prof
+                    requete = "SELECT Seance.ID FROM Seance\n" +
+                              "LEFT JOIN seance_enseignants SE ON SE.ID_seance = Seance.ID " +
+                              "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
+                              "WHERE SE.ID_enseignant = "+id+ " "+
+                              "AND Seance.Date >= '"+debut+ "' "+
+                              "AND Seance.Date <= '"+fin+ "' " +
+                              "ORDER BY cours.Nom, Date, Heure_debut";
+                }
+                if (result.getInt("Droit") == 4) { //Etudiant, trouver les séances de cet étudiant
+                    System.out.println("recup seances recap etu");
+                    requete = "SELECT Seance.ID FROM Seance " +
+                              "LEFT JOIN seance_groupes SG ON SG.ID_seance = Seance.ID " +
+                              "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
+                              "LEFT JOIN etudiant SE ON SE.ID_groupe = SG.ID_groupe WHERE SE.ID_utilisateur = " + id + " " +
+                              "AND Seance.Date >= '" + debut + "' " +
+                              "AND Seance.Date <= '" + fin + "' " +
+                              "ORDER BY cours.Nom, Date, Heure_debut";
+                }
+                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+            
+                //Selectionne les id des séances de la personne rangé par matière ->Date ->Heure de début
+                if(resultSeances.first()) //On regarde si une ligne existe
                 {
-                    unFourreTout.add(this.find(resultSeances.getInt("Seance.ID")));
+                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                    while(resultSeances.next())  //On recupère les données de toute les lignes
+                    {
+                        unFourreTout.add(this.find(resultSeances.getInt("Seance.ID")));
+                    }
+                }
+            
+                //On trie
+                ArrayList<Object> toCompare = new ArrayList<>();
+                while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
+                {
+                    System.out.println(unFourreTout.get(0).getCours().getNom());
+                    toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
+                    toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
+                    ArrayList<Seance> SeancesSameCourseAndGroupes= rec1(unFourreTout,0,toCompare); //appel fct réccursive pour trouver
+                    toCompare.clear(); //On efface pour faire un nouveau add
+                    seancesOrdered.add(SeancesSameCourseAndGroupes); //On récupère la liste dans une liste de liste de séance
+
+                    for (int i = 0 ; i < SeancesSameCourseAndGroupes.size() ; i++)
+                    {
+                        System.out.println(SeancesSameCourseAndGroupes.get(i).getId());
+                    }
                 }
             }
-            
-            //On trie
-            ArrayList<Object> toCompare = new ArrayList<>();
-            while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
-            {
-                System.out.println(unFourreTout.get(0).getCours().getNom());
-                toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
-                toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
-                ArrayList<Seance> SeancesSameCourseAndGroupes= rec1(unFourreTout,0,toCompare); //appel fct réccursive pour trouver
-                toCompare.clear(); //On efface pour faire un nouveau add
-                seancesOrdered.add(SeancesSameCourseAndGroupes); //On récupère la liste dans une liste de liste de séance
-                
-                for (int i = 0 ; i < SeancesSameCourseAndGroupes.size() ; i++)
-                {
-                    System.out.println(SeancesSameCourseAndGroupes.get(i).getId());
-                }
-            }
-            
-        }catch (SQLException e) {
+        }
+        catch (SQLException e) {
                 e.printStackTrace();
         }
         return seancesOrdered;
     }
+    
     //Renvoie un array liste avec que les séances d'une matière avec les mêmes Groupes
     public ArrayList<Seance> rec1 (ArrayList<Seance> fourreTout, int indice, ArrayList<Object> toCompare)
     {
@@ -742,6 +760,7 @@ public class SeanceDAO extends DAO<Seance> {
         rec2(fourreTout,identique,indice,toCompare);
         return identique;
     }
+    
     public void rec2 (ArrayList<Seance> fourreTout ,ArrayList<Seance> identique, int indice, ArrayList<Object> toCompare)
     {
         if (indice < fourreTout.size()) //Si pas encore vers la fin
@@ -785,6 +804,7 @@ public class SeanceDAO extends DAO<Seance> {
             }
         }
     }
+    
     public String heureTotalSeances(ArrayList<Seance> liste)
     {
         int heureDebut = 0;

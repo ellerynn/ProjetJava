@@ -1,7 +1,5 @@
 package modele;
 
-import java.util.*;
-
 /*GROUPE (ID, NOM, #ID_PROMOTION) Remarque : le groupe est affecté à une promotion*/
 
 public class Groupe {

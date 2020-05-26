@@ -23,6 +23,7 @@ public class OngletCours extends JTabbedPane {
     private TableRendererPanel p;
     //Cours -> Récapitulatifs des cours
     private JTable tabRecap;
+    private TableRendererPanel p2;
     
     public OngletCours() { //Division en deux public void pour plus de clarté
         //Cours -> Emploi du temps
@@ -36,6 +37,7 @@ public class OngletCours extends JTabbedPane {
         p = new TableRendererPanel(tabEdt);
         //Cours -> Récapitulatifs des cours
         tabRecap = new JTable();
+        p2 = new TableRendererPanel(tabRecap);
         
         /*************************EMPLOI DU TEMPS*************************/
         JPanel cours = new JPanel();
@@ -89,7 +91,6 @@ public class OngletCours extends JTabbedPane {
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         cours.add(p, c);
-        c.fill = GridBagConstraints.HORIZONTAL;
           
         this.add("Emploi du temps", cours);
         
@@ -97,18 +98,16 @@ public class OngletCours extends JTabbedPane {
         JPanel recapCours = new JPanel();
         recapCours.setLayout(new GridBagLayout()); //Initialisation du container
         GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
-        t.weightx = 1;
+        t.weightx = 1; t.weighty = 1;
         
         t.insets = new Insets(10,10,10,10);
         
-        tabRecap.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", "Première séance", "Dernière séance", "Durée", "Nb."}));       
-        tabRecap.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
-        //tabRecap.setRowHeight(100);
+        setRecap();
         
         t.gridwidth = 8;   //2 columns wide
-        t.gridx = 0; c.gridy = 1;
+        t.gridx = 0; t.gridy = 1;
         t.fill = GridBagConstraints.BOTH;
-        recapCours.add(new JScrollPane(tabRecap), c);
+        recapCours.add(p2, t);
         
         this.add("Récapitulatif des cours", recapCours);
     }
@@ -136,6 +135,10 @@ public class OngletCours extends JTabbedPane {
     
     public JTable getEdt() {
         return this.tabEdt;
+    }
+    
+    public JTable getRecap() {
+        return this.tabRecap;
     }
 
     //Méthodes
@@ -278,6 +281,37 @@ public class OngletCours extends JTabbedPane {
         else
             annee = cal.get(Calendar.YEAR)-1;
         return annee;
+    }
+
+    public void setRecap() {             
+        tabRecap.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", 
+                                                                               "Première séance", 
+                                                                               "Dernière séance", 
+                                                                               "Durée", "Nb."}){ 
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        tabRecap.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tabRecap.getColumnModel().getColumnCount() > 0) {
+            tabRecap.getColumnModel().getColumn(3).setMaxWidth(55);
+            tabRecap.getColumnModel().getColumn(4).setMaxWidth(30);
+        }
+        
+        tabRecap.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        tabRecap.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        
+        DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
+        custom.setHorizontalAlignment(JLabel.CENTER);
+        tabRecap.getColumnModel().getColumn(3).setCellRenderer(custom);
+        tabRecap.getColumnModel().getColumn(4).setCellRenderer(custom);
+        
     }
 }
 

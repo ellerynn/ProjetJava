@@ -32,7 +32,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
         
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
+        connexion.setEmailPassWord("palasi@edu.ece.fr", "enseignant");
     }
     
     //Getters
@@ -42,6 +42,10 @@ public class Fenetre extends JFrame {
     
     public JTable getEdtCours() {
         return edt.getEdtCours();
+    }
+    
+    public JTable getRecapCours() {
+        return edt.getRecapCours();
     }
     
     public JTable getEdtHome() {
@@ -74,8 +78,17 @@ public class Fenetre extends JFrame {
         
         //COMBOBOX DES SEMAINES dans Cours et dans Salles
         edt.getSemaineCours().addActionListener((ActionEvent event) -> {
-            chargerEdt();
-            edt.getGroupesCours().setSelectedItem("Groupes");
+            //On récupère la semaine sélectionnée
+            String semaine = edt.getSemaineCours().getSelectedItem().toString();
+            if (semaine == "Semaine") {
+                edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                majEdt();
+            }
+
+            else {
+                edt.setEdtCours(Integer.parseInt(semaine));
+                majEdt();
+            }
         });
         
         edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
@@ -90,16 +103,40 @@ public class Fenetre extends JFrame {
         
         //COMBOBOX DE RECHERCHE POUR LES REFERENTS ET ADMIN
         edt.getRechercheCours().addActionListener((ActionEvent event) -> {
-            chargerEdt();
+            String recherche = edt.getRechercheCours().getSelectedItem().toString();
+            if (!recherche.equals("Veuillez sélectionner")) {
+                //On récupère la semaine sélectionnée
+                String semaine = edt.getSemaineCours().getSelectedItem().toString();
+                if (semaine == "Semaine") {
+                    edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                    majEdt();
+                }
+
+                else {
+                    edt.setEdtCours(Integer.parseInt(semaine));
+                    majEdt();
+                }
+            }
         });
         
-        edt.getGroupesCours().addActionListener((ActionEvent event) -> {
-            chargerGroupeEdt();
+        edt.getGroupesCours().addActionListener((ActionEvent event) -> {   
+            //On récupère la semaine sélectionnée
+            String semaine = edt.getSemaineCours().getSelectedItem().toString();
+            if (semaine == "Semaine") {
+                edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                majEdtGroupe();
+            }
+
+            else {
+                edt.setEdtCours(Integer.parseInt(semaine));
+                majEdtGroupe();
+            }
         });
         
         //SPINNER DATE HOME
         edt.getDateHome().addChangeListener((ChangeEvent ce) -> {
-            chargerEdtJour();
+            edt.setEdtHome();
+            majEdtJour();
         });
     }
     
@@ -110,10 +147,11 @@ public class Fenetre extends JFrame {
             //Nouveau titre de la frame
             setTitle("Planning, " + calculAnneeScolaire() + " - " + controle.utilisateurCourant(email, password) 
                     + " (ECE Paris " + controle.recupInfo(email, password) + ")"); 
-            controle.seancesEdt(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), email, password); //On ajoute les séances a l'edt
-            //On rempli la combobox de recherche avec tous les utilisateurs de la BDD, pour un référent
+            //INITIALISATIONS COMBOBOX
             remplirComboRecherche(email, password);
             remplirComboGroupes();
+            
+            //majRecap();
         }
     }
     
@@ -143,69 +181,44 @@ public class Fenetre extends JFrame {
         edt.getRechercheBoutonCours().setVisible(true);
     }
 
+    public void majRecap() {
+        controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
+    }
+    
+    //MAJ Edt quand référent recherche quelqu'un vi JComboBox, par defaut utilisateur courant
     public void majEdt() {
         String user = edt.getRechercheCours().getSelectedItem().toString();
+        System.out.println("jcombobox" + edt.getRechercheCours().getSelectedItem().toString());
            
         //Récupérer le nom et le nom de famille
         String prenom = new String();
         String nom = new String();
 
         int pos = user.indexOf(' ');
-        System.out.println(user + " position " + pos);
+        //System.out.println(user + " position " + pos);
 
         prenom = user.substring(0, pos);
         nom = user.substring(pos+1);
 
-        controle.majSeancesEdt(Integer.parseInt(edt.getSemaineSalles().getSelectedItem().toString()), prenom, nom);
+        controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), prenom, nom);
     }
     
-    public void chargerEdt() {
-        //On récupère la semaine sélectionnée
-        String semaine = edt.getSemaineCours().getSelectedItem().toString();
-        if (semaine == "Semaine") {
-            edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-            majEdt();
+    //MAJ Edt quand un referent cherche un groupe
+    public void majEdtGroupe() {
+        String recherche = edt.getGroupesCours().getSelectedItem().toString();
+        if(recherche != "Groupes") {
+            controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
         }
-
-        else {
-            edt.setEdtCours(Integer.parseInt(semaine));
-            majEdt();
-        }
+        else;
     }
-    
-    public void chargerGroupeEdt() {
-        //On récupère la semaine sélectionnée
-        String semaine = edt.getSemaineCours().getSelectedItem().toString();
-        if (semaine == "Semaine") {
-            edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-            majEdtGroupe();
-        }
-
-        else {
-            edt.setEdtCours(Integer.parseInt(semaine));
-            majEdtGroupe();
-        }
-    }
-    
+        
+    //MAJ Edt quand on change le jour dans Home
     public void majEdtJour() {
         //Récup de la date du JSpinner
         String date = DateFormat.getDateInstance(1).format(edt.getDateHome().getValue()) ;
-        System.out.println(date);
+        //System.out.println(date);
  
-        controle.majSeancesEdt(date, connexion.getEmail(), connexion.getPassword());
-    }
-    
-    public void chargerEdtJour() {
-        edt.setEdtHome();
-        majEdtJour();
-    }
-    
-    public void majEdtGroupe() {
-        String recherche = edt.getGroupesCours().getSelectedItem().toString();
-        
-        if(recherche != "Groupes") {
-            controle.majSeancesEdt(Integer.parseInt(edt.getSemaineSalles().getSelectedItem().toString()), recherche);
-        }
+        controle.seancesEdt(date, connexion.getEmail(), connexion.getPassword());
     }
 }
 

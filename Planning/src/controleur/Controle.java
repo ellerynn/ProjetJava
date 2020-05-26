@@ -6,6 +6,8 @@ import java.sql.*;
 import modele.*;
 import dao.*;
 import java.util.*;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Controle {
     private Fenetre fenetre;
@@ -24,7 +26,7 @@ public class Controle {
         String passwordDatabase = ""; */   
        
         //Ouverture interface graphique
-        Controle controle = new Controle();
+        new Controle();
     }
     
     public Boolean demandeConnexion(String email, String password) {
@@ -102,8 +104,9 @@ public class Controle {
         seancesEdt(semaine, u.getEmail(), u.getPassword());
     }
     
+    //Affichage edt sur une semaine
     public void seancesEdt(int semaine, String email, String password) {
-        System.out.println("\nSEANCES EDT - On veut afficher les seances de " + email);
+        //System.out.println("\nSEANCES EDT - On veut afficher les seances de " + email);
         
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
@@ -209,19 +212,19 @@ public class Controle {
             //Un cours dure forcément 1h30 = 6 cases
             strSeances = seances.get(j).toArrayListOfString();
             
-            System.out.println("strSeances :");
+            //System.out.println("strSeances :");
             
-            System.out.println(strSeances);
+            //System.out.println(strSeances);
             //RAPPEL cf. méthode dans Seance.java
             //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
             //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
             //!! SI LA SEANCE EST VALIDEE = 5 CASES
             
             if(colonne != 0)  {
-                System.out.println("dans le if colonne");
+                //System.out.println("dans le if colonne");
                 for(int i=0;i<strSeances.size();i++) {
                     fenetre.getEdtCours().setValueAt(strSeances.get(i), ligne1+i, colonne);
-                    System.out.println("ajout de " + strSeances.get(i) + " l." + (ligne1+i) + " c." + colonne);
+                    //System.out.println("ajout de " + strSeances.get(i) + " l." + (ligne1+i) + " c." + colonne);
                     
                     //Si la séance est validée
                     if(!strSeances.get(0).equals("ANNULEE") && !strSeances.get(0).equals("EN COURS DE VALIDATION")) {
@@ -232,7 +235,7 @@ public class Controle {
         } 
     }
     
-    //Affichage Edt dans Home
+    //Affichage edt d'une seule journee
     public void seancesEdt(String date, String email, String password) {
         //System.out.println("On veut afficher les seances de " + email);
         
@@ -381,7 +384,7 @@ public class Controle {
         } 
     }
     
-    //Affichage Edt selon le groupe pour référent
+    //Affichage Edt d'un groupe pour référent
     public void majSeancesEdt(int semaine, String recherche) {
         //Récupérer le groupe et la promo
         String groupe = recherche.substring(0, 4);
@@ -423,12 +426,11 @@ public class Controle {
         //On récupère l'utilisateur
         Utilisateur u = recupUtilisateur(email, password);
         
-        String debut = "2019-09-01";
-        String fin = "2020-08-01";
-        /*String debut = fenetre.calculAnneeScolaire().substring(0, 4) + "-09-01";
-        int annee = Integer.parseInt(debut) + 1;
-        String fin = annee + "-08-01";
-        System.out.println(debut + " " + fin);*/
+        //System.out.println("\n" + fenetre.calculAnneeScolaire());
+        String debut = fenetre.calculAnneeScolaire().substring(0, 4) + "-09-01";
+        int pos = fenetre.calculAnneeScolaire().indexOf("/");
+        String fin = fenetre.calculAnneeScolaire().substring(pos+1) + "-08-01";
+        //System.out.println("\n" + d + "/" + f);
         
         //On récupère les données de l'utilisateurs selon son profil (étudiant, enseignant dont référent)
         if(u.getDroit() == 3 || u.getDroit() == 2) {
@@ -456,10 +458,55 @@ public class Controle {
             }
         }
         
-        for(int i=0;i<seances.size();i++) {
-            for(int j=0;j<seances.get(i).size();j++) {
-                seances.get(i).get(j).toString();
+        ((DefaultTableModel) fenetre.getRecapCours().getModel()).setRowCount(seances.size());
+        
+        for (int i = 0 ; i < seances.size() ; i++)
+        {
+            //fenetre.getEdtCours().setValueAt(strSeances.get(i), ligne1+i, colonne);
+            //System.out.println("******************************************");
+            //System.out.println("Matiere - Public:");
+            String nom = seances.get(i).get(0).getCours().getNom();
+            for (int a = 0; a<seances.get(i).get(0).getGroupes().size(); a++)
+            {
+                nom += " "+seances.get(i).get(0).getGroupes().get(a).getNom();
+                nom += " - "+seances.get(i).get(0).getGroupes().get(a).getPromotion().getNom();
             }
+            
+            fenetre.getRecapCours().setValueAt(nom, i, 0);
+            
+            //System.out.println(nom);
+            //System.out.println("Premiere séance:");
+            String premiereSeance = seances.get(i).get(0).getDate() + " de "+ seances.get(i).get(0).getHeureDebut() +" à "+ seances.get(i).get(0).getHeureFin();
+            fenetre.getRecapCours().setValueAt(premiereSeance, i, 1);
+            //System.out.println(premiereSeance);
+            
+            //System.out.println("Dernière séance:");
+            int dernier = seances.get(i).size()-1;
+            String derniereSeance = seances.get(i).get(dernier).getDate() + " de "+ seances.get(i).get(dernier).getHeureDebut() +" à "+ seances.get(i).get(dernier).getHeureFin(); 
+            fenetre.getRecapCours().setValueAt(derniereSeance, i, 2);
+            //System.out.println(derniereSeance);
+            
+            //System.out.println("SI ON CLIQUE SUR L'ICONE PLUS DE DETAIL:");
+            int heure = 0;
+            int minute = 0;
+            String duree = new String();
+            for (int a = 0 ; a < seances.get(i).size() ; a++)
+            {
+                duree = seances.get(i).get(a).calculDuree(); //On récupère la durée de la séance i
+                System.out.println(seances.get(i).get(a).getDate() + " de "+ seances.get(i).get(a).getHeureDebut() +" à "+ seances.get(i).get(a).getHeureFin() + " ("+duree +")");
+                int p; //Première occurence de la lettre h de la durée
+                p = duree.indexOf('h');
+                heure += Integer.parseInt(duree.substring(0,p)); //On somme tout les heures
+                minute += Integer.parseInt(duree.substring(p+1,duree.length())); //On somme tout les minutes
+            }
+            duree = seances.get(i).get(0).orderingHour(heure+"h"+minute); //On appel n'importe que séance, nous souhaitons juste ranger les heures/minutes
+            //System.out.println("Durée globale:");
+            //System.out.println(duree);
+            fenetre.getRecapCours().setValueAt(duree, i, 3);
+            
+            //System.out.println("Nb");
+            String nb = String.valueOf(dernier+1);
+            fenetre.getRecapCours().setValueAt(nb, i, 4);
         }
     }
     

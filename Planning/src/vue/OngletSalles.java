@@ -6,8 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.GroupLayout.*;
-import javax.swing.LayoutStyle.*;
 import javax.swing.table.*;
 
 public class OngletSalles extends JTabbedPane {

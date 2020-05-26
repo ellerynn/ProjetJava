@@ -268,6 +268,7 @@ public class Seance {
         }
         return var;
     }
+    
     @Override
     //CETTE METHODE NE SERA PEUT ETRE PAS UTILISEE
     public String toString() {

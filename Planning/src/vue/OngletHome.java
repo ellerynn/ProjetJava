@@ -13,13 +13,13 @@ public class OngletHome extends JSplitPane {
     private JSpinner date;
     private JButton linkCours;
     private JTable tabEdt;
-    private TableRendererPanel p;
+    private TableLabelRendererPanel p;
     
     public OngletHome() {
         date = new JSpinner();
         linkCours = new JButton(); //Bouton
         tabEdt = new JTable(); //Tableau 
-        p = new TableRendererPanel(tabEdt);
+        p = new TableLabelRendererPanel(tabEdt);
               
         //Gauche
         JPanel container1 = new JPanel();

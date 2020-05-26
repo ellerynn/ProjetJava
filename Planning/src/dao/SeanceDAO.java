@@ -578,39 +578,6 @@ public class SeanceDAO extends DAO<Seance> {
         return listSeancesbyDay;
     }
     
-    public ArrayList<Seance> findSeanceByClassForTeacher(int id) {
-        ArrayList<Seance> seances = new ArrayList();
-        Seance seance = new Seance(); 
-        
-        try {
-            Statement st;
-            ResultSet result;
-            //creation ordre SQL
-            st = connect.createStatement();
-
-            //On récupère les champs des la table Séance
-            result = st.executeQuery("SELECT * FROM Seance WHERE ID_cours = " + id); // Pour récupérer les champs de séances
-
-            if(result.first())
-            {     
-                result.beforeFirst();
-                while(result.next()) { 
-                    SeanceDAO sDAO = new SeanceDAO(); 
-                    //recuperation données utilisateur
-                    seance = sDAO.find(result.getInt("ID"));
-                    
-                    seances.add(seance);
-                } 
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("pas trouvé dans find seance by class");
-        }
-        
-        return seances; 
-    }
-    
     public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
     {
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
@@ -702,9 +669,9 @@ public class SeanceDAO extends DAO<Seance> {
                     requete = "SELECT Seance.ID FROM Seance\n" +
                               "LEFT JOIN seance_enseignants SE ON SE.ID_seance = Seance.ID " +
                               "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
-                              "WHERE SE.ID_enseignant = "+id+ " "+
-                              "AND Seance.Date >= '"+debut+ "' "+
-                              "AND Seance.Date <= '"+fin+ "' " +
+                              "WHERE SE.ID_enseignant = " + id + " "+
+                              "AND Seance.Date >= '" + debut + "' "+
+                              "AND Seance.Date <= '" + fin + "' " +
                               "ORDER BY cours.Nom, Date, Heure_debut";
                 }
                 if (result.getInt("Droit") == 4) { //Etudiant, trouver les séances de cet étudiant
@@ -725,7 +692,8 @@ public class SeanceDAO extends DAO<Seance> {
                     resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
                     while(resultSeances.next())  //On recupère les données de toute les lignes
                     {
-                        unFourreTout.add(this.find(resultSeances.getInt("Seance.ID")));
+                        SeanceDAO sDAO = new SeanceDAO();
+                        unFourreTout.add(sDAO.find(resultSeances.getInt("Seance.ID")));
                     }
                 }
             
@@ -733,17 +701,16 @@ public class SeanceDAO extends DAO<Seance> {
                 ArrayList<Object> toCompare = new ArrayList<>();
                 while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
                 {
-                    System.out.println(unFourreTout.get(0).getCours().getNom());
+                    System.out.println("nom : " + unFourreTout.get(0).getCours().getNom());
+                    
                     toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
                     toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
+                    
                     ArrayList<Seance> SeancesSameCourseAndGroupes= rec1(unFourreTout,0,toCompare); //appel fct réccursive pour trouver
+                    
                     toCompare.clear(); //On efface pour faire un nouveau add
+                    
                     seancesOrdered.add(SeancesSameCourseAndGroupes); //On récupère la liste dans une liste de liste de séance
-
-                    for (int i = 0 ; i < SeancesSameCourseAndGroupes.size() ; i++)
-                    {
-                        System.out.println(SeancesSameCourseAndGroupes.get(i).getId());
-                    }
                 }
             }
         }

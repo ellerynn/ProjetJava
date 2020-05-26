@@ -113,7 +113,6 @@ public class Fenetre extends JFrame {
             //INITIALISATIONS COMBOBOX
             remplirComboRecherche(email, password);
             remplirComboGroupes();
-            
                 //COMBOBOX propre à l'admin
             if (email.equals("admin@gmail.com") && password.equals("admin"))
             {
@@ -123,7 +122,7 @@ public class Fenetre extends JFrame {
                 remplirListGroupes();
                 remplirListEnseignants();
             }
-            //controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
+            controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
         }
     }
     
@@ -172,12 +171,15 @@ public class Fenetre extends JFrame {
         edt.getRechercheCours().setVisible(true);
         edt.getRechercheBarreCours().setVisible(true);
         edt.getRechercheBoutonCours().setVisible(true);
+        edt.getGroupesCours().setVisible(true);
     }
     
-    //MAJ Edt quand référent recherche quelqu'un vi JComboBox, par defaut utilisateur courant
+    //MAJ Edt de la personne contenue dans la JComboBox utilisateurs
+    //Par defaut utilisateur courant
+    //Un utilisateur ne peut pas le modifier sauf s'il est référent
     public void majEdt() {
         String user = edt.getRechercheCours().getSelectedItem().toString();
-        System.out.println("\njcombobox " + edt.getRechercheCours().getSelectedItem().toString());
+        //System.out.println("\njcombobox " + edt.getRechercheCours().getSelectedItem().toString());
            
         //Récupérer le nom et le nom de famille
         String prenom = new String();
@@ -188,7 +190,6 @@ public class Fenetre extends JFrame {
 
         prenom = user.substring(0, pos);
         nom = user.substring(pos+1);
-        System.out.println(prenom + " " + nom);
 
         controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), prenom, nom);
     }
@@ -196,10 +197,9 @@ public class Fenetre extends JFrame {
     //MAJ Edt quand un referent cherche un groupe
     public void majEdtGroupe() {
         String recherche = edt.getGroupesCours().getSelectedItem().toString();
-        if(recherche != "Groupes") {
+        if(recherche != "Groupes") 
             controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
-        }
-        else;
+        
     }
         
     //MAJ Edt quand on change le jour dans Home
@@ -221,7 +221,7 @@ public class Fenetre extends JFrame {
         }
 
         else {
-            System.out.println("Semaine selectionnee : " + semaine);
+            //System.out.println("Semaine selectionnee : " + semaine);
             edt.setEdtCours(Integer.parseInt(semaine));
             majEdt();
         }
@@ -238,6 +238,7 @@ public class Fenetre extends JFrame {
             edt.setEdtSalles(Integer.parseInt(semaine));
     }
     
+    //Recup semaine select puis maj edt pour un groupe (fonction référent)
     public void majEdtGroupeCoursParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineCours().getSelectedItem().toString();

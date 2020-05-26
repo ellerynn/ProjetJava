@@ -20,24 +20,24 @@ public class OngletCours extends JTabbedPane {
     private JComboBox<String> semaine;
     private JComboBox<String> groupes;
     private JTable tabEdt;
-    private TableRendererPanel p;
+    private TableLabelRendererPanel p;
     //Cours -> Récapitulatifs des cours
     private JTable tabRecap;
-    private TableRendererPanel p2;
+    private  TableMultiObjectRendererPanel p2;
     
     public OngletCours() { //Division en deux public void pour plus de clarté
         //Cours -> Emploi du temps
-        vueEdt = new JComboBox<String>();
+        vueEdt = new JComboBox<>();
         rechercheBarre = new JTextField();
         rechercheBouton = new JButton();
-        selectRecherche = new JComboBox<String>();
-        semaine = new JComboBox<String>();
-        groupes = new JComboBox<String>();
+        selectRecherche = new JComboBox<>();
+        semaine = new JComboBox<>();
+        groupes = new JComboBox<>();
         tabEdt = new JTable();
-        p = new TableRendererPanel(tabEdt);
+        p = new TableLabelRendererPanel(tabEdt);
         //Cours -> Récapitulatifs des cours
         tabRecap = new JTable();
-        p2 = new TableRendererPanel(tabRecap);
+        p2 = new TableMultiObjectRendererPanel(tabRecap);
         
         /*************************EMPLOI DU TEMPS*************************/
         JPanel cours = new JPanel();
@@ -74,6 +74,7 @@ public class OngletCours extends JTabbedPane {
         rechercheBarre.setVisible(false);
         rechercheBouton.setVisible(false);
         selectRecherche.setVisible(false);
+        groupes.setVisible(false);
         
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx = 7;

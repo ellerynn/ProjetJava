@@ -255,50 +255,6 @@
            System.out.println("class exception");
         }*/
 
-public static void exempleRecapitulationDesSeances()
-    {   
-        int id = 16;
-        String dateDebut = "2020-05-15";
-        String dateFin = "2020-06-05";
-        SeanceDAO sDAO = new SeanceDAO();
-        
-        ArrayList<ArrayList<Seance>> seances = sDAO.findSeancesOfUserByDate(id, dateDebut, dateFin);
-        
-        for (int i = 0 ; i < seances.size() ; i++)
-        {
-            System.out.println("******************************************");
-            System.out.println("Matiere - Public:");
-            String nom = seances.get(i).get(0).getCours().getNom();
-            for (int a = 0; a<seances.get(i).get(0).getGroupes().size(); a++)
-            {
-                nom += " "+seances.get(i).get(0).getGroupes().get(a).getNom();
-                nom += "-"+seances.get(i).get(0).getGroupes().get(a).getPromotion().getNom();
-            }
-            System.out.println(nom);
-            System.out.println("Premiere séance:");
-            System.out.println(seances.get(i).get(0).getDate() + " de "+ seances.get(i).get(0).getHeureDebut() +" à "+ seances.get(i).get(0).getHeureFin());
-            System.out.println("Dernière séance:");
-            int dernier = seances.get(i).size()-1;
-            System.out.println(seances.get(i).get(dernier).getDate() + " de "+ seances.get(i).get(dernier).getHeureDebut() +" à "+ seances.get(i).get(dernier).getHeureFin());
-            System.out.println("Nb");
-            System.out.println(dernier+1);
-            System.out.println("SI ON CLIQUE SUR L'ICONE PLUS DE DETAIL:");
-            int heure = 0;
-            int minute = 0;
-            String duree = new String();
-            for (int a = 0 ; a < seances.get(i).size() ; a++)
-            {
-                duree = seances.get(i).get(a).calculDuree(); //On récupère la durée de la séance i
-                System.out.println(seances.get(i).get(a).getDate() + " de "+ seances.get(i).get(a).getHeureDebut() +" à "+ seances.get(i).get(a).getHeureFin() + " ("+duree +")");
-                int pos = duree.indexOf('h'); //Première occurence de la lettre h de la durée
-                heure += Integer.parseInt(duree.substring(0,pos)); //On somme tout les heures
-                minute += Integer.parseInt(duree.substring(pos+1,duree.length())); //On somme tout les minutes
-            }
-            duree = seances.get(i).get(0).orderingHour(heure+"h"+minute); //On appel n'importe que séance, nous souhaitons juste ranger les heures/minutes
-            System.out.println("Durée globale:");
-            System.out.println(duree);
-        }
-    }
     public static void exempleCreationSeance()
     {
         //Déclaration des DAOs:

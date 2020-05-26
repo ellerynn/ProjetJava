@@ -31,17 +31,22 @@ public class Controle {
        
         //Ouverture interface graphique
         Controle controle = new Controle();
-        //controle.ValiderSeance(3);  
+        
+        //controle.AffecterEnseignantSeance(1,16);
+        //controle.AffecterGroupeSeance(1,5);
+        //controle.ModifierSeanceCoursNom(1,2);
+        //controle.ModifierSeanceCoursType(1,4);
+        //controle.AffecterSalleSeance(1,3);
+        //controle.AjouterSalleSeance(1,4); en plus
+        //controle.DeplacerSeance(1, 2, "2020-05-15", "13:45:00", "15:15:00", 1, 3);
+        //controle.AjouterSeance(1, "2020-05-15", "13:45:00", "15:15:00", 1, 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        //controle.AjouterEnseignantSeance(1,16);
+        //controle.AjoutGroupeSeance(1,5);
         //controle.AnnulerSeance(1);
-        //controle.ModifierSeanceCoursNom(3,7);
-        //controle.ModifierSeanceCoursType(1,6);
-        //controle.AjoutGroupeSeance(1,6);
+        //controle.ValiderSeance(3);
         //controle.EnleverGroupeSeance(1, 5);
-        //controle.EnleverEnseignantSeance(1, 16);
-        //controle.AffecterEnseignantSeance(1,18);
-        //controle.AjouterEnseignantSeance(1,17);
-        //controle.AffecterSalleSeance(13,2);
-        //controle.AffecterGroupeSeance(4,5);
+        //controle.EnleverEnseignantSeance(1, 17);
+        
     }
     
     //MODULE MAJ(Mise a Jour)/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,14 +58,11 @@ public class Controle {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance = sDAO.find(id_seance);
         
-        sDAO.find_seance_enseignant(id_seance,id_enseignant);//METHODE N°5 DANS SEANCEDAO
-        
-        if(sDAO.find_seance_affecter_enseignant(id_seance)){//METHODE N°7 DANS SEANCEDAO
-            
-            System.out.println("L'enseignant que vous essayez d'affecter ne peut être affecter can un enseignant est deja affecte, veuillez AJOUTER un enseignant");
+        if(!seance.getEnseignants().isEmpty()){// Si il est pas vide, il y a des enseignants donc pas d'affectation
+            System.out.println("L'enseignant que vous essayez d'affecter ne peut être affecter car un enseignant est deja affecte, veuillez AJOUTER un enseignant");
         }
         else{
-            if(sDAO.find_seance_creneau_enseignant(id_enseignant, seance)){//METHODE N°14 DANS SEANCEDAO
+            if(sDAO.isTeacherNotFreeForThisSeance(id_enseignant, seance)){//METHODE N°14 DANS SEANCEDAO
                 System.out.println("Impossible d'affecter cet enseignant à cette séance car il est deja attitre dans ce créneau");
             }else{
                     sDAO.insertInJonction(id_seance, id_enseignant, 1);//METHODE N°18 DANS SEANCEDAO
@@ -68,37 +70,34 @@ public class Controle {
             }         
         }    
     }
+   
 /*
     * MODULE MAJ N°2  AFFECTER UN GROUPE A UNE SEANCE
 */
+    
     public void AffecterGroupeSeance(int id_seance, int id_groupe) {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance = sDAO.find(id_seance);
         
-        sDAO.find_seance_groupe(id_seance,id_groupe);//METHODE N°4 DANS SEANCEDAO
-
-        if(sDAO.find_seance_affecter_groupe(id_seance)){//METHODE N°21 DANS SEANCEDAO
-            
-            System.out.println("La groupe que vous essayez d'affecter ne peut pas etre affecter.");
+        if(!seance.getGroupes().isEmpty()){//Si il est pas vide, ce n'est pas une affectation
+            System.out.println("Le groupe que vous essayez d'affecter ne peut pas etre affecter.");
         }
         else{
-            if(sDAO.find_seance_creneau_groupe(id_groupe, seance)){//METHODE N°13 DANS SEANCEDAO
+            if(sDAO.isGroupNotFreeForThisSeance(id_groupe, seance)){//METHODE N°13 DANS SEANCEDAO
                 System.out.println("Impossible de rajouter ce groupe car un cours est deja attitre dans ce créneaux");
             }else{
-                int capacite = 0;
-                for (int i = 0 ; i < seance.getSalles().size() ; i ++){
-                    capacite += seance.getSalles().get(i).getCapacite();
-                }
-                if(capacite >= sDAO.find_capacite_groupe_total(id_groupe, id_seance)){//METHODE N°16 DANS SEANCEDAO
+                if(seance.placeInTotal() >= sDAO.find_capacite_groupes_total(id_groupe, id_seance)){//METHODE N°16 DANS SEANCEDAO
                     sDAO.insertInJonction(id_seance, id_groupe, 2);//METHODE N°18 DANS SEANCEDAO
                     System.out.println("Le groupe a bien été ajouté à cette seance ! ");
                 }else{System.out.println("Le nombre d'eleves dans le groupe depasse la capacité maximale de la seance");}
             }         
         }    
     }
+  
 /*
     * MODULE MAJ N°3 MODIFIER LE NOM DU COURS
 */
+    
     public void ModifierSeanceCoursNom(int id_seance, int id_cours) {
         CoursDAO cDAO = new CoursDAO();
         SeanceDAO sDAO = new SeanceDAO();
@@ -106,9 +105,11 @@ public class Controle {
         seance2.setCours(cDAO.find(id_cours));
         seance2 = sDAO.update(seance2);
     }
+    
 /*
     * MODULE MAJ N°3 MODIFIER LE TYPE DU COURS
 */
+    
     public void ModifierSeanceCoursType(int id_seance, int id_type) {
         TypeCoursDAO tDAO = new TypeCoursDAO();
         SeanceDAO sDAO = new SeanceDAO();
@@ -116,37 +117,54 @@ public class Controle {
         seance2.setTypeCours(tDAO.find(id_type));
         seance2 = sDAO.update(seance2);
     }
+    
 /*
     * MODULE MAJ N°4 AFFECTER UNE SALLE A UNE SEANCE
 */
+  
     public void AffecterSalleSeance(int id_seance, int id_salle) {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance = sDAO.find(id_seance);
-        
-        sDAO.find_seance_salle(id_seance,id_salle);//METHODE N°6 DANS SEANCEDAO
 
-        if(sDAO.find_seance_affecter_salle(id_seance)){ //METHODE N°8 DANS SEANCEDAO
+        if(!seance.getSalles().isEmpty()){ //si des salles sont dj affecté à la séance, on affecte pas
             System.out.println("La salle que vous essayez d'affecter ne peut pas etre affecter.");
         }
         else{
-            if(sDAO.find_seance_creneau_salle(id_salle, seance)){ //METHODE N°15 DANS SEANCEDAO
+            if(sDAO.isSalleNotFreeForThisSeance(id_salle, seance)){ //METHODE N°15 DANS SEANCEDAO
                 System.out.println("Impossible d'affecter cet salle à cette séance car il est deja attitre dans ce créneau");
             }else{
 
                 SalleDAO salledao = new SalleDAO();
                 Salle salle = salledao.find(id_salle);
 
-                if(salle.getCapacite() >= sDAO.find_capacite_salle_total(id_seance)){ //METHODE N°17 DANS SEANCEDAO
+                if(salle.getCapacite() >= sDAO.find_capacite_groupes_total(0,id_seance)){ //METHODE N°17 DANS SEANCEDAO
                     sDAO.insertInJonction(id_seance, id_salle, 3); //METHODE N°18 DANS SEANCEDAO
                     System.out.println("La salle a bien été affecté à cette séance ! ");
                 }else{System.out.println("Le nombre d'eleves pour cette seance depasse la capacité maximale de la seance, veuillez affecter une salle avec une capacité plus grande");}         
             }         
         }    
     }
+    /*
+    * MODULE MAJ N°4 AJOUT SALLE A UNE SEANCE (EN PLUS)
+    */
+    public void AjouterSalleSeance(int id_seance, int id_salle)
+    {
+        SeanceDAO sDAO = new SeanceDAO();
+        Seance seance = sDAO.find(id_seance);
+        //Mettre condition de si pas ajouter
+        if (!seance.getSalles().isEmpty()) //Si c'est pas vide, si vide appellée la fonction affectation
+        {
+            if(sDAO.canIAjouterSalleSeance(seance,id_salle)) //Créneau et duplication: no pblm
+            {
+                sDAO.insertInJonction(id_seance, id_salle, 3);//METHODE N°18 DANS SEANCEDAO
+            }
+        }
+    }
 /*
-    * MODULE MAJ N°5 DEPLACER UNE SEANCE DE COURS
+    * MODULE MAJ N°5 DEPLACER UNE SEANCE DE COURS //Même quand ça déplace sur lui même, ça marche
 */
-    public void DeplacerSeance(int id_seance,int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat) {
+    
+    public void DeplacerSeance(int id_seance,int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, int id_salle) {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance = sDAO.find(id_seance);
         seance.setSemaine(Semaine);
@@ -154,69 +172,144 @@ public class Controle {
         seance.setHeureDebut(Heure_Debut);
         seance.setHeureFin(Heure_Fin);
         seance.setEtat(Etat);
-        seance = sDAO.update(seance);
+        seance.getSalles().clear(); //déplacer .... "dans UNE salle libre" -> Toute les salles dj présent disparaissent
+        SalleDAO saDAO = new SalleDAO();
+        seance.ajouterSalle(saDAO.find(id_salle)); //On récupère la salle, on l'add
+        boolean isOk = true;
+        for (int i = 0 ; i < Math.max(seance.getSalles().size(),Math.max(seance.getEnseignants().size(),seance.getGroupes().size()));i++)
+        {
+            if(i < seance.getSalles().size() && sDAO.isSalleNotFreeForThisSeance(seance.getSalles().get(i).getId(),seance))
+            {
+                isOk = false;
+                System.out.println("Salles non dispo");
+                i = 1000;
+            }
+                
+            if(i < seance.getEnseignants().size() && sDAO.isTeacherNotFreeForThisSeance(seance.getEnseignants().get(i).getId(), seance) )
+            {
+                isOk = false;
+                System.out.println("Enseignants non dispo");
+                i = 1000;
+            }
+            if(i < seance.getGroupes().size() && sDAO.isGroupNotFreeForThisSeance(seance.getGroupes().get(i).getId(), seance))
+            {
+                isOk = false;
+                System.out.println("groupes non dispo");
+                i = 1000;
+            }
+        }
+        if(seance.placeInTotal() < sDAO.find_capacite_groupes_total(0, id_seance))//METHODE N°16 DANS SEANCEDAO
+        {
+            isOk = false;
+            System.out.println("Salle trop petit");
+        }
+        if (isOk == true)
+        {
+            seance = sDAO.update(seance); //Si tout ce qui est en haut est ok, on update tout
+            System.out.println("Deplacer avec succes");
+        }
+            
+        
     }
+    
 /*
     * MODULE MAJ N°6 AJOUTER UNE SEANCE
 */
-    public void AjouterSeance(int Semaine, int Date, String Heure_Debut, String Heure_Fin, int Etat, int ID_cours,int ID_type) {
+    
+    public void AjouterSeance(int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, int ID_cours,int ID_type, ArrayList<Integer> idGroupes, ArrayList<Integer> idEnseignants, ArrayList<Integer> idSalles) 
+    {
         SeanceDAO sDAO = new SeanceDAO();
-        
-        sDAO.insertSeance(Semaine,Date, Heure_Debut, Heure_Fin,Etat, ID_cours,ID_type);//METHODE N°19 DANS SEANCEDAO
+        CoursDAO cDAO = new CoursDAO();
+        TypeCoursDAO tDAO = new TypeCoursDAO();
+        GroupeDAO gDAO = new GroupeDAO();
+        EnseignantDAO eDAO = new EnseignantDAO();
+        SalleDAO salleDAO = new SalleDAO();
+        Cours c = cDAO.find(ID_cours);
+        TypeCours t = tDAO.find(ID_type);
+        Seance seance = new Seance(Semaine, Heure_Debut, Heure_Fin,Date, Etat, c, t);
+        boolean okForCreate = true;
+        //On ajoute les salles en accord avec leur créneau dispo sans vérif la capa car rien à vérifier au début
+        for (int i = 0 ; i < idSalles.size();i++)
+        {
+            if (sDAO.canIAjouterSalleSeance(seance, idSalles.get(i)))
+            {
+               seance.ajouterSalle(salleDAO.find(idSalles.get(i))); 
+            }
+            else{
+                okForCreate = false;
+                i = 100; // Dès qu'il y a un false on arrête tout
+            }
+        }
+        if(okForCreate) //Si les vérifs des salles sont bon, on continu
+        {
+            for (int i = 0; i <Math.max(idGroupes.size(), idEnseignants.size()); i++) // Pour éviter 2 for
+            {
+                if (i< idGroupes.size())
+                {
+                    
+                    if (sDAO.canIAjoutGroupeSeance(seance, idGroupes.get(i)))
+                    {//Si groupes non duplication/pbl crénaux /Pas de pbl de place, tout est bon
+                        seance.ajouterGroupe(gDAO.find(idGroupes.get(i)));
+                    }
+                    else
+                    {
+                        okForCreate = false;
+                    }
+                }
+                if (i<idEnseignants.size())
+                {
+                    if ( sDAO.canIAjouterEnseignantSeance(seance, idEnseignants.get(i)))
+                    {//Si enseignants non duplication/pbl crénaux tout est bon
+                        seance.ajouterEnseignant(eDAO.find(idEnseignants.get(i)));
+                    }
+                    else{
+                        okForCreate = false;
+                    }
+                }
+            }
+        }
+        if (okForCreate) //Si il y a eu un faux, on ne create pas.
+        {
+            seance = sDAO.create(seance);
+            System.out.println("Ajouter avec succes");
+        }else{
+            System.out.println("La seance n'a pas été ajouté");
+        }
     }
+    
 /*
     * MODULE MAJ N°7 AJOUTER UN ENSEIGNANT A UNE SEANCE
 */
-    public void AjouterEnseignantSeance(int id_seance, int id_enseignant) {
+  
+    public void AjouterEnseignantSeance(int id_seance, int id_enseignant)
+    {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance = sDAO.find(id_seance);
-        
-        sDAO.find_seance_enseignant(id_seance,id_enseignant);//METHODE N°5 DANS SEANCEDAO
-        
-        if(sDAO.find_seance_enseignant(id_seance, id_enseignant)){
-            
-            System.out.println("L'enseignant que vous essayez d'ajouter existe déjà");
+        if(sDAO.canIAjouterEnseignantSeance(seance,id_enseignant))
+        {
+            sDAO.insertInJonction(id_seance, id_enseignant, 1);//METHODE N°18 DANS SEANCEDAO
         }
-        else{
-            if(sDAO.find_seance_creneau_enseignant(id_enseignant, seance)){//METHODE N°14 DANS SEANCEDAO
-                System.out.println("Impossible d'ajouterz cet enseignant à cette séance car il est deja attitre dans ce créneau");
-            }else{
-                    sDAO.insertInJonction(id_seance, id_enseignant, 1);//METHODE N°18 DANS SEANCEDAO
-                    System.out.println("L'enseignant a bien été ajouter à cette séance ! ");
-            }         
-        }    
     }
+    
 /*
     * MODULE MAJ N°8  AJOUT D'UN GROUPE A UNE SEANCE
 */
-    public void AjoutGroupeSeance(int id_seance, int id_groupe) {
+    
+    public void AjoutGroupeSeance(int id_seance, int id_groupe)
+    {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance = sDAO.find(id_seance);
-        
-        sDAO.find_seance_groupe(id_seance,id_groupe);//METHODE N°4 DANS SEANCEDAO
-
-        if(sDAO.find_seance_groupe(id_seance,id_groupe)){//METHODE N°4 DANS SEANCEDAO
-            
-            System.out.println("Le groupe que vous essayez d'insérer existe déjà");
+        if(sDAO.canIAjoutGroupeSeance(seance, id_groupe))
+        {
+            sDAO.insertInJonction(id_seance, id_groupe, 2);//METHODE N°18 DANS SEANCEDAO
         }
-        else{
-            if(sDAO.find_seance_creneau_groupe(id_groupe, seance)){//METHODE N°13 DANS SEANCEDAO
-                System.out.println("Impossible de rajouter ce groupe car un cours est deja attitre dans ce créneaux");
-            }else{
-                int capacite = 0;
-                for (int i = 0 ; i < seance.getSalles().size() ; i ++){
-                    capacite += seance.getSalles().get(i).getCapacite();
-                }
-                if(capacite >= sDAO.find_capacite_groupe_total(id_groupe, id_seance)){//METHODE N°16 DANS SEANCEDAO
-                    sDAO.insertInJonction(id_seance, id_groupe, 2);//METHODE N°18 DANS SEANCEDAO
-                    System.out.println("Le groupe a bien été ajouté à cette seance ! ");
-                }else{System.out.println("Le nombre d'eleves dans le groupe depasse la capacité maximale de la seance");}
-            }         
-        }    
     }
+    
+    
 /*
     * MODULE MAJ N°9 ANNULER UNE SEANCE
 */
+    
     public void AnnulerSeance (int id_seance)
     {
         DAO<Seance> seanceDAO = new SeanceDAO();
@@ -224,72 +317,71 @@ public class Controle {
         sea.setEtat(3);
         sea = seanceDAO.update(sea);
     }
+    
 /*
     * MODULE MAJ N°10 VALIDER UNE SEANCE
 */
+    
     public void ValiderSeance (int id_seance){
         SeanceDAO seanceDAO = new SeanceDAO();
-        Seance sea = seanceDAO.find(id_seance);
-        
-        seanceDAO.find_seance_enseignant_valider(id_seance);// METHODE N°10  DANS SEANCEDAO
-        seanceDAO.find_seance_groupe_valider(id_seance);// METHODE N°9  DANS SEANCEDAO
+        Seance sea = seanceDAO.find(id_seance); 
         //LES CONDITIONS
-        if((seanceDAO.find_seance_enseignant_valider(id_seance)) && (seanceDAO.find_seance_groupe_valider(id_seance))){
+        if( (!sea.getEnseignants().isEmpty()) && (!sea.getGroupes().isEmpty())){
             sea.setEtat(2);
             sea = seanceDAO.update(sea);//METHODE UPDATE DANS SEANCEDAO
             System.out.println("C'est fait votre séance a été validée");
         }
         else{System.out.println("On ne peux pas valider cette séance car il faut au minimum un enseignant et un groupe");} 
     }
+    
 /*
     * MODULE MAJ N°11 ENLEVER UN GROUPE D'UNE SEANCE
 */
+    
     public void EnleverGroupeSeance(int id_seance, int id_groupe) {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance2 = sDAO.find(id_seance);
-        
-        sDAO.find_seance_groupe_valider(id_seance);//METHODE N°9 DANS SEANCEDAO
-        sDAO.find_seance_groupe_enlever_blindage(id_seance);//METHODE N°11 DANS SEANCEDAO
         //LES CONDITIONS
-        if(sDAO.find_seance_groupe_valider(id_seance)){
-            if(sDAO.find_seance_groupe_enlever_blindage(id_seance)>1){
+        if(!seance2.getGroupes().isEmpty()) //Si des groupes sont dans cette séance
+        {
+            if(seance2.getGroupes().size()>1){ // Si le nombre de groupe est sup à 1
                 sDAO.DeleteInJonction(id_seance, id_groupe, 2);//METHODE N°12 DANS SEANCEDAO
                 System.out.println("Le groupe a été enlevée, la séance est toujours disponible !");
             }
-            if(sDAO.find_seance_groupe_enlever_blindage(id_seance)==1){
+            if(seance2.getGroupes().size()==1){
                 sDAO.DeleteInJonction(id_seance, id_groupe, 2);//METHODE N°12 DANS SEANCEDAO
                 seance2.setEtat(1);
                 sDAO.update(seance2);
                 System.out.println("Le groupe a été enlevée, la seéance est en cours de validation !");
-            }      
-            if(sDAO.find_seance_groupe_enlever_blindage(id_seance)==0)
-                System.out.println("Il n'y a pas de groupe à enlever dans seance_groupes!");
-                
-        }  
+            }
+        }
+        else{
+            System.out.println("Il n'y a pas de groupe à enlever dans seance_groupes!");
+        }
     }
+   
 /*
     * MODULE MAJ N°11 ENLEVER UN ENSEIGNANT D'UNE SEANCE
 */
+    
     public void EnleverEnseignantSeance(int id_seance, int id_enseignant) {
         SeanceDAO sDAO = new SeanceDAO();
         Seance seance2 = sDAO.find(id_seance);
         
-        sDAO.find_seance_enseignant_valider(id_seance);// METHODE N°10  DANS SEANCEDAO
-        sDAO.find_seance_enseignant_enlever_blindage(id_seance);//METHODE N°12 DANS SEANCEDAO
         //LES CONDITIONS 
-        if(sDAO.find_seance_enseignant_valider(id_seance)){
-            if(sDAO.find_seance_enseignant_enlever_blindage(id_seance)>1){
+        if(!seance2.getEnseignants().isEmpty()){ //S'il y a des enseignants
+            if(seance2.getEnseignants().size()>1){
                 sDAO.DeleteInJonction(id_seance, id_enseignant, 1);//METHODE N°12 DANS SEANCEDAO
                 System.out.println("L'enseignant a été enlevée, la séance est toujours disponible !");
             }
-            if(sDAO.find_seance_enseignant_enlever_blindage(id_seance)==1){
+            if(seance2.getEnseignants().size()==1){
                 sDAO.DeleteInJonction(id_seance, id_enseignant, 1);//METHODE N°20 DANS SEANCEDAO
                 seance2.setEtat(1);
                 sDAO.update(seance2);
-                System.out.println("Le groupe a été enlevée, la seéance est en cours de validation !");
-            }   
-            if(sDAO.find_seance_enseignant_enlever_blindage(id_seance)==0)
-                System.out.println("Il n'y a pas d'enseignant à enlever dans seance_enseignants!");
+                System.out.println("L'enseignant a été enlevée, la séance est en cours de validation !");
+            }  
+        }else{
+            System.out.println("Il n'y a pas d'enseignant à enlever dans seance_enseignants!");
         }  
     }
     

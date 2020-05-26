@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
+        <file>
+            <url>src/dao/SeanceDAO.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>215</line>
+                <key/>
+            </bookmark>
+            <bookmark id="2">
+                <name/>
+                <line>478</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/controleur/Controle.java</url>
+            <bookmark id="4">
+                <name/>
+                <line>166</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/OngletSalles.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/TableRendererPanel.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/Fenetre.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/MultiLabelRenderer.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/EmploiDuTemps.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/OngletCours.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/controleur/Controle.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/dao/SeanceDAO.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/controleur/Controle.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/Seance.java</file>
         </group>
     </open-files>
 </project-private>

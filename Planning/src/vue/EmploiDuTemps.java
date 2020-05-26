@@ -29,7 +29,15 @@ public class EmploiDuTemps extends JTabbedPane {
         this.add("Salles", ongletSalles);
     }
     
-    //Getters      
+    //Getters 
+    public JSpinner getDateHome() {
+        return ongletHome.getDateHome();
+    }
+    
+    public JTable getEdtHome() {
+        return ongletHome.getTabCoursHome();
+    }
+    
     public JTextField getRechercheBarreCours() {
         return ongletCours.getRechercheBarre();
     }
@@ -40,6 +48,10 @@ public class EmploiDuTemps extends JTabbedPane {
     
     public JComboBox getRechercheCours() {
         return ongletCours.getRecherche();
+    }
+    
+    public JComboBox getGroupesCours() {
+        return ongletCours.getGroupes();
     }
     
     public JComboBox getSemaineCours() {
@@ -60,6 +72,10 @@ public class EmploiDuTemps extends JTabbedPane {
         this.add("Service planification", ongletSP);
     }
     
+    public void setEdtHome() {
+        ongletHome.setEdt();
+    }
+    
     public void setEdtCours(int semaine) {
         ongletCours.setEdt(semaine);
     }
@@ -70,5 +86,9 @@ public class EmploiDuTemps extends JTabbedPane {
     
     public void setRechercheCours(ArrayList<String> string) {
         ongletCours.remplirComboBox(ongletCours.getRecherche(), string);
+    }
+    
+    public void setGroupesCours(ArrayList<String> string) {
+        ongletCours.remplirComboBox(ongletCours.getGroupes(), "Groupes", string);
     }
 }

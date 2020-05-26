@@ -98,4 +98,33 @@ public class EtudiantDAO extends DAO<Etudiant> {
         }
         return etudiant;
     }
+    
+    public Etudiant findByGroup(int id) {
+        Etudiant etudiant = new Etudiant();      
+
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+
+            result = st.executeQuery("SELECT * FROM Etudiant WHERE ID_groupe = " + id);
+            
+            if(result.first()) {
+                //recuperation données utilisateur
+                int cle = result.getInt("ID_utilisateur"); //ID étudiant
+                etudiant.setNumero(result.getInt("Numero")); //Pas très utile mais bon
+                
+                UtilisateurDAO userDAO = new UtilisateurDAO();
+                Utilisateur user = userDAO.find(cle);
+                etudiant.copierUtilisateur(user); //copie de utilisateur dans enseignant pour pouvoir recup mail et password
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Etudiant pas trouvé");
+        }
+        return etudiant;
+    }
 }

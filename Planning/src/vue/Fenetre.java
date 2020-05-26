@@ -7,8 +7,11 @@ package vue;
 import controleur.Controle;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DateFormat;
 import java.util.*;
 import javax.swing.*; 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 //La classe Fenetre correspond a toute l'interface graphique contenant la page de connexion et le planning (+gestion)
 public class Fenetre extends JFrame {  
@@ -33,8 +36,16 @@ public class Fenetre extends JFrame {
     }
     
     //Getters
+    public EmploiDuTemps getEdt() {
+        return this.edt;
+    }
+    
     public JTable getEdtCours() {
         return edt.getEdtCours();
+    }
+    
+    public JTable getEdtHome() {
+        return edt.getEdtHome();
     }
     
     //Méthodes
@@ -61,9 +72,10 @@ public class Fenetre extends JFrame {
             connect(connexion.getEmail(), connexion.getPassword());     
         });
         
-        //COMBOBOX DES SEMAINES
+        //COMBOBOX DES SEMAINES dans Cours et dans Salles
         edt.getSemaineCours().addActionListener((ActionEvent event) -> {
             chargerEdt();
+            edt.getGroupesCours().setSelectedItem("Groupes");
         });
         
         edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
@@ -80,6 +92,15 @@ public class Fenetre extends JFrame {
         edt.getRechercheCours().addActionListener((ActionEvent event) -> {
             chargerEdt();
         });
+        
+        edt.getGroupesCours().addActionListener((ActionEvent event) -> {
+            chargerGroupeEdt();
+        });
+        
+        //SPINNER DATE HOME
+        edt.getDateHome().addChangeListener((ChangeEvent ce) -> {
+            chargerEdtJour();
+        });
     }
     
     public void connect(String email, String password) {
@@ -92,6 +113,7 @@ public class Fenetre extends JFrame {
             controle.seancesEdt(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), email, password); //On ajoute les séances a l'edt
             //On rempli la combobox de recherche avec tous les utilisateurs de la BDD, pour un référent
             remplirComboRecherche(email, password);
+            remplirComboGroupes();
         }
     }
     
@@ -101,6 +123,11 @@ public class Fenetre extends JFrame {
         
         String utilisateur = controle.utilisateurCourant(email, password);
         edt.getRechercheCours().setSelectedItem(utilisateur);
+    }
+    
+    public void remplirComboGroupes() {
+        ArrayList<String> ttLesGroupes = controle.allGroupsToStrings();
+        edt.setGroupesCours(ttLesGroupes); 
     }
     
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
@@ -143,6 +170,41 @@ public class Fenetre extends JFrame {
         else {
             edt.setEdtCours(Integer.parseInt(semaine));
             majEdt();
+        }
+    }
+    
+    public void chargerGroupeEdt() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineCours().getSelectedItem().toString();
+        if (semaine == "Semaine") {
+            edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majEdtGroupe();
+        }
+
+        else {
+            edt.setEdtCours(Integer.parseInt(semaine));
+            majEdtGroupe();
+        }
+    }
+    
+    public void majEdtJour() {
+        //Récup de la date du JSpinner
+        String date = DateFormat.getDateInstance(1).format(edt.getDateHome().getValue()) ;
+        System.out.println(date);
+ 
+        controle.majSeancesEdt(date, connexion.getEmail(), connexion.getPassword());
+    }
+    
+    public void chargerEdtJour() {
+        edt.setEdtHome();
+        majEdtJour();
+    }
+    
+    public void majEdtGroupe() {
+        String recherche = edt.getGroupesCours().getSelectedItem().toString();
+        
+        if(recherche != "Groupes") {
+            controle.majSeancesEdt(Integer.parseInt(edt.getSemaineSalles().getSelectedItem().toString()), recherche);
         }
     }
 }

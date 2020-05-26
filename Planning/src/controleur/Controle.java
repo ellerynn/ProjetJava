@@ -28,9 +28,7 @@ public class Controle {
     }
     
     public Boolean demandeConnexion(String email, String password) {
-        //UTILISATEURDAO recuperation de toutes les données
-        UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
-        Utilisateur utilisateur = utilisateurDAO.find(email,password);
+        Utilisateur utilisateur = recupUtilisateur(email, password);
         //On a trouvé un utilisateur -> return true
         //Sinon, return false        
         return !(utilisateur.getEmail().isEmpty() && utilisateur.getPassword().isEmpty()); 
@@ -50,6 +48,11 @@ public class Controle {
     public ArrayList<Utilisateur> recupUtilisateurs() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
         return utilisateurDAO.find();
+    }
+    
+    public ArrayList<Groupe> recupGroupes() {
+        GroupeDAO gDAO = new GroupeDAO();
+        return gDAO.find();
     }
     
     public Etudiant recupEtudiant(Utilisateur utilisateur) {
@@ -84,6 +87,7 @@ public class Controle {
         //Si admin -> "Administrateur"
         if(u.getDroit() == 1) {
             info = "Administrateur";
+            fenetre.getEdt().addOngletServicePlanification();
         }
         
         return info;
@@ -97,7 +101,7 @@ public class Controle {
     }
         
     public void seancesEdt(int semaine, String email, String password) {
-        System.out.println("On veut afficher les seances de " + email);
+        //System.out.println("On veut afficher les seances de " + email);
         
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
@@ -209,6 +213,190 @@ public class Controle {
         } 
     }
     
+    public void majSeancesEdt(String date, String email, String password) {
+        UtilisateurDAO uDAO = new UtilisateurDAO();
+        Utilisateur u = uDAO.find(email, password);
+        
+        seancesEdt(date, u.getEmail(), u.getPassword());
+    }
+    
+    public void seancesEdt(String date, String email, String password) {
+        System.out.println("On veut afficher les seances de " + email);
+        
+        SeanceDAO sDAO = new SeanceDAO();
+        Etudiant et = new Etudiant();
+        Enseignant en = new Enseignant();
+        ArrayList<Seance> seances = new ArrayList<>(); //Conteneur de seances
+        ArrayList<String> strSeances; //Conteneur des string relative a une seance
+        //On récupère l'utilisateur
+        Utilisateur u = recupUtilisateur(email, password);
+        //Avant d'appeler le seanceDAO, il faut convertir la Strind date en plusieurs int
+        int jour = 0, mois = 0, annee = 0;
+        
+        int pos = date.indexOf(' '); //Premier espace -> après le jour
+        jour = Integer.parseInt(date.substring(0, pos)); //On récup le jour
+        System.out.println("jour " + jour);
+        
+        date = date.substring(pos+1); //On récupère la string de base sans le jour ni l'espace
+        System.out.println("tampon " + date);
+        
+        pos = date.indexOf(' '); //Premier espace -> après le jour
+        String month = date.substring(0, pos); //On récup le mois
+        System.out.println("mois " + month);
+        
+        switch(month) {
+            case "janvier" :
+                mois = 1;
+                break;
+            case "février" :
+                mois = 2;
+                break;
+            case "mars" :
+                mois = 3;
+                break;
+            case "avril" :
+                mois = 4;
+                break;
+            case "mai" :
+                mois = 5;
+                break;
+            case "juin" :
+                mois = 6;
+                break;
+            case "juillet" :
+                mois = 7;
+                break;
+            case "août" :
+                mois = 8;
+                break;
+            case "septembre" :
+                mois = 9;
+                break;
+            case "octobre" :
+                mois = 10;
+                break;
+            case "novembre" :
+                mois = 11;
+                break;
+            case "décembre" :
+                mois = 12;
+                break;
+        }
+        
+        System.out.println("mois " + mois);
+        
+        annee = Integer.parseInt(date.substring(pos+1)); //L'annee
+        System.out.println("annee " + annee);
+        
+        //On récupère les données de l'utilisateurs selon son profil (étudiant, enseignant dont référent)
+        if(u.getDroit() == 3 || u.getDroit() == 2) {
+            //On ne récupère que les séances de la semaine courante
+            en = recupEnseignant(u);
+            en.setSeances(sDAO.findSeancesByUserAndDay(en.getId(), jour, mois, annee));
+            seances = en.getSeances();
+        }
+        
+        if(u.getDroit() == 4) {
+            et = recupEtudiant(u);
+            et.setSeances(sDAO.findSeancesByUserAndDay(et.getId(), jour, mois, annee));
+            seances = et.getSeances();
+            
+            //Ne doit pas voir les séances en cours de validation (etat = 1)
+            for(int i=0;i<seances.size();i++) {
+                
+                if(seances.get(i).getEtat() == 1) {
+                    seances.remove(i); //Effacer la séance
+                    //System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
+                    i--; //On retourne une case en arrière
+                }
+            }
+        }
+                
+        //Trouver la ligne -> HEURE - Récuperer string, comparer a ce qui est dans seances de l'utilisateur
+        int ligne1 = 0, ligne2 = 0; 
+        
+        for(int j=0;j<seances.size();j++) { //Pour toutes les seances
+            String heure1 = seances.get(j).getHeureDebut();
+            System.out.println("Heure début de la seance " + heure1);
+            
+            String heure2 = seances.get(j).getHeureFin();
+            System.out.println("Heure fin de la seance " + heure2);
+            
+            //Convertir l'heure1BDD en heureEdt : 12:00:00 -> 12h00
+            String heure1BDD = heure1.substring(0, 2) + "h" + heure1.substring(3, 5); 
+            System.out.println(heure1BDD);
+            
+            //Convertir l'heure2BDD en heureEdt : 12:00:00 -> 12h00
+            String heure2BDD = heure2.substring(0, 2) + "h" + heure2.substring(3, 5); 
+            System.out.println(heure2BDD);
+                        
+            //LIGNE DEBUT
+            for(int i=0;i<fenetre.getEdtHome().getRowCount();i++) { 
+                String heureEdt = fenetre.getEdtHome().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
+                
+                if(heureEdt.equals(heure1BDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
+                    ligne1 = i;
+                }
+            }
+            
+            //LIGNE FIN
+            for(int i=0;i<fenetre.getEdtHome().getRowCount();i++) { 
+                String heureEdt = fenetre.getEdtHome().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
+                
+                if(heureEdt.equals(heure2BDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
+                    ligne2 = i;
+                }
+            }
+            
+            //Un cours dure forcément 1h30 = 6 cases
+            strSeances = seances.get(j).toArrayListOfString();
+            //RAPPEL cf. méthode dans Seance.java
+            //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
+            //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
+            //!! SI LA SEANCE EST VALIDEE = 5 CASES
+            
+            for(int i=0;i<strSeances.size();i++) {
+                fenetre.getEdtHome().setValueAt(strSeances.get(i), ligne1+i, 1);
+
+                //Si la séance est validée
+                if(!strSeances.get(0).equals("ANNULEE") && !strSeances.get(0).equals("EN COURS DE VALIDATION")) {
+                    fenetre.getEdtHome().setValueAt("    ", ligne1+5, 1);
+                } 
+            }
+        } 
+    }
+    
+    public void majSeancesEdt(int semaine, String recherche) {
+        //Récupérer le groupe et la promo
+        String groupe = recherche.substring(0, 4);
+        String promo = recherche.substring(5, 9);
+
+        System.out.println("recherche : " + groupe + " " + promo);
+        
+        //Trouver un etudiant qui appartient a ce groupe
+        //Trouver l'id de la promo
+        PromotionDAO pDAO = new PromotionDAO();
+        Promotion p = pDAO.findByName(promo);
+        
+        System.out.println("promo recup " + p.getNom());
+        
+        //Trouver l'id du groupe
+        GroupeDAO gDAO = new GroupeDAO();
+        Groupe g = gDAO.findByNameAndPromo(groupe, p.getId());
+        
+        System.out.println("groupe recup " + g.getNom() + "de la promo " + g.getPromotion().getNom());
+        
+        //Trouver etudiant by group -> email, password
+        EtudiantDAO eDAO = new EtudiantDAO();
+        Etudiant e = eDAO.findByGroup(g.getId());
+        
+        System.out.println("etudiant recup " + e.getEmail() + " " + e.getPassword());
+        
+        seancesEdt(semaine, e.getEmail(), e.getPassword());
+    }
+    
     public ArrayList<String> allUsersToStrings() {
         ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
         ArrayList<String> preNom = new ArrayList<>();
@@ -217,5 +405,15 @@ public class Controle {
             preNom.add(utilisateurs.get(i).getPrenom() + " " + utilisateurs.get(i).getNom());
          
         return preNom;
+    }
+
+    public ArrayList<String> allGroupsToStrings() {
+        ArrayList<Groupe> groupes = recupGroupes();
+        ArrayList<String> gp = new ArrayList<>();
+        
+        for(int i=0;i<groupes.size();i++)
+            gp.add(groupes.get(i).getNom() + " " + groupes.get(i).getPromotion().getNom());
+         
+        return gp;
     }
 }

@@ -486,6 +486,7 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
     }
+    
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
         
@@ -523,6 +524,58 @@ public class SeanceDAO extends DAO<Seance> {
                 e.printStackTrace();
         }
         return listSeancesbyWeek;
+    }
+    
+    public ArrayList<Seance> findSeancesByUserAndDay(int id, int jour, int mois, int annee){
+        ArrayList<Seance> listSeancesbyDay = new ArrayList<>();
+        
+        String month = new String();
+        if(mois<10)
+            month = "0" + String.valueOf(mois);
+        else month = String.valueOf(mois);
+        
+        String day = new String();
+        if(jour<10)
+            day = "0" + String.valueOf(jour);
+        else day = String.valueOf(jour);
+        
+        String dateBDD = annee + "-" + month + "-" + jour; //aaaa-mm-jj
+        System.out.println("date BDD " + dateBDD);
+        
+        try {
+            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
+            if(result.first())
+            {
+                String requete = new String();
+                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
+                    requete = "SELECT ID FROM Seance \n"
+                            +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
+                            +"WHERE Seance.Date = '" + dateBDD + "' AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
+                    requete = "SELECT ID FROM Seance \n" +
+                                "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
+                                "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
+                                "WHERE Seance.Date = '" + dateBDD + "' AND user.ID_utilisateur = " + id + 
+                                " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+
+                if(resultSeances.first()) //On regarde si une ligne existe
+                {
+                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                    while(resultSeances.next())  //On recupère les données de toute les lignes
+                    {
+                        SeanceDAO sDAO = new SeanceDAO();
+                        listSeancesbyDay.add(sDAO.find(resultSeances.getInt("ID")));
+                    }
+                }
+            }
+        }
+        catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyDay;
     }
     
     public ArrayList<Seance> findSeanceByClassForTeacher(int id) {

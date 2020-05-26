@@ -18,6 +18,7 @@ public class OngletCours extends JTabbedPane {
     private JButton rechercheBouton;
     private JComboBox<String> selectRecherche;
     private JComboBox<String> semaine;
+    private JComboBox<String> groupes;
     private JTable tabEdt;
     private TableRendererPanel p;
     //Cours -> Récapitulatifs des cours
@@ -30,6 +31,7 @@ public class OngletCours extends JTabbedPane {
         rechercheBouton = new JButton();
         selectRecherche = new JComboBox<String>();
         semaine = new JComboBox<String>();
+        groupes = new JComboBox<String>();
         tabEdt = new JTable();
         p = new TableRendererPanel(tabEdt);
         //Cours -> Récapitulatifs des cours
@@ -40,7 +42,6 @@ public class OngletCours extends JTabbedPane {
         cours.setLayout(new GridBagLayout()); //Initialisation du container
         GridBagConstraints c = new GridBagConstraints(); //Contraintes d'ajout des composants
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
         
         c.insets = new Insets(10,10,10,10);
         
@@ -50,15 +51,19 @@ public class OngletCours extends JTabbedPane {
         vueEdt.setModel(new DefaultComboBoxModel<>(new String[]{"en grille", "en liste"})); //Ajout des items au menu déroulant
         cours.add(vueEdt, c); //Ajout au conteneur     
         
+        c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
-        cours.add(selectRecherche, c);
+        cours.add(groupes, c);        
         
         c.gridx = 2;
+        cours.add(selectRecherche, c);
+        
+        c.gridx = 3;
         rechercheBarre.setPreferredSize(new Dimension(250, 20));
         cours.add(rechercheBarre, c);
         
-        c.gridx = 3; 
+        c.gridx = 4; 
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.LINE_START;
         rechercheBouton.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
@@ -121,6 +126,10 @@ public class OngletCours extends JTabbedPane {
         return this.selectRecherche;
     }
     
+    public JComboBox getGroupes() {
+        return this.groupes;
+    }
+    
     public JComboBox getSemaine() {
         return this.semaine;
     }
@@ -139,6 +148,13 @@ public class OngletCours extends JTabbedPane {
     
     public void remplirComboBox(JComboBox box, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>()); 
+        for(int i = 0; i < string.size(); i++) {
+            box.addItem(string.get(i));
+        }
+    }
+    
+    public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
+        box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
         for(int i = 0; i < string.size(); i++) {
             box.addItem(string.get(i));
         }
@@ -225,7 +241,7 @@ public class OngletCours extends JTabbedPane {
         
         tabEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tabEdt.getColumnModel().getColumnCount() > 0) {
-            tabEdt.getColumnModel().getColumn(0).setMaxWidth(50);
+            tabEdt.getColumnModel().getColumn(0).setMaxWidth(55);
         }
         
         tabEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes

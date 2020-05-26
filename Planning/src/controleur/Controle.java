@@ -482,4 +482,56 @@ public class Controle {
          
         return gp;
     }
+    /***Données Service Planif****/
+    public ArrayList<TypeCours> recupAllTypes(){
+        TypeCoursDAO tDAO =new TypeCoursDAO();
+        return tDAO.findAllTypes();
+    }
+    public ArrayList<String> allTypeToStrings(){
+        ArrayList<TypeCours> types = recupAllTypes();
+        ArrayList<String> tp = new ArrayList<>();
+        
+        for (int i = 0 ; i <types.size(); i++)
+            tp.add(types.get(i).getNom());
+        return tp;
+    }
+    
+    public ArrayList<Cours> recupAllCours(){
+        CoursDAO DAO =new CoursDAO();
+        return DAO.findAllCours();
+    }
+    public ArrayList<String> allCoursToStrings(){
+        ArrayList<Cours> cours = recupAllCours();
+        ArrayList<String> c = new ArrayList<>();
+        
+        for (int i = 0 ; i <cours.size(); i++)
+            c.add(cours.get(i).getNom());
+        return c;
+    }
+    
+    public ArrayList<Salle> recupAllSalles(){
+        SalleDAO DAO = new SalleDAO();
+        return DAO.findAllSalles();
+    }
+    public ArrayList<String> allSallesToStrings(){
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<String> s = new ArrayList<>();
+        
+        for (int i = 0 ; i <salles.size(); i++)
+            s.add(salles.get(i).getNom()+" "+ salles.get(i).getSite().getNom());
+        return s;
+    }
+    public ArrayList<Enseignant> recupAllEnseignants(){
+        EnseignantDAO eDAO = new EnseignantDAO();
+        return eDAO.findAllTeacher();
+    }
+    public ArrayList<String> allEnseignantsToStrings(){
+        ArrayList<Enseignant> ens = recupAllEnseignants();
+        ArrayList<String> s = new ArrayList<>();
+        
+        for (int i = 0 ; i <ens.size(); i++)
+            s.add(ens.get(i).getNom()+" "+ ens.get(i).getPrenom());
+        return s;
+    }
+    /***Fin donnée SP*****/
 }

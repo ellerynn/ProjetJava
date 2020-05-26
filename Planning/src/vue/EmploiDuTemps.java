@@ -99,4 +99,21 @@ public class EmploiDuTemps extends JTabbedPane {
     public void setGroupesCours(ArrayList<String> string) {
         ongletCours.remplirComboBox(ongletCours.getGroupes(), "Groupes", string);
     }
+    /***Données Service Planif****/
+    public void setTypes(ArrayList<String> string) {
+        ongletSP.remplirComboTypes(string);
+    }
+    public void setCours(ArrayList<String> string) {
+        ongletSP.remplirComboCours(string);
+    }
+    public void setSalles(ArrayList<String> string){
+        ongletSP.remplirListSalle(string);
+    }
+    public void setGroupes(ArrayList<String> string){ //Je ne sais pas s'il y a myn de fusioner avec setGroupesCours
+        ongletSP.remplirListGroupes(string);
+    }
+    public void setEnseignants(ArrayList<String> string){
+        ongletSP.remplirListEnseignants(string);
+    }
+    /***Fin donnée SP*****/
 }

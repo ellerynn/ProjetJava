@@ -122,7 +122,7 @@ public class OngletGererCoursSP extends JSplitPane {
         container2.add(type, c);
         
         c.gridx = 2;
-        remplirComboBoxType(selectType);
+        //remplirComboBoxType(selectType);
         container2.add(selectType, c);
         
         c.gridy = 5; c.gridx = 1;
@@ -324,4 +324,49 @@ public class OngletGererCoursSP extends JSplitPane {
                                                                "Partiel", 
                                                                "Rattrapage" }));
     }
+    /***Données Service Planif****/
+    public void remplirComboBoxType(JComboBox box, String intitule, ArrayList<String> string) {
+        box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
+        for(int i = 0; i < string.size(); i++) {
+            box.addItem(string.get(i));
+        }
+    }
+    public void remplirListe(JList liste, ArrayList<String> string) {
+        Vector<String> listData = new Vector();
+        for(String s : string)
+            listData.add(s);
+        liste.setListData(listData);
+    }
+    
+    public JComboBox getSelectType() {
+        return this.selectType;
+    }
+    public JComboBox getSelectType2() {
+        return this.selectType2;
+    }
+    public JComboBox getSelectCours() {
+        return this.selectCours;
+    }
+    public JComboBox getSelectCours2() {
+        return this.selectCours2;
+    }
+    public JList getListeSalles() {
+        return this.listeSalles;
+    }
+    public JList getListeSalles2() {
+        return this.listeSalles2;
+    }
+    public JList getListeGroupes(){
+        return this.listeGroupes;
+    }
+    public JList getListeGroupes2(){
+        return this.listeGroupes2;
+    }
+    public JList getListeEnseignants(){
+        return this.listeEnseignants;
+    }
+    public JList getListeEnseignants2(){
+        return this.listeEnseignants2;
+    }
+    /***Fin donnée SP*****/
 }

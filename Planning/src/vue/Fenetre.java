@@ -114,6 +114,15 @@ public class Fenetre extends JFrame {
             remplirComboRecherche(email, password);
             remplirComboGroupes();
             
+                //COMBOBOX propre à l'admin
+            if (email.equals("admin@gmail.com") && password.equals("admin"))
+            {
+                remplirComboTypes();
+                remplirComboCours();
+                remplirListSalles();
+                remplirListGroupes();
+                remplirListEnseignants();
+            }
             //controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
         }
     }
@@ -130,7 +139,28 @@ public class Fenetre extends JFrame {
         ArrayList<String> ttLesGroupes = controle.allGroupsToStrings();
         edt.setGroupesCours(ttLesGroupes); 
     }
-    
+    /***Données Service Planif****/
+    public void remplirComboTypes(){
+        ArrayList<String> ttLesTypes = controle.allTypeToStrings();
+        edt.setTypes(ttLesTypes);
+    }
+    public void remplirComboCours(){
+        ArrayList<String> ttLesCours = controle.allCoursToStrings();
+        edt.setCours(ttLesCours);
+    }
+    public void remplirListSalles(){
+        ArrayList<String> ttLesSalles = controle.allSallesToStrings();
+        edt.setSalles(ttLesSalles);
+    }
+    public void remplirListGroupes(){//Je ne sais pas s'il y a myn de fusionner avec remplirComboGroupes
+        ArrayList<String> ttLesGrps = controle.allGroupsToStrings();
+        edt.setGroupes(ttLesGrps);
+    }
+    public void remplirListEnseignants(){
+        ArrayList<String> ttLesEnseignants = controle.allEnseignantsToStrings();
+        edt.setEnseignants(ttLesEnseignants);
+    }
+    /***Fin donnée SP*****/
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
         int annee = Calendar.getInstance().get(Calendar.YEAR); //Année courante
         if(Calendar.getInstance().get(Calendar.MONTH)+1 >= 9 && Calendar.getInstance().get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre

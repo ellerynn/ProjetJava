@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
 import modele.Site;
 
 public class SiteDAO extends DAO<Site> {
@@ -78,5 +79,22 @@ public class SiteDAO extends DAO<Site> {
         }
         
         return site;
+    }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Site> findAllSites() //NE SERA PEUT ETRE JAMAIS USE (car salles possèdent dj l'info du site)
+    {
+        ArrayList<Site> sites = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM site ORDER BY ID"); // Récup tout types
+            
+                while(result.next()) {
+                    sites.add(find(result.getInt("ID")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return sites;
     }
 }

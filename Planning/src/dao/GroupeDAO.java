@@ -164,11 +164,11 @@ public class GroupeDAO extends DAO<Groupe> {
                 while(result.next()) {
                     GroupeDAO gDAO = new GroupeDAO();
                     group = gDAO.find(result.getInt("ID"));
-                                        
+                      /*                  
                     PromotionDAO pDAO = new PromotionDAO();
                     Promotion promo = pDAO.find(result.getInt("ID_promotion"));
                     group.setPromotion(promo);
-                                        
+                                        */
                     groupes.add(group);
                 }
             }

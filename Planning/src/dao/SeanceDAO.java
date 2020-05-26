@@ -832,4 +832,20 @@ public class SeanceDAO extends DAO<Seance> {
         String heureTotal = s.orderingHour(heure+"h"+minute);
         return heureTotal;
     }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Seance> findAllSeance()
+    {
+        ArrayList<Seance> seances = new ArrayList<>();
+        try{
+             ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT ID FROM seance ORDER BY ID");
+             while(resultSeances.next())
+             {
+                 seances.add(find(resultSeances.getInt("ID")));
+             }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return seances;
+    }
 }

@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
 import modele.*;
 
 public class EtudiantDAO extends DAO<Etudiant> {
@@ -126,5 +127,22 @@ public class EtudiantDAO extends DAO<Etudiant> {
             System.out.println("Etudiant pas trouvé");
         }
         return etudiant;
+    }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Etudiant> findAllStudents()
+    {
+        ArrayList<Etudiant> etudiants = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID_utilisateur FROM etudiant ORDER BY ID_utilisateur"); // Récup tout ensengnants
+            
+                while(result.next()) {
+                    etudiants.add(find(result.getInt("ID_utilisateur")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return etudiants;
     }
 }

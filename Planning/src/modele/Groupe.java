@@ -48,5 +48,6 @@ public class Groupe {
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
     }
+    
 }
 

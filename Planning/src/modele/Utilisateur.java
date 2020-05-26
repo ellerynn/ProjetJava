@@ -98,17 +98,6 @@ public class Utilisateur {
         prenom = utilisateur.getPrenom();
         droit = utilisateur.getDroit();
     }
-
-    
-    public void copierUtilisateur(Etudiant etudiant){
-        id = etudiant.getId();
-        email = etudiant.getEmail();
-        password = etudiant.getPassword();
-        nom = etudiant.getNom();
-        prenom = etudiant.getPrenom();
-        droit = etudiant.getDroit();
-    }
-    
     public Utilisateur getUtilisateur(){ //Pour update
         Utilisateur user = new Utilisateur(email, password, nom, prenom, droit);
         user.setId(getId());

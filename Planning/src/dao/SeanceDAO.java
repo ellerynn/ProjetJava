@@ -122,8 +122,16 @@ public class SeanceDAO extends DAO<Seance> {
                     ", ID_type = '" + object.getTypeCours().getId() + "'"+
                     " WHERE ID = " + object.getId()
                  );
-            object = this.find(object.getId());
                 
+             //update jonction seance_salles, pas après le find() car écrase les données
+            connect.createStatement().executeUpdate(
+                           "DELETE FROM seance_salles WHERE ID_seance = "+object.getId()); //On supprime tout, pour éviter les doublons
+            for (int i = 0 ; i <object.getSalles().size();i++)
+            insertInJonction(object.getId(),object.getSalles().get(i).getId(),3);
+                
+            
+            //Pour appelé les updates des autres classes
+            object = this.find(object.getId());
             DAO<Cours> coursDAO = new CoursDAO();
             Cours cou = object.getCours();
             cou = coursDAO.find(cou.getId());
@@ -132,9 +140,9 @@ public class SeanceDAO extends DAO<Seance> {
             DAO<TypeCours> typescoursDAO = new TypeCoursDAO();
             TypeCours tp = object.getTypeCours();
             tp = typescoursDAO.find(tp.getId());
-            typescoursDAO.update(tp);   
-                  
-                
+            typescoursDAO.update(tp);  
+            
+            
         } catch (SQLException e) {
                 e.printStackTrace();
         }
@@ -187,10 +195,7 @@ public class SeanceDAO extends DAO<Seance> {
                 }
             }
             //On récupère les salles de la séance
-            ResultSet resultSalles =  st.executeQuery("SELECT * FROM Seance\n" +
-                                                      "LEFT JOIN seance_salles ON seance.ID = seance_salles.ID_seance\n" +
-                                                      "LEFT JOIN salle ON seance_salles.ID_salle = salle.ID\n" +
-                                                      "WHERE Seance.ID = "+id);
+            ResultSet resultSalles =  st.executeQuery("SELECT * FROM seance_salles WHERE ID_seance = "+ id);
             if (resultSalles.first()){
                 SalleDAO sDAO = new SalleDAO();
                 seance.ajouterSalle(sDAO.find(resultSalles.getInt("ID_salle")));
@@ -201,10 +206,7 @@ public class SeanceDAO extends DAO<Seance> {
             }
 
             //On récupère les groupes (d'étudiant) de la séance
-            ResultSet resultGroupes =  st.executeQuery("SELECT * FROM Seance\n" +
-                                                      "LEFT JOIN seance_groupes ON seance.ID = seance_groupes.ID_seance\n" +
-                                                      "LEFT JOIN groupe ON seance_groupes.ID_groupe = groupe.ID\n" +
-                                                      "WHERE Seance.ID = "+id);
+            ResultSet resultGroupes =  st.executeQuery("SELECT * FROM seance_groupes WHERE ID_seance = " + id);
             if (resultGroupes.first()){
                 GroupeDAO gDAO = new GroupeDAO();
                 seance.ajouterGroupe(gDAO.find(resultGroupes.getInt("ID_groupe")));
@@ -219,202 +221,76 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return seance;
     }
-/*
-    * FIND_SEANCE_GROUPE METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE DE LA TABLE SEANCE_GROUPES POUR FAIRE LA VERIFICATION DE LA MAJ SI L'ID EXISTE
-    * METHODE N°4 POUR MODULE MAJ N°8  AJOUT D'UN GROUPE A UNE SEANCE
-*/
-    public Boolean find_seance_groupe(int id_seance, int id_groupe) {
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes WHERE ID_seance = '" + id_seance + "'"+ 
-                           " AND ID_groupe = " + id_groupe );
-            if(maRequete.first())
-                return true;
-            else
-                return false; 
-        }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return false;
-    }
     
-/*
-    * FIND_SEANCE_ENSEIGNANT METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE DE LA TABLE SEANCE_ENEIGNANTS POUR FAIRE LA VERIFICATION DE LA MAJ SI L'ID EXISTE
-    * METHODE N°5 POUR MODULE MAJ N°7 MODIFIER LE NOM DU COURS, MODULE MAJ N°1 AFFECTER UN ENSEIGNANT A UNE SEANCE
-*/
-    public Boolean find_seance_enseignant(int id_seance, int id_enseignant) {
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_enseignants WHERE ID_seance = '" + id_seance + "'"+ 
-                           " AND ID_enseignant = " + id_enseignant );
-            if(maRequete.first())
-                return true;
-            else
-                return false; 
+    //METHODE N°4 Vérifie si le prof qu'on veut add est dispo et non en doublon
+    //Use pour MAJ 6 AjouterSeance, 7 AjouterEnseignantSeance
+    public boolean canIAjouterEnseignantSeance(Seance seance, int id_enseignant) {
+        boolean youCan = false;
+        SeanceDAO sDAO = new SeanceDAO();
+        if(!seance.isThisTeacherInThisSeance(id_enseignant)){ // Si pas dans la séance
+            if(sDAO.isTeacherNotFreeForThisSeance(id_enseignant, seance)){//METHODE N°14 DANS SEANCEDAO
+                System.out.println("Impossible d'ajouter car cet enseignant est occupé à ce créneau");
+            }else{
+                    youCan = true;
+                    System.out.println("Possible d'add cet enseignant ! ");
+            }         
+        }else{
+            System.out.println("Cet enseignant est déjà dans cet séance");
         }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return false;
+        return youCan;
     }
-/*
-    * FIND_SEANCE_SALLE METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE DE LA TABLE SEANCE_SALLES POUR FAIRE LA VERIFICATION DE LA MAJ SI L'ID EXISTE
-    * METHODE N°6 POUR MODULE MAJ N°4 affecter une salle a une seance
-*/
-    public Boolean find_seance_salle(int id_seance, int id_salle) {
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_salles WHERE ID_seance = '" + id_seance + "'"+ 
-                           " AND ID_salle = " + id_salle );
-            if(maRequete.first())
-                return true;
-            else
-                return false; 
-        }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return false;
-    }
-    /*
-    * FIND_SEANCE_AFFECTER_ENSEIGNANT METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE POUR SAVOIR SI UN ENSEIGNANT A DEJA ETE AFFECTER A LA SEANCE
-    *CAR ON PEUT AFFECTER QUE SI UNE SEANCE N'A PAS D'ENSEIGNANT
-    * METHODE N°7 POUR MODULE MAJ N°1 AFFECTER UN ENSEIGNANT A UNE SEANCE
-*/
-    public Boolean find_seance_affecter_enseignant(int id_seance) {
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_enseignants " +
-                                                                             "LEFT JOIN seance ON seance.ID = seance_enseignants.ID_seance " 
-                                                                             + " WHERE seance.ID = " + id_seance );
-            if(maRequete.first())
-                return true;
-            else
-                return false; 
-        }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return false;
-    }
-    
-/*
-    * FIND_SEANCE_AFFECTER_SALLE METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE POUR SAVOIR SI UNE SALLE A DEJA ETE AFFECTER A LA SEANCE
-    *CAR ON PEUT AFFECTER QUE SI UNE SEANCE N'A PAS DE SALLE
-    * METHODE N°8 POUR MODULE MAJ N°4 AFFECTER UNE SALLE A UNE SEANCE
-*/
-    public Boolean find_seance_affecter_salle(int id_seance) {
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_salles " +
-                                                                             "LEFT JOIN seance ON seance.ID = seance_salles.ID_seance " 
-                                                                             + " WHERE seance.ID = " + id_seance );
-            if(maRequete.first())
-                return true;
-            else
-                return false; 
-        }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return false;
-    }
-    
-/*
-    * FIND_SEANCE_GROUPE_VALIDER METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE POUR SAVOIR SI UN GROUPE EXISTE DANS LA TABLE SEANCE_GROUPES
-    * METHODE N°9 POUR MODULE MAJ N°10 VALIDER UNE SEANCE ET POUR MODULE MAJ N°11 ENLEVER UN GROUPE D'UNE SEANCE
-*/
-    
-    public Boolean find_seance_groupe_valider(int id_seance) {
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes WHERE ID_seance = " + id_seance );
-            if(maRequete.first()){
-                return true;
-            }else
-                return false; 
-        }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return false;
-    }
-    
-/*
-    * FIND_SEANCE_ENSEIGNANT_VALIDER METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE POUR SAVOIR SI UN ENSEIGNANT EXISTE DANS LA TABLE SEANCE_ENSEIGNANTS
-    * METHODE N°10 POUR MODULE MAJ N°10 VALIDER UNE SEANCE, N°11 ENLEVER ENSEIGNANT
-*/
+    //METHODE N°5 vérifie si la salle a add est dispo et non doublon
+    //POUR MAJ N°4 AJOUT SALLE A UNE SEANCE (EN PLUS), MODULE MAJ N°6 AJOUTER UNE SEANCE
+    public boolean canIAjouterSalleSeance(Seance seance, int id_salle) {
+        boolean youCan = false;
+        SeanceDAO sDAO = new SeanceDAO();
         
-    public Boolean find_seance_enseignant_valider(int id_seance) {
-        int nombre = 0;
-        try
-        {
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_enseignants WHERE ID_seance = " + id_seance );
-            if(maRequete.first())
-            {
-                maRequete.beforeFirst(); // retourne à la première ligne
-                while(maRequete.next()) {
-                    nombre++;
-                }  
-                return true;
-            }
-            else
-                return false; 
+        if(!seance.isThisRoomInThisSeance(id_salle)){ // Si cet salle n'est pas dans la séance
+            if(sDAO.isSalleNotFreeForThisSeance(id_salle, seance)){//METHODE N°14 DANS SEANCEDAO
+                System.out.println("Impossible d'ajouter car cet salle est occupé à ce créneau");
+            }else{
+                    youCan = true;
+                    System.out.println("Possible d'add cet salle ! ");
+            }         
+        }else{
+            System.out.println("Cet salle est déjà dans cet séance");
         }
-        catch (SQLException e) 
-        {
-          e.printStackTrace();
-        }
-        return false;
+        return youCan;
     }
-/*
-    * FIND_SEANCE_GROUPE_ENLEVER_BLINDAGE METHODE INT QUI PERMET DE RECUPERER UN ENTIER QUI COMPTE LE NOMBRE DE GROUPES PRESENTS DANS LA SEANCE DANS LA TABLE SEANCE_GROUPES
-    * METHODE POUR LA SUPPRESSION D'UN GROUPE D'UNE SEANCE
-    * METHODE N°11 POUR MODULE MAJ N°11 ENLEVER UN GROUPE D'UNE SEANCE
-*/
+    //METHODE N°6 vérifie si on peut add un groupe (dispo/non doublon/capa)
+    //POUR MODULE MAJ N°6 AJOUTER UNE SEANCE, MODULE MAJ N°8  AJOUT D'UN GROUPE A UNE SEANCE
+    public boolean canIAjoutGroupeSeance(Seance seance, int id_groupe) {
+        boolean youCan = false;
+        SeanceDAO sDAO = new SeanceDAO();
+        
+        if (!seance.isThisGroupInThisSeance(id_groupe)){ //Le groupe n'est pas dans cette séance
+            if(sDAO.isGroupNotFreeForThisSeance(id_groupe, seance)){//METHODE N°13 DANS SEANCEDAO
+                System.out.println("Impossible de rajouter ce groupe car un cours est deja attitre dans ce créneaux");
+            }else{
+                int capGroupes = 0;
+                for (int i = 0 ; i < seance.getGroupes().size() ; i++)
+                {//On récup capa des groupes déjà dans cette séance
+                    capGroupes += sDAO.find_capacite_groupes_total(seance.getGroupes().get(i).getId(),0); //on considère seance non existant (pour pvr use cette même méthode pour 2 MAJ sans recréer)
+                }
+                capGroupes += sDAO.find_capacite_groupes_total(id_groupe,0); //Le groupe qu'on veut add
+                if(seance.getSalles().isEmpty() || (seance.placeInTotal() >= capGroupes)){//METHODE N°16 DANS SEANCEDAO
+                
+                    youCan = true;
+                    System.out.println("Possible d'add ce groupe ! ");
+                }else{System.out.println("Le nombre d'eleves dans le groupe depasse la capacité maximale de la seance");}
+            }         
+        }else{
+            System.out.println("Ce groupe est déjà dans cette séance");
+        }
+        return youCan;
+    }
     
-    public int find_seance_groupe_enlever_blindage(int id_seance) {
-        int nombre = 0;//utile pour blindage, minimum 1 groupe dans la table seance_groupe, dons si superieur a 1, donc on va stocker le nombre de seance
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes WHERE ID_seance = " + id_seance );
-            if(maRequete.first()){
-                maRequete.beforeFirst(); // retourne à la première ligne
-                while(maRequete.next()) {
-                    nombre++;
-                }  
-            }
-        }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return nombre;
-    }
 /*
-    * FIND_SEANCE_ENSEIGNANT_ENLEVER_BLINDAGE METHODE INT QUI PERMET DE RECUPERER UN ENTIER QUI COMPTE LE NOMBRE D'ENSEIGNANT PRESENTS DANS LA SEANCE DANS LA TABLE SEANCE_ENSEIGNANTS
-    * METHODE POUR LA SUPPRESSION D'UN ENSEIGNANT D'UNE SEANCE
-    * METHODE N°12 POUR MODULE MAJ N°11 ENLEVER UN ENSEIGNANT D'UNE SEANCE
-*/
-    public int find_seance_enseignant_enlever_blindage(int id_seance) {
-        int nombre = 0;//utile pour blindage, minimum 1 groupe dans la table seance_groupe, dons si superieur a 1, donc on va stocker le nombre de seance
-        try
-        {
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_enseignants WHERE ID_seance = " + id_seance );
-            if(maRequete.first())
-            {
-                maRequete.beforeFirst(); // retourne à la première ligne
-                while(maRequete.next()) {
-                    nombre++;
-                }  
-            }
-        }
-        catch (SQLException e) 
-        {
-          e.printStackTrace();
-        }
-        return nombre;
-    }
-/*
-    * FIND_SEANCE_GROUPE_CRENEAU_GROUPE METHODE BOOLEAN QUI RETURN TRUE SI UN GROUPE A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
+    * isGroupNotFreeForThisSeance METHODE BOOLEAN QUI RETURN TRUE SI UN GROUPE A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
     * METHODE BLINDAGE CRENEAU POUR GROUPE
-    * METHODE N°13 POUR MODULE MAJ N°8  AJOUT D'UN GROUPE A UNE SEANCE
+    * METHODE N°13 POUR METHODE N°6 Bool AJOUT D'UN GROUPE A UNE SEANCE, MODULE MAJ N°2  AFFECTER UN GROUPE A UNE SEANCE, MAJ n°5 DEPLACER SEANCE
 */
-    
-    public Boolean find_seance_creneau_groupe (int id_groupe, Seance seance ){
+    public Boolean isGroupNotFreeForThisSeance (int id_groupe, Seance seance ){
         try
         {
             ResultSet maRequete = this.connect.createStatement()
@@ -422,10 +298,10 @@ public class SeanceDAO extends DAO<Seance> {
                                 "LEFT JOIN seance_groupes SG ON seance.ID = SG.ID_seance\n" +
                                 "WHERE SG.ID_groupe = "+id_groupe+" AND seance.Date = '"+ seance.getDate()+"' "+
                                 "AND ((seance.Heure_fin >= '"+seance.getHeureDebut()+"' AND seance.Heure_fin <= '"+seance.getHeureFin()+"') " +
-                                "OR (seance.Heure_debut >= '"+seance.getHeureDebut()+"' AND seance.Heure_debut <= '"+seance.getHeureFin()+"'))");
+                                "OR (seance.Heure_debut >= '"+seance.getHeureDebut()+"' AND seance.Heure_debut <= '"+seance.getHeureFin()+"')) "
+                              + "AND seance.ID != "+seance.getId());//Pour éviter qu'il regarde aussi dans la seance lui même
             if(maRequete.first())
-                return true;
-                //return true; //Des séances sont éxistant dans le créneau 
+                return true;//Des séances sont éxistant dans le créneau 
             else
                 return false; //Ok, feu vert
         }
@@ -436,11 +312,11 @@ public class SeanceDAO extends DAO<Seance> {
         return false;
     }
  /*
-    * FIND_SEANCE_GROUPE_CRENAEAU_ENSEIGNANT METHODE BOOLEAN QUI RETURN TRUE SI UN ENSEIGNANT A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
+    * isTeacherNotFreeForThisSeance METHODE BOOLEAN QUI RETURN TRUE SI UN ENSEIGNANT A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
     * METHODE BLINDAGE CRENEAU POUR ENSEIGNANT
-    * METHODE N°14 POUR MODULE MAJ N°7 MODIFIER LE NOM DU COURS, MODULE MAJ N°1 AFFECTER UN ENSEIGNANT A UNE SEANCE
+    * METHODE N°14 POUR MODULE MAJ N°1 AFFECTER UN ENSEIGNANT A UNE SEANCE, MODULE MAJ N°5 Deplacer A UNE SEANCE, METHODE 4 canIAjouterEnseignantSeance
 */
-    public Boolean find_seance_creneau_enseignant (int id_enseignant, Seance seance ){
+    public Boolean isTeacherNotFreeForThisSeance (int id_enseignant, Seance seance ){
         try
         {
             ResultSet maRequete = this.connect.createStatement()
@@ -448,10 +324,10 @@ public class SeanceDAO extends DAO<Seance> {
                                 "LEFT JOIN seance_enseignants SE ON seance.ID = SE.ID_seance\n" +
                                 "WHERE SE.ID_enseignant = "+id_enseignant+" AND seance.Date = '"+ seance.getDate()+"' "+
                                 "AND ((seance.Heure_fin >= '"+seance.getHeureDebut()+"' AND seance.Heure_fin <= '"+seance.getHeureFin()+"') " +
-                                "OR (seance.Heure_debut >= '"+seance.getHeureDebut()+"' AND seance.Heure_debut <= '"+seance.getHeureFin()+"'))");
+                                "OR (seance.Heure_debut >= '"+seance.getHeureDebut()+"' AND seance.Heure_debut <= '"+seance.getHeureFin()+"')) "
+                                + "AND seance.ID != "+seance.getId());//Pour éviter qu'il regarde aussi dans la seance lui même
             if(maRequete.first())
-                return true;
-                //return true; //Des séances sont éxistant dans le créneau 
+                return true;//Des séances sont éxistant dans le créneau 
             else
                 return false; //Ok, feu vert
         }
@@ -462,11 +338,11 @@ public class SeanceDAO extends DAO<Seance> {
         return false;
     }
 /*
-    * FIND_SEANCE_GROUPE_CRENAEAU_SEANCE METHODE BOOLEAN QUI RETURN TRUE SI UNE SALLE A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
+    * isSalleNotFreeForThisSeance METHODE BOOLEAN QUI RETURN TRUE SI UNE SALLE A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
     * METHODE BLINDAGE CRENEAU POUR SALLE
-    * METHODE N°15 POUR MODULE MAJ N°4 AFFECTER UNE SALLE A UNE SEANCE
+    * METHODE N°15 POUR MODULE MAJ N°4 AFFECTER UNE SALLE A UNE SEANCE,MODULE MAJ N°5 Deplacer A UNE SEANCE, Methode N°5 canIAjouterSalleSeance
 */
-    public Boolean find_seance_creneau_salle (int id_salle, Seance seance ){
+    public Boolean isSalleNotFreeForThisSeance (int id_salle, Seance seance ){
         try
         {
             ResultSet maRequete = this.connect.createStatement()
@@ -474,10 +350,10 @@ public class SeanceDAO extends DAO<Seance> {
                                 "LEFT JOIN seance_salles SS ON seance.ID = SS.ID_seance\n" +
                                 "WHERE SS.ID_salle = "+id_salle+" AND seance.Date = '"+ seance.getDate()+"' "+
                                 "AND ((seance.Heure_fin >= '"+seance.getHeureDebut()+"' AND seance.Heure_fin <= '"+seance.getHeureFin()+"') " +
-                                "OR (seance.Heure_debut >= '"+seance.getHeureDebut()+"' AND seance.Heure_debut <= '"+seance.getHeureFin()+"'))");
+                                "OR (seance.Heure_debut >= '"+seance.getHeureDebut()+"' AND seance.Heure_debut <= '"+seance.getHeureFin()+"'))"
+                               + " AND seance.ID != "+seance.getId()); //Pour éviter qu'il regarde aussi dans la seance lui même
             if(maRequete.first())
-                return true;
-                //return true; //Des séances sont éxistant dans le créneau 
+                return true;//Des séances sont éxistant dans le créneau 
             else
                 return false; //Ok, feu vert
         }
@@ -490,9 +366,9 @@ public class SeanceDAO extends DAO<Seance> {
 /*
     * FIND_CAPACITE_GROUPE_TOTAL METHODE INT QUI PERMET DE RECUPER LA CAPACITE TOTAL D'ELEVES DANS LES GROUPES QUI SERONT PRESENT DANS LA SEANCE
     * METHODE BLINDAGE CAPCAITE GROUPE
-    * METHODE N°16 POUR MODULE MAJ N°8  AJOUT D'UN GROUPE A UNE SEANCE
+    * METHODE N°16 POUR MODULE MAJ N°8, 2  AJOUT D'UN GROUPE A UNE SEANCE
 */
-    public int find_capacite_groupe_total(int id_groupe, int id_seance ){
+    public int find_capacite_groupes_total(int id_groupe, int id_seance ){
         int cap = 0;
         try
         {
@@ -511,61 +387,12 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return cap;
     }
-/*
-    * FIND_CAPACITE_SALLE_TOTAL METHODE INT QUI PERMET DE RECUPER LA CAPACITE TOTAL DES SALLES ET DES GROUPES QUI SERONT PRESENT DANS LA SEANCE
-    * METHODE BLINDAGE CAPCAITE GROUPE ET SALLE
-    * METHODE N°17 POUR MODULE MAJ N°4 AFFECTER UNE SALLE A UNE SEANCE
-*/
-    public int find_capacite_salle_total(int id_seance ){
-        int cap = 0;
-        try
-        {
-            ResultSet maRequete = this.connect.createStatement()
-                    .executeQuery("SELECT DISTINCT ID_utilisateur FROM etudiant\n" +
-                                    "LEFT JOIN seance_groupes SG ON SG.ID_groupe = etudiant.ID_groupe\n" +
-                                    "WHERE SG.ID_seance = "+id_seance);
-            while(maRequete.next())
-            {
-                cap++;
-            }
-        }
-        catch (SQLException e) 
-        {
-          e.printStackTrace();
-        }
-        return cap;
-    }
-/*
-    * REQUETE REQUETEFIND QUI PERMET DE RETROUVER UNE SEANCE A PARTIR D'UNE REQUETE SQL EN PARAMETRE, CETTE METHODE EST APPELE DANS UNE AUTRE METHODE
-    * METHODE N°17 
-*/
-    public void requeteFind(String requete, Seance seance) {
-        try {
-            Statement st;
-            ResultSet result;
-            //creation ordre SQL
-            st = connect.createStatement();
-            result = st.executeQuery(requete);
-            
-            if(!result.first())
-            {
-                
-                seance.setId_seance(result.getInt("ID_seance"));
-                seance.setId_groupe(result.getInt("ID_groupe"));
-            }    
-            
-        }
-        catch (SQLException e) {
-          e.printStackTrace();
-        }
-    }
     
     /*
     * INSERTINJONCTION METHODE QUI PERMET D'AJOUTER UN ENSEIGNANT, UN GROUPE OU UN SALLE RESPECTIVEMENT DANS LES TABLES
     * SEANCE_ENSEIGNANTS, SEANCE_GROUPES OU SEANCE_SALLES
     * METHODE N°18 
     */
-   
     public void insertInJonction(int idSeance, int idAutre, int table)
     {
         try{
@@ -617,32 +444,7 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
     }
-    /*
-    * INSERTSEANCE METHODE QUI PERMET D'AJOUTER UNE SEANCE, BLINDAGE SERA FAIT AU NIVEAU DE LA FENETRE
-    * METHODE N°19 MODULE MAJ N° 6 AJOUTER UNE SEANCE
-    */   
-    public void insertSeance(int Semaine, int Date, String Heure_Debut, String Heure_Fin, int Etat, int ID_cours,int ID_type)
-    {
-        try{
 
-                    PreparedStatement requete = this.connect
-                                    .prepareStatement(
-                                                "INSERT INTO seance (Semaine,Date,Heure_Debut,Heure_Fin,Etat,ID_cours,ID_type)"+
-                                                "VALUES(?,?,?,?,?,?,?)"
-                                        );
-                    requete.setInt(1,Semaine);
-                    requete.setInt(2,Date);
-                    requete.setString(3,Heure_Debut);
-                    requete.setString(4,Heure_Fin);
-                    requete.setInt(5,Etat);
-                    requete.setInt(6,ID_cours);
-                    requete.setInt(7,ID_type);
-                    requete.executeUpdate();           
-        }catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("pas trouvé");
-        }
-    }
     /*
     *DELETEINJONCTION METHODE QUI PERMET DE SUPPRIMER UN ENSEIGNANT, UN GROUPE OU UN SALLE RESPECTIVEMENT DANS LES TABLES
     * SEANCE_ENSEIGNANTS, SEANCE_GROUPES OU SEANCE_SALLES
@@ -684,27 +486,6 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
     }
-    /*
-    * FIND_SEANCE_AFFECTER_GROUPE METHODE BOOLEAN QUI PERMET DE RECUPERER UN TRUE OU UN FALSE POUR SAVOIR SI UN GROUPE A DEJA ETE AFFECTER A LA SEANCE
-    *CAR ON PEUT AFFECTER QUE SI UNE SEANCE N'A PAS DE GROUPE
-    * METHODE N°21 POUR MODULE MAJ N°2  AFFECTER UN GROUPE A UNE SEANCE
-*/
-    public Boolean find_seance_affecter_groupe(int id_seance) {
-        try{
-            ResultSet maRequete = this.connect.createStatement().executeQuery("SELECT * FROM seance_groupes " +
-                                                                             "LEFT JOIN seance ON seance.ID = seance_groupes.ID_seance " 
-                                                                             + " WHERE seance.ID = " + id_seance );
-            if(maRequete.first())
-                return true;
-            else
-                return false; 
-        }
-        catch (SQLException e){
-          e.printStackTrace();
-        }
-        return false;
-    }
-    
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
         

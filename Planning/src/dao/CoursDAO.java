@@ -84,4 +84,21 @@ public class CoursDAO extends DAO<Cours> {
         }
         return cours;
     }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Cours> findAllCours()
+    {
+        ArrayList<Cours> cours = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM cours ORDER BY ID"); // Récup tout cours
+            
+                while(result.next()) {
+                    cours.add(find(result.getInt("ID")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return cours;
+    }
 }

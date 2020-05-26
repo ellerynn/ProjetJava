@@ -99,4 +99,21 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
         return enseignant;
     }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Enseignant> findAllTeacher()
+    {
+        ArrayList<Enseignant> enseignants = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID_utilisateur FROM Enseignant ORDER BY ID_utilisateur"); // Récup tout ensengnants
+            
+                while(result.next()) {
+                    enseignants.add(find(result.getInt("ID_utilisateur")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return enseignants;
+    }
 }

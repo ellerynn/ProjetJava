@@ -79,8 +79,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
             //creation ordre SQL
             st = connect.createStatement();
             
-            //On récupère les champs des la table Séance
-            result = st.executeQuery("SELECT * FROM Utilisateur"); // Pour récupérer les champs de séances
+            //On récupère les champs des la table utilisateur
+            result = st.executeQuery("SELECT * FROM Utilisateur"); // Pour récupérer les champs de user
             
             if(result.first())
             {

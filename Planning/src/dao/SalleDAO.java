@@ -101,4 +101,21 @@ public class SalleDAO extends DAO<Salle>{
         
         return salle;
     }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Salle> findAllSalles()
+    {
+        ArrayList<Salle> salles = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM salle ORDER BY ID"); // Récup tout salles
+            
+                while(result.next()) {
+                    salles.add(find(result.getInt("ID")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return salles;
+    }
 }

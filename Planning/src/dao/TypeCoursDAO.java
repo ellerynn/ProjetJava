@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.*;
 import modele.Site;
 import modele.TypeCours;
+import java.util.ArrayList;
 
 public class TypeCoursDAO extends DAO<TypeCours> {
     @Override
@@ -77,5 +78,22 @@ public class TypeCoursDAO extends DAO<TypeCours> {
           System.out.println("pas trouvé");
         }
         return typecours;
+    }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<TypeCours> findAllTypes()
+    {
+        ArrayList<TypeCours> tcours = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM type_cours ORDER BY ID"); // Récup tout types
+            
+                while(result.next()) {
+                    tcours.add(find(result.getInt("ID")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return tcours;
     }
 }

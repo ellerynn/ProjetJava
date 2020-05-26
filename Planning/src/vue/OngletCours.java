@@ -4,7 +4,6 @@
 
 package vue;
 
-import controleur.Controle;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
@@ -53,7 +52,6 @@ public class OngletCours extends JTabbedPane {
         
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
-        remplirComboBox(selectRecherche, "[NOM Prénom]", "[NOM Prénom]"); //Tous les étudiants de la BDD
         cours.add(selectRecherche, c);
         
         c.gridx = 2;
@@ -139,10 +137,10 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
-    public void remplirComboBox(JComboBox box, String intitule, Object objet) {
-        box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
-        for(int i = 1; i < 200; i++) {
-            box.addItem(objet.toString());
+    public void remplirComboBox(JComboBox box, ArrayList<String> string) {
+        box.setModel(new DefaultComboBoxModel<>()); 
+        for(int i = 0; i < string.size(); i++) {
+            box.addItem(string.get(i));
         }
     }
     
@@ -232,6 +230,7 @@ public class OngletCours extends JTabbedPane {
         
         tabEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
         tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        tabEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales
         
         DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
         custom.setHorizontalAlignment(JLabel.CENTER);

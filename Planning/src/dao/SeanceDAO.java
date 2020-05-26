@@ -486,7 +486,6 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
     }
-
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
         
@@ -495,7 +494,7 @@ public class SeanceDAO extends DAO<Seance> {
             if(result.first())
             {
                 String requete = new String();
-                if (result.getInt("Droit") == 3){ //Professeur, trouver les séances de ce prof
+                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
                     requete = "SELECT ID FROM Seance \n"
                             +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
                             +"WHERE Seance.Semaine = " + semaine + " AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";

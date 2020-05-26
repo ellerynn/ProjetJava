@@ -27,10 +27,8 @@
         <group>
             <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/Fenetre.java</file>
             <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/UtilisateurDAO.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Utilisateur.java</file>
-            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/dao/SeanceDAO.java</file>
-            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/Seance.java</file>
             <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/controleur/Controle.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Utilisateur.java</file>
         </group>
     </open-files>
 </project-private>

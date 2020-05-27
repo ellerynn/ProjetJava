@@ -121,6 +121,7 @@ public class Fenetre extends JFrame {
                 remplirListSalles();
                 remplirListGroupes();
                 remplirListEnseignants();
+                remplirListSeances();
             }
             controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
         }
@@ -159,6 +160,11 @@ public class Fenetre extends JFrame {
         ArrayList<String> ttLesEnseignants = controle.allEnseignantsToStrings();
         edt.setEnseignants(ttLesEnseignants);
     }
+    public void remplirListSeances(){
+        ArrayList<String> ttLesSeances = controle.allSeancesToStrings();
+        edt.setSeances(ttLesSeances);
+    }
+    
     /***Fin donnée SP*****/
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
         int annee = Calendar.getInstance().get(Calendar.YEAR); //Année courante

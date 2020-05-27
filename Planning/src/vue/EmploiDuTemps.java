@@ -115,5 +115,8 @@ public class EmploiDuTemps extends JTabbedPane {
     public void setEnseignants(ArrayList<String> string){
         ongletSP.remplirListEnseignants(string);
     }
+    public void setSeances(ArrayList<String> string){
+        ongletSP.remplirListSeances(string);
+    }
     /***Fin donnée SP*****/
 }

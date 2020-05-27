@@ -1,44 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
-        <file>
-            <url>src/dao/SeanceDAO.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>215</line>
-                <key/>
-            </bookmark>
-            <bookmark id="2">
-                <name/>
-                <line>478</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>src/controleur/Controle.java</url>
-            <bookmark id="4">
-                <name/>
-                <line>183</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/vue/OngletGererCoursSP.java</file>
-            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/vue/EmploiDuTemps.java</file>
             <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/controleur/Controle.java</file>
-            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/vue/OngletServicePlanification.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/Seance.java</file>
             <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/vue/Fenetre.java</file>
-=======
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/Fenetre.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/TableMultiObjectRendererPanel.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/MultiObjectRenderer.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/EmploiDuTemps.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/OngletCours.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/controleur/Controle.java</file>
->>>>>>> ba83744816cdbb428221710c93bf1ebebc6f7605
         </group>
     </open-files>
 </project-private>

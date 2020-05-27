@@ -54,5 +54,9 @@ public class OngletServicePlanification extends JTabbedPane {
         ongletGererCours.remplirListe(ongletGererCours.getListeEnseignants(), string);
         ongletGererCours.remplirListe(ongletGererCours.getListeEnseignants2(), string);
     }
+    public void remplirListSeances(ArrayList<String> string) {
+        ongletGererCours.remplirListe(ongletGererCours.getListeSeances(), string);
+        ongletGererCours.remplirListe(ongletGererCours.getListeSeances2(), string);
+    }
     /***Fin donnée SP*****/
 }

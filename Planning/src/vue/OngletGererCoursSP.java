@@ -368,5 +368,11 @@ public class OngletGererCoursSP extends JSplitPane {
     public JList getListeEnseignants2(){
         return this.listeEnseignants2;
     }
+    public JList getListeSeances(){
+        return this.listeSeances;
+    }
+    public JList getListeSeances2(){
+        return this.listeSeances2;
+    }
     /***Fin donnée SP*****/
 }

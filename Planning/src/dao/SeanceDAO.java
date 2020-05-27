@@ -800,7 +800,7 @@ public class SeanceDAO extends DAO<Seance> {
         return heureTotal;
     }
     /*methodes en plus pour ADMINISTRATEUR*/
-    public ArrayList<Seance> findAllSeance()
+    public ArrayList<Seance> findAllSeances()
     {
         ArrayList<Seance> seances = new ArrayList<>();
         try{

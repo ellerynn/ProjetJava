@@ -27,6 +27,8 @@ public class Controle {
        
         //Ouverture interface graphique
         new Controle();
+        SeanceDAO dao = new SeanceDAO();
+        ArrayList<Seance> e = dao.findAllSeances();
     }
     
     public Boolean demandeConnexion(String email, String password) {
@@ -580,5 +582,29 @@ public class Controle {
             s.add(ens.get(i).getNom()+" "+ ens.get(i).getPrenom());
         return s;
     }
+    
+    public ArrayList<Seance> recupAllSeances(){
+        SeanceDAO dao = new SeanceDAO();
+        return dao.findAllSeances();
+    }
+    
+    public ArrayList<String> allSeancesToStrings(){
+        ArrayList<Seance> seances = recupAllSeances();
+        ArrayList<String> string = new ArrayList<>();
+        for (int i = 0 ; i < seances.size() ; i++)
+        {
+            ArrayList<String> temp = seances.get(i).toArrayListOfString();
+            String msg = "Seance N°"+seances.get(i).getId();
+            if(seances.get(i).getEtat() != 2) //si pas valide, car temp est de taille 6
+                msg+=temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4)+" "+temp.get(5);
+            else //Si valide temp est de taille 5
+                msg+= temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4);
+            
+            string.add(msg);
+        }
+        
+        return string;
+    }
+    
     /***Fin donnée SP*****/
 }

@@ -7,233 +7,304 @@ package vue;
 import controleur.Controle;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DateFormat;
 import java.util.*;
 import javax.swing.*; 
-import javax.swing.border.Border;
-import javax.swing.table.*;
-import modele.Seance;
+import javax.swing.event.ChangeEvent;
 
 //La classe Fenetre correspond a toute l'interface graphique contenant la page de connexion et le planning (+gestion)
 public class Fenetre extends JFrame {  
     /*Attributs*/
     private FormConnexion connexion; //Page de connexion de l'utilisateur
     private EmploiDuTemps edt; //Planning (accessible après connexion avec un CardLayout)
+    private CardLayout c;
+    private JPanel content;
     private Controle controle; //Lien avec le controle
-    
-    /*Constructeur*/      
-    public Fenetre(Controle controle) { 
+
+    public Fenetre(Controle controle) {
         this.controle = controle;
         connexion = new FormConnexion();
         edt = new EmploiDuTemps();
+                
+        initContent(); //Initialisation du contenu actif de la frame (CardLayout et JPanel)
+        initFrame(); //Initialisation de la frame au 2/3 de l'écran
+        initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
         
-        //Autres déclarations
-        CardLayout c = new CardLayout(); //CardLayout pour "superposer" plusieurs pages (conteneurs)
-        JPanel content = new JPanel(); //Contenu actif du CardLayout
-        Calendar cal = Calendar.getInstance();  //Date du jour  
-        
+        //TRICHE CO RAPIDE
+        connexion.setEmailPassWord("admin@gmail.com", "admin");
+    }
+    
+    //Getters
+    public EmploiDuTemps getEdt() {
+        return this.edt;
+    }
+    
+    public JTable getEdtCours() {
+        return edt.getEdtCours();
+    }
+    
+    public JTable getRecapCours() {
+        return edt.getRecapCours();
+    }
+    
+    public JTable getEdtHome() {
+        return edt.getEdtHome();
+    }
+    
+    //Méthodes
+    public void initContent() {
+        c = new CardLayout(); //CardLayout pour "superposer" plusieurs pages (conteneurs)
+        content = new JPanel(); //Contenu actif du CardLayout
+        content.setLayout(c); //On définit le layout
+        content.add(connexion); //On ajoute les conteneurs à la pile
+        content.add(edt);
+    }
+    
+    public void initFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //Récupérer la taille de l'écran
         this.setSize(screenSize.width*2/3, screenSize.height*2/3); //Donne une taille en hauteur et largeur à la fenêtre -> 2/3 de l'écran       
         this.setLocationRelativeTo(null); //Positionner au centre
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Termine le processus lorsqu'on clique sur la croix rouge
         this.setTitle("Connexion"); //Titre de la frame
-                
-        content.setLayout(c); //On définit le layout
-        content.add(connexion); //On ajoute les conteneurs à la pile
-        content.add(edt);
-
         this.getContentPane().add(content, BorderLayout.CENTER); //Affichage contenu actif
-        this.setVisible(true);  
-        
-        //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("nous@edu.ece.fr", "etudiant");
-        
+    }
+    
+    public void initListeners() {
         //Listeners
         connexion.getBouton().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
-            if(controle.demandeConnexion()) { 
-                c.next(content); //Via cette instruction, on passe au prochain conteneur de la pile
-                setTitle("Planning, " + calculAnneeScolaire() + " - " + utilisateurCourant() + " (ECE Paris " + recupInfo() + ")"); //Nouveau titre de la frame
-                edt.setEdtCours(cal.get(Calendar.WEEK_OF_YEAR));
-                        System.out.println(cal.get(Calendar.WEEK_OF_YEAR));
-                seancesEdt(cal.get(Calendar.WEEK_OF_YEAR));
-            }     
+            connect(connexion.getEmail(), connexion.getPassword());     
         });
         
-       edt.getSemaineCours().addActionListener((ActionEvent event) -> {
-            //On récupère la semaine sélectionnée
-            String semaine = edt.getSemaineCours().getSelectedItem().toString();
-            if (semaine == "Semaine") {
-                edt.setEdtCours(cal.get(Calendar.WEEK_OF_YEAR));
-                seancesEdt(cal.get(Calendar.WEEK_OF_YEAR));
+        //COMBOBOX DES SEMAINES dans Cours et dans Salles
+        edt.getSemaineCours().addActionListener((ActionEvent event) -> {
+            majEdtCoursParSemaine();
+        });
+        
+        edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
+            majEdtSallesParSemaine();
+        });
+        
+        //COMBOBOX DE RECHERCHE POUR LES REFERENTS ET ADMIN
+        edt.getRechercheCours().addActionListener((ActionEvent event) -> {
+            String recherche = edt.getRechercheCours().getSelectedItem().toString();
+            if (!recherche.equals("Veuillez sélectionner")) 
+                majEdtCoursParSemaine();
+        });
+        //SPINNER DATE HOME
+        edt.getDateHome().addChangeListener((ChangeEvent ce) -> {
+            edt.setEdtHome();
+            majEdtJour();
+        });
+        
+        //TABLEAU RECAP
+        edt.getRecapCours().addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {                
+                if (e.getClickCount() == 1) {
+                    controle.basicRowHeights();
+                    controle.updateRowHeights();
+                }
+                
+                if (e.getClickCount() == 2) {
+                    controle.basicRowHeights();
+                }
             }
-            
-            else {
-                edt.setEdtCours(Integer.parseInt(semaine));
-                seancesEdt(Integer.parseInt(semaine));
+
+            @Override
+            public void mousePressed(MouseEvent me) {
             }
-            
-       });
-       
-       edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
-            //On récupère la semaine sélectionnée
-            String semaine = edt.getSemaineSalles().getSelectedItem().toString();
-            System.out.println(edt.getSemaineSalles().getSelectedItem().toString());
-            if (semaine.equals("Semaine")) 
-                edt.setEdtSalles(cal.get(Calendar.WEEK_OF_YEAR));
-            
-            else
-                edt.setEdtSalles(Integer.parseInt(semaine));
-            
-       });
-    }	  
-    
-    //Getters    
-    public FormConnexion getConnexion() {
-        return connexion;
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+            }
+        });
+    }
+    public void iniListenersForAdmin(){ 
+    //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
+    //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
+        edt.getBtnValider().addActionListener((ActionEvent event)->{
+            System.out.println("Valider: Aie ! Tu m'as cliqué, j'ai mal ! ");
+        });
+        edt.getBtnValider2().addActionListener((ActionEvent event)->{
+            System.out.println("Valider2: Tu veux quoi ? ");
+        });
+        edt.getBtnValider3().addActionListener((ActionEvent event)->{
+            System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
+        });
+        
+    }
+    public void connect(String email, String password) {
+        if(controle.demandeConnexion(email, password)) { 
+            //Via cette instruction, on passe au prochain conteneur de la pile
+            c.next(content); 
+            //Nouveau titre de la frame
+            setTitle("Planning, " + calculAnneeScolaire() + " - " + controle.utilisateurCourant(email, password) 
+                    + " (ECE Paris " + controle.recupInfo(email, password) + ")"); 
+            //INITIALISATIONS COMBOBOX
+            remplirComboRecherche(email, password);
+            remplirComboGroupes();
+            remplirDonneesAdmin();
+            controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
+        }
     }
     
-    public EmploiDuTemps getEDT() {
-        return edt;
+    public void remplirComboRecherche(String email, String password) {
+        ArrayList<String> ttLeMonde = controle.allUsersToStrings();
+        edt.setRechercheCours(ttLeMonde); 
+        
+        String utilisateur = controle.utilisateurCourant(email, password);
+        edt.getRechercheCours().setSelectedItem(utilisateur);
     }
     
-    //Méthodes    
+    public void remplirComboGroupes() {
+        ArrayList<String> ttLesGroupes = controle.allGroupsToStrings();
+        edt.setGroupesCours(ttLesGroupes); 
+    }
+    
+    public void remplirDonneesAdmin() {
+        if (controle.admin(connexion.getEmail(), connexion.getPassword())) //Si c'est un admin
+        {
+            remplirComboTypes();
+            remplirComboCours();
+            remplirListSalles();
+            remplirListGroupes();
+            remplirListEnseignants();
+            remplirListSeances();
+            //On active les listeners des Classes de OngletServicePlanification, 
+            //car onglet SP est initialisé avec addOngletServicePlanification() de edt
+            iniListenersForAdmin();
+        }
+    }
+    
+    public void remplirComboTypes(){
+        ArrayList<String> ttLesTypes = controle.allTypeToStrings();
+        edt.setTypes(ttLesTypes);
+    }
+    
+    public void remplirComboCours(){
+        ArrayList<String> ttLesCours = controle.allCoursToStrings();
+        edt.setCours(ttLesCours);
+    }
+    
+    public void remplirListSalles(){
+        ArrayList<String> ttLesSalles = controle.allSallesToStrings();
+        edt.setSalles(ttLesSalles);
+    }
+    
+    public void remplirListGroupes(){//Je ne sais pas s'il y a myn de fusionner avec remplirComboGroupes
+        ArrayList<String> ttLesGrps = controle.allGroupsToStrings();
+        edt.setGroupes(ttLesGrps);
+    }
+    
+    public void remplirListEnseignants(){
+        ArrayList<String> ttLesEnseignants = controle.allEnseignantsToStrings();
+        edt.setEnseignants(ttLesEnseignants);
+    }
+    
+    public void remplirListSeances(){
+        ArrayList<String> ttLesSeances = controle.allSeancesToStrings();
+        edt.setSeances(ttLesSeances);
+    }
+    
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
-        Calendar cal = Calendar.getInstance(); //Date du jour
-        int annee = cal.get(Calendar.YEAR); //Année courante
-        if(cal.get(Calendar.MONTH)+1 >= 9 && cal.get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre
+        int annee = Calendar.getInstance().get(Calendar.YEAR); //Année courante
+        if(Calendar.getInstance().get(Calendar.MONTH)+1 >= 9 && Calendar.getInstance().get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre
             return annee + "/" + (annee+1);
         return (annee-1) + "/" + annee;
     }
     
-    public String utilisateurCourant() { //Pour affichage dans titre de la frame
-        return controle.getUtilisateur().getNom() + " " + controle.getUtilisateur().getPrenom();
-    }
-    
-    public String recupInfo() { //Pour affichage dans titre de la frame
-        String info = new String();
-        //Si etudiant -> Promo
-        if(controle.getUtilisateur().getDroit() == 4) {
-            //Récupérer controle, puis utilisateur, groupe, puis promotion
-            info = controle.getEtudiant().getGroupe().getPromotion().getNom();
-        }
-        //Si enseignant -> "Enseignant"
-        if(controle.getUtilisateur().getDroit() == 3) {
-            info = "Enseignant";
-        }
-        //Si référent pédagogique -> "Enseignant - Référent pédagogique"
-        if(controle.getUtilisateur().getDroit() == 2) {
-            info = "Enseignant - Référent pédagogique";
-            rechercheVisible();
-        }
-        //Si admin -> "Administrateur"
-        if(controle.getUtilisateur().getDroit() == 1) {
-            info = "Administrateur";
-            edt.addOngletServicePlanification(); //On ajoute l'onglet administration = service planification
-            rechercheVisible();
-        }
-        
-        return info;
-    }
-    
-    public void rechercheVisible() {
+    public void rendreVisible() {
+        edt.getRechercheCours().setVisible(true);
         edt.getRechercheBarreCours().setVisible(true);
         edt.getRechercheBoutonCours().setVisible(true);
-        edt.getRechercheCours().setVisible(true);
+        edt.getGroupesCours().setVisible(true);
     }
     
-    public void seancesEdt(int semaine) {
-        controle.recupSeances(semaine);
-        
-        ArrayList<Seance> seances = new ArrayList<>();
-        ArrayList<String> strSeances = new ArrayList<>();
-        
-        //Récup des séances de mon utilisateur selon profil
-        if(controle.getUtilisateur().getDroit() == 3) { //Enseignant
-            seances = controle.getEnseignant().getSeances();
-        }
-            
-        if(controle.getUtilisateur().getDroit() == 4) { //Etudiant
-            seances = controle.getEtudiant().getSeances();
-            for(int i=0;i<seances.size();i++) 
-                System.out.println(seances.get(i).toString());
-        }
-        
-        //Trouver la ligne -> HEURE - Récuperer string, comparer a ce qui est dans seances de l'utilisateur
-        int ligne1 = 0; int ligne2 = 0; int colonne = 0; 
-        
-        for(int j=0;j<seances.size();j++) { //Pour toutes les seances
-            String heure1 = seances.get(j).getHeureDebut();
-            System.out.println("Heure début de la seance " + heure1);
-            
-            String heure2 = seances.get(j).getHeureFin();
-            System.out.println("Heure fin de la seance " + heure2);
-            
-            //Convertir l'heure1BDD en heureEdt : 12:00:00 -> 12h00
-            String heure1BDD = heure1.substring(0, 2) + "h" + heure1.substring(3, 5); 
-            System.out.println(heure1BDD);
-            
-            //Convertir l'heure2BDD en heureEdt : 12:00:00 -> 12h00
-            String heure2BDD = heure2.substring(0, 2) + "h" + heure2.substring(3, 5); 
-            System.out.println(heure2BDD);
-            
-            String date = seances.get(j).getDate();
-            System.out.println(date); //AAAA-MM-JJ
-                
-            //Convertir la dateBDD en jour
-            String jourBDD = date.substring(8, 10); 
-            System.out.println(jourBDD);
-            
-            //LIGNE DEBUT
-            for(int i=0;i<edt.getEdtCours().getRowCount();i++) { 
-                String heureEdt = edt.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
-                System.out.println(heureEdt);
-                
-                if(heureEdt.equals(heure1BDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
-                    ligne1 = i;
-                }
-            }
-            
-            //LIGNE FIN
-            for(int i=0;i<edt.getEdtCours().getRowCount();i++) { 
-                String heureEdt = edt.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
-                System.out.println(heureEdt);
-                
-                if(heureEdt.equals(heure2BDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
-                    ligne2 = i;
-                }
-            }
-            
-            for(int i=0;i<edt.getEdtCours().getColumnCount();i++) { //Pour chaque ligne
-                String entete = edt.getEdtCours().getModel().getColumnName(i);
-                System.out.println(entete);
+    //MAJ Edt de la personne contenue dans la JComboBox utilisateurs
+    //Par defaut utilisateur courant
+    //Un utilisateur ne peut pas le modifier sauf s'il est référent
+    public void majEdt() {
+        String user = edt.getRechercheCours().getSelectedItem().toString();
+        //System.out.println("\njcombobox " + edt.getRechercheCours().getSelectedItem().toString());
+           
+        //Récupérer le nom et le nom de famille
+        String prenom = new String();
+        String nom = new String();
 
-                String jourEdt = entete.substring(5, 7);
-                System.out.println(jourEdt);
-                
-                if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
-                    colonne = i;
-                }
-            }
-            
-            //Un cours dure forcément 1h30 = 6 cases
-            strSeances = seances.get(j).toArrayListOfString();
-            //RAPPEL cf. méthode dans Seance.java
-            //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
-            //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
-            
-            edt.getEdtCours().setShowHorizontalLines(false);
-             
-            
-            
-            if(colonne != 0)  {
-                for(int i=0;i<6;i++) {
-                    edt.getEdtCours().setValueAt(strSeances.get(i), ligne1+i, colonne);
-                }
-            }
+        int pos = user.indexOf(' ');
+        //System.out.println(user + " position " + pos);
+
+        prenom = user.substring(0, pos);
+        nom = user.substring(pos+1);
+
+        controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), prenom, nom);
+    }
+    
+    //MAJ Edt quand un referent cherche un groupe
+    public void majEdtGroupe() {
+        String recherche = edt.getGroupesCours().getSelectedItem().toString();
+        if(recherche != "Groupes") 
+            controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
+        
+    }
+        
+    //MAJ Edt quand on change le jour dans Home
+    public void majEdtJour() {
+        //Récup de la date du JSpinner
+        String date = DateFormat.getDateInstance(1).format(edt.getDateHome().getValue()) ;
+        //System.out.println(date);
+ 
+        controle.seancesEdt(date, connexion.getEmail(), connexion.getPassword());
+    }
+    
+    //Recup semaine select puis maj edt Cours
+    public void majEdtCoursParSemaine() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineCours().getSelectedItem().toString();
+        if (semaine == "Semaine") {
+            edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majEdt();
+        }
+
+        else {
+            //System.out.println("Semaine selectionnee : " + semaine);
+            edt.setEdtCours(Integer.parseInt(semaine));
+            majEdt();
         }
     }
     
+    //Recup semaine select puis maj edt Salles
+    public void majEdtSallesParSemaine() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineSalles().getSelectedItem().toString();
+        if (semaine.equals("Semaine")) 
+            edt.setEdtSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+
+        else
+            edt.setEdtSalles(Integer.parseInt(semaine));
+    }
     
+    //Recup semaine select puis maj edt pour un groupe (fonction référent)
+    public void majEdtGroupeCoursParSemaine() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineCours().getSelectedItem().toString();
+        if (semaine == "Semaine") {
+            edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majEdtGroupe();
+        }
+
+        else {
+            edt.setEdtCours(Integer.parseInt(semaine));
+            majEdtGroupe();
+        }
+    }
 }
+

@@ -8,6 +8,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.*;
 import modele.Promotion;
+import java.util.ArrayList;
 
 
 public class PromotionDAO extends DAO<Promotion> {
@@ -84,4 +85,44 @@ public class PromotionDAO extends DAO<Promotion> {
         }
         return promotion;
       }
+    
+    public Promotion findByName(String promo) {
+        Promotion promotion = new Promotion();      
+
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+
+            result = st.executeQuery("SELECT * FROM promotion WHERE Nom = '" + promo + "'");
+            if(result.first())
+            {
+                promotion.setId(result.getInt("ID"));
+                promotion.setNom(result.getString("Nom"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return promotion;
+    }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Promotion> findAllPromo()
+    {
+        ArrayList<Promotion> promos = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM Promotion ORDER BY ID"); // Récup tout promo
+            
+                while(result.next()) {
+                    promos.add(find(result.getInt("ID")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return promos;
+    }
 }

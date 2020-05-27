@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
 import modele.*;
 
 public class EtudiantDAO extends DAO<Etudiant> {
@@ -97,5 +98,51 @@ public class EtudiantDAO extends DAO<Etudiant> {
             System.out.println("Etudiant pas trouvé");
         }
         return etudiant;
+    }
+    
+    public Etudiant findByGroup(int id) {
+        Etudiant etudiant = new Etudiant();      
+
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+
+            result = st.executeQuery("SELECT * FROM Etudiant WHERE ID_groupe = " + id);
+            
+            if(result.first()) {
+                //recuperation données utilisateur
+                int cle = result.getInt("ID_utilisateur"); //ID étudiant
+                etudiant.setNumero(result.getInt("Numero")); //Pas très utile mais bon
+                
+                UtilisateurDAO userDAO = new UtilisateurDAO();
+                Utilisateur user = userDAO.find(cle);
+                etudiant.copierUtilisateur(user); //copie de utilisateur dans enseignant pour pouvoir recup mail et password
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Etudiant pas trouvé");
+        }
+        return etudiant;
+    }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Etudiant> findAllStudents()
+    {
+        ArrayList<Etudiant> etudiants = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID_utilisateur FROM etudiant ORDER BY ID_utilisateur"); // Récup tout ensengnants
+            
+                while(result.next()) {
+                    etudiants.add(find(result.getInt("ID_utilisateur")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return etudiants;
     }
 }

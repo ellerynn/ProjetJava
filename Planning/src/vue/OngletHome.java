@@ -1,6 +1,10 @@
 package vue;
 
+//https://codes-sources.commentcamarche.net/forum/affich-659587-date-formatee-jj-mm-aaaa-dans-jspinner
+
 import java.awt.*;
+import java.text.DateFormat;
+import java.util.Calendar;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -9,11 +13,13 @@ public class OngletHome extends JSplitPane {
     private JSpinner date;
     private JButton linkCours;
     private JTable tabEdt;
+    private TableLabelRendererPanel p;
     
     public OngletHome() {
         date = new JSpinner();
         linkCours = new JButton(); //Bouton
         tabEdt = new JTable(); //Tableau 
+        p = new TableLabelRendererPanel(tabEdt);
               
         //Gauche
         JPanel container1 = new JPanel();
@@ -27,6 +33,10 @@ public class OngletHome extends JSplitPane {
         container1.add(edt, c);
         
         date.setModel(new SpinnerDateModel()); //Contient une date
+        date.setEditor(new JSpinner.DateEditor(date, "dd/MM/yyyy"));
+                
+        System.out.print(DateFormat.getDateInstance(1).format(date.getValue())) ;
+        
         c.gridx = 1;
         container1.add(date, c);
         
@@ -38,17 +48,14 @@ public class OngletHome extends JSplitPane {
         c.insets = new Insets(10,100,10,10);
         container1.add(linkCours, c);
         
+        setEdt();
         c.insets = new Insets(10,10,10,10);
         c.gridwidth = 3;   //2 columns wide
         c.gridx = 0; c.gridy = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        
-        tabEdt.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Horaires", "Cours du jour"})); //Contenu = Objet, entêtes = String
-        tabEdt.getTableHeader().setReorderingAllowed(false);
-        
-        container1.add(new JScrollPane(tabEdt), c);
-        
+        container1.add(p, c);
+                
         c.fill = GridBagConstraints.HORIZONTAL;
         this.setLeftComponent(container1);
         
@@ -73,4 +80,44 @@ public class OngletHome extends JSplitPane {
     public JTable getTabCoursHome() {
         return tabEdt;
     }
+    
+    public void setEdt() {
+        tabEdt.setModel(new DefaultTableModel(new Object [][] { {"08h00"},{"08h15"},{"08h30"},{"08h45"}, 
+                                                                {"09h00"},{"09h15"},{"09h30"},{"09h45"}, 
+                                                                {"10h00"},{"10h15"},{"10h30"},{"10h45"}, 
+                                                                {"11h00"},{"11h15"},{"11h30"},{"11h45"}, 
+                                                                {"12h00"},{"12h15"},{"12h30"},{"12h45"}, 
+                                                                {"13h00"},{"13h15"},{"13h30"},{"13h45"}, 
+                                                                {"14h00"},{"14h15"},{"14h30"},{"14h45"}, 
+                                                                {"15h00"},{"15h15"},{"15h30"},{"15h45"}, 
+                                                                {"16h00"},{"16h15"},{"16h30"},{"16h45"}, 
+                                                                {"17h00"},{"17h15"},{"17h30"},{"17h45"}, 
+                                                                {"18h00"},{"18h15"},{"18h30"},{"18h45"}, 
+                                                                {"19h00"},{"19h15"},{"19h30"},{"19h45"}, 
+                                                                {"20h00"},{"20h15"},{"20h30"},{"20h45"}},
+                                                new String[]{ "Horaires", "Cours du jour"}) 
+        { 
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        tabEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tabEdt.getColumnModel().getColumnCount() > 0) {
+            tabEdt.getColumnModel().getColumn(0).setMaxWidth(55);
+        }
+        
+        tabEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        tabEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales
+        
+        DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
+        custom.setHorizontalAlignment(JLabel.CENTER);
+        tabEdt.getColumnModel().getColumn(0).setCellRenderer(custom);
+    }    
 }

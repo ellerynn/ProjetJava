@@ -1,10 +1,8 @@
 package vue;
 
-import controleur.Controle;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import modele.*;
 
 //La classe EmploiDuTemps correspond à l'application à proprement parlé
 //Après connexion de l'utilisateur, on ouvre cette interface
@@ -31,30 +29,60 @@ public class EmploiDuTemps extends JTabbedPane {
         this.add("Salles", ongletSalles);
     }
     
-    //Getters      
+    //Getters 
+    public JSpinner getDateHome() {
+        return ongletHome.getDateHome(); //Spinner date
+    }
+    
+    public JTable getEdtHome() {
+        return ongletHome.getTabCoursHome(); //Emploi du temps 1 jour dans Home
+    }
+    
     public JTextField getRechercheBarreCours() {
-        return ongletCours.getRechercheBarre();
+        return ongletCours.getRechercheBarre(); //Barre de recherche
     }
     
     public JButton getRechercheBoutonCours() {
-        return ongletCours.getRechercheBouton();
+        return ongletCours.getRechercheBouton(); //Bouton de recherche
     }
     
     public JComboBox getRechercheCours() {
-        return ongletCours.getRecherche();
+        return ongletCours.getRecherche(); //Menu déroulant des utilisateurs
+    }
+    
+    public JComboBox getGroupesCours() {
+        return ongletCours.getGroupes(); //Menu déroulant des groupes et promos
     }
     
     public JComboBox getSemaineCours() {
-        return ongletCours.getSemaine();
+        return ongletCours.getSemaine(); //Menu déroulant des semaines dans Cours
     }
     
     public JTable getEdtCours() {
-        return ongletCours.getEdt();
+        return ongletCours.getEdt(); //Emploi du temps
+    }
+    
+    public JTable getRecapCours() {
+        return ongletCours.getRecap(); //Récapitulatif des cours
     }
     
     public JComboBox getSemaineSalles() {
-        return ongletSalles.getSemaine();
+        return ongletSalles.getSemaine(); //Menu déroulant des semaines dans Salles
     }
+    /***Données Service Planif****/
+    public JList getListeSeances() {//Jsp
+        return ongletSP.getListeSeances();
+    }
+    public JButton getBtnValider(){
+        return ongletSP.getBtnValider();
+    }
+    public JButton getBtnValider2(){
+        return ongletSP.getBtnValider2();
+    }
+    public JButton getBtnValider3(){
+        return ongletSP.getBtnValider3();
+    }
+    /***Fin donnée SP*****/
     
     //Setters
     public void addOngletServicePlanification() {
@@ -62,11 +90,47 @@ public class EmploiDuTemps extends JTabbedPane {
         this.add("Service planification", ongletSP);
     }
     
+    public void setEdtHome() {
+        ongletHome.setEdt();
+    }
+    
     public void setEdtCours(int semaine) {
         ongletCours.setEdt(semaine);
+    }
+    
+    public void setRecapCours(int semaine) {
+        ongletCours.setRecap();
     }
     
     public void setEdtSalles(int semaine) {
         ongletSalles.setEdt(semaine);
     }
+    
+    public void setRechercheCours(ArrayList<String> string) {
+        ongletCours.remplirComboBox(ongletCours.getRecherche(), "Veuillez sélectionner", string);
+    }
+    
+    public void setGroupesCours(ArrayList<String> string) {
+        ongletCours.remplirComboBox(ongletCours.getGroupes(), "Groupes", string);
+    }
+    /***Données Service Planif****/
+    public void setTypes(ArrayList<String> string) {
+        ongletSP.remplirComboTypes(string);
+    }
+    public void setCours(ArrayList<String> string) {
+        ongletSP.remplirComboCours(string);
+    }
+    public void setSalles(ArrayList<String> string){
+        ongletSP.remplirListSalle(string);
+    }
+    public void setGroupes(ArrayList<String> string){ //Je ne sais pas s'il y a myn de fusioner avec setGroupesCours
+        ongletSP.remplirListGroupes(string);
+    }
+    public void setEnseignants(ArrayList<String> string){
+        ongletSP.remplirListEnseignants(string);
+    }
+    public void setSeances(ArrayList<String> string){
+        ongletSP.remplirListSeances(string);
+    }
+    /***Fin donnée SP*****/
 }

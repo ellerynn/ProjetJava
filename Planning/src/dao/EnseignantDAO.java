@@ -92,33 +92,28 @@ public class EnseignantDAO extends DAO<Enseignant> {
                     enseignant.ajouterCours(cDAO.find(result.getInt("ID_cours")));
                 }  
             }
-
-            //A REUTILISER CAR BOUCLE INFINI AVEC SEANCE DAO, DONC FAIRE CE DANS LE CONTROLEUR
-            
-            
-            /*ResultSet resultSeances = st.executeQuery("SELECT ID_seance FROM Seance_enseignants WHERE ID_enseignant = "+id);
-            
-            "SELECT * FROM Utilisateur\n" +
-            "LEFT JOIN enseignant ON utilisateur.ID = enseignant.ID_utilisateur\n" +
-            "LEFT JOIN Cours ON Enseignant.ID_cours=Cours.ID\n" +
-            "LEFT JOIN seance_enseignants ON Enseignant.ID_utilisateur = seance_enseignants.ID_enseignant "+
-            "WHERE Enseignant.ID_utilisateur = " + id
-            
-            if(resultSeances.first()) {
-                if (resultSeances.getInt("ID_seance") != 0) {
-                    SeanceDAO sDAO = new SeanceDAO(connect);
-                    enseignant.addSeances(sDAO.find(resultSeances.getInt("ID_seance")));
-                    while(resultSeances.next()) {
-                        enseignant.addSeances(sDAO.find(resultSeances.getInt("ID_seance")));
-                    } 
-                }
-            }*/
-
         }
         catch (SQLException e) {
             e.printStackTrace();
             System.out.println("pas trouvé");
         }
         return enseignant;
+    }
+    /*methodes en plus pour ADMINISTRATEUR*/
+    public ArrayList<Enseignant> findAllTeacher()
+    {
+        ArrayList<Enseignant> enseignants = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID_utilisateur FROM Enseignant ORDER BY ID_utilisateur"); // Récup tout ensengnants
+            
+                while(result.next()) {
+                    enseignants.add(find(result.getInt("ID_utilisateur")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return enseignants;
     }
 }

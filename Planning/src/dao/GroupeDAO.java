@@ -7,6 +7,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
 import modele.Groupe;
 import modele.Promotion;
 
@@ -107,4 +108,80 @@ public class GroupeDAO extends DAO<Groupe> {
         
         return groupe;
     }
+    
+    public Groupe findByNameAndPromo(String groupe, int promo) {
+        Groupe g = new Groupe();      
+        String maRequete = "SELECT * FROM groupe WHERE Nom = '" + groupe + "' AND ID_promotion = " + promo;
+        g.getPromotion().setId(promo);
+        requeteFind(maRequete, g);
+        return g;  
+    }
+    
+    public void requeteFind(String requete, Groupe groupe) {
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+            result = st.executeQuery(requete);
+            
+            if(result.first())
+            {
+                groupe.setId(result.getInt("ID"));
+                groupe.setNom(result.getString("Nom"));
+                
+                PromotionDAO pDAO = new PromotionDAO();
+                Promotion p = pDAO.find(groupe.getPromotion().getId());
+                
+                groupe.setPromotion(p);
+            }    
+            
+            else
+                System.out.println("Aucun utilisateur");
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+          System.out.println("pas trouvé");
+        }
+    }
+    
+    public ArrayList<Groupe> find() {
+        ArrayList<Groupe> groupes = new ArrayList<>();
+        Groupe group;
+        
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+            
+            //On récupère les champs des la table Séance
+            result = st.executeQuery("SELECT * FROM groupe"); // Pour récupérer les champs de groupe
+            
+            if(result.first())
+            {
+                result.beforeFirst();
+                while(result.next()) {
+                    GroupeDAO gDAO = new GroupeDAO();
+                    group = gDAO.find(result.getInt("ID"));
+                      /*                  
+                    PromotionDAO pDAO = new PromotionDAO();
+                    Promotion promo = pDAO.find(result.getInt("ID_promotion"));
+                    group.setPromotion(promo);
+                                        */
+                    groupes.add(group);
+                }
+            }
+            
+            /*for(Groupe s : groupes)
+                System.out.println("groupe " + s.getNom() + " promo " + s.getPromotion().getNom());*/
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé dans find all utilisateurs");
+        }
+               
+        return groupes;
+    }
+    
 }

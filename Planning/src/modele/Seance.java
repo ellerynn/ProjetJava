@@ -40,12 +40,13 @@ public class Seance {
     }
     
     //Constructeur
-    public Seance(int semaine, String heure_debut, String heure_fin, String date, Cours cours, TypeCours type) {
+    public Seance(int semaine, String heure_debut, String heure_fin, String date, int etat, Cours cours, TypeCours type) {
         //Un administrateur peut créer un nouveau groupe
         this.semaine = semaine;
         this.heure_debut = heure_debut;
         this.heure_fin = heure_fin;
         this.date = date;
+        this.etat = etat;
         this.cours = cours;
         this.type = type;
         enseignants = new ArrayList<>();
@@ -222,8 +223,54 @@ public class Seance {
         duree = heure+"h"+minute;
         return duree;
     }
+    public boolean isThisGroupInThisSeance(int id)
+    {
+        for (int i = 0 ; i < groupes.size(); i++)
+        {
+            if(groupes.get(i).getId() == id)
+            {
+                i = 100;
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isThisTeacherInThisSeance(int id)
+    {
+        for (int i = 0 ; i < enseignants.size(); i++)
+        {
+            if(enseignants.get(i).getId() == id)
+            {
+                i = 100;
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isThisRoomInThisSeance(int id)
+    {
+        for (int i = 0 ; i < salles.size(); i++)
+        {
+            if(salles.get(i).getId() == id)
+            {
+                i = 100;
+                return true;
+            }
+        }
+        return false;
+    }
+    public int placeInTotal()
+    {
+        int var = 0;
+        for (int i = 0 ; i < salles.size() ; i++)
+        {
+            var += salles.get(i).getCapacite();
+        }
+        return var;
+    }
     
     @Override
+    //CETTE METHODE NE SERA PEUT ETRE PAS UTILISEE
     public String toString() {
         String str1 = new String(); //Enseignants
         for(int i=0;i<enseignants.size();i++) {
@@ -269,11 +316,8 @@ public class Seance {
         if(etat == 3)
             seance.add("ANNULEE");
         
-        if(etat == 2)
-            seance.add("VALIDEE");
-        
         if(etat == 1)
-            seance.add("EN COURS DE VALIDATION");
+            seance.add("EN COURS DE VALIDATION"); //Blinder l'affichage dans ce cas la aussi
             
         seance.add(" " + cours.getNom());
         
@@ -288,7 +332,7 @@ public class Seance {
             
         String str2 = new String(); //Groupes
         for(int i=0;i<groupes.size();i++) {
-            str2 = str2 + " " + groupes.get(i).getNom();
+            str2 = str2 + " " + groupes.get(i).getNom()+" "+groupes.get(i).getPromotion().getNom();
             if(i != groupes.size()-1)
                 str2 = str2 + ", ";
         }

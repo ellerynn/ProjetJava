@@ -4,7 +4,6 @@
 
 package vue;
 
-import controleur.Controle;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
@@ -19,29 +18,32 @@ public class OngletCours extends JTabbedPane {
     private JButton rechercheBouton;
     private JComboBox<String> selectRecherche;
     private JComboBox<String> semaine;
+    private JComboBox<String> groupes;
     private JTable tabEdt;
-    private TableRendererPanel p;
+    private TableLabelRendererPanel p;
     //Cours -> Récapitulatifs des cours
     private JTable tabRecap;
+    private  TableTreeRendererPanel p2;
     
     public OngletCours() { //Division en deux public void pour plus de clarté
         //Cours -> Emploi du temps
-        vueEdt = new JComboBox<String>();
+        vueEdt = new JComboBox<>();
         rechercheBarre = new JTextField();
         rechercheBouton = new JButton();
-        selectRecherche = new JComboBox<String>();
-        semaine = new JComboBox<String>();
+        selectRecherche = new JComboBox<>();
+        semaine = new JComboBox<>();
+        groupes = new JComboBox<>();
         tabEdt = new JTable();
-        p = new TableRendererPanel(tabEdt);
+        p = new TableLabelRendererPanel(tabEdt);
         //Cours -> Récapitulatifs des cours
         tabRecap = new JTable();
+        p2 = new TableTreeRendererPanel(tabRecap);
         
         /*************************EMPLOI DU TEMPS*************************/
         JPanel cours = new JPanel();
         cours.setLayout(new GridBagLayout()); //Initialisation du container
         GridBagConstraints c = new GridBagConstraints(); //Contraintes d'ajout des composants
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
         
         c.insets = new Insets(10,10,10,10);
         
@@ -51,16 +53,19 @@ public class OngletCours extends JTabbedPane {
         vueEdt.setModel(new DefaultComboBoxModel<>(new String[]{"en grille", "en liste"})); //Ajout des items au menu déroulant
         cours.add(vueEdt, c); //Ajout au conteneur     
         
+        c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
-        remplirComboBox(selectRecherche, "[NOM Prénom]", "[NOM Prénom]"); //Tous les étudiants de la BDD
-        cours.add(selectRecherche, c);
+        cours.add(groupes, c);        
         
         c.gridx = 2;
+        cours.add(selectRecherche, c);
+        
+        c.gridx = 3;
         rechercheBarre.setPreferredSize(new Dimension(250, 20));
         cours.add(rechercheBarre, c);
         
-        c.gridx = 3; 
+        c.gridx = 4; 
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.LINE_START;
         rechercheBouton.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
@@ -69,6 +74,7 @@ public class OngletCours extends JTabbedPane {
         rechercheBarre.setVisible(false);
         rechercheBouton.setVisible(false);
         selectRecherche.setVisible(false);
+        groupes.setVisible(false);
         
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx = 7;
@@ -86,7 +92,6 @@ public class OngletCours extends JTabbedPane {
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         cours.add(p, c);
-        c.fill = GridBagConstraints.HORIZONTAL;
           
         this.add("Emploi du temps", cours);
         
@@ -94,18 +99,16 @@ public class OngletCours extends JTabbedPane {
         JPanel recapCours = new JPanel();
         recapCours.setLayout(new GridBagLayout()); //Initialisation du container
         GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
-        t.weightx = 1;
+        t.weightx = 1; t.weighty = 1;
         
         t.insets = new Insets(10,10,10,10);
         
-        tabRecap.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", "Première séance", "Dernière séance", "Durée", "Nb."}));       
-        tabRecap.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
-        //tabRecap.setRowHeight(100);
+        setRecap();
         
         t.gridwidth = 8;   //2 columns wide
-        t.gridx = 0; c.gridy = 1;
+        t.gridx = 0; t.gridy = 1;
         t.fill = GridBagConstraints.BOTH;
-        recapCours.add(new JScrollPane(tabRecap), c);
+        recapCours.add(p2, t);
         
         this.add("Récapitulatif des cours", recapCours);
     }
@@ -123,12 +126,20 @@ public class OngletCours extends JTabbedPane {
         return this.selectRecherche;
     }
     
+    public JComboBox getGroupes() {
+        return this.groupes;
+    }
+    
     public JComboBox getSemaine() {
         return this.semaine;
     }
     
     public JTable getEdt() {
         return this.tabEdt;
+    }
+    
+    public JTable getRecap() {
+        return this.tabRecap;
     }
 
     //Méthodes
@@ -139,10 +150,17 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
-    public void remplirComboBox(JComboBox box, String intitule, Object objet) {
+    public void remplirComboBox(JComboBox box, ArrayList<String> string) {
+        box.setModel(new DefaultComboBoxModel<>()); 
+        for(int i = 0; i < string.size(); i++) {
+            box.addItem(string.get(i));
+        }
+    }
+    
+    public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
-        for(int i = 1; i < 200; i++) {
-            box.addItem(objet.toString());
+        for(int i = 0; i < string.size(); i++) {
+            box.addItem(string.get(i));
         }
     }
     
@@ -227,11 +245,12 @@ public class OngletCours extends JTabbedPane {
         
         tabEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tabEdt.getColumnModel().getColumnCount() > 0) {
-            tabEdt.getColumnModel().getColumn(0).setMaxWidth(50);
+            tabEdt.getColumnModel().getColumn(0).setMaxWidth(55);
         }
         
         tabEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
         tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        tabEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales
         
         DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
         custom.setHorizontalAlignment(JLabel.CENTER);
@@ -263,6 +282,37 @@ public class OngletCours extends JTabbedPane {
         else
             annee = cal.get(Calendar.YEAR)-1;
         return annee;
+    }
+
+    public void setRecap() {             
+        tabRecap.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", 
+                                                                               "Première séance", 
+                                                                               "Dernière séance", 
+                                                                               "Durée", "Nb."}){ 
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        tabRecap.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tabRecap.getColumnModel().getColumnCount() > 0) {
+            tabRecap.getColumnModel().getColumn(3).setMaxWidth(55);
+            tabRecap.getColumnModel().getColumn(4).setMaxWidth(30);
+        }
+        
+        tabRecap.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        tabRecap.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        
+        DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
+        custom.setHorizontalAlignment(JLabel.CENTER);
+        tabRecap.getColumnModel().getColumn(3).setCellRenderer(custom);
+        tabRecap.getColumnModel().getColumn(4).setCellRenderer(custom);
+        
     }
 }
 

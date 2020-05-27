@@ -2,6 +2,9 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
+import modele.Enseignant;
+import modele.Etudiant;
 import modele.Utilisateur;
 
 public class UtilisateurDAO extends DAO<Utilisateur> {
@@ -51,12 +54,54 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         requeteFind(maRequete, utilisateur);
         return utilisateur;
     }
-    
+      
     public Utilisateur find(String email, String psw) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE Email = '" + email + "' AND Passwd = '" +psw+"'";
         requeteFind(maRequete, utilisateur);
         return utilisateur;  
+    }
+    
+    public Utilisateur findByName(String prenom, String nom) {
+        Utilisateur utilisateur = new Utilisateur();      
+        String maRequete = "SELECT * FROM utilisateur WHERE Prenom LIKE '%" + prenom + "%' AND Nom LIKE '%" + nom +"%'";
+        requeteFind(maRequete, utilisateur);
+        return utilisateur;  
+    }
+    
+    public ArrayList<Utilisateur> find() {
+        ArrayList<Utilisateur> utilisateurs = new ArrayList<>();
+        Utilisateur user = new Utilisateur();
+        
+        try {
+            Statement st;
+            ResultSet result;
+            //creation ordre SQL
+            st = connect.createStatement();
+            
+            //On récupère les champs des la table utilisateur
+            result = st.executeQuery("SELECT * FROM Utilisateur"); // Pour récupérer les champs de user
+            
+            if(result.first())
+            {
+                result.beforeFirst();
+                while(result.next()) {
+                    UtilisateurDAO uDAO = new UtilisateurDAO();
+                    user = uDAO.find(result.getInt("ID"));
+                    
+                    utilisateurs.add(user);
+                }
+                
+                //for(int i=0;i<utilisateurs.size();i++)
+                    //System.out.println("Ajout : " + utilisateurs.get(i).getId() + " " + utilisateurs.get(i).getPrenom() + " " + utilisateurs.get(i).getNom());
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé dans find all utilisateurs");
+        }
+               
+        return utilisateurs;
     }
     
     public void requeteFind(String requete, Utilisateur utilisateur) {
@@ -85,6 +130,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
           System.out.println("pas trouvé");
         }
     }
+    
     public int nombreMax(){
         int nb = 0;
         try {

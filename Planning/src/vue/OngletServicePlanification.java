@@ -32,4 +32,43 @@ public class OngletServicePlanification extends JTabbedPane {
     public OngletGererSiteSP getOngletGererSite() {
         return ongletGererSite;
     }
+    /***Données Service Planif****/
+    public JList getListeSeances(){//jsp
+        return ongletGererCours.getListeSeances();
+    }
+    public JButton getBtnValider(){
+        return ongletGererCours.getBtnValider();
+    }
+    public JButton getBtnValider2(){
+        return ongletGererCours.getBtnValider2();
+    }
+    public JButton getBtnValider3(){
+        return ongletGererCours.getBtnValider3();
+    }
+    public void remplirComboTypes(ArrayList<String> string) {
+        ongletGererCours.remplirComboBoxType(ongletGererCours.getSelectType(),"type", string);
+        ongletGererCours.remplirComboBoxType(ongletGererCours.getSelectType2(),"type", string);
+    }
+    public void remplirComboCours(ArrayList<String> string) {
+        ongletGererCours.remplirComboBoxType(ongletGererCours.getSelectCours(),"cours", string);
+        ongletGererCours.remplirComboBoxType(ongletGererCours.getSelectCours2(),"cours", string);
+
+    }
+    public void remplirListSalle(ArrayList<String> string) {
+        ongletGererCours.remplirListe(ongletGererCours.getListeSalles(), string);
+        ongletGererCours.remplirListe(ongletGererCours.getListeSalles2(), string);
+    }
+    public void remplirListGroupes(ArrayList<String> string) {
+        ongletGererCours.remplirListe(ongletGererCours.getListeGroupes(), string);
+        ongletGererCours.remplirListe(ongletGererCours.getListeGroupes2(), string);
+    }
+    public void remplirListEnseignants(ArrayList<String> string) {
+        ongletGererCours.remplirListe(ongletGererCours.getListeEnseignants(), string);
+        ongletGererCours.remplirListe(ongletGererCours.getListeEnseignants2(), string);
+    }
+    public void remplirListSeances(ArrayList<String> string) {
+        ongletGererCours.remplirListe(ongletGererCours.getListeSeances(), string);
+        ongletGererCours.remplirListe(ongletGererCours.getListeSeances2(), string);
+    }
+    /***Fin donnée SP*****/
 }

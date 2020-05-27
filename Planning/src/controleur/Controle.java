@@ -21,8 +21,14 @@ public class Controle {
         fenetre.setVisible(true);
     }
     
-    public static void main(String[] args) {       
+public static void main(String[] args) { 
         //Ouverture interface graphique
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
+           public void run() {
+                new JFreeChartTest().setVisible(true);
+            }
+        });*/
+        
         new Controle();
     }
     
@@ -392,7 +398,7 @@ public class Controle {
         String groupe = recherche.substring(0, 4);
         String promo = recherche.substring(5, 9);
 
-        //System.out.println("recherche : " + groupe + " " + promo);
+        System.out.println("recherche : " + groupe + " " + promo);
         
         //Trouver un etudiant qui appartient a ce groupe
         //Trouver l'id de la promo

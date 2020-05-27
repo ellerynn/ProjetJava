@@ -31,7 +31,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
         
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("palasi@edu.ece.fr", "enseignant");
+        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
     }
     
     //Getters
@@ -87,12 +87,9 @@ public class Fenetre extends JFrame {
         //COMBOBOX DE RECHERCHE POUR LES REFERENTS ET ADMIN
         edt.getRechercheCours().addActionListener((ActionEvent event) -> {
             String recherche = edt.getRechercheCours().getSelectedItem().toString();
+            System.out.println("recherche : " + recherche);
             if (!recherche.equals("Veuillez sélectionner")) 
                 majEdtCoursParSemaine();
-        });
-        
-        edt.getGroupesCours().addActionListener((ActionEvent event) -> {  
-            majEdtGroupeCoursParSemaine();
         });
         
         //SPINNER DATE HOME
@@ -101,8 +98,12 @@ public class Fenetre extends JFrame {
             majEdtJour();
         });
         
+        edt.getGroupesCours().addActionListener((ActionEvent event) -> {  
+            majEdtGroupeCoursParSemaine();
+        });
+        
         //TABLEAU RECAP
-        edt.getRecapCours().addMouseListener(new MouseListener() {
+        /*edt.getRecapCours().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {                
                 if (e.getClickCount() == 1) {
@@ -116,23 +117,29 @@ public class Fenetre extends JFrame {
             }
 
             @Override
-            public void mousePressed(MouseEvent me) {
-            }
-
+            public void mousePressed(MouseEvent me) {}
             @Override
-            public void mouseReleased(MouseEvent me) {
-            }
-
+            public void mouseReleased(MouseEvent me) {}
             @Override
-            public void mouseEntered(MouseEvent me) {
-            }
-
+            public void mouseEntered(MouseEvent me) {}
             @Override
-            public void mouseExited(MouseEvent me) {
-            }
-        });
+            public void mouseExited(MouseEvent me) {}
+        });*/
     }
-    
+    public void iniListenersForAdmin(){ 
+    //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
+    //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
+        edt.getBtnValider().addActionListener((ActionEvent event)->{
+            System.out.println("Valider: Aie ! Tu m'as cliqué, j'ai mal ! ");
+        });
+        edt.getBtnValider2().addActionListener((ActionEvent event)->{
+            System.out.println("Valider2: Tu veux quoi ? ");
+        });
+        edt.getBtnValider3().addActionListener((ActionEvent event)->{
+            System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
+        });
+        
+    }
     public void connect(String email, String password) {
         if(controle.demandeConnexion(email, password)) { 
             //Via cette instruction, on passe au prochain conteneur de la pile
@@ -170,6 +177,9 @@ public class Fenetre extends JFrame {
             remplirListGroupes();
             remplirListEnseignants();
             remplirListSeances();
+            //On active les listeners des Classes de OngletServicePlanification, 
+            //car onglet SP est initialisé avec addOngletServicePlanification() de edt
+            iniListenersForAdmin();
         }
     }
     
@@ -242,7 +252,6 @@ public class Fenetre extends JFrame {
         String recherche = edt.getGroupesCours().getSelectedItem().toString();
         if(recherche != "Groupes") 
             controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
-        
     }
         
     //MAJ Edt quand on change le jour dans Home

@@ -4,13 +4,13 @@ package vue;
 
 import javax.swing.*;
  
-public class TableMultiObjectRendererPanel extends JScrollPane {   
-    private MultiObjectRenderer renderer;
+public class TableTreeRendererPanel extends JScrollPane {   
+    private TreeRenderer renderer;
     
-    public TableMultiObjectRendererPanel(JTable table)
+    public TableTreeRendererPanel(JTable table)
     {
         this.setViewportView(table);
-        renderer = new MultiObjectRenderer();
+        renderer = new TreeRenderer();
         table.setDefaultRenderer(Object.class, renderer);
     }
 }

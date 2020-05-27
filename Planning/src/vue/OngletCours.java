@@ -23,7 +23,7 @@ public class OngletCours extends JTabbedPane {
     private TableLabelRendererPanel p;
     //Cours -> Récapitulatifs des cours
     private JTable tabRecap;
-    private  TableMultiObjectRendererPanel p2;
+    private  TableTreeRendererPanel p2;
     
     public OngletCours() { //Division en deux public void pour plus de clarté
         //Cours -> Emploi du temps
@@ -37,7 +37,7 @@ public class OngletCours extends JTabbedPane {
         p = new TableLabelRendererPanel(tabEdt);
         //Cours -> Récapitulatifs des cours
         tabRecap = new JTable();
-        p2 = new TableMultiObjectRendererPanel(tabRecap);
+        p2 = new TableTreeRendererPanel(tabRecap);
         
         /*************************EMPLOI DU TEMPS*************************/
         JPanel cours = new JPanel();

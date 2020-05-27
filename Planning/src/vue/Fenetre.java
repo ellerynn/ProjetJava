@@ -11,7 +11,6 @@ import java.text.DateFormat;
 import java.util.*;
 import javax.swing.*; 
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 //La classe Fenetre correspond a toute l'interface graphique contenant la page de connexion et le planning (+gestion)
 public class Fenetre extends JFrame {  
@@ -101,6 +100,37 @@ public class Fenetre extends JFrame {
             edt.setEdtHome();
             majEdtJour();
         });
+        
+        //TABLEAU RECAP
+        edt.getRecapCours().addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {                
+                if (e.getClickCount() == 1) {
+                    controle.basicRowHeights();
+                    controle.updateRowHeights();
+                }
+                
+                if (e.getClickCount() == 2) {
+                    controle.basicRowHeights();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+            }
+        });
     }
     
     public void connect(String email, String password) {
@@ -113,16 +143,7 @@ public class Fenetre extends JFrame {
             //INITIALISATIONS COMBOBOX
             remplirComboRecherche(email, password);
             remplirComboGroupes();
-                //COMBOBOX propre à l'admin
-            if (email.equals("admin@gmail.com") && password.equals("admin"))
-            {
-                remplirComboTypes();
-                remplirComboCours();
-                remplirListSalles();
-                remplirListGroupes();
-                remplirListEnseignants();
-                remplirListSeances();
-            }
+            remplirDonneesAdmin();
             controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
         }
     }
@@ -139,33 +160,49 @@ public class Fenetre extends JFrame {
         ArrayList<String> ttLesGroupes = controle.allGroupsToStrings();
         edt.setGroupesCours(ttLesGroupes); 
     }
-    /***Données Service Planif****/
+    
+    public void remplirDonneesAdmin() {
+        if (controle.admin(connexion.getEmail(), connexion.getPassword())) //Si c'est un admin
+        {
+            remplirComboTypes();
+            remplirComboCours();
+            remplirListSalles();
+            remplirListGroupes();
+            remplirListEnseignants();
+            remplirListSeances();
+        }
+    }
+    
     public void remplirComboTypes(){
         ArrayList<String> ttLesTypes = controle.allTypeToStrings();
         edt.setTypes(ttLesTypes);
     }
+    
     public void remplirComboCours(){
         ArrayList<String> ttLesCours = controle.allCoursToStrings();
         edt.setCours(ttLesCours);
     }
+    
     public void remplirListSalles(){
         ArrayList<String> ttLesSalles = controle.allSallesToStrings();
         edt.setSalles(ttLesSalles);
     }
+    
     public void remplirListGroupes(){//Je ne sais pas s'il y a myn de fusionner avec remplirComboGroupes
         ArrayList<String> ttLesGrps = controle.allGroupsToStrings();
         edt.setGroupes(ttLesGrps);
     }
+    
     public void remplirListEnseignants(){
         ArrayList<String> ttLesEnseignants = controle.allEnseignantsToStrings();
         edt.setEnseignants(ttLesEnseignants);
     }
+    
     public void remplirListSeances(){
         ArrayList<String> ttLesSeances = controle.allSeancesToStrings();
         edt.setSeances(ttLesSeances);
     }
     
-    /***Fin donnée SP*****/
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
         int annee = Calendar.getInstance().get(Calendar.YEAR); //Année courante
         if(Calendar.getInstance().get(Calendar.MONTH)+1 >= 9 && Calendar.getInstance().get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre

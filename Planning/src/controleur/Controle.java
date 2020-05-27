@@ -5,6 +5,9 @@ import java.sql.*;
 
 import modele.*;
 import dao.*;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -66,6 +69,11 @@ public class Controle {
     public Enseignant recupEnseignant(Utilisateur utilisateur) {
         EnseignantDAO eDAO = new EnseignantDAO();
         return eDAO.find(utilisateur.getId());
+    }
+    
+    public Boolean admin(String email, String password) {
+        Utilisateur u = recupUtilisateur(email, password);
+        return u.getDroit() == 1;
     }
     
     public String recupInfo(String email, String password) {
@@ -468,11 +476,24 @@ public class Controle {
             //System.out.println("******************************************");
             //System.out.println("Matiere - Public:");
             String nom = seances.get(i).get(0).getCours().getNom();
+            
             for (int a = 0; a<seances.get(i).get(0).getGroupes().size(); a++)
             {
                 nom += " "+seances.get(i).get(0).getGroupes().get(a).getNom();
                 nom += " - "+seances.get(i).get(0).getGroupes().get(a).getPromotion().getNom();
             }
+            
+            for(int j=0;j<seances.get(i).size();j++) {
+                //TAMPON POUR JTREE
+                nom += "[" + seances.get(i).get(j).getDate() + " " + seances.get(i).get(j).getHeureDebut() + " " + seances.get(i).get(j).getHeureFin() + "]";
+            }
+            
+            System.out.println(nom);
+            /*for (int a = 0; a<seances.get(i).get(0).getGroupes().size(); a++)
+            {
+                nom += " "+seances.get(i).get(0).getGroupes().get(a).getNom();
+                nom += " - "+seances.get(i).get(0).getGroupes().get(a).getPromotion().getNom();
+            }*/
             
             fenetre.getRecapCours().setValueAt(nom, i, 0);
             
@@ -509,9 +530,34 @@ public class Controle {
             //System.out.println("Nb");
             String nb = String.valueOf(dernier+1);
             fenetre.getRecapCours().setValueAt(nb, i, 4);
+        }      
+    }
+    
+    public void basicRowHeights() {
+        for (int i = 0; i < fenetre.getRecapCours().getRowCount(); i++)
+        {
+            int iHeight = fenetre.getRecapCours().getRowHeight();
+
+            for (int j = 0; j < fenetre.getRecapCours().getColumnCount(); j++)
+            {
+                Component comp = fenetre.getRecapCours().prepareRenderer(fenetre.getRecapCours().getCellRenderer(i, j), i, j);
+                iHeight = Math.min(iHeight, comp.getPreferredSize().height);
+            }
+
+            fenetre.getRecapCours().setRowHeight(i, iHeight);
         }
     }
     
+    public void updateRowHeights()
+    {       
+        int column = fenetre.getRecapCours().getSelectedColumn();
+        int row = fenetre.getRecapCours().getSelectedRow();
+        int rowHeight = fenetre.getRecapCours().getRowHeight();
+        Component comp = fenetre.getRecapCours().prepareRenderer(fenetre.getRecapCours().getCellRenderer(row, column), row, column);
+        rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
+        fenetre.getRecapCours().setRowHeight(row, rowHeight);
+    }
+
     public ArrayList<String> allUsersToStrings() {
         ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
         ArrayList<String> preNom = new ArrayList<>();
@@ -531,11 +577,12 @@ public class Controle {
          
         return gp;
     }
-    /***Données Service Planif****/
+    
     public ArrayList<TypeCours> recupAllTypes(){
         TypeCoursDAO tDAO =new TypeCoursDAO();
         return tDAO.findAllTypes();
     }
+    
     public ArrayList<String> allTypeToStrings(){
         ArrayList<TypeCours> types = recupAllTypes();
         ArrayList<String> tp = new ArrayList<>();
@@ -549,6 +596,7 @@ public class Controle {
         CoursDAO DAO =new CoursDAO();
         return DAO.findAllCours();
     }
+    
     public ArrayList<String> allCoursToStrings(){
         ArrayList<Cours> cours = recupAllCours();
         ArrayList<String> c = new ArrayList<>();
@@ -562,6 +610,7 @@ public class Controle {
         SalleDAO DAO = new SalleDAO();
         return DAO.findAllSalles();
     }
+    
     public ArrayList<String> allSallesToStrings(){
         ArrayList<Salle> salles = recupAllSalles();
         ArrayList<String> s = new ArrayList<>();
@@ -570,10 +619,12 @@ public class Controle {
             s.add(salles.get(i).getNom()+" "+ salles.get(i).getSite().getNom());
         return s;
     }
+    
     public ArrayList<Enseignant> recupAllEnseignants(){
         EnseignantDAO eDAO = new EnseignantDAO();
         return eDAO.findAllTeacher();
     }
+    
     public ArrayList<String> allEnseignantsToStrings(){
         ArrayList<Enseignant> ens = recupAllEnseignants();
         ArrayList<String> s = new ArrayList<>();
@@ -605,6 +656,4 @@ public class Controle {
         
         return string;
     }
-    
-    /***Fin donnée SP*****/
 }

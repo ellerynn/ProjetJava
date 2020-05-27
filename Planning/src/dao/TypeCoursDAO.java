@@ -79,7 +79,9 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         }
         return typecours;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver tous les types de cours
+    //Pour admin
     public ArrayList<TypeCours> findAllTypes()
     {
         ArrayList<TypeCours> tcours = new ArrayList<>();

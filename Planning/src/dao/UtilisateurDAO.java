@@ -47,6 +47,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return object;
     }
     
+    //FIND
+    //Trouver utilisateur via id
     @Override
     public Utilisateur find(int id) {
         Utilisateur utilisateur = new Utilisateur();      
@@ -55,6 +57,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateur;
     }
       
+    //Trouver utilisateur via email et password
     public Utilisateur find(String email, String psw) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE Email = '" + email + "' AND Passwd = '" +psw+"'";
@@ -62,6 +65,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateur;  
     }
     
+    //Trouver utilisateur via nom et prenom
     public Utilisateur findByName(String prenom, String nom) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE Prenom LIKE '%" + prenom + "%' AND Nom LIKE '%" + nom +"%'";
@@ -69,6 +73,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateur;  
     }
     
+    //Trouver tous les utilisateurs
     public ArrayList<Utilisateur> find() {
         ArrayList<Utilisateur> utilisateurs = new ArrayList<>();
         Utilisateur user = new Utilisateur();
@@ -104,6 +109,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateurs;
     }
     
+    //NOOO DUPLICATAT :)
     public void requeteFind(String requete, Utilisateur utilisateur) {
         try {
             Statement st;

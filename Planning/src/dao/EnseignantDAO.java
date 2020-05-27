@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import java.sql.*;
@@ -10,6 +5,7 @@ import modele.*;
 import java.util.ArrayList;
 
 public class EnseignantDAO extends DAO<Enseignant> {
+    //CREATE
     @Override
     public Enseignant create(Enseignant object) {
         try{
@@ -54,16 +50,20 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Enseignant object) {
         return false;
     }
     
+    //UPDATE
     @Override
     public Enseignant update(Enseignant object) {
         return object;
     }
 
+    //FIND
+    //Trouver enseignant via id
     @Override
     public Enseignant find(int id) {
         Enseignant enseignant = new Enseignant();      
@@ -99,7 +99,9 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
         return enseignant;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver tous les enseignant
+    //Pour admin
     public ArrayList<Enseignant> findAllTeacher()
     {
         ArrayList<Enseignant> enseignants = new ArrayList<>();

@@ -14,12 +14,14 @@ public class OngletHome extends JSplitPane {
     private JButton linkCours;
     private JTable tabEdt;
     private TableLabelRendererPanel p;
+    private JButton deconnexion;
     
     public OngletHome() {
         date = new JSpinner();
         linkCours = new JButton(); //Bouton
         tabEdt = new JTable(); //Tableau 
         p = new TableLabelRendererPanel(tabEdt);
+        deconnexion = new JButton();
               
         //Gauche
         JPanel container1 = new JPanel();
@@ -65,12 +67,24 @@ public class OngletHome extends JSplitPane {
         JLabel cursus = new JLabel("Graphes");
         container2.add(cursus, c);
         
+        c.gridy = 2;
+        deconnexion.setIcon(new ImageIcon("images\\icon_deconnexion.png"));
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.LINE_END;
+        c.weightx = 1;
+        deconnexion.setPreferredSize(new Dimension(25,25));
+        container2.add(deconnexion, c);
+        
         this.setRightComponent(container2);
     }
     
     //Getter    
     public JButton getBouton() {
         return linkCours; //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
+    }
+    
+    public JButton getBoutonDeco() {
+        return deconnexion;
     }
     
     public JSpinner getDateHome() {

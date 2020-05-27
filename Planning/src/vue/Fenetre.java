@@ -2,6 +2,7 @@
 *http://www.codeurjava.com/2015/05/comment-dimensionner-fenetre-selon-ecran.html
 *https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/23108-creez-votre-premiere-fenetre
 */
+
 package vue;
 
 import controleur.Controle;
@@ -17,14 +18,14 @@ public class Fenetre extends JFrame {
     /*Attributs*/
     private FormConnexion connexion; //Page de connexion de l'utilisateur
     private EmploiDuTemps edt; //Planning (accessible après connexion avec un CardLayout)
-    private CardLayout c;
-    private JPanel content;
-    private Controle controle; //Lien avec le controle
+    private CardLayout c; //Ledit CardLayout
+    private JPanel content; //Contenu actif du CL
+    private Controle controle; //Lien avec le controle -> Controle recup BDD via modele et envoie instructions ici
 
     public Fenetre(Controle controle) {
         this.controle = controle;
-        connexion = new FormConnexion();
-        edt = new EmploiDuTemps();
+        this.connexion = new FormConnexion();
+        this.edt = new EmploiDuTemps();
                 
         initContent(); //Initialisation du contenu actif de la frame (CardLayout et JPanel)
         initFrame(); //Initialisation de la frame au 2/3 de l'écran
@@ -35,23 +36,29 @@ public class Fenetre extends JFrame {
     }
     
     //Getters
-    public EmploiDuTemps getEdt() {
+    //Onglet EDT
+    public EmploiDuTemps getEdt() { 
         return this.edt;
     }
     
+    //Tableau contenant l'emploi du temps sur une semaine
     public JTable getEdtCours() {
-        return edt.getEdtCours();
+        return edt.getEdtCours(); 
     }
     
+    //Tableau contenant la liste de seances sur une annee scolaire
     public JTable getRecapCours() {
         return edt.getRecapCours();
     }
     
+    //Onglet Home
+    //Tableau contenant l'emploi du temps sur une journée 
     public JTable getEdtHome() {
         return edt.getEdtHome();
     }
     
     //Méthodes
+    //Initialisation du contenu de la frame (this)
     public void initContent() {
         c = new CardLayout(); //CardLayout pour "superposer" plusieurs pages (conteneurs)
         content = new JPanel(); //Contenu actif du CardLayout
@@ -60,6 +67,7 @@ public class Fenetre extends JFrame {
         content.add(edt);
     }
     
+    //Initialisation dimensions, titre, etc de la frame (this)
     public void initFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //Récupérer la taille de l'écran
         this.setSize(screenSize.width*2/3, screenSize.height*2/3); //Donne une taille en hauteur et largeur à la fenêtre -> 2/3 de l'écran       
@@ -69,10 +77,20 @@ public class Fenetre extends JFrame {
         this.getContentPane().add(content, BorderLayout.CENTER); //Affichage contenu actif
     }
     
+    //Initialisation des listeners communs a tous les profils
     public void initListeners() {
         //Listeners
+        //BOUTON CONNEXION
         connexion.getBouton().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
             connect(connexion.getEmail(), connexion.getPassword());     
+        });
+        
+        //BOUTON DECONNEXION
+        edt.getBoutonDeco().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
+            c.previous(content); 
+            rendreInvisible();
+            //Nouveau titre de la frame
+            //setTitle("Connexion"); 
         });
         
         //COMBOBOX DES SEMAINES dans Cours et dans Salles
@@ -92,26 +110,26 @@ public class Fenetre extends JFrame {
                 majEdtCoursParSemaine();
         });
         
-        //SPINNER DATE HOME
-        edt.getDateHome().addChangeListener((ChangeEvent ce) -> {
-            edt.setEdtHome();
-            majEdtJour();
-        });
-        
         edt.getGroupesCours().addActionListener((ActionEvent event) -> {  
             majEdtGroupeCoursParSemaine();
         });
         
+        //SPINNER DATE HOME
+        edt.getDateHome().addChangeListener((ChangeEvent ce) -> {
+            edt.setEdtHome();
+            majEdtJour();
+        });        
+        
         //TABLEAU RECAP
-        /*edt.getRecapCours().addMouseListener(new MouseListener() {
+        edt.getRecapCours().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {                
-                if (e.getClickCount() == 1) {
+                if (e.getClickCount() == 1) { //Un clic -> affichage complet des seances
                     controle.basicRowHeights();
                     controle.updateRowHeights();
                 }
                 
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2) { //Deux clics -> le contraire :)
                     controle.basicRowHeights();
                 }
             }
@@ -124,22 +142,28 @@ public class Fenetre extends JFrame {
             public void mouseEntered(MouseEvent me) {}
             @Override
             public void mouseExited(MouseEvent me) {}
-        });*/
+        });
     }
-    public void iniListenersForAdmin(){ 
+    
+    //Initialisation des listener SEULEMENT pour l'admin
+    public void initListenersForAdmin(){ 
     //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
     //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
         edt.getBtnValider().addActionListener((ActionEvent event)->{
             System.out.println("Valider: Aie ! Tu m'as cliqué, j'ai mal ! ");
         });
+        
         edt.getBtnValider2().addActionListener((ActionEvent event)->{
             System.out.println("Valider2: Tu veux quoi ? ");
         });
+        
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
             System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
         });
-        
     }
+    
+    //Connexion
+    //Si l'utilisateur a saisi son email et son mdp et que cela correspond à la BDD, on passe à la suite
     public void connect(String email, String password) {
         if(controle.demandeConnexion(email, password)) { 
             //Via cette instruction, on passe au prochain conteneur de la pile
@@ -148,13 +172,14 @@ public class Fenetre extends JFrame {
             setTitle("Planning, " + calculAnneeScolaire() + " - " + controle.utilisateurCourant(email, password) 
                     + " (ECE Paris " + controle.recupInfo(email, password) + ")"); 
             //INITIALISATIONS COMBOBOX
-            remplirComboRecherche(email, password);
-            remplirComboGroupes();
-            remplirDonneesAdmin();
-            controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
+            remplirComboRecherche(email, password); //Utile pour TOUS les profil car on set l'edt selon son contenu
+            remplirComboGroupes(); //Juste pour le référent [?]
+            remplirDonneesAdmin(); //Juste pour l'admin
+            controle.seancesRecap(connexion.getEmail(), connexion.getPassword()); //Set edt de l'utilisateur courant (par défaut)
         }
     }
     
+    //Rempli la combobox avec les utilisateurs de la BDD
     public void remplirComboRecherche(String email, String password) {
         ArrayList<String> ttLeMonde = controle.allUsersToStrings();
         edt.setRechercheCours(ttLeMonde); 
@@ -163,14 +188,15 @@ public class Fenetre extends JFrame {
         edt.getRechercheCours().setSelectedItem(utilisateur);
     }
     
+    //Rempli la combobox avec les groupes de la BDD
     public void remplirComboGroupes() {
         ArrayList<String> ttLesGroupes = controle.allGroupsToStrings();
         edt.setGroupesCours(ttLesGroupes); 
     }
     
+    //Remplissage des différents container de l'onglet Service Planification
     public void remplirDonneesAdmin() {
-        if (controle.admin(connexion.getEmail(), connexion.getPassword())) //Si c'est un admin
-        {
+        if (controle.admin(connexion.getEmail(), connexion.getPassword())) { //Si c'est un admin
             remplirComboTypes();
             remplirComboCours();
             remplirListSalles();
@@ -179,40 +205,47 @@ public class Fenetre extends JFrame {
             remplirListSeances();
             //On active les listeners des Classes de OngletServicePlanification, 
             //car onglet SP est initialisé avec addOngletServicePlanification() de edt
-            iniListenersForAdmin();
+            initListenersForAdmin();
         }
     }
     
+    //Rempli la combobox avec les types de cours de la BDD
     public void remplirComboTypes(){
         ArrayList<String> ttLesTypes = controle.allTypeToStrings();
         edt.setTypes(ttLesTypes);
     }
     
+    //Rempli la combobox avec les cours de la BDD
     public void remplirComboCours(){
         ArrayList<String> ttLesCours = controle.allCoursToStrings();
         edt.setCours(ttLesCours);
     }
     
+    //Rempli la combobox avec les salles de la BDD
     public void remplirListSalles(){
         ArrayList<String> ttLesSalles = controle.allSallesToStrings();
         edt.setSalles(ttLesSalles);
     }
     
+    //Rempli la combobox avec les groupes de la BDD
     public void remplirListGroupes(){//Je ne sais pas s'il y a myn de fusionner avec remplirComboGroupes
         ArrayList<String> ttLesGrps = controle.allGroupsToStrings();
         edt.setGroupes(ttLesGrps);
     }
     
+    //Rempli la combobox avec les enseignants de la BDD
     public void remplirListEnseignants(){
         ArrayList<String> ttLesEnseignants = controle.allEnseignantsToStrings();
         edt.setEnseignants(ttLesEnseignants);
     }
     
+    //Rempli la combobox avec les seances de la BDD
     public void remplirListSeances(){
         ArrayList<String> ttLesSeances = controle.allSeancesToStrings();
         edt.setSeances(ttLesSeances);
     }
     
+    //Calcul de l'année scolaire en cours
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
         int annee = Calendar.getInstance().get(Calendar.YEAR); //Année courante
         if(Calendar.getInstance().get(Calendar.MONTH)+1 >= 9 && Calendar.getInstance().get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre
@@ -220,11 +253,19 @@ public class Fenetre extends JFrame {
         return (annee-1) + "/" + annee;
     }
     
+    //Rend visible certaines composants selon le profil
     public void rendreVisible() {
         edt.getRechercheCours().setVisible(true);
         edt.getRechercheBarreCours().setVisible(true);
         edt.getRechercheBoutonCours().setVisible(true);
         edt.getGroupesCours().setVisible(true);
+    }
+    
+    public void rendreInvisible() {
+        edt.getRechercheCours().setVisible(false);
+        edt.getRechercheBarreCours().setVisible(false);
+        edt.getRechercheBoutonCours().setVisible(false);
+        edt.getGroupesCours().setVisible(false);
     }
     
     //MAJ Edt de la personne contenue dans la JComboBox utilisateurs

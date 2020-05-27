@@ -69,6 +69,11 @@ public class EmploiDuTemps extends JTabbedPane {
     public JComboBox getSemaineSalles() {
         return ongletSalles.getSemaine(); //Menu déroulant des semaines dans Salles
     }
+    
+    public JButton getBoutonDeco() { //Pour passer au site lorsqu'on appuie sur le bouton connexion
+        return ongletHome.getBoutonDeco();
+    }
+    
     /***Données Service Planif****/
     public JList getListeSeances() {//Jsp
         return ongletSP.getListeSeances();

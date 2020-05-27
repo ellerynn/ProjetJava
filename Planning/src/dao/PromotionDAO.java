@@ -1,17 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
-import java.sql.Connection;
 import java.sql.*;
 import modele.Promotion;
 import java.util.ArrayList;
 
 
 public class PromotionDAO extends DAO<Promotion> {
+    //CREATE
     @Override
     public Promotion create(Promotion object) {
         try{
@@ -36,11 +31,13 @@ public class PromotionDAO extends DAO<Promotion> {
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Promotion object) {
         return false;
     }
     
+    //UPDATE
     @Override
     public Promotion update(Promotion object) {
         try {
@@ -61,7 +58,8 @@ public class PromotionDAO extends DAO<Promotion> {
         return object;
     }
 
-    
+    //FIND
+    //Trouver promo via id
     @Override
     public Promotion find(int id) {
         Promotion promotion = new Promotion();      
@@ -86,6 +84,7 @@ public class PromotionDAO extends DAO<Promotion> {
         return promotion;
       }
     
+    //Trouver promo via nom
     public Promotion findByName(String promo) {
         Promotion promotion = new Promotion();      
 
@@ -108,7 +107,9 @@ public class PromotionDAO extends DAO<Promotion> {
         }
         return promotion;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver toutes les promo 
+    //Pour admin
     public ArrayList<Promotion> findAllPromo()
     {
         ArrayList<Promotion> promos = new ArrayList<>();

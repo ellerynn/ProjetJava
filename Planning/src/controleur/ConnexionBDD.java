@@ -22,7 +22,7 @@ public class ConnexionBDD {
                     System.out.println("BDD non trouvé, est ce bien edt ?");
                 }
                     catch(ClassNotFoundException tm) {
-                    System.out.println("VERIFICATION : 3306 ou 3307 ?");
+                    System.out.println("VERIFICATION : 3306 ou 3307 voire 3308 ?");
                 }
         }		
         return connect;	

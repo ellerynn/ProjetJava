@@ -1,15 +1,11 @@
 package controleur;
 
 import vue.*;
-import java.sql.*;
 
 import modele.*;
 import dao.*;
 import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.*;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Controle {
@@ -17,11 +13,11 @@ public class Controle {
     
     //Constructeur
     public Controle() {
-        fenetre = new Fenetre(this);
-        fenetre.setVisible(true);
+        fenetre = new Fenetre(this); //Initialisation JFrame
+        fenetre.setVisible(true); //Ouverture JFrame
     }
     
-public static void main(String[] args) { 
+    public static void main(String[] args) { 
         //Ouverture interface graphique
         /*java.awt.EventQueue.invokeLater(new Runnable() {
            public void run() {
@@ -32,48 +28,58 @@ public static void main(String[] args) {
         new Controle();
     }
     
+    //Retourne true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
     public Boolean demandeConnexion(String email, String password) {
-        Utilisateur utilisateur = recupUtilisateur(email, password);
-        //On a trouvé un utilisateur -> return true
-        //Sinon, return false        
+        Utilisateur utilisateur = recupUtilisateur(email, password);       
         return !(utilisateur.getEmail().isEmpty() && utilisateur.getPassword().isEmpty()); 
     }
     
+    //Retourne une chaine de caractère avec prenom et nom de l'utilisateur courrant
+    //Utilisé pour set le titre de la frame
     public String utilisateurCourant(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);
         return utilisateur.getPrenom() + " " + utilisateur.getNom();
     }
     
+    //Retourne un utilisateur à partir de son email et password
     public Utilisateur recupUtilisateur(String email, String password) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         return uDAO.find(email,password);
     }
     
+    //Récupération de tous les utilisateurs de la BDD
     public ArrayList<Utilisateur> recupUtilisateurs() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
         return utilisateurDAO.find();
     }
     
+    //Récupération de tous les groupes de la BDD
     public ArrayList<Groupe> recupGroupes() {
         GroupeDAO gDAO = new GroupeDAO();
         return gDAO.find();
     }
     
+    //Si l'utilisateur est un étudiant, on récupère ses données étudiante
     public Etudiant recupEtudiant(Utilisateur utilisateur) {
         EtudiantDAO eDAO = new EtudiantDAO();
         return eDAO.find(utilisateur.getId());
     }
     
+    //Si l'utilisateur est un enseignant, on récupère ses données enseignant
     public Enseignant recupEnseignant(Utilisateur utilisateur) {
         EnseignantDAO eDAO = new EnseignantDAO();
         return eDAO.find(utilisateur.getId());
     }
     
+    //Retourne true si l'utilisateur est un admin
+    //Utilisé pour crée des listeners que seuls les admins ont
     public Boolean admin(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
         return u.getDroit() == 1;
     }
     
+    //Récupération de certaines données selon profil
+    //Utilisé pour set le titre de la frame
     public String recupInfo(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
         String info = new String();
@@ -81,7 +87,6 @@ public static void main(String[] args) {
         //Si etudiant -> Promo
         if(u.getDroit() == 4) {
             Etudiant e = recupEtudiant(u);
-            //Récupérer controle, puis utilisateur, groupe, puis promotion
             info = e.getGroupe().getPromotion().getNom();
         }
         //Si enseignant -> "Enseignant"
@@ -102,20 +107,17 @@ public static void main(String[] args) {
         return info;
     }
      
-    //Affichage Edt dans cours
+    //Affichage de l'emploi du temps dans l'onglet Cours
     public void majSeancesEdt(int semaine, String prenom, String nom) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         Utilisateur u = uDAO.findByName(prenom, nom);
-        
         //System.out.println("dans maj seances edt semaine prenom nom" + u.getPrenom() + " " + u.getNom());
-        
         seancesEdt(semaine, u.getEmail(), u.getPassword());
     }
     
-    //Affichage edt sur une semaine
+    //Recup et affichage des séances sur une semaine
     public void seancesEdt(int semaine, String email, String password) {
         //System.out.println("\nSEANCES EDT - On veut afficher les seances de " + email);
-        
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -243,10 +245,9 @@ public static void main(String[] args) {
         } 
     }
     
-    //Affichage edt d'une seule journee
+    //Affichage de l'edt d'une seule journee dans l'onglet Home
     public void seancesEdt(String date, String email, String password) {
         //System.out.println("On veut afficher les seances de " + email);
-        
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -392,13 +393,13 @@ public static void main(String[] args) {
         } 
     }
     
-    //Affichage Edt d'un groupe pour référent
+    //Affichage de l'edt d'un groupe pour référent
     public void majSeancesEdt(int semaine, String recherche) {
         //Récupérer le groupe et la promo
         String groupe = recherche.substring(0, 4);
         String promo = recherche.substring(5, 9);
 
-        System.out.println("recherche : " + groupe + " " + promo);
+        //System.out.println("recherche : " + groupe + " " + promo);
         
         //Trouver un etudiant qui appartient a ce groupe
         //Trouver l'id de la promo
@@ -531,6 +532,7 @@ public static void main(String[] args) {
         }      
     }
     
+    //Redimensionner la hauteur des lignes d'un tableau (ici recap)
     public void basicRowHeights() {
         for (int i = 0; i < fenetre.getRecapCours().getRowCount(); i++)
         {
@@ -556,6 +558,8 @@ public static void main(String[] args) {
         fenetre.getRecapCours().setRowHeight(row, rowHeight);
     }
 
+    //Retourne un ArrayList de tous les utilisateurs de la BDD
+    //Utilisé pour la recherche du référent par exemple
     public ArrayList<String> allUsersToStrings() {
         ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
         ArrayList<String> preNom = new ArrayList<>();
@@ -566,6 +570,8 @@ public static void main(String[] args) {
         return preNom;
     }
 
+    //Retourne un ArrayList de tous les groupes de la BDD
+    //Utilisé pour la recherche du référent par exemple
     public ArrayList<String> allGroupsToStrings() {
         ArrayList<Groupe> groupes = recupGroupes();
         ArrayList<String> gp = new ArrayList<>();
@@ -576,11 +582,13 @@ public static void main(String[] args) {
         return gp;
     }
     
+    //Recup de tous les types de cours de la BDD
     public ArrayList<TypeCours> recupAllTypes(){
         TypeCoursDAO tDAO =new TypeCoursDAO();
         return tDAO.findAllTypes();
     }
     
+    //Retourne un ArrayList de tous les types de cours de la BDD
     public ArrayList<String> allTypeToStrings(){
         ArrayList<TypeCours> types = recupAllTypes();
         ArrayList<String> tp = new ArrayList<>();
@@ -590,11 +598,13 @@ public static void main(String[] args) {
         return tp;
     }
     
+    //Recup de tous les cours de la BDD
     public ArrayList<Cours> recupAllCours(){
         CoursDAO DAO =new CoursDAO();
         return DAO.findAllCours();
     }
     
+    //Retourne un ArrayList de tous les cours de la BDD
     public ArrayList<String> allCoursToStrings(){
         ArrayList<Cours> cours = recupAllCours();
         ArrayList<String> c = new ArrayList<>();
@@ -604,11 +614,13 @@ public static void main(String[] args) {
         return c;
     }
     
+    //Recup de toutes les salles de la BDD
     public ArrayList<Salle> recupAllSalles(){
         SalleDAO DAO = new SalleDAO();
         return DAO.findAllSalles();
     }
     
+    //Retourne un ArrayList de tous les salles de la BDD
     public ArrayList<String> allSallesToStrings(){
         ArrayList<Salle> salles = recupAllSalles();
         ArrayList<String> s = new ArrayList<>();
@@ -618,11 +630,13 @@ public static void main(String[] args) {
         return s;
     }
     
+    //Recup de tous les enseignants de la BDD
     public ArrayList<Enseignant> recupAllEnseignants(){
         EnseignantDAO eDAO = new EnseignantDAO();
         return eDAO.findAllTeacher();
     }
     
+    //Retourne un ArrayList de tous les enseignants de la BDD
     public ArrayList<String> allEnseignantsToStrings(){
         ArrayList<Enseignant> ens = recupAllEnseignants();
         ArrayList<String> s = new ArrayList<>();
@@ -632,11 +646,13 @@ public static void main(String[] args) {
         return s;
     }
     
+    //Recup de toutes les seances de la BDD
     public ArrayList<Seance> recupAllSeances(){
         SeanceDAO dao = new SeanceDAO();
         return dao.findAllSeances();
     }
     
+    //Retourne un ArrayList de toutes les seances de la BDD
     public ArrayList<String> allSeancesToStrings(){
         ArrayList<Seance> seances = recupAllSeances();
         ArrayList<String> string = new ArrayList<>();

@@ -80,7 +80,9 @@ public class SiteDAO extends DAO<Site> {
         
         return site;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver tous les sites
+    //Pour admin
     public ArrayList<Site> findAllSites() //NE SERA PEUT ETRE JAMAIS USE (car salles possèdent dj l'info du site)
     {
         ArrayList<Site> sites = new ArrayList<>();

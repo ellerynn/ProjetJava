@@ -1,11 +1,11 @@
 package dao;
 
-import java.sql.Connection;
 import java.sql.*;
 import java.util.ArrayList;
 import modele.*;
 
 public class EtudiantDAO extends DAO<Etudiant> {
+    //CREATE
     @Override
     public Etudiant create(Etudiant object) {
         try{
@@ -44,16 +44,20 @@ public class EtudiantDAO extends DAO<Etudiant> {
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Etudiant object) {
         return false;
     }
 
+    //UPDATE
     @Override
     public Etudiant update(Etudiant object) {
         return object;
     }
     
+    //FIND
+    //Trouver etudiant via id
     @Override
     public Etudiant find(int id) {
         Etudiant etudiant = new Etudiant();      
@@ -100,6 +104,7 @@ public class EtudiantDAO extends DAO<Etudiant> {
         return etudiant;
     }
     
+    //Trouver enseignant via id de son groupe
     public Etudiant findByGroup(int id) {
         Etudiant etudiant = new Etudiant();      
 
@@ -128,7 +133,9 @@ public class EtudiantDAO extends DAO<Etudiant> {
         }
         return etudiant;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver tous les etudiants
+    //Pour admin
     public ArrayList<Etudiant> findAllStudents()
     {
         ArrayList<Etudiant> etudiants = new ArrayList<>();

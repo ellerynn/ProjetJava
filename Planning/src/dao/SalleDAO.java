@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import modele.*;
 
 public class SalleDAO extends DAO<Salle>{
+    //CREATE
     @Override
     public Salle create(Salle object) {
         try{
@@ -38,11 +39,13 @@ public class SalleDAO extends DAO<Salle>{
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Salle object) {
         return false;
     }
 
+    //UPDATE
     @Override
     public Salle update(Salle object) {
         try {
@@ -71,6 +74,9 @@ public class SalleDAO extends DAO<Salle>{
         return object;
     }
     
+    //FIND
+    //Trouver salle via id
+    @Override
     public Salle find(int id) {
         Salle salle = new Salle();      
 
@@ -101,7 +107,9 @@ public class SalleDAO extends DAO<Salle>{
         
         return salle;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver toutes les salles
+    //Pour admin
     public ArrayList<Salle> findAllSalles()
     {
         ArrayList<Salle> salles = new ArrayList<>();

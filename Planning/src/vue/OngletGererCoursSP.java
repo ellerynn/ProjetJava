@@ -3,7 +3,12 @@ package vue;
 //https://bbclone.developpez.com/fr/java/tutoriels/uiswing/gridbaglayout/?page=page_2
 
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class OngletGererCoursSP extends JSplitPane {
@@ -94,6 +99,7 @@ public class OngletGererCoursSP extends JSplitPane {
         
         c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
         date.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
+        date.setEditor(new JSpinner.DateEditor(date, "dd/MM/yyyy hh:mm"));
         container2.add(date, c);
         
         JLabel etats = new JLabel("Etat :");
@@ -373,6 +379,24 @@ public class OngletGererCoursSP extends JSplitPane {
     }
     public JList getListeSeances2(){
         return this.listeSeances2;
+    }
+    public JButton getBtnValider(){
+        return this.valider;
+    }
+    public JButton getBtnValider2(){
+        return this.valider2;
+    }
+    public JButton getBtnValider3(){
+        return this.valider3;
+    }
+    public String getDate() {
+        String temp = String.valueOf(date.getValue()).substring(11, 19); //On récup l'heure
+        String jour=DateFormat.getDateInstance(3).format(date.getValue()).substring(0,2); //On recup le jour
+        String mois=DateFormat.getDateInstance(3).format(date.getValue()).substring(3,5); //On recup le mois
+        String annee = DateFormat.getDateInstance(2).format(date.getValue()).substring(8); //On récup l'année en yyyy
+        
+        temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
+        return temp;
     }
     /***Fin donnée SP*****/
 }

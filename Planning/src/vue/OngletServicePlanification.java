@@ -33,6 +33,18 @@ public class OngletServicePlanification extends JTabbedPane {
         return ongletGererSite;
     }
     /***Données Service Planif****/
+    public JList getListeSeances(){//jsp
+        return ongletGererCours.getListeSeances();
+    }
+    public JButton getBtnValider(){
+        return ongletGererCours.getBtnValider();
+    }
+    public JButton getBtnValider2(){
+        return ongletGererCours.getBtnValider2();
+    }
+    public JButton getBtnValider3(){
+        return ongletGererCours.getBtnValider3();
+    }
     public void remplirComboTypes(ArrayList<String> string) {
         ongletGererCours.remplirComboBoxType(ongletGererCours.getSelectType(),"type", string);
         ongletGererCours.remplirComboBoxType(ongletGererCours.getSelectType2(),"type", string);

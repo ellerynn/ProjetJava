@@ -32,7 +32,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
         
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("palasi@edu.ece.fr", "enseignant");
+        connexion.setEmailPassWord("admin@gmail.com", "admin");
     }
     
     //Getters
@@ -91,18 +91,26 @@ public class Fenetre extends JFrame {
             if (!recherche.equals("Veuillez sélectionner")) 
                 majEdtCoursParSemaine();
         });
-        
-        edt.getGroupesCours().addActionListener((ActionEvent event) -> {  
-            majEdtGroupeCoursParSemaine();
-        });
-        
         //SPINNER DATE HOME
         edt.getDateHome().addChangeListener((ChangeEvent ce) -> {
             edt.setEdtHome();
             majEdtJour();
         });
     }
-    
+    public void iniListenersForAdmin(){ 
+    //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
+    //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
+        edt.getBtnValider().addActionListener((ActionEvent event)->{
+            System.out.println("Valider: Aie ! Tu m'as cliqué, j'ai mal ! ");
+        });
+        edt.getBtnValider2().addActionListener((ActionEvent event)->{
+            System.out.println("Valider2: Tu veux quoi ? ");
+        });
+        edt.getBtnValider3().addActionListener((ActionEvent event)->{
+            System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
+        });
+        
+    }
     public void connect(String email, String password) {
         if(controle.demandeConnexion(email, password)) { 
             //Via cette instruction, on passe au prochain conteneur de la pile
@@ -113,7 +121,7 @@ public class Fenetre extends JFrame {
             //INITIALISATIONS COMBOBOX
             remplirComboRecherche(email, password);
             remplirComboGroupes();
-                //COMBOBOX propre à l'admin
+            //COMBOBOX propre à l'admin
             if (email.equals("admin@gmail.com") && password.equals("admin"))
             {
                 remplirComboTypes();
@@ -122,6 +130,9 @@ public class Fenetre extends JFrame {
                 remplirListGroupes();
                 remplirListEnseignants();
                 remplirListSeances();
+                //On active les listeners des Classes de OngletServicePlanification, 
+                //car onglet SP est initialisé avec addOngletServicePlanification() de edt
+                iniListenersForAdmin();
             }
             controle.seancesRecap(connexion.getEmail(), connexion.getPassword());
         }

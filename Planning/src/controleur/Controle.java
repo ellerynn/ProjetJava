@@ -21,17 +21,9 @@ public class Controle {
         fenetre.setVisible(true);
     }
     
-    public static void main(String[] args) {
-        //Connexion BDD
-        Connection con;
-        /*String nameDatabase = "edt";
-        String loginDatabase = "root";
-        String passwordDatabase = ""; */   
-       
+    public static void main(String[] args) {       
         //Ouverture interface graphique
         new Controle();
-        SeanceDAO dao = new SeanceDAO();
-        ArrayList<Seance> e = dao.findAllSeances();
     }
     
     public Boolean demandeConnexion(String email, String password) {

@@ -42,6 +42,11 @@ public class Controle {
         //controle.AjouterEnseignantSeance(1,17);
         //controle.AffecterSalleSeance(13,2);
         //controle.AffecterGroupeSeance(4,5);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new JFreeChartTest().setVisible(true);
+            }
+        });
     }
     
     //MODULE MAJ(Mise a Jour)/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

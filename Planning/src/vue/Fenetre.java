@@ -32,7 +32,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
         
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
+        connexion.setEmailPassWord("admin@gmail.com", "admin");
     }
     
     //Getters
@@ -150,7 +150,7 @@ public class Fenetre extends JFrame {
     //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
     //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
         edt.getBtnValider().addActionListener((ActionEvent event)->{
-            System.out.println("Valider: Aie ! Tu m'as cliqué, j'ai mal ! ");
+            controle.ajouterUneSeance(edt.getInfosAddSeance());
         });
         
         edt.getBtnValider2().addActionListener((ActionEvent event)->{

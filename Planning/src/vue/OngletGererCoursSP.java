@@ -302,6 +302,7 @@ public class OngletGererCoursSP extends JSplitPane {
         container2.add(supprimer, c);
                 
         this.setLeftComponent(container2);
+        
     }
     
     public void remplirListe(JList liste) {
@@ -397,6 +398,14 @@ public class OngletGererCoursSP extends JSplitPane {
         
         temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
         return temp;
+    }
+    public JRadioButton getEtatEC()
+    {
+        return etatEC;
+    }
+    public JRadioButton getEtatV()
+    {
+        return etatV;
     }
     /***Fin donnée SP*****/
 }

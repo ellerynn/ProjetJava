@@ -75,9 +75,6 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /***Données Service Planif****/
-    public JList getListeSeances() {//Jsp
-        return ongletSP.getListeSeances();
-    }
     public JButton getBtnValider(){
         return ongletSP.getBtnValider();
     }
@@ -136,6 +133,10 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     public void setSeances(ArrayList<String> string){
         ongletSP.remplirListSeances(string);
+    }
+    public ArrayList<Object> getInfosAddSeance()
+    {
+        return ongletSP.getInfosAddSeance();
     }
     /***Fin donnée SP*****/
 }

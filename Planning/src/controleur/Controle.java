@@ -659,7 +659,7 @@ public class Controle {
         for (int i = 0 ; i < seances.size() ; i++)
         {
             ArrayList<String> temp = seances.get(i).toArrayListOfString();
-            String msg = "Seance N°"+seances.get(i).getId();
+            String msg = "Seance N°"+seances.get(i).getId()+" ";
             if(seances.get(i).getEtat() != 2) //si pas valide, car temp est de taille 6
                 msg+=temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4)+" "+temp.get(5);
             else //Si valide temp est de taille 5
@@ -669,5 +669,46 @@ public class Controle {
         }
         
         return string;
+    }
+    //Ajoute une séance
+    public String calculHeureFin(String debut)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020,01,01, Integer.parseInt(debut.substring(0,2)), Integer.parseInt(debut.substring(3,5)),0); //Date au pif
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        cal.add(Calendar.MINUTE, 30);
+        Date date = cal.getTime();
+        String fin = date.toString().substring(11,19); //On récupère la position de l'heure
+        return fin;
+    }
+    public void ajouterUneSeance(ArrayList<Object> strings)
+    {
+        if(strings.size() != 9)
+            System.out.println(strings.size()+"Champs manquants");
+        else{
+            int semaine = Integer.parseInt((String)strings.get(0));             //Semaine
+            String heureDebut = (String)strings.get(1);                         //Heure de début
+            String heureFin = calculHeureFin(heureDebut);                       //Heure de fin
+            String date = (String)strings.get(2);                               //Date
+            int etat = Integer.parseInt((String)strings.get(3));                //Etat
+            String cours = (String)strings.get(4);                              //Cours
+            String type = (String)strings.get(5);                               //type
+            ArrayList<String> enseignants = new ArrayList<>();              
+            List list = (List)strings.get(6);                       
+            for (Iterator it = list.iterator() ; it.hasNext(); ){
+                enseignants.add((String)it.next());                             //Enseignants
+            }
+            ArrayList<String> groupes = new ArrayList<>();
+            list = (List)strings.get(7);
+            for (Iterator it = list.iterator() ; it.hasNext(); ){
+                groupes.add((String)it.next());                                 //Groupes
+            }
+            ArrayList<String> salles = new ArrayList<>();
+            list = (List)strings.get(8);
+            for (Iterator it = list.iterator() ; it.hasNext(); ){
+                salles.add((String)it.next());                                  //Salles
+            }
+        }
+        
     }
 }

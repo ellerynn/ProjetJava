@@ -5,16 +5,15 @@
  */
 package dao;
 
-import java.sql.Connection;
 import java.sql.*;
 import java.util.ArrayList;
 import modele.Cours;
-import modele.Seance;
 
 public class CoursDAO extends DAO<Cours> {
+    //CREATE
     @Override
     public Cours create(Cours object) {
-        try{
+        try {
             //On insère les données dans la BDD
             PreparedStatement requete = this.connect
                                             .prepareStatement(
@@ -25,22 +24,24 @@ public class CoursDAO extends DAO<Cours> {
             
             //On récupère l'id
             ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM cours");
-            if (result.first())
-            {
+            if (result.first()) {
                 //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
                 object = this.find(result.getInt("MAX(ID)")); //On récupère les nouvelles données
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Cours object) {
         return false;
     }
 
+    //UPDATE
     @Override
     public Cours update(Cours object) {
         try {
@@ -61,6 +62,8 @@ public class CoursDAO extends DAO<Cours> {
         return object;
     }
     
+    //FIND
+    //Trouver cours via ID
     @Override
     public Cours find(int id) {
         Cours cours = new Cours();      
@@ -84,7 +87,9 @@ public class CoursDAO extends DAO<Cours> {
         }
         return cours;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver tous les cours
+    //Pour l'admin
     public ArrayList<Cours> findAllCours()
     {
         ArrayList<Cours> cours = new ArrayList<>();
@@ -100,5 +105,25 @@ public class CoursDAO extends DAO<Cours> {
             System.out.println("pas trouvé");
         }
         return cours;
+    }
+    /**
+     * Prend un String en paramètre et retourne une classe Cours 
+     * il permet d'obtenir le cours en fonction de son nom 
+     * @param infos
+     * @return 
+     */
+    public Cours findByName(String infos){
+        try {
+            ResultSet result=connect.createStatement()
+                                    .executeQuery("SELECT ID FROM cours "
+                                                + "WHERE Nom = '"+infos+"'"); // récup l'id du type
+            if(result.first())
+                return find(result.getInt("ID"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return null;
     }
 }

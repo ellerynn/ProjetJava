@@ -69,10 +69,12 @@ public class EmploiDuTemps extends JTabbedPane {
     public JComboBox getSemaineSalles() {
         return ongletSalles.getSemaine(); //Menu déroulant des semaines dans Salles
     }
-    /***Données Service Planif****/
-    public JList getListeSeances() {//Jsp
-        return ongletSP.getListeSeances();
+    
+    public JButton getBoutonDeco() { //Pour passer au site lorsqu'on appuie sur le bouton connexion
+        return ongletHome.getBoutonDeco();
     }
+    
+    /***Données Service Planif****/
     public JButton getBtnValider(){
         return ongletSP.getBtnValider();
     }
@@ -135,6 +137,13 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     public void setSeances(ArrayList<String> string){
         ongletSP.remplirListSeances(string);
+    }
+    public ArrayList<Object> getInfosAddSeance()
+    {
+        return ongletSP.getInfosAddSeance();
+    }
+    public JList getListeSeances(){
+        return ongletSP.getListeSeances();
     }
     /***Fin donnée SP*****/
 }

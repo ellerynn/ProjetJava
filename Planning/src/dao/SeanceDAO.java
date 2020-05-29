@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import modele.*;
 
 public class SeanceDAO extends DAO<Seance> {
-    /*
-    * CREATE METHODE QUI PERMET DE CREER UNE SEANCE
-    * METHODE N°1 DE BASE DAO
-    */
+    //CREATE
     @Override
     public Seance create(Seance object) {
         try
@@ -96,16 +93,14 @@ public class SeanceDAO extends DAO<Seance> {
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Seance object) {
         return false;
     }
-    /*
-    * METHODE UPDATE QUI PERMET DE UPDATE UNE SEANCE
-    * METHODE N°2 DE BASE DAO
-    */
-
-     @Override
+    
+    //UPDATE
+    @Override
     public Seance update(Seance object) {
         try {
                 this.connect	
@@ -149,11 +144,8 @@ public class SeanceDAO extends DAO<Seance> {
         return object;
     }
     
-    /*
-    *FIND METHODE QUI PERMET DE TROUVER UNE SEANCE
-    * METHODE N°3 DE BASE DAO
-    */
-    
+    //FIND
+    //Trouver seance via id
     @Override
     public Seance find(int id) {
         Seance seance = new Seance();      
@@ -222,7 +214,346 @@ public class SeanceDAO extends DAO<Seance> {
         return seance;
     }
     
-    //METHODE N°4 Vérifie si le prof qu'on veut add est dispo et non en doublon
+    //Trouver seance via id de l'utilisateur et semaine
+    public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        
+        try {
+            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
+            if(result.first())
+            {
+                String requete = new String();
+                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
+                    requete = "SELECT ID FROM Seance \n"
+                            +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
+                            +"WHERE Seance.Semaine = " + semaine + " AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
+                    requete = "SELECT ID FROM Seance \n" +
+                                "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
+                                "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
+                                "WHERE Seance.Semaine = " + semaine + " AND user.ID_utilisateur = " + id + 
+                                " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+
+                if(resultSeances.first()) //On regarde si une ligne existe
+                {
+                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                    while(resultSeances.next())  //On recupère les données de toute les lignes
+                    {
+                        SeanceDAO sDAO = new SeanceDAO();
+                        listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                    }
+                }
+            }
+        }
+        catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
+    }
+    
+    //Trouver seance via utilisateur et jour
+    public ArrayList<Seance> findSeancesByUserAndDay(int id, int jour, int mois, int annee){
+        ArrayList<Seance> listSeancesbyDay = new ArrayList<>();
+        
+        String month = new String();
+        if(mois<10)
+            month = "0" + String.valueOf(mois);
+        else month = String.valueOf(mois);
+        
+        String day = new String();
+        if(jour<10)
+            day = "0" + String.valueOf(jour);
+        else day = String.valueOf(jour);
+        
+        String dateBDD = annee + "-" + month + "-" + jour; //aaaa-mm-jj
+        System.out.println("date BDD " + dateBDD);
+        
+        try {
+            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
+            if(result.first())
+            {
+                String requete = new String();
+                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
+                    requete = "SELECT ID FROM Seance \n"
+                            +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
+                            +"WHERE Seance.Date = '" + dateBDD + "' AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
+                    requete = "SELECT ID FROM Seance \n" +
+                                "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
+                                "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
+                                "WHERE Seance.Date = '" + dateBDD + "' AND user.ID_utilisateur = " + id + 
+                                " ORDER BY Seance.Date, seance.Heure_debut";
+                }
+                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+
+                if(resultSeances.first()) //On regarde si une ligne existe
+                {
+                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                    while(resultSeances.next())  //On recupère les données de toute les lignes
+                    {
+                        SeanceDAO sDAO = new SeanceDAO();
+                        listSeancesbyDay.add(sDAO.find(resultSeances.getInt("ID")));
+                    }
+                }
+            }
+        }
+        catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyDay;
+    }
+    
+    //Trouver seance via id du groupe et semaine
+    public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
+    {
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        try{
+            ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT seance.ID FROM seance\n" +
+                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
+                                                            "WHERE seance.Semaine = "+semaine+" AND SG.ID_groupe = "+id+ 
+                                                            " ORDER BY Seance.Date, seance.Heure_debut");
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    SeanceDAO sDAO = new SeanceDAO();
+                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                }
+            }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
+    }
+    
+    //Trouver seance via id promo et semaine
+    public ArrayList<Seance> findSeancesByPromoAndWeek(int id, int semaine)
+    {
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        try{
+            ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT DISTINCT seance.ID FROM seance\n" +
+                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
+                                                            "LEFT JOIN groupe G ON G.ID = SG.ID_groupe\n" +
+                                                            "WHERE seance.Semaine = "+semaine+" AND G.ID_promotion = "+id+
+                                                            " ORDER BY Seance.Date, seance.Heure_debut");
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    SeanceDAO sDAO = new SeanceDAO();
+                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                }
+            }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
+    }
+    
+    //Trouver seance via id salle et semaine
+    public ArrayList<Seance> findSeancesBySalle(int id, int semaine)
+    {
+        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
+        try
+        {
+            ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT seance.ID FROM seance\n" +
+                                                            "LEFT JOIN seance_salles SS ON SS.ID_seance = seance.ID\n" +
+                                                            "WHERE seance.Semaine = "+semaine+" AND SS.ID_salle = "+id+
+                                                            " ORDER BY Seance.Date, seance.Heure_debut");
+            if(resultSeances.first()) //On regarde si une ligne existe
+            {
+                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                while(resultSeances.next())  //On recupère les données de toute les lignes
+                {
+                    SeanceDAO sDAO = new SeanceDAO();
+                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                }
+            }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return listSeancesbyWeek;
+    }
+       
+    //Récupère toutes les seances d'un utilisateur dans l'ordre
+    public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
+    {
+        //Explication de cette array d'array:
+        //à Chaque .get(i) se trouve une liste de séance de même matière et même groupes
+        //à chaque .get(i).get(j) se trouve les séances de même matière et de même groupes rangé par date et heure
+        ArrayList<ArrayList<Seance>> seancesOrdered = new ArrayList<>();
+        ArrayList<Seance> unFourreTout = new ArrayList<>();
+        System.out.println("id " + id);
+        try
+        {
+            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
+            if(result.first())
+            {
+                String requete = new String();
+                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2) { //Professeur, trouver les séances de ce prof
+                    requete = "SELECT Seance.ID FROM Seance\n" +
+                              "LEFT JOIN seance_enseignants SE ON SE.ID_seance = Seance.ID " +
+                              "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
+                              "WHERE SE.ID_enseignant = " + id + " "+
+                              "AND Seance.Date >= '" + debut + "' "+
+                              "AND Seance.Date <= '" + fin + "' " +
+                              "ORDER BY cours.Nom, Date, Heure_debut";
+                }
+                if (result.getInt("Droit") == 4) { //Etudiant, trouver les séances de cet étudiant
+                    System.out.println("recup seances recap etu");
+                    requete = "SELECT Seance.ID FROM Seance " +
+                              "LEFT JOIN seance_groupes SG ON SG.ID_seance = Seance.ID " +
+                              "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
+                              "LEFT JOIN etudiant SE ON SE.ID_groupe = SG.ID_groupe WHERE SE.ID_utilisateur = " + id + " " +
+                              "AND Seance.Date >= '" + debut + "' " +
+                              "AND Seance.Date <= '" + fin + "' " +
+                              "ORDER BY cours.Nom, Date, Heure_debut";
+                }
+                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+            
+                //Selectionne les id des séances de la personne rangé par matière ->Date ->Heure de début
+                if(resultSeances.first()) //On regarde si une ligne existe
+                {
+                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                    while(resultSeances.next())  //On recupère les données de toute les lignes
+                    {
+                        SeanceDAO sDAO = new SeanceDAO();
+                        unFourreTout.add(sDAO.find(resultSeances.getInt("Seance.ID")));
+                    }
+                }
+            
+                //On trie
+                ArrayList<Object> toCompare = new ArrayList<>();
+                while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
+                {
+                    System.out.println("nom : " + unFourreTout.get(0).getCours().getNom());
+                    
+                    toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
+                    toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
+                    
+                    ArrayList<Seance> SeancesSameCourseAndGroupes= rec1(unFourreTout,0,toCompare); //appel fct réccursive pour trouver
+                    
+                    toCompare.clear(); //On efface pour faire un nouveau add
+                    
+                    seancesOrdered.add(SeancesSameCourseAndGroupes); //On récupère la liste dans une liste de liste de séance
+                }
+            }
+        }
+        catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return seancesOrdered;
+    }
+    
+    //Renvoie un array liste avec que les séances d'une matière avec les mêmes Groupes
+    public ArrayList<Seance> rec1 (ArrayList<Seance> fourreTout, int indice, ArrayList<Object> toCompare)
+    {
+        ArrayList<Seance> identique = new ArrayList<>();
+        rec2(fourreTout,identique,indice,toCompare);
+        return identique;
+    }
+    
+    public void rec2 (ArrayList<Seance> fourreTout ,ArrayList<Seance> identique, int indice, ArrayList<Object> toCompare)
+    {
+        if (indice < fourreTout.size()) //Si pas encore vers la fin
+        {
+            String matiere = fourreTout.get(indice).getCours().getNom();
+            String matiereToCompare = (String)toCompare.get(0);
+            ArrayList<Groupe> groupes= fourreTout.get(indice).getGroupes();
+            ArrayList<Groupe> groupesToCompare = new ArrayList<>();
+            groupesToCompare= (ArrayList<Groupe>)toCompare.get(1);
+            boolean sameValues = true;
+            if (matiere.equals(matiereToCompare)) 
+            {
+                if (groupes.size() == groupesToCompare.size())
+                {
+                    for(int i = 0 ; i < groupes.size() ; i++)
+                    {
+                        if(groupes.get(i).getId() != groupesToCompare.get(i).getId())
+                        {   //
+                            sameValues = false;
+                            i = groupes.size(); //Pour terminer for
+                        }
+                    }
+                }
+                else
+                {
+                    sameValues = false;
+                }
+            }
+            else{
+                sameValues = false;
+            }
+            
+            if(sameValues)
+            {
+                identique.add(fourreTout.get(indice)); //Ajouter
+                fourreTout.remove(indice);//Supprimer du général
+                rec2(fourreTout,identique,indice,toCompare); //Répéter
+            }
+            if (indice+1 < fourreTout.size() && !sameValues){   //Si pas encore vers la fin
+                rec2(fourreTout,identique,indice+1,toCompare);
+            }
+        }
+    }
+    
+    public String heureTotalSeances(ArrayList<Seance> liste)
+    {
+        int heureDebut = 0;
+        int minuteDebut = 0;
+        int heureFin = 0;
+        int minuteFin = 0;
+        for (int i = 0 ; i <liste.size() ; i++)
+        {
+           //On récupère les segments.
+           String tronqHeureDebut = liste.get(i).getHeureDebut().substring(0, 2);
+           String tronqMinuteDebut = liste.get(i).getHeureDebut().substring(3, 5);
+           String tronqHeureFin = liste.get(i).getHeureFin().substring(0,2);
+           String tronqMinuteFin = liste.get(i).getHeureFin().substring(3, 5);
+           
+           //On les convertie en int pour pouvoir le calculer la durée de cette séance
+           heureDebut += Integer.parseInt(tronqHeureDebut);
+           minuteDebut += Integer.parseInt(tronqMinuteDebut);
+           heureFin += Integer.parseInt(tronqHeureFin);
+           minuteFin += Integer.parseInt(tronqMinuteFin);
+        }
+        //La différence de chaque heure et chaque minute
+        int heure = heureFin - heureDebut;
+        int minute = minuteFin - minuteDebut;
+        Seance s = new Seance();
+        String heureTotal = s.orderingHour(heure+"h"+minute);
+        return heureTotal;
+    }
+    
+    //Trouver toutes les seances
+    //Pour admin
+    public ArrayList<Seance> findAllSeances()
+    {
+        ArrayList<Seance> seances = new ArrayList<>();
+        try{
+             ResultSet resultSeances = connect.createStatement()
+                                             .executeQuery("SELECT ID FROM seance ORDER BY Date, Heure_debut");
+             while(resultSeances.next())
+             {
+                 seances.add(find(resultSeances.getInt("ID")));
+             }
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return seances;
+    }
+    
+    /*************************************A RANGER*********************************************/
+        //METHODE N°4 Vérifie si le prof qu'on veut add est dispo et non en doublon
     //Use pour MAJ 6 AjouterSeance, 7 AjouterEnseignantSeance
     public boolean canIAjouterEnseignantSeance(Seance seance, int id_enseignant) {
         boolean youCan = false;
@@ -485,334 +816,5 @@ public class SeanceDAO extends DAO<Seance> {
             e.printStackTrace();
             System.out.println("pas trouvé");
         }
-    }
-    
-    public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
-        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
-        
-        try {
-            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
-            if(result.first())
-            {
-                String requete = new String();
-                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
-                    requete = "SELECT ID FROM Seance \n"
-                            +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
-                            +"WHERE Seance.Semaine = " + semaine + " AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
-                }
-                if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
-                    requete = "SELECT ID FROM Seance \n" +
-                                "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
-                                "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
-                                "WHERE Seance.Semaine = " + semaine + " AND user.ID_utilisateur = " + id + 
-                                " ORDER BY Seance.Date, seance.Heure_debut";
-                }
-                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
-
-                if(resultSeances.first()) //On regarde si une ligne existe
-                {
-                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                    while(resultSeances.next())  //On recupère les données de toute les lignes
-                    {
-                        SeanceDAO sDAO = new SeanceDAO();
-                        listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
-                    }
-                }
-            }
-        }
-        catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return listSeancesbyWeek;
-    }
-    
-    public ArrayList<Seance> findSeancesByUserAndDay(int id, int jour, int mois, int annee){
-        ArrayList<Seance> listSeancesbyDay = new ArrayList<>();
-        
-        String month = new String();
-        if(mois<10)
-            month = "0" + String.valueOf(mois);
-        else month = String.valueOf(mois);
-        
-        String day = new String();
-        if(jour<10)
-            day = "0" + String.valueOf(jour);
-        else day = String.valueOf(jour);
-        
-        String dateBDD = annee + "-" + month + "-" + jour; //aaaa-mm-jj
-        System.out.println("date BDD " + dateBDD);
-        
-        try {
-            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
-            if(result.first())
-            {
-                String requete = new String();
-                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
-                    requete = "SELECT ID FROM Seance \n"
-                            +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
-                            +"WHERE Seance.Date = '" + dateBDD + "' AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
-                }
-                if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
-                    requete = "SELECT ID FROM Seance \n" +
-                                "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
-                                "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
-                                "WHERE Seance.Date = '" + dateBDD + "' AND user.ID_utilisateur = " + id + 
-                                " ORDER BY Seance.Date, seance.Heure_debut";
-                }
-                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
-
-                if(resultSeances.first()) //On regarde si une ligne existe
-                {
-                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                    while(resultSeances.next())  //On recupère les données de toute les lignes
-                    {
-                        SeanceDAO sDAO = new SeanceDAO();
-                        listSeancesbyDay.add(sDAO.find(resultSeances.getInt("ID")));
-                    }
-                }
-            }
-        }
-        catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return listSeancesbyDay;
-    }
-    
-    public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
-    {
-        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
-        try{
-            ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT seance.ID FROM seance\n" +
-                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
-                                                            "WHERE seance.Semaine = "+semaine+" AND SG.ID_groupe = "+id+ 
-                                                            " ORDER BY Seance.Date, seance.Heure_debut");
-            if(resultSeances.first()) //On regarde si une ligne existe
-            {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
-                {
-                    SeanceDAO sDAO = new SeanceDAO();
-                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
-                }
-            }
-        }catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return listSeancesbyWeek;
-    }
-    public ArrayList<Seance> findSeancesByPromoAndWeek(int id, int semaine)
-    {
-        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
-        try{
-            ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT DISTINCT seance.ID FROM seance\n" +
-                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
-                                                            "LEFT JOIN groupe G ON G.ID = SG.ID_groupe\n" +
-                                                            "WHERE seance.Semaine = "+semaine+" AND G.ID_promotion = "+id+
-                                                            " ORDER BY Seance.Date, seance.Heure_debut");
-            if(resultSeances.first()) //On regarde si une ligne existe
-            {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
-                {
-                    SeanceDAO sDAO = new SeanceDAO();
-                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
-                }
-            }
-        }catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return listSeancesbyWeek;
-    }
-    public ArrayList<Seance> findSeancesBySalle(int id, int semaine)
-    {
-        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
-        try
-        {
-            ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT seance.ID FROM seance\n" +
-                                                            "LEFT JOIN seance_salles SS ON SS.ID_seance = seance.ID\n" +
-                                                            "WHERE seance.Semaine = "+semaine+" AND SS.ID_salle = "+id+
-                                                            " ORDER BY Seance.Date, seance.Heure_debut");
-            if(resultSeances.first()) //On regarde si une ligne existe
-            {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
-                {
-                    SeanceDAO sDAO = new SeanceDAO();
-                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
-                }
-            }
-        }catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return listSeancesbyWeek;
-    }
-       
-    //Récupère tout l'edt de l'utilisateur rangé
-    public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
-    {
-        //Explication de cette array d'array:
-        //à Chaque .get(i) se trouve une liste de séance de même matière et même groupes
-        //à chaque .get(i).get(j) se trouve les séances de même matière et de même groupes rangé par date et heure
-        ArrayList<ArrayList<Seance>> seancesOrdered = new ArrayList<>();
-        ArrayList<Seance> unFourreTout = new ArrayList<>();
-        System.out.println("id " + id);
-        try
-        {
-            ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
-            if(result.first())
-            {
-                String requete = new String();
-                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2) { //Professeur, trouver les séances de ce prof
-                    requete = "SELECT Seance.ID FROM Seance\n" +
-                              "LEFT JOIN seance_enseignants SE ON SE.ID_seance = Seance.ID " +
-                              "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
-                              "WHERE SE.ID_enseignant = " + id + " "+
-                              "AND Seance.Date >= '" + debut + "' "+
-                              "AND Seance.Date <= '" + fin + "' " +
-                              "ORDER BY cours.Nom, Date, Heure_debut";
-                }
-                if (result.getInt("Droit") == 4) { //Etudiant, trouver les séances de cet étudiant
-                    System.out.println("recup seances recap etu");
-                    requete = "SELECT Seance.ID FROM Seance " +
-                              "LEFT JOIN seance_groupes SG ON SG.ID_seance = Seance.ID " +
-                              "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
-                              "LEFT JOIN etudiant SE ON SE.ID_groupe = SG.ID_groupe WHERE SE.ID_utilisateur = " + id + " " +
-                              "AND Seance.Date >= '" + debut + "' " +
-                              "AND Seance.Date <= '" + fin + "' " +
-                              "ORDER BY cours.Nom, Date, Heure_debut";
-                }
-                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
-            
-                //Selectionne les id des séances de la personne rangé par matière ->Date ->Heure de début
-                if(resultSeances.first()) //On regarde si une ligne existe
-                {
-                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                    while(resultSeances.next())  //On recupère les données de toute les lignes
-                    {
-                        SeanceDAO sDAO = new SeanceDAO();
-                        unFourreTout.add(sDAO.find(resultSeances.getInt("Seance.ID")));
-                    }
-                }
-            
-                //On trie
-                ArrayList<Object> toCompare = new ArrayList<>();
-                while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
-                {
-                    System.out.println("nom : " + unFourreTout.get(0).getCours().getNom());
-                    
-                    toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
-                    toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
-                    
-                    ArrayList<Seance> SeancesSameCourseAndGroupes= rec1(unFourreTout,0,toCompare); //appel fct réccursive pour trouver
-                    
-                    toCompare.clear(); //On efface pour faire un nouveau add
-                    
-                    seancesOrdered.add(SeancesSameCourseAndGroupes); //On récupère la liste dans une liste de liste de séance
-                }
-            }
-        }
-        catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return seancesOrdered;
-    }
-    
-    //Renvoie un array liste avec que les séances d'une matière avec les mêmes Groupes
-    public ArrayList<Seance> rec1 (ArrayList<Seance> fourreTout, int indice, ArrayList<Object> toCompare)
-    {
-        ArrayList<Seance> identique = new ArrayList<>();
-        rec2(fourreTout,identique,indice,toCompare);
-        return identique;
-    }
-    
-    public void rec2 (ArrayList<Seance> fourreTout ,ArrayList<Seance> identique, int indice, ArrayList<Object> toCompare)
-    {
-        if (indice < fourreTout.size()) //Si pas encore vers la fin
-        {
-            String matiere = fourreTout.get(indice).getCours().getNom();
-            String matiereToCompare = (String)toCompare.get(0);
-            ArrayList<Groupe> groupes= fourreTout.get(indice).getGroupes();
-            ArrayList<Groupe> groupesToCompare = new ArrayList<>();
-            groupesToCompare= (ArrayList<Groupe>)toCompare.get(1);
-            boolean sameValues = true;
-            if (matiere.equals(matiereToCompare)) 
-            {
-                if (groupes.size() == groupesToCompare.size())
-                {
-                    for(int i = 0 ; i < groupes.size() ; i++)
-                    {
-                        if(groupes.get(i).getId() != groupesToCompare.get(i).getId())
-                        {   //
-                            sameValues = false;
-                            i = groupes.size(); //Pour terminer for
-                        }
-                    }
-                }
-                else
-                {
-                    sameValues = false;
-                }
-            }
-            else{
-                sameValues = false;
-            }
-            
-            if(sameValues)
-            {
-                identique.add(fourreTout.get(indice)); //Ajouter
-                fourreTout.remove(indice);//Supprimer du général
-                rec2(fourreTout,identique,indice,toCompare); //Répéter
-            }
-            if (indice+1 < fourreTout.size() && !sameValues){   //Si pas encore vers la fin
-                rec2(fourreTout,identique,indice+1,toCompare);
-            }
-        }
-    }
-    
-    public String heureTotalSeances(ArrayList<Seance> liste)
-    {
-        int heureDebut = 0;
-        int minuteDebut = 0;
-        int heureFin = 0;
-        int minuteFin = 0;
-        for (int i = 0 ; i <liste.size() ; i++)
-        {
-           //On récupère les segments.
-           String tronqHeureDebut = liste.get(i).getHeureDebut().substring(0, 2);
-           String tronqMinuteDebut = liste.get(i).getHeureDebut().substring(3, 5);
-           String tronqHeureFin = liste.get(i).getHeureFin().substring(0,2);
-           String tronqMinuteFin = liste.get(i).getHeureFin().substring(3, 5);
-           
-           //On les convertie en int pour pouvoir le calculer la durée de cette séance
-           heureDebut += Integer.parseInt(tronqHeureDebut);
-           minuteDebut += Integer.parseInt(tronqMinuteDebut);
-           heureFin += Integer.parseInt(tronqHeureFin);
-           minuteFin += Integer.parseInt(tronqMinuteFin);
-        }
-        //La différence de chaque heure et chaque minute
-        int heure = heureFin - heureDebut;
-        int minute = minuteFin - minuteDebut;
-        Seance s = new Seance();
-        String heureTotal = s.orderingHour(heure+"h"+minute);
-        return heureTotal;
-    }
-    /*methodes en plus pour ADMINISTRATEUR*/
-    public ArrayList<Seance> findAllSeances()
-    {
-        ArrayList<Seance> seances = new ArrayList<>();
-        try{
-             ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT ID FROM seance ORDER BY ID");
-             while(resultSeances.next())
-             {
-                 seances.add(find(resultSeances.getInt("ID")));
-             }
-        }catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return seances;
     }
 }

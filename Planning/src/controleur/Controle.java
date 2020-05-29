@@ -1,15 +1,11 @@
 package controleur;
 
 import vue.*;
-import java.sql.*;
 
 import modele.*;
 import dao.*;
 import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.*;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Controle {
@@ -17,12 +13,11 @@ public class Controle {
     
     //Constructeur
     public Controle() {
-        fenetre = new Fenetre(this);
-        fenetre.setVisible(true);
+        fenetre = new Fenetre(this); //Initialisation JFrame
+        fenetre.setVisible(true); //Ouverture JFrame
     }
     
-    public static void main(String[] args) { 
-       
+    public static void main(String[] args) {       
         //Ouverture interface graphique        
         new Controle();
     }
@@ -31,52 +26,69 @@ public class Controle {
     //void {
     //DAO -> info
     public void Graphe(){
-   
+        //CA JE SAIS PAS SI CEST UTILE ?
+   //Ouverture interface graphique
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
+           public void run() {
+                new JFreeChartTest().setVisible(true);
+            }
+        });*/
+        
     }
     //}
     
+    //Retourne true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
     public Boolean demandeConnexion(String email, String password) {
-        Utilisateur utilisateur = recupUtilisateur(email, password);
-        //On a trouvé un utilisateur -> return true
-        //Sinon, return false        
+        Utilisateur utilisateur = recupUtilisateur(email, password);       
         return !(utilisateur.getEmail().isEmpty() && utilisateur.getPassword().isEmpty()); 
     }
     
+    //Retourne une chaine de caractère avec prenom et nom de l'utilisateur courrant
+    //Utilisé pour set le titre de la frame
     public String utilisateurCourant(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);
         return utilisateur.getPrenom() + " " + utilisateur.getNom();
     }
     
+    //Retourne un utilisateur à partir de son email et password
     public Utilisateur recupUtilisateur(String email, String password) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         return uDAO.find(email,password);
     }
     
+    //Récupération de tous les utilisateurs de la BDD
     public ArrayList<Utilisateur> recupUtilisateurs() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
         return utilisateurDAO.find();
     }
     
+    //Récupération de tous les groupes de la BDD
     public ArrayList<Groupe> recupGroupes() {
         GroupeDAO gDAO = new GroupeDAO();
         return gDAO.find();
     }
     
+    //Si l'utilisateur est un étudiant, on récupère ses données étudiante
     public Etudiant recupEtudiant(Utilisateur utilisateur) {
         EtudiantDAO eDAO = new EtudiantDAO();
         return eDAO.find(utilisateur.getId());
     }
     
+    //Si l'utilisateur est un enseignant, on récupère ses données enseignant
     public Enseignant recupEnseignant(Utilisateur utilisateur) {
         EnseignantDAO eDAO = new EnseignantDAO();
         return eDAO.find(utilisateur.getId());
     }
     
+    //Retourne true si l'utilisateur est un admin
+    //Utilisé pour crée des listeners que seuls les admins ont
     public Boolean admin(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
         return u.getDroit() == 1;
     }
     
+    //Récupération de certaines données selon profil
+    //Utilisé pour set le titre de la frame
     public String recupInfo(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
         String info = new String();
@@ -84,7 +96,6 @@ public class Controle {
         //Si etudiant -> Promo
         if(u.getDroit() == 4) {
             Etudiant e = recupEtudiant(u);
-            //Récupérer controle, puis utilisateur, groupe, puis promotion
             info = e.getGroupe().getPromotion().getNom();
         }
         //Si enseignant -> "Enseignant"
@@ -105,20 +116,17 @@ public class Controle {
         return info;
     }
      
-    //Affichage Edt dans cours
+    //Affichage de l'emploi du temps dans l'onglet Cours
     public void majSeancesEdt(int semaine, String prenom, String nom) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         Utilisateur u = uDAO.findByName(prenom, nom);
-        
         //System.out.println("dans maj seances edt semaine prenom nom" + u.getPrenom() + " " + u.getNom());
-        
         seancesEdt(semaine, u.getEmail(), u.getPassword());
     }
     
-    //Affichage edt sur une semaine
+    //Recup et affichage des séances sur une semaine
     public void seancesEdt(int semaine, String email, String password) {
         //System.out.println("\nSEANCES EDT - On veut afficher les seances de " + email);
-        
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -246,10 +254,9 @@ public class Controle {
         } 
     }
     
-    //Affichage edt d'une seule journee
+    //Affichage de l'edt d'une seule journee dans l'onglet Home
     public void seancesEdt(String date, String email, String password) {
         //System.out.println("On veut afficher les seances de " + email);
-        
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -395,7 +402,7 @@ public class Controle {
         } 
     }
     
-    //Affichage Edt d'un groupe pour référent
+    //Affichage de l'edt d'un groupe pour référent
     public void majSeancesEdt(int semaine, String recherche) {
         //Récupérer le groupe et la promo
         String groupe = recherche.substring(0, 4);
@@ -534,6 +541,7 @@ public class Controle {
         }      
     }
     
+    //Redimensionner la hauteur des lignes d'un tableau (ici recap)
     public void basicRowHeights() {
         for (int i = 0; i < fenetre.getRecapCours().getRowCount(); i++)
         {
@@ -559,6 +567,8 @@ public class Controle {
         fenetre.getRecapCours().setRowHeight(row, rowHeight);
     }
 
+    //Retourne un ArrayList de tous les utilisateurs de la BDD
+    //Utilisé pour la recherche du référent par exemple
     public ArrayList<String> allUsersToStrings() {
         ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
         ArrayList<String> preNom = new ArrayList<>();
@@ -569,6 +579,8 @@ public class Controle {
         return preNom;
     }
 
+    //Retourne un ArrayList de tous les groupes de la BDD
+    //Utilisé pour la recherche du référent par exemple
     public ArrayList<String> allGroupsToStrings() {
         ArrayList<Groupe> groupes = recupGroupes();
         ArrayList<String> gp = new ArrayList<>();
@@ -579,11 +591,13 @@ public class Controle {
         return gp;
     }
     
+    //Recup de tous les types de cours de la BDD
     public ArrayList<TypeCours> recupAllTypes(){
         TypeCoursDAO tDAO =new TypeCoursDAO();
         return tDAO.findAllTypes();
     }
     
+    //Retourne un ArrayList de tous les types de cours de la BDD
     public ArrayList<String> allTypeToStrings(){
         ArrayList<TypeCours> types = recupAllTypes();
         ArrayList<String> tp = new ArrayList<>();
@@ -593,11 +607,13 @@ public class Controle {
         return tp;
     }
     
+    //Recup de tous les cours de la BDD
     public ArrayList<Cours> recupAllCours(){
         CoursDAO DAO =new CoursDAO();
         return DAO.findAllCours();
     }
     
+    //Retourne un ArrayList de tous les cours de la BDD
     public ArrayList<String> allCoursToStrings(){
         ArrayList<Cours> cours = recupAllCours();
         ArrayList<String> c = new ArrayList<>();
@@ -607,11 +623,13 @@ public class Controle {
         return c;
     }
     
+    //Recup de toutes les salles de la BDD
     public ArrayList<Salle> recupAllSalles(){
         SalleDAO DAO = new SalleDAO();
         return DAO.findAllSalles();
     }
     
+    //Retourne un ArrayList de tous les salles de la BDD
     public ArrayList<String> allSallesToStrings(){
         ArrayList<Salle> salles = recupAllSalles();
         ArrayList<String> s = new ArrayList<>();
@@ -621,32 +639,36 @@ public class Controle {
         return s;
     }
     
+    //Recup de tous les enseignants de la BDD
     public ArrayList<Enseignant> recupAllEnseignants(){
         EnseignantDAO eDAO = new EnseignantDAO();
         return eDAO.findAllTeacher();
     }
     
+    //Retourne un ArrayList de tous les enseignants de la BDD
     public ArrayList<String> allEnseignantsToStrings(){
         ArrayList<Enseignant> ens = recupAllEnseignants();
         ArrayList<String> s = new ArrayList<>();
         
         for (int i = 0 ; i <ens.size(); i++)
-            s.add(ens.get(i).getNom()+" "+ ens.get(i).getPrenom());
+            s.add(ens.get(i).getPrenom()+" "+ ens.get(i).getNom());
         return s;
     }
     
+    //Recup de toutes les seances de la BDD
     public ArrayList<Seance> recupAllSeances(){
         SeanceDAO dao = new SeanceDAO();
         return dao.findAllSeances();
     }
     
+    //Retourne un ArrayList de toutes les seances de la BDD
     public ArrayList<String> allSeancesToStrings(){
         ArrayList<Seance> seances = recupAllSeances();
         ArrayList<String> string = new ArrayList<>();
         for (int i = 0 ; i < seances.size() ; i++)
         {
             ArrayList<String> temp = seances.get(i).toArrayListOfString();
-            String msg = "Seance N°"+seances.get(i).getId();
+            String msg = "Seance N°"+seances.get(i).getId()+" "+seances.get(i).getSemaine()+" "+seances.get(i).getDate()+" "+seances.get(i).getHeureDebut()+"-"+seances.get(i).getHeureFin()+" ";
             if(seances.get(i).getEtat() != 2) //si pas valide, car temp est de taille 6
                 msg+=temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4)+" "+temp.get(5);
             else //Si valide temp est de taille 5
@@ -656,5 +678,132 @@ public class Controle {
         }
         
         return string;
+    }
+    /**
+     * Calcul l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
+     * @param debut
+     * @return 
+     */
+    public String calculHeureFin(String debut)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020,01,01, Integer.parseInt(debut.substring(0,2)), Integer.parseInt(debut.substring(3,5)),0); //Date au pif
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        cal.add(Calendar.MINUTE, 30);
+        Date date = cal.getTime();
+        String fin = date.toString().substring(11,19); //On récupère la position de l'heure
+        return fin;
+    }
+    /**
+     * Demande d'ajout d'une séance par la vue vers le controleur en récupérant tout les données saisies par l'user
+     * @param strings 
+     */
+    public void demandeAddSeance(ArrayList<Object> strings)
+    {   
+        SalleDAO salleDAO = new SalleDAO();
+        GroupeDAO gDAO = new GroupeDAO();
+        EnseignantDAO uDAO = new EnseignantDAO();
+        TypeCoursDAO tDAO = new TypeCoursDAO();
+        CoursDAO cDAO = new CoursDAO();
+        if(strings.size() != 9)
+            System.out.println("Que "+strings.size()+" Champs sur 9 obligatoires sont remplis");
+        else{
+            int semaine = Integer.parseInt((String)strings.get(0));//Semaine
+            String heureDebut = (String)strings.get(1);//Heure de début
+            String heureFin = calculHeureFin(heureDebut);//Heure de fin
+            String date = (String)strings.get(2);//Date
+            int etat = Integer.parseInt((String)strings.get(3));//Etat
+            Cours cours = cDAO.findByName((String)strings.get(4));//Cours
+            TypeCours type = tDAO.findByName((String)strings.get(5));//Type
+            
+            ArrayList<Enseignant> enseignants = new ArrayList<>();              
+            List list = (List)strings.get(6);                       
+            for (Iterator it = list.iterator() ; it.hasNext(); ){
+                enseignants.add(uDAO.findByName((String)it.next()));//Enseignants
+            }
+            
+            ArrayList<Groupe> groupes = new ArrayList<>();
+            list = (List)strings.get(7);
+            for (Iterator it = list.iterator() ; it.hasNext(); ){
+                groupes.add(gDAO.findByName((String)it.next()));//Groupes
+            }
+            
+            ArrayList<Salle> salles = new ArrayList<>();
+            list = (List)strings.get(8);
+            for (Iterator it = list.iterator() ; it.hasNext(); ){
+                salles.add(salleDAO.findByName((String)it.next()));//Salles
+            }
+            ajouterSeanceInModel(semaine,date,heureDebut,heureFin,etat,cours,type,groupes, enseignants,salles);
+        }//END OF else
+    }
+    /**
+     * Le controleur demande au model l'ajout d'une séance en lui fournissant les données issues de la vue.
+     * Le modèle renvoie des réponses vers le controleur pour savoir si tels données sont acceptables et si tout les données saisies sont cohérents.
+     * @param Semaine
+     * @param Date
+     * @param Heure_Debut
+     * @param Heure_Fin
+     * @param Etat
+     * @param cours
+     * @param type
+     * @param groupes
+     * @param enseignants
+     * @param salles 
+     */
+    public void ajouterSeanceInModel(int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, Cours cours,TypeCours type, ArrayList<Groupe> groupes, ArrayList<Enseignant> enseignants, ArrayList<Salle> salles) 
+    {   
+        SeanceDAO sDAO = new SeanceDAO();
+        Seance seance = new Seance(Semaine, Heure_Debut, Heure_Fin,Date, Etat, cours, type); //instanciation de la nvlle seance avec les premiers données
+        boolean okForCreate = true; //On considère au début que tout est ok pour créer cette séance dans la BDD
+        //On ajoute les salles en accord avec leur créneau dispo/Duplication sans vérif la capa car rien à vérifier au début vu qu'aucun grp n'ai encore add dans séance
+        for (int i = 0 ; i < salles.size();i++)
+        {
+            if (sDAO.canIAjouterSalleSeance(seance, salles.get(i).getId()))
+               seance.ajouterSalle(salles.get(i)); 
+            else{
+                okForCreate = false;
+                i = 100; // Dès qu'il y a un false on arrête tout
+            }
+        }
+        if(okForCreate) //Si les vérifs des salles sont bon, on continue
+        {
+            for (int i = 0; i <Math.max(groupes.size(), enseignants.size()); i++) // Pour éviter 2 for
+            {
+                if (i< groupes.size())
+                {
+                    //Si groupes non duplication/pbl crénaux /Pas de pbl de place, tout est bon
+                    if (sDAO.canIAjoutGroupeSeance(seance, groupes.get(i).getId()))
+                        seance.ajouterGroupe(groupes.get(i));
+                    else{
+                        okForCreate = false;
+                        i = 1000; //On arrete tout
+                    }
+                }
+                if (i<enseignants.size())
+                {   //Si enseignants non duplication/pbl crénaux tout est bon
+                    if ( sDAO.canIAjouterEnseignantSeance(seance, enseignants.get(i).getId()))
+                        seance.ajouterEnseignant(enseignants.get(i));
+                    else{
+                        okForCreate = false;
+                        i = 1000; //On arrete tout
+                    }
+                }
+            }
+        }
+        if (okForCreate) //Si tout les conditions sont réunis, on create, si il y a eu un faux, on ne create pas.
+        {
+            seance = sDAO.create(seance);
+            System.out.println("Ajouter avec succes");
+            majAllSeances();
+        }else{
+            System.out.println("La seance n'a pas été ajouté");
+        }
+    }
+    /**
+     * Mise à jour au niveau visuelle si tout les données sont cohérents
+     */
+    public void majAllSeances()
+    {   //Du controleur à la vue
+        fenetre.remplirListSeances();
     }
 }

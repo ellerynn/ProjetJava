@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import modele.*;
 
 public class SalleDAO extends DAO<Salle>{
+    //CREATE
     @Override
     public Salle create(Salle object) {
         try{
@@ -38,11 +39,13 @@ public class SalleDAO extends DAO<Salle>{
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Salle object) {
         return false;
     }
 
+    //UPDATE
     @Override
     public Salle update(Salle object) {
         try {
@@ -71,6 +74,9 @@ public class SalleDAO extends DAO<Salle>{
         return object;
     }
     
+    //FIND
+    //Trouver salle via id
+    @Override
     public Salle find(int id) {
         Salle salle = new Salle();      
 
@@ -101,7 +107,9 @@ public class SalleDAO extends DAO<Salle>{
         
         return salle;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver toutes les salles
+    //Pour admin
     public ArrayList<Salle> findAllSalles()
     {
         ArrayList<Salle> salles = new ArrayList<>();
@@ -117,5 +125,29 @@ public class SalleDAO extends DAO<Salle>{
             System.out.println("pas trouvé");
         }
         return salles;
+    }
+    /**
+     * Prend un String en paramètre et retourne une classe Salle 
+     * il permet d'obtenir une salle en fonction du nom de la salle et du site, 
+     * si rien n'est trouvé, il retourne 0
+     * @param infos
+     * @return 
+     */
+    public Salle findByName(String infos){
+        int espace = infos.indexOf(" ");
+        String salle = infos.substring(0,espace);
+        String site = infos.substring(espace+1, infos.length());
+        try {
+            ResultSet result=connect.createStatement()
+                                    .executeQuery("SELECT salle.ID FROM salle, site "
+                                                + "WHERE salle.Nom = '"+salle+"' AND site.Nom = '"+site+"'"); // récup l'id de la salle
+            if(result.first())
+                return find(result.getInt("salle.ID"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return null;
     }
 }

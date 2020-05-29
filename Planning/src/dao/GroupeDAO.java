@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
-import java.sql.Connection;
 import java.sql.*;
 import java.util.ArrayList;
 import modele.Groupe;
@@ -13,6 +7,7 @@ import modele.Promotion;
 
 
 public class GroupeDAO extends DAO<Groupe> {
+    //CREATE
     @Override
     public Groupe create(Groupe object) {
         try{
@@ -44,13 +39,14 @@ public class GroupeDAO extends DAO<Groupe> {
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Groupe object) {
         return false;
     }
     
-    
-     @Override
+    //UPDATE
+    @Override
     public Groupe update(Groupe object) {
         try {
  
@@ -77,6 +73,8 @@ public class GroupeDAO extends DAO<Groupe> {
         return object;
     }
     
+    //FIND
+    //Trouver groupe via id
     @Override
     public Groupe find(int id) {
         Groupe groupe = new Groupe();      
@@ -109,14 +107,7 @@ public class GroupeDAO extends DAO<Groupe> {
         return groupe;
     }
     
-    public Groupe findByNameAndPromo(String groupe, int promo) {
-        Groupe g = new Groupe();      
-        String maRequete = "SELECT * FROM groupe WHERE Nom = '" + groupe + "' AND ID_promotion = " + promo;
-        g.getPromotion().setId(promo);
-        requeteFind(maRequete, g);
-        return g;  
-    }
-    
+    //Pour éviter duplicatat de code :)
     public void requeteFind(String requete, Groupe groupe) {
         try {
             Statement st;
@@ -145,6 +136,16 @@ public class GroupeDAO extends DAO<Groupe> {
         }
     }
     
+    //Trouver groupe via nom du groupe et id promo
+    public Groupe findByNameAndPromo(String groupe, int promo) {
+        Groupe g = new Groupe();      
+        String maRequete = "SELECT * FROM groupe WHERE Nom = '" + groupe + "' AND ID_promotion = " + promo;
+        g.getPromotion().setId(promo);
+        requeteFind(maRequete, g);
+        return g;  
+    }
+    
+    //Trouver tous les groupes 
     public ArrayList<Groupe> find() {
         ArrayList<Groupe> groupes = new ArrayList<>();
         Groupe group;
@@ -183,5 +184,27 @@ public class GroupeDAO extends DAO<Groupe> {
                
         return groupes;
     }
-    
+    /**
+     * Prend un String en paramètre et une classe Groupe, 
+     * il permet d'obtenir un groupe en fonction du nom du groupe et de sa promotion
+     * @param infos
+     * @return 
+     */
+    public Groupe findByName(String infos){
+        int espace = infos.indexOf(" ");
+        String td = infos.substring(0,espace);
+        String promo = infos.substring(espace+1, infos.length());
+        try {
+            ResultSet result=connect.createStatement()
+                                    .executeQuery("SELECT groupe.ID FROM groupe, promotion "
+                                                + "WHERE groupe.Nom = '"+td+"' AND promotion.Nom = '"+promo+"'"); // récup l'id du groupe
+            if(result.first())
+                return find(result.getInt("groupe.ID"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return null;
+    }
 }

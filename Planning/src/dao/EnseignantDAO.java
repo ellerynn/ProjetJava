@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import java.sql.*;
@@ -10,6 +5,7 @@ import modele.*;
 import java.util.ArrayList;
 
 public class EnseignantDAO extends DAO<Enseignant> {
+    //CREATE
     @Override
     public Enseignant create(Enseignant object) {
         try{
@@ -54,16 +50,20 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return object;
     }
 
+    //DELETE
     @Override
     public boolean delete(Enseignant object) {
         return false;
     }
     
+    //UPDATE
     @Override
     public Enseignant update(Enseignant object) {
         return object;
     }
 
+    //FIND
+    //Trouver enseignant via id
     @Override
     public Enseignant find(int id) {
         Enseignant enseignant = new Enseignant();      
@@ -99,7 +99,9 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
         return enseignant;
     }
-    /*methodes en plus pour ADMINISTRATEUR*/
+    
+    //Trouver tous les enseignant
+    //Pour admin
     public ArrayList<Enseignant> findAllTeacher()
     {
         ArrayList<Enseignant> enseignants = new ArrayList<>();
@@ -115,5 +117,19 @@ public class EnseignantDAO extends DAO<Enseignant> {
             System.out.println("pas trouvé");
         }
         return enseignants;
+    }
+    
+    /**
+     * Prend un String en paramètre et retourne une classe Enseignant
+     * il permet d'obtenir l'enseignant en fonction de son prenom et nom dans un seul string
+     * @param infos
+     * @return 
+     */
+    public Enseignant findByName(String infos){
+        UtilisateurDAO userD= new UtilisateurDAO();
+        int espace = infos.indexOf(" ");
+        String prenom = infos.substring(0,espace);
+        String nom = infos.substring(espace+1, infos.length());
+        return find(userD.findByName(prenom, nom).getId());
     }
 }

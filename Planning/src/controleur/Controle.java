@@ -5,8 +5,14 @@ import vue.*;
 import modele.*;
 import dao.*;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.util.*;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 
 public class Controle {
     private Fenetre fenetre;
@@ -20,23 +26,55 @@ public class Controle {
     public static void main(String[] args) {       
         //Ouverture interface graphique        
         new Controle();
-    }
-    
-    //SOUS PROGRAMME QUI FAIT LE LISTENER
-    //void {
-    //DAO -> info
-    public void Graphe(){
-        //CA JE SAIS PAS SI CEST UTILE ?
-   //Ouverture interface graphique
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
+       /* java.awt.EventQueue.invokeLater(new Runnable() {
            public void run() {
                 new JFreeChartTest().setVisible(true);
             }
         });*/
-        
     }
-    //}
-    
+
+        //CA JE SAIS PAS SI CEST UTILE ?
+   //Ouverture interface graphique
+  public void afficherGraphe() {
+        SalleDAO sDAO = new SalleDAO();
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<String> s = new ArrayList<>();
+
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 2
+        DefaultPieDataset pieDataset3 = new DefaultPieDataset();//eiffel 4
+        
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
+            pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
+            pieDataset2.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+            if(salles.get(i).getSite().getNom().equals("Eiffel 4"))
+            pieDataset3.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
+
+        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
+        JFreeChart chart2 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 2", pieDataset2, true, true, true);//eiffeil 2
+        JFreeChart chart3 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 4", pieDataset3, true, true, true);//eiffel 4
+        PiePlot P=(PiePlot)chart.getPlot();
+        PiePlot P2=(PiePlot)chart2.getPlot();
+        PiePlot P3=(PiePlot)chart3.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartFrame frame = new ChartFrame("Capacité des salles pour Eiffel 1", chart );
+        ChartFrame frame2 = new ChartFrame("Capacité des salles pour Eiffel 2", chart2 );
+        ChartFrame frame3 = new ChartFrame("Capacité des salles pour Eiffel 4", chart3 );
+        
+
+        frame.setVisible(true);
+        frame.setSize(500,500);
+        
+        frame2.setVisible(true);
+        frame2.setSize(500,500);
+        
+        frame3.setVisible(true);
+        frame3.setSize(500,500);
+  }
+  
     //Retourne true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
     public Boolean demandeConnexion(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);       

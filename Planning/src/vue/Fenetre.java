@@ -14,6 +14,11 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 
 //La classe Fenetre correspond a toute l'interface graphique contenant la page de connexion et le planning (+gestion)
 public class Fenetre extends JFrame {  
@@ -146,12 +151,12 @@ public class Fenetre extends JFrame {
             public void mouseExited(MouseEvent me) {}
         });
         
-
+        
         
         //Onglethome qui est dans EDT qui est dans THIS
         //Pour appeler l'action controle.NOM SOUS Programme
-        edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
-            //SOUS P    
+        edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton afficher graphe
+            controle.afficherGraphe();
         });
     }
     

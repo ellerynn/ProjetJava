@@ -118,4 +118,18 @@ public class EnseignantDAO extends DAO<Enseignant> {
         }
         return enseignants;
     }
+    
+    /**
+     * Prend un String en paramètre et retourne une classe Enseignant
+     * il permet d'obtenir l'enseignant en fonction de son prenom et nom dans un seul string
+     * @param infos
+     * @return 
+     */
+    public Enseignant findByName(String infos){
+        UtilisateurDAO userD= new UtilisateurDAO();
+        int espace = infos.indexOf(" ");
+        String prenom = infos.substring(0,espace);
+        String nom = infos.substring(espace+1, infos.length());
+        return find(userD.findByName(prenom, nom).getId());
+    }
 }

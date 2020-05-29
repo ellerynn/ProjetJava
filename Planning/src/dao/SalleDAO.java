@@ -126,4 +126,28 @@ public class SalleDAO extends DAO<Salle>{
         }
         return salles;
     }
+    /**
+     * Prend un String en paramètre et retourne une classe Salle 
+     * il permet d'obtenir une salle en fonction du nom de la salle et du site, 
+     * si rien n'est trouvé, il retourne 0
+     * @param infos
+     * @return 
+     */
+    public Salle findByName(String infos){
+        int espace = infos.indexOf(" ");
+        String salle = infos.substring(0,espace);
+        String site = infos.substring(espace+1, infos.length());
+        try {
+            ResultSet result=connect.createStatement()
+                                    .executeQuery("SELECT salle.ID FROM salle, site "
+                                                + "WHERE salle.Nom = '"+salle+"' AND site.Nom = '"+site+"'"); // récup l'id de la salle
+            if(result.first())
+                return find(result.getInt("salle.ID"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return null;
+    }
 }

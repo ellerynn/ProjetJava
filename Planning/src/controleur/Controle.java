@@ -642,7 +642,7 @@ public class Controle {
         ArrayList<String> s = new ArrayList<>();
         
         for (int i = 0 ; i <ens.size(); i++)
-            s.add(ens.get(i).getNom()+" "+ ens.get(i).getPrenom());
+            s.add(ens.get(i).getPrenom()+" "+ ens.get(i).getNom());
         return s;
     }
     
@@ -659,7 +659,7 @@ public class Controle {
         for (int i = 0 ; i < seances.size() ; i++)
         {
             ArrayList<String> temp = seances.get(i).toArrayListOfString();
-            String msg = "Seance N°"+seances.get(i).getId()+" ";
+            String msg = "Seance N°"+seances.get(i).getId()+" "+seances.get(i).getSemaine()+" "+seances.get(i).getDate()+" "+seances.get(i).getHeureDebut()+"-"+seances.get(i).getHeureFin()+" ";
             if(seances.get(i).getEtat() != 2) //si pas valide, car temp est de taille 6
                 msg+=temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4)+" "+temp.get(5);
             else //Si valide temp est de taille 5
@@ -670,7 +670,11 @@ public class Controle {
         
         return string;
     }
-    //Ajoute une séance
+    /**
+     * Calcul l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
+     * @param debut
+     * @return 
+     */
     public String calculHeureFin(String debut)
     {
         Calendar cal = Calendar.getInstance();
@@ -681,34 +685,116 @@ public class Controle {
         String fin = date.toString().substring(11,19); //On récupère la position de l'heure
         return fin;
     }
-    public void ajouterUneSeance(ArrayList<Object> strings)
-    {
+    /**
+     * Demande d'ajout d'une séance par la vue vers le controleur en récupérant tout les données saisies par l'user
+     * @param strings 
+     */
+    public void demandeAddSeance(ArrayList<Object> strings)
+    {   
+        SalleDAO salleDAO = new SalleDAO();
+        GroupeDAO gDAO = new GroupeDAO();
+        EnseignantDAO uDAO = new EnseignantDAO();
+        TypeCoursDAO tDAO = new TypeCoursDAO();
+        CoursDAO cDAO = new CoursDAO();
         if(strings.size() != 9)
-            System.out.println(strings.size()+"Champs manquants");
+            System.out.println("Que "+strings.size()+" Champs sur 9 obligatoires sont remplis");
         else{
-            int semaine = Integer.parseInt((String)strings.get(0));             //Semaine
-            String heureDebut = (String)strings.get(1);                         //Heure de début
-            String heureFin = calculHeureFin(heureDebut);                       //Heure de fin
-            String date = (String)strings.get(2);                               //Date
-            int etat = Integer.parseInt((String)strings.get(3));                //Etat
-            String cours = (String)strings.get(4);                              //Cours
-            String type = (String)strings.get(5);                               //type
-            ArrayList<String> enseignants = new ArrayList<>();              
+            int semaine = Integer.parseInt((String)strings.get(0));//Semaine
+            String heureDebut = (String)strings.get(1);//Heure de début
+            String heureFin = calculHeureFin(heureDebut);//Heure de fin
+            String date = (String)strings.get(2);//Date
+            int etat = Integer.parseInt((String)strings.get(3));//Etat
+            Cours cours = cDAO.findByName((String)strings.get(4));//Cours
+            TypeCours type = tDAO.findByName((String)strings.get(5));//Type
+            
+            ArrayList<Enseignant> enseignants = new ArrayList<>();              
             List list = (List)strings.get(6);                       
             for (Iterator it = list.iterator() ; it.hasNext(); ){
-                enseignants.add((String)it.next());                             //Enseignants
+                enseignants.add(uDAO.findByName((String)it.next()));//Enseignants
             }
-            ArrayList<String> groupes = new ArrayList<>();
+            
+            ArrayList<Groupe> groupes = new ArrayList<>();
             list = (List)strings.get(7);
             for (Iterator it = list.iterator() ; it.hasNext(); ){
-                groupes.add((String)it.next());                                 //Groupes
+                groupes.add(gDAO.findByName((String)it.next()));//Groupes
             }
-            ArrayList<String> salles = new ArrayList<>();
+            
+            ArrayList<Salle> salles = new ArrayList<>();
             list = (List)strings.get(8);
             for (Iterator it = list.iterator() ; it.hasNext(); ){
-                salles.add((String)it.next());                                  //Salles
+                salles.add(salleDAO.findByName((String)it.next()));//Salles
+            }
+            ajouterSeanceInModel(semaine,date,heureDebut,heureFin,etat,cours,type,groupes, enseignants,salles);
+        }//END OF else
+    }
+    /**
+     * Le controleur demande au model l'ajout d'une séance en lui fournissant les données issues de la vue.
+     * Le modèle renvoie des réponses vers le controleur pour savoir si tels données sont acceptables et si tout les données saisies sont cohérents.
+     * @param Semaine
+     * @param Date
+     * @param Heure_Debut
+     * @param Heure_Fin
+     * @param Etat
+     * @param cours
+     * @param type
+     * @param groupes
+     * @param enseignants
+     * @param salles 
+     */
+    public void ajouterSeanceInModel(int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, Cours cours,TypeCours type, ArrayList<Groupe> groupes, ArrayList<Enseignant> enseignants, ArrayList<Salle> salles) 
+    {   
+        SeanceDAO sDAO = new SeanceDAO();
+        Seance seance = new Seance(Semaine, Heure_Debut, Heure_Fin,Date, Etat, cours, type); //instanciation de la nvlle seance avec les premiers données
+        boolean okForCreate = true; //On considère au début que tout est ok pour créer cette séance dans la BDD
+        //On ajoute les salles en accord avec leur créneau dispo/Duplication sans vérif la capa car rien à vérifier au début vu qu'aucun grp n'ai encore add dans séance
+        for (int i = 0 ; i < salles.size();i++)
+        {
+            if (sDAO.canIAjouterSalleSeance(seance, salles.get(i).getId()))
+               seance.ajouterSalle(salles.get(i)); 
+            else{
+                okForCreate = false;
+                i = 100; // Dès qu'il y a un false on arrête tout
             }
         }
-        
+        if(okForCreate) //Si les vérifs des salles sont bon, on continue
+        {
+            for (int i = 0; i <Math.max(groupes.size(), enseignants.size()); i++) // Pour éviter 2 for
+            {
+                if (i< groupes.size())
+                {
+                    //Si groupes non duplication/pbl crénaux /Pas de pbl de place, tout est bon
+                    if (sDAO.canIAjoutGroupeSeance(seance, groupes.get(i).getId()))
+                        seance.ajouterGroupe(groupes.get(i));
+                    else{
+                        okForCreate = false;
+                        i = 1000; //On arrete tout
+                    }
+                }
+                if (i<enseignants.size())
+                {   //Si enseignants non duplication/pbl crénaux tout est bon
+                    if ( sDAO.canIAjouterEnseignantSeance(seance, enseignants.get(i).getId()))
+                        seance.ajouterEnseignant(enseignants.get(i));
+                    else{
+                        okForCreate = false;
+                        i = 1000; //On arrete tout
+                    }
+                }
+            }
+        }
+        if (okForCreate) //Si tout les conditions sont réunis, on create, si il y a eu un faux, on ne create pas.
+        {
+            seance = sDAO.create(seance);
+            System.out.println("Ajouter avec succes");
+            majAllSeances();
+        }else{
+            System.out.println("La seance n'a pas été ajouté");
+        }
+    }
+    /**
+     * Mise à jour au niveau visuelle si tout les données sont cohérents
+     */
+    public void majAllSeances()
+    {   //Du controleur à la vue
+        fenetre.remplirListSeances();
     }
 }

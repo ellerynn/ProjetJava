@@ -541,7 +541,7 @@ public class SeanceDAO extends DAO<Seance> {
         ArrayList<Seance> seances = new ArrayList<>();
         try{
              ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT ID FROM seance ORDER BY ID");
+                                             .executeQuery("SELECT ID FROM seance ORDER BY Date, Heure_debut");
              while(resultSeances.next())
              {
                  seances.add(find(resultSeances.getInt("ID")));

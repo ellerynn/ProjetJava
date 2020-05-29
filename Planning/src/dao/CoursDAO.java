@@ -106,4 +106,24 @@ public class CoursDAO extends DAO<Cours> {
         }
         return cours;
     }
+    /**
+     * Prend un String en paramètre et retourne une classe Cours 
+     * il permet d'obtenir le cours en fonction de son nom 
+     * @param infos
+     * @return 
+     */
+    public Cours findByName(String infos){
+        try {
+            ResultSet result=connect.createStatement()
+                                    .executeQuery("SELECT ID FROM cours "
+                                                + "WHERE Nom = '"+infos+"'"); // récup l'id du type
+            if(result.first())
+                return find(result.getInt("ID"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return null;
+    }
 }

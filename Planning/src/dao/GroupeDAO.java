@@ -184,4 +184,27 @@ public class GroupeDAO extends DAO<Groupe> {
                
         return groupes;
     }
+    /**
+     * Prend un String en paramètre et une classe Groupe, 
+     * il permet d'obtenir un groupe en fonction du nom du groupe et de sa promotion
+     * @param infos
+     * @return 
+     */
+    public Groupe findByName(String infos){
+        int espace = infos.indexOf(" ");
+        String td = infos.substring(0,espace);
+        String promo = infos.substring(espace+1, infos.length());
+        try {
+            ResultSet result=connect.createStatement()
+                                    .executeQuery("SELECT groupe.ID FROM groupe, promotion "
+                                                + "WHERE groupe.Nom = '"+td+"' AND promotion.Nom = '"+promo+"'"); // récup l'id du groupe
+            if(result.first())
+                return find(result.getInt("groupe.ID"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return null;
+    }
 }

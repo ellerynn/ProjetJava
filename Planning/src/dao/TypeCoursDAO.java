@@ -98,4 +98,25 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         }
         return tcours;
     }
+    /**
+     * Prend un String en paramètre et retourne une classe Type, 
+     * il permet d'obtenir le type d'une cours en fonction de son nom, 
+     * si rien n'est trouvé, il retourne 0
+     * @param infos
+     * @return 
+     */
+    public TypeCours findByName(String infos){
+        try {
+            ResultSet result=connect.createStatement()
+                                    .executeQuery("SELECT type_cours.ID FROM type_cours "
+                                                + "WHERE type_cours.Nom = '"+infos+"'"); // récup l'id du type
+            if(result.first())
+                return find(result.getInt("type_cours.ID"));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return null;
+    }
 }

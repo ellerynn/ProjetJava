@@ -1,18 +1,43 @@
 package vue;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class LabelRenderer implements TableCellRenderer {
     private JPanel panel;
     private JLabel label;
 
+    /**
+     * constructeur
+     */
     public LabelRenderer() {
         panel = new JPanel(new BorderLayout());
         label = new JLabel();
     }
 
+    /**
+     *
+     * @param table
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return
+     */
     @Override
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected,

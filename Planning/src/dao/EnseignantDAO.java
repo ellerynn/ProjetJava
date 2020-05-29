@@ -1,11 +1,26 @@
 package dao;
 
-import java.sql.*;
-import modele.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import modele.Enseignant;
+import modele.Utilisateur;
+
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 
 public class EnseignantDAO extends DAO<Enseignant> {
-    //CREATE
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Enseignant create(Enseignant object) {
         try{
@@ -50,20 +65,32 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return object;
     }
 
-    //DELETE
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Enseignant object) {
         return false;
     }
     
-    //UPDATE
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public Enseignant update(Enseignant object) {
         return object;
     }
 
-    //FIND
-    //Trouver enseignant via id
+    /**
+     * find
+     * trouver enseignant via id
+     * @param id
+     * @return
+     */
     @Override
     public Enseignant find(int id) {
         Enseignant enseignant = new Enseignant();      
@@ -100,8 +127,11 @@ public class EnseignantDAO extends DAO<Enseignant> {
         return enseignant;
     }
     
-    //Trouver tous les enseignant
-    //Pour admin
+    /**
+     * trouver tous les enseignants
+     * pour l'admin
+     * @return
+     */
     public ArrayList<Enseignant> findAllTeacher()
     {
         ArrayList<Enseignant> enseignants = new ArrayList<>();

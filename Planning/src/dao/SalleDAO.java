@@ -1,12 +1,25 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import modele.*;
+import modele.Salle;
+import modele.Site;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class SalleDAO extends DAO<Salle>{
-    //CREATE
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Salle create(Salle object) {
         try{
@@ -39,13 +52,21 @@ public class SalleDAO extends DAO<Salle>{
         return object;
     }
 
-    //DELETE
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Salle object) {
         return false;
     }
 
-    //UPDATE
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public Salle update(Salle object) {
         try {
@@ -74,8 +95,12 @@ public class SalleDAO extends DAO<Salle>{
         return object;
     }
     
-    //FIND
-    //Trouver salle via id
+    /**
+     * find
+     * trouver salle via id
+     * @param id
+     * @return
+     */
     @Override
     public Salle find(int id) {
         Salle salle = new Salle();      
@@ -108,8 +133,11 @@ public class SalleDAO extends DAO<Salle>{
         return salle;
     }
     
-    //Trouver toutes les salles
-    //Pour admin
+    /**
+     * trouver toutes les salles
+     * pour admin
+     * @return
+     */
     public ArrayList<Salle> findAllSalles()
     {
         ArrayList<Salle> salles = new ArrayList<>();

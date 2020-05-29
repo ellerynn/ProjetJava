@@ -1,11 +1,26 @@
 package dao;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import modele.*;
+import modele.Etudiant;
+import modele.Utilisateur;
+
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 
 public class EtudiantDAO extends DAO<Etudiant> {
-    //CREATE
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Etudiant create(Etudiant object) {
         try{
@@ -44,20 +59,32 @@ public class EtudiantDAO extends DAO<Etudiant> {
         return object;
     }
 
-    //DELETE
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Etudiant object) {
         return false;
     }
 
-    //UPDATE
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public Etudiant update(Etudiant object) {
         return object;
     }
     
-    //FIND
-    //Trouver etudiant via id
+    /**
+     * find
+     * trouver etudiant via id
+     * @param id
+     * @return
+     */
     @Override
     public Etudiant find(int id) {
         Etudiant etudiant = new Etudiant();      
@@ -104,7 +131,11 @@ public class EtudiantDAO extends DAO<Etudiant> {
         return etudiant;
     }
     
-    //Trouver enseignant via id de son groupe
+    /**
+     * trouver enseignants via id de son groupe
+     * @param id
+     * @return
+     */
     public Etudiant findByGroup(int id) {
         Etudiant etudiant = new Etudiant();      
 
@@ -134,8 +165,11 @@ public class EtudiantDAO extends DAO<Etudiant> {
         return etudiant;
     }
     
-    //Trouver tous les etudiants
-    //Pour admin
+    /**
+     * trouver tous les étudiants
+     * pour l'admin
+     * @return
+     */
     public ArrayList<Etudiant> findAllStudents()
     {
         ArrayList<Etudiant> etudiants = new ArrayList<>();

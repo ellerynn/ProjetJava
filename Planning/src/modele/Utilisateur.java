@@ -1,16 +1,11 @@
 package modele;
 
-/*UTILISATEUR (ID, EMAIL, PASSWD, NOM, PRENOM, DROIT) 
-Remarques : cette relation indique le droit de consultation et de mise à jour aux données de l’emploi du temps. 
-L’attribut DROIT indique le type de droit d’accès ou/et de mise à jour aux données, comme par exemple : 
-- 1 pour un droit d’administrateur (service chargé de la planification) : il a le droit de consulter et de mettre à jour 
-toutes les données de l’emploi du temps 
-- 2 pour un droit de référent pédagogique : il peut consulter les emplois du temps de tous les enseignants, promotions, 
-groupes, étudiants, cours et salles MAIS ne rien mettre à jour - 3 pour un droit d’enseignant : il ne peut consulter que 
-son emploi du temps et le récapitulatif de ses cours sur une période - 4 pour un droit d’étudiant : il ne peut consulter 
-que son emploi du temps et le récapitulatif de ses cours sur une période
-*/
-
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class Utilisateur {
     protected int id;
     protected String email;
@@ -19,7 +14,9 @@ public class Utilisateur {
     protected String prenom;
     protected int droit; //1 : administrateur ; 2 : référent pédagogique ; 3 : enseignant ; 4 : étudiant 
     
-    //Constructeur par défaut
+    /**
+     * constructeur par défaut 
+     */
     public Utilisateur() {
         id = 0;
         email = new String();
@@ -29,7 +26,14 @@ public class Utilisateur {
         droit = 0;
     }
     
-    //Constructeur
+    /**
+     * constructeur
+     * @param email
+     * @param password
+     * @param nom
+     * @param prenom
+     * @param droit
+     */
     public Utilisateur(String email, String password, String nom, String prenom, int droit) { 
         //Un administrateur peut créer un nouvel utilisateur, id s'incrémente seul dans BDD
         this.email = email;
@@ -39,58 +43,109 @@ public class Utilisateur {
         this.droit = droit;
     }
        
-    //Getters
+    /**
+     * retourne l'id d'un utilisateur
+     * @return
+     */
     public int getId() {
         return id;
     }
     
+    /**
+     * retourne le droit d'un utilisateur
+     * @return
+     */
     public int getDroit() {
         return droit;
     }
     
+    /**
+     * retourne le nom d'un utilisateur
+     * @return
+     */
     public String getNom() {
         return nom;
     }
     
+    /**
+     * retourne le prenom d'un utilisateur
+     * @return
+     */
     public String getPrenom() {
         return prenom;
     }
     
+    /**
+     * retourne le mail d'un utilisateur
+     * @return
+     */
     public String getEmail() {
         return email;
     }
     
+    /**
+     * retourne le mot de passe d'un utilisateur
+     * @return
+     */
     public String getPassword() {
         return password;
     }
     
-    //Setters
+    /**
+     * set l'id d'un utilisateur
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
     
+    /**
+     * set le droit d'un utilisateur
+     * @param droit
+     */
     public void setDroit(int droit) {
         this.droit = droit;
     }
     
+    /**
+     * set le nom d'un utilisateur
+     * @param nom
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
     
+    /**
+     * set le prenom d'un utilisateur
+     * @param prenom
+     */
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
     
+    /**
+     * set le mail d'un utilisateur
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
     
+    /**
+     *set le mot de passe d'un utilisateur
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
     
-    //Méthodes
+    /**
+     * copie un utilisateur passé en paramètre
+     * @param utilisateur
+     */
     public void copierUtilisateur(Utilisateur utilisateur){
+        //Renommer SETUtilisateur ?
+        //Essayer this = utilisateur;
         id = utilisateur.getId();
         email = utilisateur.getEmail();
         password = utilisateur.getPassword();
@@ -98,7 +153,13 @@ public class Utilisateur {
         prenom = utilisateur.getPrenom();
         droit = utilisateur.getDroit();
     }
+
+    /**
+     * retourne this
+     * @return
+     */
     public Utilisateur getUtilisateur(){ //Pour update
+        //ESSAYER JUSTE CA : return this;
         Utilisateur user = new Utilisateur(email, password, nom, prenom, droit);
         user.setId(getId());
         return user;

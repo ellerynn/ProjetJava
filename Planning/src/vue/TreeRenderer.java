@@ -1,18 +1,33 @@
 package vue;
 
-import java.awt.*;
-import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class TreeRenderer implements TableCellRenderer {
     private JPanel panel;
     private JLabel label;
     private Icon icon;
     private Icon icon2;
     
+    /**
+     * constructeur
+     */
     public TreeRenderer() {
         panel = new JPanel(new BorderLayout());
         label = new JLabel();
@@ -20,6 +35,16 @@ public class TreeRenderer implements TableCellRenderer {
         icon2 = new ImageIcon("images\\icon_fleche.png");
     }
 
+    /**
+     *
+     * @param table
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return
+     */
     @Override
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected,
@@ -39,7 +64,7 @@ public class TreeRenderer implements TableCellRenderer {
                 String text = value.toString(); //Si on setValueAt, récupère la String envoyée dans la cellule
                 label.setText(" " + text); //Design
                 label.setForeground(Color.black);
-                panel.add(label);
+                panel.add(this.label);
             }
             
             /*if(column == 0) {
@@ -51,7 +76,7 @@ public class TreeRenderer implements TableCellRenderer {
             }*/
             
             else {
-                int p1 = 0, p2 = 0;
+                int p1, p2;
                 String text = value.toString();
                 
                 p1 = text.indexOf("[");
@@ -78,14 +103,12 @@ public class TreeRenderer implements TableCellRenderer {
                 JTree jt = new JTree(tree);
                 
                 DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-                renderer.setOpenIcon(icon);
-                renderer.setLeafIcon(icon2);
+                renderer.setOpenIcon(this.icon);
+                renderer.setLeafIcon(this.icon2);
                 jt.setCellRenderer(renderer);
                 
                 panel.add(jt);
             }
         return panel;
     }
-    
-    
 }

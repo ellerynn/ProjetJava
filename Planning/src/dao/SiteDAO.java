@@ -1,11 +1,25 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import modele.Site;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class SiteDAO extends DAO<Site> {
+
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Site create(Site object) {
         try{
@@ -30,11 +44,21 @@ public class SiteDAO extends DAO<Site> {
         return object;
     }
 
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Site object) {
         return false;
     }
 
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public Site update(Site object) {
         try {
@@ -55,7 +79,12 @@ public class SiteDAO extends DAO<Site> {
         return object;
     }
 
-    
+    /**
+     * find
+     * trouver un site via id
+     * @param id
+     * @return
+     */
     @Override
     public Site find(int id) {
         Site site = new Site();      
@@ -81,8 +110,11 @@ public class SiteDAO extends DAO<Site> {
         return site;
     }
     
-    //Trouver tous les sites
-    //Pour admin
+    /**
+     * trouver tous les sites
+     * pour l'admin
+     * @return
+     */
     public ArrayList<Site> findAllSites() //NE SERA PEUT ETRE JAMAIS USE (car salles possèdent dj l'info du site)
     {
         ArrayList<Site> sites = new ArrayList<>();

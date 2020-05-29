@@ -1,15 +1,30 @@
-/*
-*SOURCE : https://waytolearnx.com/2020/03/tester-si-une-annee-est-bissextile-en-java.html
-*/
-
 package vue;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
-//La classe OngletCours correspond à l'onglet Cours de notre planning (classe EmploiDuTemps)
+/**
+ * https://waytolearnx.com/2020/03/tester-si-une-annee-est-bissextile-en-java.html
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class OngletCours extends JTabbedPane {
     //Onglet Cours
     //Cours -> Emploi du temps
@@ -25,6 +40,9 @@ public class OngletCours extends JTabbedPane {
     private JTable tabRecap;
     private  TableTreeRendererPanel p2;
     
+    /**
+     * constructeur
+     */
     public OngletCours() { //Division en deux public void pour plus de clarté
         //Cours -> Emploi du temps
         vueEdt = new JComboBox<>();
@@ -113,36 +131,66 @@ public class OngletCours extends JTabbedPane {
         this.add("Récapitulatif des cours", recapCours);
     }
     
-    //Getters    
+    /**
+     * retourne la barre de recherche
+     * @return
+     */
     public JTextField getRechercheBarre() {
         return this.rechercheBarre;
     }
     
+    /**
+     * retourne le bouton rechercher
+     * @return
+     */
     public JButton getRechercheBouton() {
         return this.rechercheBouton;
     }
     
+    /**
+     * retourne la JComboBox de recherche (utilisateurs de la BDD)
+     * @return
+     */
     public JComboBox getRecherche() {
         return this.selectRecherche;
     }
     
+    /**
+     * retourne la JComboBo de recherche (groupes)
+     * @return
+     */
     public JComboBox getGroupes() {
         return this.groupes;
     }
     
+    /**
+     * retourne la JComboBox des semaines 
+     * @return
+     */
     public JComboBox getSemaine() {
         return this.semaine;
     }
     
+    /**
+     * retourne le JTable contenant l'edt (cours) sur une semaine
+     * @return
+     */
     public JTable getEdt() {
         return this.tabEdt;
     }
     
+    /**
+     * retourne le JTable contenant le récapitulatif des séances de l'année scolaire en cours
+     * @return
+     */
     public JTable getRecap() {
         return this.tabRecap;
     }
 
-    //Méthodes
+    /**
+     * remplo la JComboBox des semaines
+     * @param box
+     */
     public void remplirComboBoxSemaine(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{"Semaine"})); 
         for(int i = 1; i < 54; i++) {
@@ -150,6 +198,11 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
+    /**
+     * rempli une JComboBox avec l'ArrayList de string envoyé
+     * @param box
+     * @param string
+     */
     public void remplirComboBox(JComboBox box, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>()); 
         for(int i = 0; i < string.size(); i++) {
@@ -157,6 +210,12 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
+    /**
+     * cf. méthode précédente, intitulé en plus
+     * @param box
+     * @param intitule
+     * @param string
+     */
     public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
         for(int i = 0; i < string.size(); i++) {
@@ -164,6 +223,10 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
+    /**
+     * mise à jour de l'edt en fonction de la semaine (entêtes et horaires)
+     * @param semaine
+     */
     public void setEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
         Calendar cal = Calendar.getInstance(); //Date du jour
@@ -257,6 +320,11 @@ public class OngletCours extends JTabbedPane {
         tabEdt.getColumnModel().getColumn(0).setCellRenderer(custom);
     }    
     
+    /**
+     * retourne true si l'annee est bissextile
+     * @param annee
+     * @return
+     */
     public Boolean anneeBissextile(int annee) {
         if(annee%4 == 0) { 
             if(annee%100 == 0) { 
@@ -271,6 +339,10 @@ public class OngletCours extends JTabbedPane {
         return false;
     }
     
+    /**
+     * calcul de l'année scolaire en cours (retourne seulement le premier ex 2019/2020 -> 2019)
+     * @return
+     */
     public int calculAnneeScolaire() {
         Calendar cal = Calendar.getInstance();
         int annee;
@@ -284,6 +356,9 @@ public class OngletCours extends JTabbedPane {
         return annee;
     }
 
+    /**
+     * misà jour du tableau contenant le récapitulatif (entêtes)
+     */
     public void setRecap() {             
         tabRecap.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Matière", 
                                                                                "Première séance", 

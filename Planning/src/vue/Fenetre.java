@@ -173,11 +173,8 @@ public class Fenetre extends JFrame {
             public void mouseExited(MouseEvent me) {}
         });
         
-        //Onglethome qui est dans EDT qui est dans THIS
-        //Pour appeler l'action controle.NOM SOUS Programme
         /*edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton afficher graphe
-            //controle.afficherGraphe();
-            controle.creationGraphe();
+            controle.afficherGrapheHeureSeanceSemestre();
         });*/
     }
     

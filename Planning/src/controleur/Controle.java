@@ -26,6 +26,7 @@ import modele.Seance;
 import modele.TypeCours;
 import modele.Utilisateur;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
@@ -91,6 +92,29 @@ public class Controle {
         
         fenetre.ajouterGraphes(c);
     }
+    /*
+    public void afficherGrapheHeureSeanceSemestre() {
+        SalleDAO sDAO = new SalleDAO();
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<String> s = new ArrayList<>();
+
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
+            pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
+
+        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
+
+        PiePlot P=(PiePlot)chart.getPlot();
+
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartFrame frame = new ChartFrame("Capacité des salles pour Eiffel 1", chart );
+
+        frame.setVisible(true);
+        frame.setSize(500,500);
+   }*/
      
     /**
      * @param email

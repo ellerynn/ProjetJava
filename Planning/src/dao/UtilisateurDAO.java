@@ -1,14 +1,24 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import modele.Enseignant;
-import modele.Etudiant;
 import modele.Utilisateur;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class UtilisateurDAO extends DAO<Utilisateur> {
-    
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Utilisateur create(Utilisateur object) {
         try{
@@ -37,18 +47,32 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return object;
     }
 
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Utilisateur object) {
         return false;
     }
 
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public Utilisateur update(Utilisateur object) {
         return object;
     }
     
-    //FIND
-    //Trouver utilisateur via id
+    /**
+     * find
+     * trouver utilisateur via id
+     * @param id
+     * @return
+     */
     @Override
     public Utilisateur find(int id) {
         Utilisateur utilisateur = new Utilisateur();      
@@ -57,7 +81,12 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateur;
     }
       
-    //Trouver utilisateur via email et password
+    /**
+     * trouver utilisateur via email et password
+     * @param email
+     * @param psw
+     * @return
+     */
     public Utilisateur find(String email, String psw) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE Email = '" + email + "' AND Passwd = '" +psw+"'";
@@ -65,7 +94,12 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateur;  
     }
     
-    //Trouver utilisateur via nom et prenom
+    /**
+     * trouver utilisateur via nom et prenom
+     * @param prenom
+     * @param nom
+     * @return
+     */
     public Utilisateur findByName(String prenom, String nom) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE Prenom LIKE '%" + prenom + "%' AND Nom LIKE '%" + nom +"%'";
@@ -73,7 +107,10 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateur;  
     }
     
-    //Trouver tous les utilisateurs
+    /**
+     * trouver tous les utilisateurs
+     * @return
+     */
     public ArrayList<Utilisateur> find() {
         ArrayList<Utilisateur> utilisateurs = new ArrayList<>();
         Utilisateur user = new Utilisateur();
@@ -109,7 +146,11 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         return utilisateurs;
     }
     
-    //NOOO DUPLICATAT :)
+    /**
+     * eviter duplicatat
+     * @param requete
+     * @param utilisateur
+     */
     public void requeteFind(String requete, Utilisateur utilisateur) {
         try {
             Statement st;
@@ -137,6 +178,10 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         }
     }
     
+    /**
+     * ????
+     * @return
+     */
     public int nombreMax(){
         int nb = 0;
         try {

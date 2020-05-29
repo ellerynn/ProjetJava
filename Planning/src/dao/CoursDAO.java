@@ -1,16 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import modele.Cours;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
+
 public class CoursDAO extends DAO<Cours> {
-    //CREATE
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Cours create(Cours object) {
         try {
@@ -35,13 +44,21 @@ public class CoursDAO extends DAO<Cours> {
         return object;
     }
 
-    //DELETE
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Cours object) {
         return false;
     }
 
-    //UPDATE
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public Cours update(Cours object) {
         try {
@@ -62,8 +79,12 @@ public class CoursDAO extends DAO<Cours> {
         return object;
     }
     
-    //FIND
-    //Trouver cours via ID
+    /**
+     * find
+     * trouver cours via ID
+     * @param id
+     * @return
+     */
     @Override
     public Cours find(int id) {
         Cours cours = new Cours();      
@@ -88,8 +109,11 @@ public class CoursDAO extends DAO<Cours> {
         return cours;
     }
     
-    //Trouver tous les cours
-    //Pour l'admin
+    /**
+     * trouver tous les cours
+     * pour l'admin
+     * @return
+     */
     public ArrayList<Cours> findAllCours()
     {
         ArrayList<Cours> cours = new ArrayList<>();

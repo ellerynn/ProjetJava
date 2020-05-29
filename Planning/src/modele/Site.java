@@ -1,38 +1,59 @@
 package modele;
 
-/*SITE (ID, NOM) 
-Remarque : l’école peut avoir plusieurs sites (exemple dans le cas de l’ECE : Eiffel1, Eiffel2 etc.)
-*/
-
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class Site {
     private int id;
     private String nom;
     
-    //Constructeur par défaut
+    /**
+     * constructeur
+     */
     public Site() {
         id = 0;
         nom = new String();
     }
     
-    //Constructeur
+    /**
+     * constructeur
+     * @param nom
+     */
     public Site(String nom) {
         this.nom = nom;
     }
     
-    //Getters
+    /**
+     * retourne id site
+     * @return
+     */
     public int getId() {
         return id;
     }
     
+    /**
+     * retourne nom site
+     * @return
+     */
     public String getNom() {
         return nom;
     }
     
-    //Setters
+    /**
+     * set id site
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
     
+    /**
+     * set nom site
+     * @param nom
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }

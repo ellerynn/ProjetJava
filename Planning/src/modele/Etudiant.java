@@ -1,18 +1,21 @@
 package modele;
 
-/*ETUDIANT (#ID_UTILISATEUR  , NUMERO, #ID_GROUPE …) 
-Remarques : l’étudiant est un utilisateur (sa clé primaire est aussi une clé étrangère qui référence la clé primaire de 
-la relation UTILISATEUR) et est affecté à un groupe
-*/
-
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class Etudiant extends Utilisateur {
     private int numero;
     private Groupe groupe;
     private ArrayList<Seance> seances;
     
-    //Constructeur par défaut
+    /**
+     * constructeur
+     */
     public Etudiant() {
         super();
         numero = 0;
@@ -20,7 +23,16 @@ public class Etudiant extends Utilisateur {
         seances = new ArrayList();
     }
     
-    //Constructeur
+    /**
+     * constructeur
+     * @param email
+     * @param password
+     * @param nom
+     * @param prenom
+     * @param numero
+     * @param groupe
+     * @param promotion
+     */
     public Etudiant(String email, String password, String nom, String prenom, int numero, Groupe groupe, Promotion promotion) {
         //Un administrateur peut créer un nouvel étudiant
         super(email, password, nom, prenom, 4);
@@ -29,33 +41,58 @@ public class Etudiant extends Utilisateur {
         seances = new ArrayList();
     }
     
-    //Getters
+    /**
+     * retourne le numero etudiant
+     * @return
+     */
     public int getNumero() {
         return numero;
     }
     
+    /**
+     * retourne le groupe etudiant
+     * @return
+     */
     public Groupe getGroupe() {
         return groupe;
     }
     
+    /**
+     * retourne les seances etudiant
+     * @return
+     */
     public ArrayList<Seance> getSeances() {
         return seances;
     }
     
-    //Setters
+    /**
+     * set le numero etudiant
+     * @param numero
+     */
     public void setNumero(int numero) {
         this.numero = numero;
     }
     
+    /**
+     * set le groupe etudiant
+     * @param groupe
+     */
     public void setGroupe(Groupe groupe) {
         this.groupe = groupe;
     }
     
+    /**
+     * set les seances etudiant
+     * @param seances
+     */
     public void setSeances(ArrayList<Seance> seances) {
         this.seances = seances;
     }
     
-    //Méthodes
+    /**
+     * ajouter une seance
+     * @param seance
+     */
     public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un étudiant
         this.seances.add(seance);
     }

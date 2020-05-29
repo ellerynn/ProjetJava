@@ -9,6 +9,28 @@
             <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/controleur/JFreeChartTest.java</file>
             <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/vue/EmploiDuTemps.java</file>
             <file>file:/C:/Users/ssuth/Desktop/project/ProjetJava/Planning/src/vue/OngletHome.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Seance.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Salle.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/CoursDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/UtilisateurDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/EnseignantDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Etudiant.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/SiteDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Promotion.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/PromotionDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Groupe.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/controleur/ConnexionBDD.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Site.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/TypeCours.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/SalleDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/TypeCoursDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/GroupeDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/DAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/SeanceDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Enseignant.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/dao/EtudiantDAO.java</file>
+            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/Cours.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/vue/OngletServicePlanification.java</file>
         </group>
     </open-files>
 </project-private>

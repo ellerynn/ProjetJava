@@ -1,8 +1,24 @@
 package vue;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class OngletGererSiteSP extends JPanel {
     //SP -> Gérer le site
     private JLabel ajouterSalleSP;
@@ -30,6 +46,9 @@ public class OngletGererSiteSP extends JPanel {
     private JButton validerSalleSP;
     private JButton validerSiteSP;
     
+    /**
+     * constructeur
+     */
     public OngletGererSiteSP() {
         paneSitesSP = new JPanel();
         siteSalleSP = new JLabel("Sites et salles :");
@@ -204,6 +223,10 @@ public class OngletGererSiteSP extends JPanel {
         );
     }
     
+    /**
+     *
+     * @param liste
+     */
     public void remplirListe(JList liste) {
         Vector<String> listData = new Vector();
         for(int i=1;i<101;i++)

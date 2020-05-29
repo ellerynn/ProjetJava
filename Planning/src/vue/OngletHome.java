@@ -1,17 +1,33 @@
 package vue;
 
-//https://codes-sources.commentcamarche.net/forum/affich-659587-date-formatee-jj-mm-aaaa-dans-jspinner
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.text.DateFormat;
-import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerDateModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
+/**
+ * https://codes-sources.commentcamarche.net/forum/affich-659587-date-formatee-jj-mm-aaaa-dans-jspinner
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class OngletHome extends JSplitPane {
     //Variables onglet Home                     
     private JSpinner date;
@@ -21,6 +37,9 @@ public class OngletHome extends JSplitPane {
     private TableLabelRendererPanel p;
     private JButton deconnexion;
     
+    /**
+     * constructeur
+     */
     public OngletHome() {
         date = new JSpinner();
         linkCours = new JButton(); //Bouton
@@ -101,28 +120,49 @@ public class OngletHome extends JSplitPane {
         this.setRightComponent(container2);
     }
     
-    
-    //Getter    
+    /**
+     * retourne le bouton-lien dans Home vers l'edt par semaine dans Cours
+     * @return
+     */
     public JButton getBouton() {
         return linkCours; //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
     }
     
+    /**
+     * retourne le bouton de déconnexion dans Home
+     * @return
+     */
     public JButton getBoutonDeco() {
         return deconnexion;
     }
     
+    /**
+     * retourne le JSpinner contenant la date dans l'onglet Home
+     * @return
+     */
     public JSpinner getDateHome() {
         return date;
     }
     
+    /**
+     * retourne le Jtable contenant l'edt sur un jour dans l'onglet Home
+     * @return
+     */
     public JTable getTabCoursHome() {
         return tabEdt;
     }
     
+    /**
+     *
+     * @return
+     */
     public JButton getBoutonGraphe() {
         return boutonGraphe;
     }
     
+    /**
+     * mise à jour de l'entête et de la première colonne de l'edt dans l'onglet Home
+     */
     public void setEdt() {
         tabEdt.setModel(new DefaultTableModel(new Object [][] { {"08h00"},{"08h15"},{"08h30"},{"08h45"}, 
                                                                 {"09h00"},{"09h15"},{"09h30"},{"09h45"}, 

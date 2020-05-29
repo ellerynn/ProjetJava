@@ -1,13 +1,13 @@
 package modele;
 
-import java.util.*;
+import java.util.ArrayList;
 
-/*SEANCE (ID, SEMAINE, DATE, HEURE_DEBUT, HEURE_FIN, ETAT, #ID_COURS, #ID_TYPE) 
-Remarques : l’attribut SEMAINE indique le numéro de semaine dans une année civile. 
-L’attribut ETAT indique si la séance est en cours de validation, validée ou annulée : cet attribut pourra être 
-représenté par un numéro identifiant l’état de la séance.
-*/
-
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class Seance {
     private int id;
     private int semaine;
@@ -21,10 +21,9 @@ public class Seance {
     private ArrayList<Groupe> groupes;
     private ArrayList<Salle> salles;
     
-    protected int id_seance;
-    protected int id_groupe;
-    
-    //Constructeur par défaut
+    /**
+     * constructeur
+     */
     public Seance() {
         id = 0;
         semaine = 0;
@@ -39,7 +38,16 @@ public class Seance {
         salles = new ArrayList<>();
     }
     
-    //Constructeur
+    /**
+     * constructeur
+     * @param semaine
+     * @param heure_debut
+     * @param heure_fin
+     * @param date
+     * @param etat
+     * @param cours
+     * @param type
+     */
     public Seance(int semaine, String heure_debut, String heure_fin, String date, int etat, Cours cours, TypeCours type) {
         //Un administrateur peut créer un nouveau groupe
         this.semaine = semaine;
@@ -54,125 +62,210 @@ public class Seance {
         salles = new ArrayList<>();
     }
     
-    //Getters
+    /**
+     * retourne id seance
+     * @return
+     */
     public int getId() {
         return id;
     }
     
+    /**
+     * retourne semaine seance
+     * @return
+     */
     public int getSemaine() {
         return semaine;
     }
     
+    /**
+     * retourne heure debut de seance
+     * @return
+     */
     public String getHeureDebut() {
         return heure_debut;
     }
     
+    /**
+     * retourne heure fin de seance
+     * @return
+     */
     public String getHeureFin() {
         return heure_fin;
     }
     
+    /**
+     * retourne date seance
+     * @return
+     */
     public String getDate() {
         return date;
     }
     
+    /**
+     * retourne etat seance
+     * @return
+     */
     public int getEtat() {
         return etat;
     }
     
+    /**
+     * retourne cours seance
+     * @return
+     */
     public Cours getCours() {
         return cours;
     }
     
+    /**
+     * retourne type cours seance
+     * @return
+     */
     public TypeCours getTypeCours() {
         return type;
     }
     
-    public int getId_seance() {
-        return id_seance;
-    }
-    
-    public int getId_groupe() {
-        return id_groupe;
-    }
-    
+    /**
+     * retourne enseignants seance
+     * @return
+     */
     public ArrayList<Enseignant> getEnseignants() {
         return enseignants;
     }
     
+    /**
+     * retourne salles seance
+     * @return
+     */
     public ArrayList<Salle> getSalles() {
         return salles;
     }
     
+    /**
+     * retourne groupes seance
+     * @return
+     */
     public ArrayList<Groupe> getGroupes() {
         return groupes;
     }
     
-    //Setters [en cours]
+    /**
+     * set id seance
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
-    
-    public void setId_seance(int id) {
-        this.id_seance = id;
-    }
-    
-    public void setId_groupe(int id) {
-        this.id_groupe = id;
-    }
-    
+        
+    /**
+     * set semaine seance
+     * @param semaine
+     */
     public void setSemaine(int semaine) {
         this.semaine = semaine;
     }
     
+    /**
+     * set heure debut seance
+     * @param heure_debut
+     */
     public void setHeureDebut(String heure_debut) {
         this.heure_debut = heure_debut;
     }
     
+    /**
+     * set heure fin seance
+     * @param heure_fin
+     */
     public void setHeureFin(String heure_fin) {
         this.heure_fin = heure_fin;
     }
     
+    /**
+     * set date seance
+     * @param date
+     */
     public void setDate(String date) {
         this.date = date;
     }
     
+    /**
+     * set etat seance
+     * @param etat
+     */
     public void setEtat(int etat) {
         this.etat = etat;
     }
     
+    /**
+     * set cours seance
+     * @param cours
+     */
     public void setCours(Cours cours) {
         this.cours = cours;
     }
     
+    /**
+     * set type cours seance
+     * @param type
+     */
     public void setTypeCours(TypeCours type) {
         this.type = type;
     }
     
+    /**
+     * set enseignants seance
+     * @param enseignants
+     */
     public void setEnseignants(ArrayList<Enseignant> enseignants) {
         this.enseignants = enseignants;
     }
     
+    /**
+     * set groupes seance
+     * @param groupes
+     */
     public void setGroupes(ArrayList<Groupe> groupes) {
         this.groupes = groupes;
     }
     
+    /**
+     * set salles seances
+     * @param salles
+     */
     public void setSalles(ArrayList<Salle> salles) {
         this.salles = salles;
     }
     
-    //Méthodes
+    /**
+     * ajouter enseignant
+     * @param enseignant
+     */
     public void ajouterEnseignant(Enseignant enseignant) { //Un admin peut ajouter une séance à un enseignant
         this.enseignants.add(enseignant);
     }
     
+    /**
+     * ajouter groupe
+     * @param groupe
+     */
     public void ajouterGroupe(Groupe groupe) { //Un admin peut ajouter une séance à un groupe
         this.groupes.add(groupe);
     }
     
+    /**
+     * ajouer salle
+     * @param salle
+     */
     public void ajouterSalle(Salle salle) { //Un admin peut ajouter une séance à une salle
         this.salles.add(salle);
     }
     
+    /**
+     * calcul durée d'une seance
+     * @return
+     */
     public String calculDuree()
     {
         String duree = new String();
@@ -200,6 +293,11 @@ public class Seance {
         return duree;
     }
     
+    /**
+     * ajuster heure seance
+     * @param duree
+     * @return
+     */
     public String orderingHour(String duree)
     {
         int pos = duree.indexOf('h'); //Première occurence de la lettre h
@@ -223,30 +321,48 @@ public class Seance {
         duree = heure+"h"+minute;
         return duree;
     }
+
+    /**
+     * verifie si un groupe est dans la seance
+     * @param id
+     * @return
+     */
     public boolean isThisGroupInThisSeance(int id)
     {
         for (int i = 0 ; i < groupes.size(); i++)
         {
             if(groupes.get(i).getId() == id)
             {
-                i = 100;
+                i = 100; //???
                 return true;
             }
         }
         return false;
     }
+
+    /**
+     * verifie si prof dans seance
+     * @param id
+     * @return
+     */
     public boolean isThisTeacherInThisSeance(int id)
     {
         for (int i = 0 ; i < enseignants.size(); i++)
         {
             if(enseignants.get(i).getId() == id)
             {
-                i = 100;
+                i = 100; //???
                 return true;
             }
         }
         return false;
     }
+
+    /**
+     * verifie si salle dans seance
+     * @param id
+     * @return
+     */
     public boolean isThisRoomInThisSeance(int id)
     {
         for (int i = 0 ; i < salles.size(); i++)
@@ -259,6 +375,11 @@ public class Seance {
         }
         return false;
     }
+
+    /**
+     * retourne capacite salles
+     * @return
+     */
     public int placeInTotal()
     {
         int var = 0;
@@ -269,8 +390,11 @@ public class Seance {
         return var;
     }
     
+    /**
+     * ???
+     * @return
+     */
     @Override
-    //CETTE METHODE NE SERA PEUT ETRE PAS UTILISEE
     public String toString() {
         String str1 = new String(); //Enseignants
         for(int i=0;i<enseignants.size();i++) {
@@ -310,6 +434,10 @@ public class Seance {
         return seance;
     }
     
+    /**
+     * retourne string des seances
+     * @return
+     */
     public ArrayList<String> toArrayListOfString() {      
         ArrayList<String> seance = new ArrayList<>();
         

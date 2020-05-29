@@ -1,16 +1,33 @@
 package vue;
 
-//https://bbclone.developpez.com/fr/java/tutoriels/uiswing/gridbaglayout/?page=page_2
-
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Vector;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
+/**
+ * https://bbclone.developpez.com/fr/java/tutoriels/uiswing/gridbaglayout/?page=page_2
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class OngletGererCoursSP extends JSplitPane {
     //Ajouter une seance
     private JList<String> listeSeances;
@@ -42,6 +59,9 @@ public class OngletGererCoursSP extends JSplitPane {
     private JComboBox<String> selectCours3;
     private JButton supprimer;
     
+    /**
+     * constructeur
+     */
     public OngletGererCoursSP() {
         listeSeances = new JList<>();
         date = new JSpinner();
@@ -305,6 +325,144 @@ public class OngletGererCoursSP extends JSplitPane {
         
     }
     
+    /**
+     * 
+     * @return
+     */
+    public JComboBox getSelectType() {
+        return this.selectType;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JComboBox getSelectType2() {
+        return this.selectType2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JComboBox getSelectCours() {
+        return this.selectCours;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JComboBox getSelectCours2() {
+        return this.selectCours2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSalles() {
+        return this.listeSalles;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSalles2() {
+        return this.listeSalles2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeGroupes(){
+        return this.listeGroupes;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeGroupes2(){
+        return this.listeGroupes2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeEnseignants(){
+        return this.listeEnseignants;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeEnseignants2(){
+        return this.listeEnseignants2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSeances(){
+        return this.listeSeances;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSeances2(){
+        return this.listeSeances2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JButton getBtnValider(){
+        return this.valider;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JButton getBtnValider2(){
+        return this.valider2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JButton getBtnValider3(){
+        return this.valider3;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getDate() {
+        String temp = String.valueOf(date.getValue()).substring(11, 19); //On récup l'heure
+        String jour=DateFormat.getDateInstance(3).format(date.getValue()).substring(0,2); //On recup le jour
+        String mois=DateFormat.getDateInstance(3).format(date.getValue()).substring(3,5); //On recup le mois
+        String annee = DateFormat.getDateInstance(2).format(date.getValue()).substring(8); //On récup l'année en yyyy
+        
+        temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
+        return temp;
+    }
+    
+    /**
+     * 
+     * @param liste
+     */
     public void remplirListe(JList liste) {
         Vector<String> listData = new Vector();
         for(int i=1;i<101;i++)
@@ -312,6 +470,12 @@ public class OngletGererCoursSP extends JSplitPane {
         liste.setListData(listData);
     }
     
+    /**
+     * rempli une JComboBox avec un objet
+     * @param box
+     * @param intitule
+     * @param objet
+     */
     public void remplirComboBox(JComboBox box, String intitule, Object objet) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
         for(int i = 1; i < 200; i++) {
@@ -319,6 +483,10 @@ public class OngletGererCoursSP extends JSplitPane {
         }
     }
     
+    /**
+     *
+     * @param box
+     */
     public void remplirComboBoxType(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[] { "Veuillez sélectionner", 
                                                                "Magistral", 
@@ -331,81 +499,47 @@ public class OngletGererCoursSP extends JSplitPane {
                                                                "Partiel", 
                                                                "Rattrapage" }));
     }
-    /***Données Service Planif****/
+    
+    /**
+     * ???????????????????????????
+     * @param box
+     * @param intitule
+     * @param string
+    */
     public void remplirComboBoxType(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
         for(int i = 0; i < string.size(); i++) {
             box.addItem(string.get(i));
         }
     }
+
+    /**
+     * rempli une liste avec un ArrayList de String
+     * @param liste
+     * @param string
+     */
     public void remplirListe(JList liste, ArrayList<String> string) {
         Vector<String> listData = new Vector();
         for(String s : string)
             listData.add(s);
         liste.setListData(listData);
     }
-    
-    public JComboBox getSelectType() {
-        return this.selectType;
-    }
-    public JComboBox getSelectType2() {
-        return this.selectType2;
-    }
-    public JComboBox getSelectCours() {
-        return this.selectCours;
-    }
-    public JComboBox getSelectCours2() {
-        return this.selectCours2;
-    }
-    public JList getListeSalles() {
-        return this.listeSalles;
-    }
-    public JList getListeSalles2() {
-        return this.listeSalles2;
-    }
-    public JList getListeGroupes(){
-        return this.listeGroupes;
-    }
-    public JList getListeGroupes2(){
-        return this.listeGroupes2;
-    }
-    public JList getListeEnseignants(){
-        return this.listeEnseignants;
-    }
-    public JList getListeEnseignants2(){
-        return this.listeEnseignants2;
-    }
-    public JList getListeSeances(){
-        return this.listeSeances;
-    }
-    public JList getListeSeances2(){
-        return this.listeSeances2;
-    }
-    public JButton getBtnValider(){
-        return this.valider;
-    }
-    public JButton getBtnValider2(){
-        return this.valider2;
-    }
-    public JButton getBtnValider3(){
-        return this.valider3;
-    }
-    public String getDate() {
-        String temp = String.valueOf(date.getValue()).substring(11, 19); //On récup l'heure
-        String jour=DateFormat.getDateInstance(3).format(date.getValue()).substring(0,2); //On recup le jour
-        String mois=DateFormat.getDateInstance(3).format(date.getValue()).substring(3,5); //On recup le mois
-        String annee = DateFormat.getDateInstance(2).format(date.getValue()).substring(8); //On récup l'année en yyyy
-        
-        temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
-        return temp;
-    }
+
+    /**
+     *
+     * @return
+     */
     public JRadioButton getEtatEC()
     {
         return etatEC;
     }
+
+    /**
+     *
+     * @return
+     */
     public JRadioButton getEtatV()
     {
         return etatV;
     }
-    /***Fin donnée SP*****/
 }

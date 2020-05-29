@@ -4,10 +4,27 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.util.Calendar;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class OngletSalles extends JTabbedPane {
     //Onglet Salles
     //Salles -> Emploi du temps
@@ -20,13 +37,16 @@ public class OngletSalles extends JTabbedPane {
     //Salles -> Salles libres
     private JTable tabLibres;
     
+    /**
+     * constructeur
+     */
     public OngletSalles() {
         //Cours -> Emploi du temps
-        vueEdt = new JComboBox<String>();
+        vueEdt = new JComboBox<>();
         rechercheBarre = new JTextField();
         rechercheBouton = new JButton();
-        selectRecherche = new JComboBox<String>();
-        semaine = new JComboBox<String>();
+        selectRecherche = new JComboBox<>();
+        semaine = new JComboBox<>();
         tabEdt = new JTable();
         //Cours -> Récapitulatifs des cours
         tabLibres = new JTable();
@@ -104,11 +124,18 @@ public class OngletSalles extends JTabbedPane {
         this.add("Salles libres", libres);
     }
     
-    //Getters
+    /**
+     *
+     * @return
+     */
     public JComboBox getSemaine() {
         return this.semaine;
     }
     
+    /**
+     * rempli les JComboBox avec les numeros de semaines sur une année
+     * @param box
+     */
     public void remplirComboBoxSemaine(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{"Semaine"})); 
         for(int i = 1; i < 54; i++) {
@@ -116,6 +143,12 @@ public class OngletSalles extends JTabbedPane {
         }
     }
     
+    /**
+     * rempli un JComboBox avec un objet
+     * @param box
+     * @param intitule
+     * @param objet
+     */
     public void remplirComboBox(JComboBox box, String intitule, Object objet) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
         for(int i = 1; i < 200; i++) {
@@ -123,6 +156,10 @@ public class OngletSalles extends JTabbedPane {
         }
     }
     
+    /**
+     * mise à jour des entêtes de l'emploi du temps (dates) selon la semaine
+     * @param semaine
+     */
     public void setEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
         Calendar cal = Calendar.getInstance(); //Date du jour
@@ -212,6 +249,11 @@ public class OngletSalles extends JTabbedPane {
         tabEdt.getColumnModel().getColumn(0).setCellRenderer(custom);
     }    
     
+    /**
+     * retourne true si une année est bissextile
+     * @param annee
+     * @return
+     */
     public Boolean anneeBissextile(int annee) {
         if(annee%4 == 0) { 
             if(annee%100 == 0) { 
@@ -226,6 +268,10 @@ public class OngletSalles extends JTabbedPane {
         return false;
     }
     
+    /**
+     * calcul de l'année scolaire en cours
+     * @return
+     */
     public int calculAnneeScolaire() {
         Calendar cal = Calendar.getInstance();
         int annee;

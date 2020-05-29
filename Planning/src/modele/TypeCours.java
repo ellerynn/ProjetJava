@@ -1,36 +1,61 @@
 package modele;
 
-/*TYPE_COURS (ID, NOM)*/
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
+
 
 public class TypeCours {
     private int id;
     private String nom;
     
-    //Constructeur par défaut
+    /**
+     * constructeur 
+     */
     public TypeCours() {
         id = 0;
         nom = new String();
     }
     
-    //Constructeur
+    /**
+     * constructeur
+     * @param nom
+     */
     public TypeCours (String nom) {
         this.nom = nom;
     }
     
-    //Getters
+    /**
+     * retourne l'id d'un type de cours
+     * @return
+     */
     public int getId() {
         return id;
     }
     
+    /**
+     * retourne le nom d'un type de cours
+     * @return
+     */
     public String getNom() {
         return nom;
     }
     
-    //Setters
+    /**
+     * set l'id d'un type de cours
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
     
+    /**
+     * set le nom d'un type de cours
+     * @param nom
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }

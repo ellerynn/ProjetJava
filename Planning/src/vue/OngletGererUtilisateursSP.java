@@ -1,8 +1,26 @@
 package vue;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.Vector;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class OngletGererUtilisateursSP extends JScrollPane {
     private JLabel ajouterTextSP;
     private JButton boutonSupp;
@@ -49,6 +67,9 @@ public class OngletGererUtilisateursSP extends JScrollPane {
     private JComboBox<String> selectionnerGroupeSP;
     private JComboBox<String> selectionnerPromoSP;
     
+    /**
+     * constructeur
+     */
     public OngletGererUtilisateursSP() {
         groupeDroitSP = new ButtonGroup();
         groupeDroitModifSP = new ButtonGroup();
@@ -351,6 +372,10 @@ public class OngletGererUtilisateursSP extends JScrollPane {
         this.setViewportView(containerSP);
     }
     
+    /**
+     * rempli une liste 
+     * @param liste
+     */
     public void remplirListe(JList liste) {
         Vector<String> listData = new Vector();
         for(int i=1;i<101;i++)
@@ -358,23 +383,16 @@ public class OngletGererUtilisateursSP extends JScrollPane {
         liste.setListData(listData);
     }
     
+    /**
+     * remplir une JComboBox avec un objet
+     * @param box
+     * @param intitule
+     * @param objet
+     */
     public void remplirComboBox(JComboBox box, String intitule, Object objet) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
         for(int i = 1; i < 200; i++) {
             box.addItem(objet.toString());
         }
-    }
-    
-    public void remplirComboBoxType(JComboBox box) {
-        box.setModel(new DefaultComboBoxModel<>(new String[] { "Veuillez sélectionner", 
-                                                               "Magistral", 
-                                                               "TP", 
-                                                               "TD", 
-                                                               "Interactif", 
-                                                               "Projet", 
-                                                               "Soutien", 
-                                                               "DS", 
-                                                               "Partiel", 
-                                                               "Rattrapage" }));
     }
 }

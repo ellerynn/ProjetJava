@@ -1,12 +1,24 @@
 package dao;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import modele.Promotion;
 import java.util.ArrayList;
 
-
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class PromotionDAO extends DAO<Promotion> {
-    //CREATE
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Promotion create(Promotion object) {
         try{
@@ -31,13 +43,21 @@ public class PromotionDAO extends DAO<Promotion> {
         return object;
     }
 
-    //DELETE
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Promotion object) {
         return false;
     }
     
-    //UPDATE
+    /**
+     * upadte
+     * @param object
+     * @return
+     */
     @Override
     public Promotion update(Promotion object) {
         try {
@@ -58,8 +78,12 @@ public class PromotionDAO extends DAO<Promotion> {
         return object;
     }
 
-    //FIND
-    //Trouver promo via id
+    /**
+     * find
+     * trouver promo via id
+     * @param id
+     * @return
+     */
     @Override
     public Promotion find(int id) {
         Promotion promotion = new Promotion();      
@@ -84,7 +108,11 @@ public class PromotionDAO extends DAO<Promotion> {
         return promotion;
       }
     
-    //Trouver promo via nom
+    /**
+     * trouver promo via nom
+     * @param promo
+     * @return
+     */
     public Promotion findByName(String promo) {
         Promotion promotion = new Promotion();      
 
@@ -108,8 +136,11 @@ public class PromotionDAO extends DAO<Promotion> {
         return promotion;
     }
     
-    //Trouver toutes les promo 
-    //Pour admin
+    /**
+     * trouver toutes les promo
+     * pour l'admin
+     * @return
+     */
     public ArrayList<Promotion> findAllPromo()
     {
         ArrayList<Promotion> promos = new ArrayList<>();

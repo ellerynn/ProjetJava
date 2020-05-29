@@ -1,16 +1,20 @@
-/*SOURCES :
-*http://www.codeurjava.com/2015/05/comment-dimensionner-fenetre-selon-ecran.html
-*https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/23108-creez-votre-premiere-fenetre
-*/
-
 package vue;
 
 import controleur.Controle;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.DateFormat;
-import java.util.*;
-import javax.swing.*; 
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -20,7 +24,13 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
-//La classe Fenetre correspond a toute l'interface graphique contenant la page de connexion et le planning (+gestion)
+/**
+ *http://www.codeurjava.com/2015/05/comment-dimensionner-fenetre-selon-ecran.html
+ *https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/23108-creez-votre-premiere-fenetre
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class Fenetre extends JFrame {  
     /*Attributs*/
     private FormConnexion connexion; //Page de connexion de l'utilisateur
@@ -29,6 +39,10 @@ public class Fenetre extends JFrame {
     private JPanel content; //Contenu actif du CL
     private Controle controle; //Lien avec le controle -> Controle recup BDD via modele et envoie instructions ici
 
+    /**
+     *
+     * @param controle
+     */
     public Fenetre(Controle controle) {
         this.controle = controle;
         this.connexion = new FormConnexion();
@@ -42,30 +56,41 @@ public class Fenetre extends JFrame {
         connexion.setEmailPassWord("admin@gmail.com", "admin");
     }
     
-    //Getters
-    //Onglet EDT
+    /**
+     * retourne l'onglet Emploi du temps
+     * @return
+     */
     public EmploiDuTemps getEdt() { 
         return this.edt;
     }
     
-    //Tableau contenant l'emploi du temps sur une semaine
+    /**
+     * retourne le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
+     * @return
+     */
     public JTable getEdtCours() {
         return edt.getEdtCours(); 
     }
     
-    //Tableau contenant la liste de seances sur une annee scolaire
+    /**
+     * retourne le tableau contenant la liste de seances sur une annee scolaire
+     * @return
+     */
     public JTable getRecapCours() {
         return edt.getRecapCours();
     }
     
-    //Onglet Home
-    //Tableau contenant l'emploi du temps sur une journée 
+    /**
+     * retourn le tableau contenant l'emploi du temps sur une journée dans l'onglet Home
+     * @return
+     */
     public JTable getEdtHome() {
         return edt.getEdtHome();
     }
     
-    //Méthodes
-    //Initialisation du contenu de la frame (this)
+    /**
+     * initialisation du contenu de la frame (this)
+     */
     public void initContent() {
         c = new CardLayout(); //CardLayout pour "superposer" plusieurs pages (conteneurs)
         content = new JPanel(); //Contenu actif du CardLayout
@@ -74,7 +99,9 @@ public class Fenetre extends JFrame {
         content.add(edt);
     }
     
-    //Initialisation dimensions, titre, etc de la frame (this)
+    /**
+     * initialisation dimensions, titre, etc de la frame (this)
+     */
     public void initFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); //Récupérer la taille de l'écran
         this.setSize(screenSize.width*2/3, screenSize.height*2/3); //Donne une taille en hauteur et largeur à la fenêtre -> 2/3 de l'écran       
@@ -84,12 +111,15 @@ public class Fenetre extends JFrame {
         this.getContentPane().add(content, BorderLayout.CENTER); //Affichage contenu actif
     }
     
-    //Initialisation des listeners communs a tous les profils
+    /**
+     * initialisation des listeners communs a tous les profils
+     */
     public void initListeners() {
         //Listeners
         //BOUTON CONNEXION
-        connexion.getBouton().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
-            connect(connexion.getEmail(), connexion.getPassword());     
+        connexion.getBouton().addActionListener((ActionEvent event) -> {
+            //Définition de l'action du bouton connexion
+            connect(connexion.getEmail(), connexion.getPassword());
         });
         
         //BOUTON DECONNEXION
@@ -160,7 +190,9 @@ public class Fenetre extends JFrame {
         });
     }
     
-    //Initialisation des listener SEULEMENT pour l'admin
+    /**
+     * initialisation des listener SEULEMENT pour l'admin
+     */
     public void initListenersForAdmin(){ 
     //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
     //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
@@ -190,8 +222,13 @@ public class Fenetre extends JFrame {
             }
         });
     }
-    //Connexion
-    //Si l'utilisateur a saisi son email et son mdp et que cela correspond à la BDD, on passe à la suite
+    
+    /**
+     * connexion
+     * si l'utilisateur a saisi son email et son mdp et que cela correspond à la BDD, on passe à la suite
+     * @param email
+     * @param password
+     */
     public void connect(String email, String password) {
         if(controle.demandeConnexion(email, password)) { 
             //Via cette instruction, on passe au prochain conteneur de la pile
@@ -207,7 +244,11 @@ public class Fenetre extends JFrame {
         }
     }
     
-    //Rempli la combobox avec les utilisateurs de la BDD
+    /**
+     * rempli la JComboBox avec les utilisateurs de la BDD
+     * @param email
+     * @param password
+     */
     public void remplirComboRecherche(String email, String password) {
         ArrayList<String> ttLeMonde = controle.allUsersToStrings();
         edt.setRechercheCours(ttLeMonde); 
@@ -216,13 +257,17 @@ public class Fenetre extends JFrame {
         edt.getRechercheCours().setSelectedItem(utilisateur);
     }
     
-    //Rempli la combobox avec les groupes de la BDD
+    /**
+     * rempli la combobox avec les groupes de la BDD
+     */
     public void remplirComboGroupes() {
         ArrayList<String> ttLesGroupes = controle.allGroupsToStrings();
         edt.setGroupesCours(ttLesGroupes); 
     }
     
-    //Remplissage des différents container de l'onglet Service Planification
+    /**
+     * remplissage des différents container de l'onglet Service Planification
+     */
     public void remplirDonneesAdmin() {
         if (controle.admin(connexion.getEmail(), connexion.getPassword())) { //Si c'est un admin
             remplirComboTypes();
@@ -237,43 +282,58 @@ public class Fenetre extends JFrame {
         }
     }
     
-    //Rempli la combobox avec les types de cours de la BDD
+    /**
+     * rempli la combobox avec les types de cours de la BDD
+     */
     public void remplirComboTypes(){
         ArrayList<String> ttLesTypes = controle.allTypeToStrings();
         edt.setTypes(ttLesTypes);
     }
     
-    //Rempli la combobox avec les cours de la BDD
+    /**
+     * rempli la combobox avec les cours de la BDD
+     */
     public void remplirComboCours(){
         ArrayList<String> ttLesCours = controle.allCoursToStrings();
         edt.setCours(ttLesCours);
     }
     
-    //Rempli la combobox avec les salles de la BDD
+    /**
+     * rempli la combobox avec les salles de la BDD
+     */
     public void remplirListSalles(){
         ArrayList<String> ttLesSalles = controle.allSallesToStrings();
         edt.setSalles(ttLesSalles);
     }
     
-    //Rempli la combobox avec les groupes de la BDD
+    /**
+     * rempli la combobox avec les groupes de la BDD
+     */
     public void remplirListGroupes(){//Je ne sais pas s'il y a myn de fusionner avec remplirComboGroupes
         ArrayList<String> ttLesGrps = controle.allGroupsToStrings();
         edt.setGroupes(ttLesGrps);
     }
     
-    //Rempli la combobox avec les enseignants de la BDD
+    /**
+     * rempli la combobox avec les enseignants de la BDD
+     */
     public void remplirListEnseignants(){
         ArrayList<String> ttLesEnseignants = controle.allEnseignantsToStrings();
         edt.setEnseignants(ttLesEnseignants);
     }
     
-    //Rempli la combobox avec les seances de la BDD
+    /**
+     * rempli la combobox avec les seances de la BDD
+     */
     public void remplirListSeances(){
         ArrayList<String> ttLesSeances = controle.allSeancesToStrings();
         edt.setSeances(ttLesSeances);
     }
     
-    //Calcul de l'année scolaire en cours
+    /**
+     * calcul de l'année scolaire en cours (retourne une string)
+     * @return
+     */
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
         int annee = Calendar.getInstance().get(Calendar.YEAR); //Année courante
         if(Calendar.getInstance().get(Calendar.MONTH)+1 >= 9 && Calendar.getInstance().get(Calendar.MONTH)+1 <= 12) //Entre septembre et décembre
@@ -281,7 +341,9 @@ public class Fenetre extends JFrame {
         return (annee-1) + "/" + annee;
     }
     
-    //Rend visible certaines composants selon le profil
+    /**
+     * rend visible certains composants selon le profil
+     */
     public void rendreVisible() {
         edt.getRechercheCours().setVisible(true);
         edt.getRechercheBarreCours().setVisible(true);
@@ -289,16 +351,21 @@ public class Fenetre extends JFrame {
         edt.getGroupesCours().setVisible(true);
     }
     
+    /**
+     * rend invisible certains composants selon le profil
+     */
     public void rendreInvisible() {
         edt.getRechercheCours().setVisible(false);
         edt.getRechercheBarreCours().setVisible(false);
         edt.getRechercheBoutonCours().setVisible(false);
         edt.getGroupesCours().setVisible(false);
     }
-    
-    //MAJ Edt de la personne contenue dans la JComboBox utilisateurs
-    //Par defaut utilisateur courant
-    //Un utilisateur ne peut pas le modifier sauf s'il est référent
+
+    /**
+     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
+     * par defaut utilisateur courant
+     * un utilisateur ne peut pas le modifier sauf s'il est référent
+     */
     public void majEdt() {
         String user = edt.getRechercheCours().getSelectedItem().toString();
         //System.out.println("\njcombobox " + edt.getRechercheCours().getSelectedItem().toString());
@@ -316,14 +383,18 @@ public class Fenetre extends JFrame {
         controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), prenom, nom);
     }
     
-    //MAJ Edt quand un referent cherche un groupe
+    /**
+     * MAJ Edt quand un referent cherche un groupe
+     */
     public void majEdtGroupe() {
         String recherche = edt.getGroupesCours().getSelectedItem().toString();
         if(recherche != "Groupes") 
             controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
     }
         
-    //MAJ Edt quand on change le jour dans Home
+    /**
+     * MAJ Edt quand on change le jour dans Home
+     */
     public void majEdtJour() {
         //Récup de la date du JSpinner
         String date = DateFormat.getDateInstance(1).format(edt.getDateHome().getValue()) ;
@@ -332,7 +403,9 @@ public class Fenetre extends JFrame {
         controle.seancesEdt(date, connexion.getEmail(), connexion.getPassword());
     }
     
-    //Recup semaine select puis maj edt Cours
+    /**
+     * recup semaine select puis maj edt Cours
+     */
     public void majEdtCoursParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineCours().getSelectedItem().toString();
@@ -348,7 +421,9 @@ public class Fenetre extends JFrame {
         }
     }
     
-    //Recup semaine select puis maj edt Salles
+    /**
+     * recup semaine select puis maj edt Salles
+     */
     public void majEdtSallesParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineSalles().getSelectedItem().toString();
@@ -359,7 +434,9 @@ public class Fenetre extends JFrame {
             edt.setEdtSalles(Integer.parseInt(semaine));
     }
     
-    //Recup semaine select puis maj edt pour un groupe (fonction référent)
+    /**
+     * recup semaine select puis maj edt pour un groupe (fonction référent)
+     */
     public void majEdtGroupeCoursParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineCours().getSelectedItem().toString();

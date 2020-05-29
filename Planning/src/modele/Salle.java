@@ -1,10 +1,14 @@
 package modele;
 
-import java.util.*;
+import java.util.ArrayList;
 
-/*SALLE (ID, NOM, CAPACITE, #ID_SITE) 
-Remarque : la salle indique sa capacité et le site, si l’école dispose de plusieurs sites
-*/
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
+
 
 public class Salle {
     private int id;
@@ -13,7 +17,9 @@ public class Salle {
     private Site site;
     private ArrayList<Seance> seances;
     
-    //Constructeur par défaut
+    /**
+     * constructeur
+     */
     public Salle() {
         id = 0;
         nom = new String();
@@ -21,12 +27,21 @@ public class Salle {
         site = new Site();
         seances = new ArrayList<>();
     }
-    //Méthodes
+
+    /**
+     * ajouter seance
+     * @param s
+     */
     public void addSeances(Seance s){
         seances.add(s);
     }
     
-    //Constructeur
+    /**
+     * cosntructeur
+     * @param nom
+     * @param capacite
+     * @param site
+     */
     public Salle(String nom, int capacite, Site site) {
         //Un administrateur peut créer une nouvelle salle
         this.nom = nom;
@@ -35,44 +50,82 @@ public class Salle {
         seances = new ArrayList<>();
     }
     
-    //Getters [en cours]
+    /**
+     * retourne id salle
+     * @return
+     */
     public int getId() {
         return id;
     }
     
+    /**
+     * retourne nom salle
+     * @return
+     */
     public String getNom() {
         return nom;
     }
     
+    /**
+     * retourne capacite salle
+     * @return
+     */
     public int getCapacite() {
         return capacite;
     }
     
+    /**
+     * retourne site salle
+     * @return
+     */
     public Site getSite() {
         return site;
     }
+
+    /** retourne seances salle
+     *
+     * @return
+     */
     public ArrayList<Seance> getSeances() {
         return seances;
     }
     
-    //Setters [en cours]
+    /**
+     * set id salle
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
     
+    /**
+     * set nom salle
+     * @param nom
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
     
+    /**
+     * set capacite salle
+     * @param capacite
+     */
     public void setCapacite(int capacite) {
         this.capacite = capacite;
     }
     
+    /**
+     * set site salle
+     * @param site
+     */
     public void setSite(Site site) {
         this.site = site;
     }
     
-    //Méthodes
+    /**
+     * ajouter seance
+     * @param seance
+     */
     public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à une salle
         this.seances.add(seance);
     }

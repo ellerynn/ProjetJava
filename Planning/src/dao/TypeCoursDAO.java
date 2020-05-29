@@ -1,12 +1,24 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.*;
-import modele.Site;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import modele.TypeCours;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class TypeCoursDAO extends DAO<TypeCours> {
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public TypeCours create(TypeCours object) {
         try{
@@ -31,11 +43,21 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         return object;
     }
 
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(TypeCours object) {
         return false;
     }
 
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public TypeCours update(TypeCours object) {
         try {
@@ -56,6 +78,12 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         return object;
     }
     
+    /**
+     * find
+     * trouver type cours via id
+     * @param id
+     * @return
+     */
     @Override
     public TypeCours find(int id) {
         TypeCours typecours = new TypeCours();      
@@ -80,8 +108,11 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         return typecours;
     }
     
-    //Trouver tous les types de cours
-    //Pour admin
+    /**
+     * trouver tous les types de cours
+     * pour l'admin
+     * @return
+     */
     public ArrayList<TypeCours> findAllTypes()
     {
         ArrayList<TypeCours> tcours = new ArrayList<>();

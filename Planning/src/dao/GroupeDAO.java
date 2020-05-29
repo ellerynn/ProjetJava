@@ -1,13 +1,25 @@
 package dao;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import modele.Groupe;
 import modele.Promotion;
 
-
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class GroupeDAO extends DAO<Groupe> {
-    //CREATE
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Groupe create(Groupe object) {
         try{
@@ -39,13 +51,21 @@ public class GroupeDAO extends DAO<Groupe> {
         return object;
     }
 
-    //DELETE
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Groupe object) {
         return false;
     }
     
-    //UPDATE
+    /**
+     * update
+     * @param object
+     * @return
+     */
     @Override
     public Groupe update(Groupe object) {
         try {
@@ -73,8 +93,12 @@ public class GroupeDAO extends DAO<Groupe> {
         return object;
     }
     
-    //FIND
-    //Trouver groupe via id
+    /**
+     * find
+     * trouver groupe via id
+     * @param id
+     * @return
+     */
     @Override
     public Groupe find(int id) {
         Groupe groupe = new Groupe();      
@@ -107,7 +131,11 @@ public class GroupeDAO extends DAO<Groupe> {
         return groupe;
     }
     
-    //Pour éviter duplicatat de code :)
+    /**
+     * pour éviter le duplicatat de code
+     * @param requete
+     * @param groupe
+     */
     public void requeteFind(String requete, Groupe groupe) {
         try {
             Statement st;
@@ -136,7 +164,12 @@ public class GroupeDAO extends DAO<Groupe> {
         }
     }
     
-    //Trouver groupe via nom du groupe et id promo
+    /**
+     * trouver groupe via nom du groupe et id promo
+     * @param groupe
+     * @param promo
+     * @return
+     */
     public Groupe findByNameAndPromo(String groupe, int promo) {
         Groupe g = new Groupe();      
         String maRequete = "SELECT * FROM groupe WHERE Nom = '" + groupe + "' AND ID_promotion = " + promo;
@@ -145,7 +178,10 @@ public class GroupeDAO extends DAO<Groupe> {
         return g;  
     }
     
-    //Trouver tous les groupes 
+    /**
+     * trouver tous les groupes 
+     * @return
+     */
     public ArrayList<Groupe> find() {
         ArrayList<Groupe> groupes = new ArrayList<>();
         Groupe group;

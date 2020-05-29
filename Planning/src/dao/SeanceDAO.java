@@ -1,12 +1,29 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import modele.*;
+import modele.Cours;
+import modele.Enseignant;
+import modele.Groupe;
+import modele.Salle;
+import modele.Seance;
+import modele.TypeCours;
 
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class SeanceDAO extends DAO<Seance> {
-    //CREATE
+    /**
+     * create
+     * @param object
+     * @return
+     */
     @Override
     public Seance create(Seance object) {
         try
@@ -86,20 +103,28 @@ public class SeanceDAO extends DAO<Seance> {
                 }
                 object = this.find(result.getInt("MAX(ID)")); //On récupère TOUT pour être sûr de n'avoir rien oublier
             }
-        } catch (SQLException e) 
-        {
+        } 
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return object;
     }
 
-    //DELETE
+    /**
+     * delete
+     * @param object
+     * @return
+     */
     @Override
     public boolean delete(Seance object) {
         return false;
     }
     
-    //UPDATE
+    /**
+     * upadte
+     * @param object
+     * @return
+     */
     @Override
     public Seance update(Seance object) {
         try {
@@ -144,8 +169,12 @@ public class SeanceDAO extends DAO<Seance> {
         return object;
     }
     
-    //FIND
-    //Trouver seance via id
+    /**
+     * find
+     * trouver seance via id
+     * @param id
+     * @return
+     */
     @Override
     public Seance find(int id) {
         Seance seance = new Seance();      
@@ -214,7 +243,12 @@ public class SeanceDAO extends DAO<Seance> {
         return seance;
     }
     
-    //Trouver seance via id de l'utilisateur et semaine
+    /**
+      trouver seance via id utilisateur et semaine
+     * @param id
+     * @param semaine
+     * @return
+     */
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
         
@@ -254,7 +288,14 @@ public class SeanceDAO extends DAO<Seance> {
         return listSeancesbyWeek;
     }
     
-    //Trouver seance via utilisateur et jour
+    /**
+     * trouver seance via utilisateur et jour
+     * @param id
+     * @param jour
+     * @param mois
+     * @param annee
+     * @return
+     */
     public ArrayList<Seance> findSeancesByUserAndDay(int id, int jour, int mois, int annee){
         ArrayList<Seance> listSeancesbyDay = new ArrayList<>();
         
@@ -307,7 +348,12 @@ public class SeanceDAO extends DAO<Seance> {
         return listSeancesbyDay;
     }
     
-    //Trouver seance via id du groupe et semaine
+    /**
+     * trouver seance via id groupe et semaine
+     * @param id
+     * @param semaine
+     * @return
+     */
     public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
     {
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
@@ -332,7 +378,12 @@ public class SeanceDAO extends DAO<Seance> {
         return listSeancesbyWeek;
     }
     
-    //Trouver seance via id promo et semaine
+    /**
+     * trouver seance via id promo et semaine
+     * @param id
+     * @param semaine
+     * @return
+     */
     public ArrayList<Seance> findSeancesByPromoAndWeek(int id, int semaine)
     {
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
@@ -358,7 +409,12 @@ public class SeanceDAO extends DAO<Seance> {
         return listSeancesbyWeek;
     }
     
-    //Trouver seance via id salle et semaine
+    /**
+     * trouver seance via id salle et semaine
+     * @param id
+     * @param semaine
+     * @return
+     */
     public ArrayList<Seance> findSeancesBySalle(int id, int semaine)
     {
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
@@ -384,7 +440,13 @@ public class SeanceDAO extends DAO<Seance> {
         return listSeancesbyWeek;
     }
        
-    //Récupère toutes les seances d'un utilisateur dans l'ordre
+    /**
+     * récupère toutes les seances d'un utilisateur dans l'ordre
+     * @param id
+     * @param debut
+     * @param fin
+     * @return
+     */
     public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
     {
         //Explication de cette array d'array:
@@ -454,7 +516,13 @@ public class SeanceDAO extends DAO<Seance> {
         return seancesOrdered;
     }
     
-    //Renvoie un array liste avec que les séances d'une matière avec les mêmes Groupes
+    /**
+     * renvoie un array liste avec que les séances d'une matière avec les mêmes Groupes
+     * @param fourreTout
+     * @param indice
+     * @param toCompare
+     * @return
+     */
     public ArrayList<Seance> rec1 (ArrayList<Seance> fourreTout, int indice, ArrayList<Object> toCompare)
     {
         ArrayList<Seance> identique = new ArrayList<>();
@@ -462,6 +530,13 @@ public class SeanceDAO extends DAO<Seance> {
         return identique;
     }
     
+    /**
+     *
+     * @param fourreTout
+     * @param identique
+     * @param indice
+     * @param toCompare
+     */
     public void rec2 (ArrayList<Seance> fourreTout ,ArrayList<Seance> identique, int indice, ArrayList<Object> toCompare)
     {
         if (indice < fourreTout.size()) //Si pas encore vers la fin
@@ -506,6 +581,11 @@ public class SeanceDAO extends DAO<Seance> {
         }
     }
     
+    /**
+     *
+     * @param liste
+     * @return
+     */
     public String heureTotalSeances(ArrayList<Seance> liste)
     {
         int heureDebut = 0;
@@ -534,8 +614,11 @@ public class SeanceDAO extends DAO<Seance> {
         return heureTotal;
     }
     
-    //Trouver toutes les seances
-    //Pour admin
+    /**
+     * trouver toutes les seances
+     * pour admin
+     * @return
+     */
     public ArrayList<Seance> findAllSeances()
     {
         ArrayList<Seance> seances = new ArrayList<>();
@@ -552,9 +635,12 @@ public class SeanceDAO extends DAO<Seance> {
         return seances;
     }
     
-    /*************************************A RANGER*********************************************/
-        //METHODE N°4 Vérifie si le prof qu'on veut add est dispo et non en doublon
-    //Use pour MAJ 6 AjouterSeance, 7 AjouterEnseignantSeance
+    /**
+     * vérifie si le prof qu'on veut add est dispo et non en doublon
+     * @param seance
+     * @param id_enseignant
+     * @return 
+     */
     public boolean canIAjouterEnseignantSeance(Seance seance, int id_enseignant) {
         boolean youCan = false;
         SeanceDAO sDAO = new SeanceDAO();
@@ -565,13 +651,19 @@ public class SeanceDAO extends DAO<Seance> {
                     youCan = true;
                     System.out.println("Possible d'add cet enseignant ! ");
             }         
-        }else{
+        }
+        else {
             System.out.println("Cet enseignant est déjà dans cet séance");
         }
         return youCan;
     }
-    //METHODE N°5 vérifie si la salle a add est dispo et non doublon
-    //POUR MAJ N°4 AJOUT SALLE A UNE SEANCE (EN PLUS), MODULE MAJ N°6 AJOUTER UNE SEANCE
+
+    /**
+     * vérifie si la salle a add est dispo et non doublon
+     * @param seance
+     * @param id_salle
+     * @return
+     */
     public boolean canIAjouterSalleSeance(Seance seance, int id_salle) {
         boolean youCan = false;
         SeanceDAO sDAO = new SeanceDAO();
@@ -588,8 +680,13 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return youCan;
     }
-    //METHODE N°6 vérifie si on peut add un groupe (dispo/non doublon/capa)
-    //POUR MODULE MAJ N°6 AJOUTER UNE SEANCE, MODULE MAJ N°8  AJOUT D'UN GROUPE A UNE SEANCE
+
+    /**
+     * vérifie si on peut add un groupe (dispo/non doublon/capa)
+     * @param seance
+     * @param id_groupe
+     * @return
+     */
     public boolean canIAjoutGroupeSeance(Seance seance, int id_groupe) {
         boolean youCan = false;
         SeanceDAO sDAO = new SeanceDAO();
@@ -615,12 +712,13 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return youCan;
     }
-    
-/*
-    * isGroupNotFreeForThisSeance METHODE BOOLEAN QUI RETURN TRUE SI UN GROUPE A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
-    * METHODE BLINDAGE CRENEAU POUR GROUPE
-    * METHODE N°13 POUR METHODE N°6 Bool AJOUT D'UN GROUPE A UNE SEANCE, MODULE MAJ N°2  AFFECTER UN GROUPE A UNE SEANCE, MAJ n°5 DEPLACER SEANCE
-*/
+ 
+    /**
+     * retourne true si un groupe a deja une seance prevue
+     * @param id_groupe
+     * @param seance
+     * @return
+     */
     public Boolean isGroupNotFreeForThisSeance (int id_groupe, Seance seance ){
         try
         {
@@ -642,11 +740,13 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return false;
     }
- /*
-    * isTeacherNotFreeForThisSeance METHODE BOOLEAN QUI RETURN TRUE SI UN ENSEIGNANT A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
-    * METHODE BLINDAGE CRENEAU POUR ENSEIGNANT
-    * METHODE N°14 POUR MODULE MAJ N°1 AFFECTER UN ENSEIGNANT A UNE SEANCE, MODULE MAJ N°5 Deplacer A UNE SEANCE, METHODE 4 canIAjouterEnseignantSeance
-*/
+ 
+    /**
+     * retourne true si un enseignant a deja une seance prevue
+     * @param id_enseignant
+     * @param seance
+     * @return
+     */
     public Boolean isTeacherNotFreeForThisSeance (int id_enseignant, Seance seance ){
         try
         {
@@ -668,11 +768,13 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return false;
     }
-/*
-    * isSalleNotFreeForThisSeance METHODE BOOLEAN QUI RETURN TRUE SI UNE SALLE A DEJA UNE SEANCE DE PREVU SUR L'HORAIRE DE LA SEANCE QU'IL VOULAIT AJOUTER
-    * METHODE BLINDAGE CRENEAU POUR SALLE
-    * METHODE N°15 POUR MODULE MAJ N°4 AFFECTER UNE SALLE A UNE SEANCE,MODULE MAJ N°5 Deplacer A UNE SEANCE, Methode N°5 canIAjouterSalleSeance
-*/
+
+    /**
+     * retourne true si une salle a deja une seance prevue
+     * @param id_salle
+     * @param seance
+     * @return
+     */
     public Boolean isSalleNotFreeForThisSeance (int id_salle, Seance seance ){
         try
         {
@@ -694,11 +796,14 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return false;
     }
-/*
-    * FIND_CAPACITE_GROUPE_TOTAL METHODE INT QUI PERMET DE RECUPER LA CAPACITE TOTAL D'ELEVES DANS LES GROUPES QUI SERONT PRESENT DANS LA SEANCE
-    * METHODE BLINDAGE CAPCAITE GROUPE
-    * METHODE N°16 POUR MODULE MAJ N°8, 2  AJOUT D'UN GROUPE A UNE SEANCE
-*/
+
+    /**
+     * ?????
+     * @param id_groupe
+     * @param id_seance
+     * @return
+     */
+
     public int find_capacite_groupes_total(int id_groupe, int id_seance ){
         int cap = 0;
         try
@@ -718,12 +823,13 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return cap;
     }
-    
-    /*
-    * INSERTINJONCTION METHODE QUI PERMET D'AJOUTER UN ENSEIGNANT, UN GROUPE OU UN SALLE RESPECTIVEMENT DANS LES TABLES
-    * SEANCE_ENSEIGNANTS, SEANCE_GROUPES OU SEANCE_SALLES
-    * METHODE N°18 
-    */
+
+    /**
+     * ajouter un enesignant/groupe/salle
+     * @param idSeance
+     * @param idAutre
+     * @param table
+     */
     public void insertInJonction(int idSeance, int idAutre, int table)
     {
         try{
@@ -775,12 +881,13 @@ public class SeanceDAO extends DAO<Seance> {
             System.out.println("pas trouvé");
         }
     }
-
-    /*
-    *DELETEINJONCTION METHODE QUI PERMET DE SUPPRIMER UN ENSEIGNANT, UN GROUPE OU UN SALLE RESPECTIVEMENT DANS LES TABLES
-    * SEANCE_ENSEIGNANTS, SEANCE_GROUPES OU SEANCE_SALLES
-    * METHODE N°20
-    */
+    
+    /**
+     * supprimer un enseignant/groupe/salle
+     * @param idSeance
+     * @param idAutre
+     * @param table
+     */
     public void DeleteInJonction(int idSeance, int idAutre, int table)
     {
         try{

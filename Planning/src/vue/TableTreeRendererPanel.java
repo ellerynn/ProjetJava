@@ -1,12 +1,21 @@
-//https://coderanch.com/t/614645/java/adding-components-cell-jtable
-
 package vue;
 
-import javax.swing.*;
- 
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+/**
+ * https://coderanch.com/t/614645/java/adding-components-cell-jtable
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class TableTreeRendererPanel extends JScrollPane {   
     private TreeRenderer renderer;
     
+    /**
+     * constructeur
+     * @param table
+     */
     public TableTreeRendererPanel(JTable table)
     {
         this.setViewportView(table);

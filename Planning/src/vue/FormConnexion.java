@@ -1,16 +1,30 @@
 package vue;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
-//La classe FormConnexion crée le panneau de connexion pour un utilisateur
+/**
+ *
+ * @author Camille
+ * @author Sutharsan
+ * @author Emilie
+ */
 public class FormConnexion extends JPanel {
    //Attributs                    
     private JButton bouton; //Bouton connexion écouté dans Fenetre
     private JTextField email; //Champ de saisie utilisateur
     private JPasswordField password; //Champ de saisie utilisateur, mode mot de passe (caractères cachés)
     
-    /*Constructeur*/
+    /**
+     * constructeur
+     */
     public FormConnexion() {
         bouton = new JButton("Se connecter");
         email = new JTextField();
@@ -49,19 +63,37 @@ public class FormConnexion extends JPanel {
     }
     
     //Getters
+    /**
+     * retourne le bouton de connexion
+     * @return
+     */
     public JButton getBouton() { //Pour passer au site lorsqu'on appuie sur le bouton connexion
         return bouton;
     }
     
+    /**
+     * retourne le texte saisi dans le champ email
+     * @return
+     */
     public String getEmail() {
         return email.getText();
     }
     
+    /**
+     * retourne le texte saisi dans le champ mot de passe
+     * @return
+     */
     public String getPassword() {
         return String.valueOf(password.getPassword()); //On renvoie une String et non pas un char[]
     }
     
     //Setters
+    /**
+     * "triche" connexion rapide dans main pour tests
+     * fonction à supprimer ?
+     * @param email
+     * @param password
+     */
     public void setEmailPassWord(String email, String password) {
         this.email.setText(email);
         this.password.setText(password);

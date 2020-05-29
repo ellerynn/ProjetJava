@@ -12,6 +12,8 @@ import java.text.DateFormat;
 import java.util.*;
 import javax.swing.*; 
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 //La classe Fenetre correspond a toute l'interface graphique contenant la page de connexion et le planning (+gestion)
 public class Fenetre extends JFrame {  
@@ -152,13 +154,27 @@ public class Fenetre extends JFrame {
         edt.getBtnValider().addActionListener((ActionEvent event)->{
             controle.demandeAddSeance(edt.getInfosAddSeance());
         });
-        
+     
         edt.getBtnValider2().addActionListener((ActionEvent event)->{
             System.out.println("Valider2: Tu veux quoi ? ");
         });
         
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
             System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
+        });
+        
+        edt.getListeSeances().addListSelectionListener(new ListSelectionListener(){
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                if(!lse.getValueIsAdjusting()){
+                    if(!edt.getListeSeances().isSelectionEmpty())
+                    {
+                        JList source = (JList)lse.getSource();
+                        String selected = source.getSelectedValue().toString();
+                        System.out.println("Bon je fais quoi après ça : "+selected);
+                    }
+                }
+            }
         });
     }
     

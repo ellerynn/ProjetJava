@@ -105,5 +105,8 @@ public class OngletServicePlanification extends JTabbedPane {
             strings.add(ongletGererCours.getListeSalles().getSelectedValuesList());//On add
         return strings;
     }
+    public JList getListeSeances(){
+        return ongletGererCours.getListeSeances();
+    }
     /***Fin donnée SP*****/
 }

@@ -138,5 +138,8 @@ public class EmploiDuTemps extends JTabbedPane {
     {
         return ongletSP.getInfosAddSeance();
     }
+    public JList getListeSeances(){
+        return ongletSP.getListeSeances();
+    }
     /***Fin donnée SP*****/
 }

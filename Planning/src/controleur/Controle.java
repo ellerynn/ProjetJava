@@ -101,6 +101,29 @@ public class Controle {
         frame3.setVisible(true);
         frame3.setSize(500,500);
   }
+  
+  public void afficherGrapheHeureSeanceSemestre() {
+        SalleDAO sDAO = new SalleDAO();
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<String> s = new ArrayList<>();
+
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
+            pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
+
+        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
+
+        PiePlot P=(PiePlot)chart.getPlot();
+
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartFrame frame = new ChartFrame("Capacité des salles pour Eiffel 1", chart );
+
+        frame.setVisible(true);
+        frame.setSize(500,500);
+  }
      
     /**
      * @param email

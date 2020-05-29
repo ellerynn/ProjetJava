@@ -52,6 +52,8 @@ public class Controle {
     public static void main(String[] args) {       
         //Ouverture interface graphique        
         new Controle();
+        
+        new JFreeChartTest();
     }
     
     //SOUS PROGRAMME QUI FAIT LE LISTENER
@@ -70,10 +72,9 @@ public class Controle {
     //}
     
     /**
-     * retourne true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
      * @param email
      * @param password
-     * @return
+     * @return true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
      */
     public Boolean demandeConnexion(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);       
@@ -81,11 +82,10 @@ public class Controle {
     }
     
     /**
-     * retourne une chaine de caractère avec prenom et nom de l'utilisateur courrant
      * utilisé pour set le titre de la frame
      * @param email
      * @param password
-     * @return
+     * @return une chaine de caractère avec prenom et nom de l'utilisateur courrant
      */
     public String utilisateurCourant(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);
@@ -93,10 +93,9 @@ public class Controle {
     }
     
     /**
-     * retourne un utilisateur à partir de son email et password
      * @param email
      * @param password
-     * @return
+     * @return un utilisateur à partir de son email et password
      */
     public Utilisateur recupUtilisateur(String email, String password) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
@@ -104,8 +103,7 @@ public class Controle {
     }
     
     /**
-     * récupération de tous les utilisateurs de la BDD
-     * @return
+     * @return tous les utilisateurs de la BDD dans un ArrayList d'utilisateurs
      */
     public ArrayList<Utilisateur> recupUtilisateurs() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
@@ -113,8 +111,7 @@ public class Controle {
     }
     
     /**
-     * récupération de tous les groupes de la BDD
-     * @return
+     * @return tous les groupes de la BDD
      */
     public ArrayList<Groupe> recupGroupes() {
         GroupeDAO gDAO = new GroupeDAO();
@@ -122,9 +119,8 @@ public class Controle {
     }
     
     /**
-     * si l'utilisateur est un étudiant, on récupère ses données étudiante
      * @param utilisateur
-     * @return
+     * @return les données étudiantes de l'utilisateur
      */
     public Etudiant recupEtudiant(Utilisateur utilisateur) {
         EtudiantDAO eDAO = new EtudiantDAO();
@@ -132,9 +128,8 @@ public class Controle {
     }
 
     /**
-     * si l'utilisateur est un enseignant, on récupère ses données enseignant
      * @param utilisateur
-     * @return
+     * @return les données enseignantes de l'utilisateur
      */
     public Enseignant recupEnseignant(Utilisateur utilisateur) {
         EnseignantDAO eDAO = new EnseignantDAO();
@@ -142,11 +137,10 @@ public class Controle {
     }
 
     /**
-     * retourne true si l'utilisateur est un admin
      * utilisé pour créer des listeners que seuls les admins ont
      * @param email
      * @param password
-     * @return
+     * @return true si l'utilisateur est un admin
      */
     public Boolean admin(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
@@ -154,11 +148,10 @@ public class Controle {
     }
 
     /**
-     * récupération de certaines données selon profil
      * utilisé pour set le titre de la frame
      * @param email
      * @param password
-     * @return
+     * @return certaines données selon profil
      */
     public String recupInfo(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
@@ -667,9 +660,8 @@ public class Controle {
     }
 
     /**
-     * retourne un ArrayList de tous les utilisateurs de la BDD
      * utilisé pour la recherche du référent par exemple
-     * @return
+     * @return un ArrayList de tous les utilisateurs de la BDD
      */
     public ArrayList<String> allUsersToStrings() {
         ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
@@ -682,9 +674,8 @@ public class Controle {
     }
 
     /**
-     * retourne un ArrayList de tous les groupes de la BDD
      * utilisé pour la recherche du référent par exemple
-     * @return
+     * @return un ArrayList de tous les groupes de la BDD
      */
     public ArrayList<String> allGroupsToStrings() {
         ArrayList<Groupe> groupes = recupGroupes();
@@ -697,8 +688,7 @@ public class Controle {
     }
     
     /**
-     * recup de tous les types de cours de la BDD
-     * @return
+     * @return tous les types de cours de la BDD
      */
     public ArrayList<TypeCours> recupAllTypes(){
         TypeCoursDAO tDAO =new TypeCoursDAO();
@@ -706,8 +696,7 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de tous les types de cours de la BDD
-     * @return
+     * @return un ArrayList de tous les types de cours de la BDD
      */
     public ArrayList<String> allTypeToStrings(){
         ArrayList<TypeCours> types = recupAllTypes();
@@ -719,8 +708,7 @@ public class Controle {
     }
     
     /**
-     * recup de tous les cours de la BDD
-     * @return
+     * @return tous les cours de la BDD
      */
     public ArrayList<Cours> recupAllCours(){
         CoursDAO DAO =new CoursDAO();
@@ -728,8 +716,7 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de tous les cours de la BD
-     * @return
+     * @return un ArrayList de tous les cours de la BD
      */
     public ArrayList<String> allCoursToStrings(){
         ArrayList<Cours> cours = recupAllCours();
@@ -741,8 +728,7 @@ public class Controle {
     }
     
     /**
-     * recup de toutes les salles de la BDD
-     * @return
+     * @return toutes les salles de la BDD
      */
     public ArrayList<Salle> recupAllSalles(){
         SalleDAO DAO = new SalleDAO();
@@ -750,8 +736,7 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de tous les salles de la BDD
-     * @return
+     * @return un ArrayList de tous les salles de la BDD
      */
     public ArrayList<String> allSallesToStrings(){
         ArrayList<Salle> salles = recupAllSalles();
@@ -763,8 +748,7 @@ public class Controle {
     }
     
     /**
-     * recup de tous les enseignants de la BDD
-     * @return
+     * @return tous les enseignants de la BDD
      */
     public ArrayList<Enseignant> recupAllEnseignants(){
         EnseignantDAO eDAO = new EnseignantDAO();
@@ -772,8 +756,7 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de tous les enseignants de la BDD
-     * @return
+     * @return un ArrayList de tous les enseignants de la BDD
      */
     public ArrayList<String> allEnseignantsToStrings(){
         ArrayList<Enseignant> ens = recupAllEnseignants();
@@ -785,8 +768,7 @@ public class Controle {
     }
     
     /**
-     * recup de toutes les seances de la BDD
-     * @return
+     * @return toutes les seances de la BDD
      */
     public ArrayList<Seance> recupAllSeances(){
         SeanceDAO dao = new SeanceDAO();
@@ -794,8 +776,7 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de toutes les seances de la BDD
-     * @return
+     * @return un ArrayList de toutes les seances de la BDD
      */
     public ArrayList<String> allSeancesToStrings(){
         ArrayList<Seance> seances = recupAllSeances();
@@ -816,9 +797,8 @@ public class Controle {
     }
     
     /**
-     * Calcul l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
      * @param debut
-     * @return 
+     * @return l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
      */
     public String calculHeureFin(String debut)
     {
@@ -940,7 +920,7 @@ public class Controle {
     }
     
     /**
-     * Mise à jour au niveau visuelle si tout les données sont cohérents
+     * Mise à jour au niveau visuel si toutes les données sont cohérentss
      */
     public void majAllSeances()
     {   //Du controleur à la vue

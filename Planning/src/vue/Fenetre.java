@@ -12,11 +12,12 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
-
-//La classe Fenetre correspond a toute l'interface graphique contenant la page de connexion et le planning (+gestion)
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *http://www.codeurjava.com/2015/05/comment-dimensionner-fenetre-selon-ecran.html
@@ -47,7 +48,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
         
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
+        connexion.setEmailPassWord("admin@gmail.com", "admin");
     }
     
     /**
@@ -174,6 +175,14 @@ public class Fenetre extends JFrame {
             @Override
             public void mouseExited(MouseEvent me) {}
         });
+        
+
+        
+        //Onglethome qui est dans EDT qui est dans THIS
+        //Pour appeler l'action controle.NOM SOUS Programme
+        edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
+            //SOUS P    
+        });
     }
     
     /**
@@ -183,15 +192,29 @@ public class Fenetre extends JFrame {
     //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
     //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
         edt.getBtnValider().addActionListener((ActionEvent event)->{
-            System.out.println("Valider: Aie ! Tu m'as cliqué, j'ai mal ! ");
+            controle.demandeAddSeance(edt.getInfosAddSeance());
         });
-        
+     
         edt.getBtnValider2().addActionListener((ActionEvent event)->{
             System.out.println("Valider2: Tu veux quoi ? ");
         });
         
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
             System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
+        });
+        
+        edt.getListeSeances().addListSelectionListener(new ListSelectionListener(){
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                if(!lse.getValueIsAdjusting()){
+                    if(!edt.getListeSeances().isSelectionEmpty())
+                    {
+                        JList source = (JList)lse.getSource();
+                        String selected = source.getSelectedValue().toString();
+                        System.out.println("Bon je fais quoi après ça : "+selected);
+                    }
+                }
+            }
         });
     }
     

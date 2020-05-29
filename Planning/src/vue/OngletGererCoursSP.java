@@ -322,6 +322,7 @@ public class OngletGererCoursSP extends JSplitPane {
         container2.add(supprimer, c);
                 
         this.setLeftComponent(container2);
+        
     }
     
     /**
@@ -522,5 +523,23 @@ public class OngletGererCoursSP extends JSplitPane {
         for(String s : string)
             listData.add(s);
         liste.setListData(listData);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JRadioButton getEtatEC()
+    {
+        return etatEC;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JRadioButton getEtatV()
+    {
+        return etatV;
     }
 }

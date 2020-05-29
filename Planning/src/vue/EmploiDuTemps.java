@@ -161,6 +161,11 @@ public class EmploiDuTemps extends JTabbedPane {
         return ongletSP.getBtnValider3();
     }
     
+    
+    public JButton getBoutonGraphe() {
+        return ongletHome.getBoutonGraphe();
+    }
+    
     /**
      * ajoute l'onglet Service planification si besoin
      */
@@ -262,5 +267,10 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public void setSeances(ArrayList<String> string){
         ongletSP.remplirListSeances(string);
+    }
+    
+    public ArrayList<Object> getInfosAddSeance()
+    {
+        return ongletSP.getInfosAddSeance();
     }
 }

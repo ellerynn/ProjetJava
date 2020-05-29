@@ -4,15 +4,20 @@ package vue;
 
 import java.awt.*;
 import java.text.DateFormat;
-import java.util.Calendar;
 import javax.swing.*;
 import javax.swing.table.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 
 public class OngletHome extends JSplitPane {
     //Variables onglet Home                     
     private JSpinner date;
     private JButton linkCours;
     private JTable tabEdt;
+    private JButton boutonGraphe;
     private TableLabelRendererPanel p;
     
     public OngletHome() {
@@ -20,6 +25,7 @@ public class OngletHome extends JSplitPane {
         linkCours = new JButton(); //Bouton
         tabEdt = new JTable(); //Tableau 
         p = new TableLabelRendererPanel(tabEdt);
+        boutonGraphe = new JButton ("Afficher le graphe");
               
         //Gauche
         JPanel container1 = new JPanel();
@@ -59,14 +65,44 @@ public class OngletHome extends JSplitPane {
         c.fill = GridBagConstraints.HORIZONTAL;
         this.setLeftComponent(container1);
         
-        //Droite
+        //Container de droite
         JPanel container2 = new JPanel();
-        
+        container2.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
+        t.fill = GridBagConstraints.HORIZONTAL;
+        t.insets = new Insets(10,10,10,10);
+        t.gridx = 0; t.gridy = 0;
+        t.gridwidth = 10;   //2 columns wide
+        t.weightx = 10;
         JLabel cursus = new JLabel("Graphes");
-        container2.add(cursus, c);
+        container2.add(cursus, t); 
+        
+        t.gridx = 1; t.gridy = 1;
+        container2.add(boutonGraphe,t);
+        
+        //boutonGraphe.addActionListener(new java.awt.event.ActionListener() {
+            //public void actionPerformed(java.awt.event.ActionEvent evt) {
+        container2.add(boutonGraphe,t);
+            //}
+        //});
         
         this.setRightComponent(container2);
     }
+    
+    private void jButton1ActionPerformed() {                                         
+        DefaultPieDataset pieDataset = new DefaultPieDataset();
+        pieDataset.setValue("One", new Integer(10));
+        pieDataset.setValue("Two", new Integer(20));
+        pieDataset.setValue("Three", new Integer(30));
+        pieDataset.setValue("Viva le Sri Lanka", new Integer(40));
+        JFreeChart chart = ChartFactory.createPieChart("Pie Chart", pieDataset, true, true, true);
+        PiePlot P=(PiePlot)chart.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartFrame frame = new ChartFrame("Pie Chart", chart);
+        frame.setVisible(true);
+        frame.setSize(450,500);
+
+    }   
     
     //Getter    
     public JButton getBouton() {
@@ -79,6 +115,10 @@ public class OngletHome extends JSplitPane {
     
     public JTable getTabCoursHome() {
         return tabEdt;
+    }
+    
+    public JButton getBoutonGraphe() {
+        return boutonGraphe;
     }
     
     public void setEdt() {

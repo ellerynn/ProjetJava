@@ -84,6 +84,10 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     /***Fin donnée SP*****/
     
+    public JButton getBoutonGraphe() {
+        return ongletHome.getBoutonGraphe();
+    }
+    
     //Setters
     public void addOngletServicePlanification() {
         ongletSP = new OngletServicePlanification(); //Onglet Service planification

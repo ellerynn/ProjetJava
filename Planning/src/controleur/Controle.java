@@ -23,15 +23,17 @@ public class Controle {
     
     public static void main(String[] args) { 
        
-        //Ouverture interface graphique
-        java.awt.EventQueue.invokeLater(new Runnable() {
-           public void run() {
-                new JFreeChartTest().setVisible(true);
-            }
-        });
-        
+        //Ouverture interface graphique        
         new Controle();
     }
+    
+    //SOUS PROGRAMME QUI FAIT LE LISTENER
+    //void {
+    //DAO -> info
+    public void Graphe(){
+   
+    }
+    //}
     
     public Boolean demandeConnexion(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);

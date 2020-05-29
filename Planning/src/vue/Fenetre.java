@@ -126,7 +126,17 @@ public class Fenetre extends JFrame {
             public void mouseExited(MouseEvent me) {
             }
         });
+        
+
+        
+        //Onglethome qui est dans EDT qui est dans THIS
+        //Pour appeler l'action controle.NOM SOUS Programme
+        edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
+            //SOUS P    
+        });
     }
+        
+    
     public void iniListenersForAdmin(){ 
     //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
     //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
@@ -141,6 +151,7 @@ public class Fenetre extends JFrame {
         });
         
     }
+    
     public void connect(String email, String password) {
         if(controle.demandeConnexion(email, password)) { 
             //Via cette instruction, on passe au prochain conteneur de la pile

@@ -10,11 +10,6 @@ import dao.SeanceDAO;
 import dao.TypeCoursDAO;
 import dao.UtilisateurDAO;
 import java.awt.Component;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +25,11 @@ import modele.Salle;
 import modele.Seance;
 import modele.TypeCours;
 import modele.Utilisateur;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 import vue.Fenetre;
 
 /**
@@ -57,50 +57,40 @@ public class Controle {
     public static void main(String[] args) {       
         //Ouverture interface graphique        
         new Controle();
-        
-        new JFreeChartTest();
     }
 
-   //Ouverture interface graphique
-  public void afficherGraphe() {
-        SalleDAO sDAO = new SalleDAO();
+    public void creationGraphe() {
         ArrayList<Salle> salles = recupAllSalles();
-        ArrayList<String> s = new ArrayList<>();
+        ArrayList<ChartPanel> c = new ArrayList<>();
 
         DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
-        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 2
-        DefaultPieDataset pieDataset3 = new DefaultPieDataset();//eiffel 4
         
         for (int i = 0 ; i <salles.size(); i++){
             if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
             pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
-            pieDataset2.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-            if(salles.get(i).getSite().getNom().equals("Eiffel 4"))
-            pieDataset3.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-        }
+           }
 
         JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
-        JFreeChart chart2 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 2", pieDataset2, true, true, true);//eiffeil 2
-        JFreeChart chart3 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 4", pieDataset3, true, true, true);//eiffel 4
         PiePlot P=(PiePlot)chart.getPlot();
-        PiePlot P2=(PiePlot)chart2.getPlot();
-        PiePlot P3=(PiePlot)chart3.getPlot();
         //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartFrame frame = new ChartFrame("Capacité des salles pour Eiffel 1", chart );
-        ChartFrame frame2 = new ChartFrame("Capacité des salles pour Eiffel 2", chart2 );
-        ChartFrame frame3 = new ChartFrame("Capacité des salles pour Eiffel 4", chart3 );
+        ChartPanel p = new ChartPanel(chart);
+        c.add(p);
         
+        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 1
+        
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
+            pieDataset2.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
 
-        frame.setVisible(true);
-        frame.setSize(500,500);
+        JFreeChart chart2 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 2", pieDataset2, true, true, true);//eiffel 1
+        PiePlot P2=(PiePlot)chart2.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartPanel p2 = new ChartPanel(chart2);
+        c.add(p2);
         
-        frame2.setVisible(true);
-        frame2.setSize(500,500);
-        
-        frame3.setVisible(true);
-        frame3.setSize(500,500);
-  }
+        fenetre.ajouterGraphes(c);
+    }
      
     /**
      * @param email

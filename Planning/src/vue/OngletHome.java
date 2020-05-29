@@ -33,7 +33,7 @@ public class OngletHome extends JSplitPane {
     private JSpinner date;
     private JButton linkCours;
     private JTable tabEdt;
-    private JButton boutonGraphe;
+    private JButton boutonGraphe;//boutton graphe capacite des salles dans eiffel 1
     private TableLabelRendererPanel p;
     private JButton deconnexion;
     
@@ -45,7 +45,9 @@ public class OngletHome extends JSplitPane {
         linkCours = new JButton(); //Bouton
         tabEdt = new JTable(); //Tableau 
         p = new TableLabelRendererPanel(tabEdt);
-        boutonGraphe = new JButton ("Afficher le graphe");
+        boutonGraphe = new JButton ("Afficher la capacité des salles pour Eiffel 1");
+
+        
         deconnexion = new JButton();
               
         //Gauche
@@ -125,21 +127,6 @@ public class OngletHome extends JSplitPane {
     public JButton getBouton() {
         return linkCours; //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
     }
-    
-    private void jButton1ActionPerformed() {                                         
-        DefaultPieDataset pieDataset = new DefaultPieDataset();
-        pieDataset.setValue("One", new Integer(10));
-        pieDataset.setValue("Two", new Integer(20));
-        pieDataset.setValue("Three", new Integer(30));
-        pieDataset.setValue("Viva le Sri Lanka", new Integer(40));
-        JFreeChart chart = ChartFactory.createPieChart("Pie Chart", pieDataset, true, true, true);
-        PiePlot P=(PiePlot)chart.getPlot();
-        //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartFrame frame = new ChartFrame("Pie Chart", chart);
-        frame.setVisible(true);
-        frame.setSize(450,500);
-
-    } 
     
     /**
      * retourne le bouton de déconnexion dans Home

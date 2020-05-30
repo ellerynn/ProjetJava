@@ -10,11 +10,6 @@ import dao.SeanceDAO;
 import dao.TypeCoursDAO;
 import dao.UtilisateurDAO;
 import java.awt.Component;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +25,12 @@ import modele.Salle;
 import modele.Seance;
 import modele.TypeCours;
 import modele.Utilisateur;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 import vue.Fenetre;
 
 /**
@@ -57,49 +58,38 @@ public class Controle {
     public static void main(String[] args) {       
         //Ouverture interface graphique        
         new Controle();
-        
-        new JFreeChartTest();
     }
 
-   //Ouverture interface graphique
-  public void afficherGraphe() {
-        SalleDAO sDAO = new SalleDAO();
+    public void creationGraphe() {
         ArrayList<Salle> salles = recupAllSalles();
-        ArrayList<String> s = new ArrayList<>();
+        ArrayList<ChartPanel> c = new ArrayList<>();
 
         DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
-        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 2
-        DefaultPieDataset pieDataset3 = new DefaultPieDataset();//eiffel 4
         
         for (int i = 0 ; i <salles.size(); i++){
             if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
             pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
-            pieDataset2.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-            if(salles.get(i).getSite().getNom().equals("Eiffel 4"))
-            pieDataset3.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-        }
+           }
 
         JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
-        JFreeChart chart2 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 2", pieDataset2, true, true, true);//eiffeil 2
-        JFreeChart chart3 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 4", pieDataset3, true, true, true);//eiffel 4
         PiePlot P=(PiePlot)chart.getPlot();
-        PiePlot P2=(PiePlot)chart2.getPlot();
-        PiePlot P3=(PiePlot)chart3.getPlot();
         //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartFrame frame = new ChartFrame("Capacité des salles pour Eiffel 1", chart );
-        ChartFrame frame2 = new ChartFrame("Capacité des salles pour Eiffel 2", chart2 );
-        ChartFrame frame3 = new ChartFrame("Capacité des salles pour Eiffel 4", chart3 );
+        ChartPanel p = new ChartPanel(chart);
+        c.add(p);
         
+        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 1
+        
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
+            pieDataset2.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
 
-        frame.setVisible(true);
-        frame.setSize(500,500);
-        
-        frame2.setVisible(true);
-        frame2.setSize(500,500);
-        
-        frame3.setVisible(true);
-        frame3.setSize(500,500);
+        JFreeChart chart2 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 2", pieDataset2, true, true, true);//eiffel 1
+        PiePlot P2=(PiePlot)chart2.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartPanel p2 = new ChartPanel(chart2);
+        c.add(p2);
+        fenetre.ajouterGraphes(c);
   } //premier graphe
   
   public void afficherGrapheHeureSeanceSemestre() {
@@ -108,8 +98,7 @@ public class Controle {
         
         int calculheuretotal = 0;int calculheuretotal0 = 0;int calculheuretotal1 = 0;int calculheuretotal2 = 0;int calculheuretotal3 = 0;int calculheuretotal4 = 0;int calculheuretotal5 = 0;int calculheuretotal6 = 0; int calculheuretotal7 = 0;int calculheuretotal8 = 0;
         int comparaison = 0;int comparaison0 = 0;int comparaison1 = 0;int comparaison2 = 0;int comparaison3 = 0;int comparaison4 = 0;int comparaison5 = 0; int comparaison6 = 0; int comparaison7 = 0; int comparaison8 = 0;
-        
-        ArrayList<String> s = new ArrayList<>();
+         
         
         DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
         
@@ -353,7 +342,7 @@ public class Controle {
         frame.setVisible(true);
         frame.setSize(500,500);
   }//troisieme graphe
-     
+    
     /**
      * @param email
      * @param password
@@ -943,6 +932,7 @@ public class Controle {
     }
 
     /**
+     * Permet d'obtenir tout les prenoms et noms des utilisateurs
      * utilisé pour la recherche du référent par exemple
      * @return un ArrayList de tous les utilisateurs de la BDD
      */
@@ -957,6 +947,7 @@ public class Controle {
     }
 
     /**
+     * Permet d'obtenir tout les groupes par nom et nom de la promotion
      * utilisé pour la recherche du référent par exemple
      * @return un ArrayList de tous les groupes de la BDD
      */
@@ -971,6 +962,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les Types de la BDD
      * @return tous les types de cours de la BDD
      */
     public ArrayList<TypeCours> recupAllTypes(){
@@ -979,6 +971,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les noms des types
      * @return un ArrayList de tous les types de cours de la BDD
      */
     public ArrayList<String> allTypeToStrings(){
@@ -991,6 +984,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les cours de la BDD
      * @return tous les cours de la BDD
      */
     public ArrayList<Cours> recupAllCours(){
@@ -999,6 +993,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les nom des cours de la BDD
      * @return un ArrayList de tous les cours de la BD
      */
     public ArrayList<String> allCoursToStrings(){
@@ -1011,6 +1006,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les salles de la BDD
      * @return toutes les salles de la BDD
      */
     public ArrayList<Salle> recupAllSalles(){
@@ -1019,6 +1015,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les noms des salles et leur site
      * @return un ArrayList de tous les salles de la BDD
      */
     public ArrayList<String> allSallesToStrings(){
@@ -1031,6 +1028,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les enseignants de la BDD
      * @return tous les enseignants de la BDD
      */
     public ArrayList<Enseignant> recupAllEnseignants(){
@@ -1039,6 +1037,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les eneignants par prénom et nom
      * @return un ArrayList de tous les enseignants de la BDD
      */
     public ArrayList<String> allEnseignantsToStrings(){
@@ -1051,6 +1050,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les séances de la BDD
      * @return toutes les seances de la BDD
      */
     public ArrayList<Seance> recupAllSeances(){
@@ -1059,6 +1059,7 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir tout les informations des toutes les séance sous forme d'une phrase pour chaque séance
      * @return un ArrayList de toutes les seances de la BDD
      */
     public ArrayList<String> allSeancesToStrings(){
@@ -1080,6 +1081,7 @@ public class Controle {
     }
     
     /**
+     * Calcul l'heure de fin à partir de l'heure de début
      * @param debut
      * @return l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
      */
@@ -1095,7 +1097,7 @@ public class Controle {
     }
     
     /**
-     * Demande d'ajout d'une séance par la vue vers le controleur en récupérant tout les données saisies par l'user
+     * Demande d'ajout d'une séance par la vue vers le controleur en récupérant tout les données nécessaires saisies par l'user
      * @param strings 
      */
     public void demandeAddSeance(ArrayList<Object> strings)
@@ -1116,31 +1118,41 @@ public class Controle {
             Cours cours = cDAO.findByName((String)strings.get(4));//Cours
             TypeCours type = tDAO.findByName((String)strings.get(5));//Type
             
-            ArrayList<Enseignant> enseignants = new ArrayList<>();              
-            List list = (List)strings.get(6);                       
-            for (Iterator it = list.iterator() ; it.hasNext(); ){
-                enseignants.add(uDAO.findByName((String)it.next()));//Enseignants
+            List list;
+            ArrayList<Enseignant> enseignants = new ArrayList<>();    
+            if(strings.get(6) != null)
+            {
+                list = (List)strings.get(6);                       
+                for (Iterator it = list.iterator() ; it.hasNext(); ){
+                    enseignants.add(uDAO.findByName((String)it.next()));//Enseignants
+                }
             }
             
             ArrayList<Groupe> groupes = new ArrayList<>();
-            list = (List)strings.get(7);
-            for (Iterator it = list.iterator() ; it.hasNext(); ){
-                groupes.add(gDAO.findByName((String)it.next()));//Groupes
+            if(strings.get(7) != null)
+            {
+                list = (List)strings.get(7);
+                for (Iterator it = list.iterator() ; it.hasNext(); ){
+                    groupes.add(gDAO.findByName((String)it.next()));//Groupes
+                }
             }
             
             ArrayList<Salle> salles = new ArrayList<>();
-            list = (List)strings.get(8);
-            for (Iterator it = list.iterator() ; it.hasNext(); ){
-                salles.add(salleDAO.findByName((String)it.next()));//Salles
+            if(strings.get(8) != null)
+            {
+                list = (List)strings.get(8);
+                for (Iterator it = list.iterator() ; it.hasNext(); ){
+                    salles.add(salleDAO.findByName((String)it.next()));//Salles
+                }
             }
             ajouterSeanceInModel(semaine,date,heureDebut,heureFin,etat,cours,type,groupes, enseignants,salles);
         }
     }
     
     /**
-     * Le controleur demande au model l'ajout d'une séance en lui fournissant les données issues de la vue.
-     * Le modèle renvoie des réponses vers le controleur pour savoir si tels données sont acceptables et si 
-     * toutes les données saisies sont cohérentes.
+     * Le controleur demande au model l'ajout d'une séance en lui fournissant les données issues de la vue
+     * le modèle renvoie des réponses vers le controleur pour savoir si tels données sont acceptables et si 
+     * toutes les données saisies sont cohérentes
      * @param Semaine
      * @param Date
      * @param Heure_Debut
@@ -1208,5 +1220,284 @@ public class Controle {
     public void majAllSeances()
     {   //Du controleur à la vue
         fenetre.remplirListSeances();
+    }
+    /**
+     * Demande de la vue pour savoir quelles sont les informations qui doivent être séléctionner dans le vue dans l'ongletGererCoursSP
+     * en fournissant au controleur l'id de cette séance
+     * @param id_seance
+     * @return 
+     */
+    public ArrayList<Object> demandeInfosSelectedSeance(int id_seance)
+    {   //de la vue au controleur
+        ArrayList<Object> strings = new ArrayList<>();
+        SeanceDAO sDAO = new SeanceDAO();
+        //Obtention données de modèle pour répondre à la requete de la vue
+        Seance seance = sDAO.find(id_seance);
+        
+        strings.add(seance.getDate()+" "+seance.getHeureDebut());
+        strings.add(seance.getEtat());
+        strings.add(seance.getCours().getNom());
+        strings.add(seance.getTypeCours().getNom());
+        
+        ArrayList<String> e = new ArrayList<>();
+        ArrayList<String> g = new ArrayList<>();
+        ArrayList<String> s = new ArrayList<>();
+        for (int i = 0 ; i < Math.max(seance.getEnseignants().size(),Math.max(seance.getGroupes().size(),seance.getSalles().size()));i++)
+        {
+            if(i < seance.getEnseignants().size())
+                e.add(seance.getEnseignants().get(i).getPrenom()+ " "+seance.getEnseignants().get(i).getNom());
+            if(i< seance.getGroupes().size())
+                g.add(seance.getGroupes().get(i).getNom()+" "+seance.getGroupes().get(i).getPromotion().getNom());
+            if(i<seance.getSalles().size())
+                s.add(seance.getSalles().get(i).getNom()+ " "+seance.getSalles().get(i).getSite().getNom());
+        }
+        strings.add(e);
+        strings.add(g);
+        strings.add(s);        
+        
+        //On retourne les données reçus à la vue
+        return strings;
+    }
+    /**
+     * Requête de la vue pour modifier une séance en fournissant toutes les infos nécessaires saisies par l'user 
+     * @param idSeance
+     * @param strings 
+     */
+    public void demandeModifSeance(int idSeance, ArrayList<Object> strings)
+    {   //Contenu du strings:
+        // 0: Semaine, 1: Heure de début, 2: Date, 3: Etat, 4: Cours, 5: Type, 6:Enseignants, 7:Groupes, 8: Salles
+        if(strings.size() == 9)//Ceux qui ne sont pas rempli sont déclaré à null, donc on a toujours = 9
+        {
+            SeanceDAO seanceDAO = new SeanceDAO();
+            Seance seance = seanceDAO.find(idSeance);
+            boolean okEtat = true;
+            boolean okEnseignants = true;
+            boolean okGroupesSalles = true;
+            
+            //Changement de date localement (si pas changé, ça ne fait que l'écraser)
+            seance.setSemaine(Integer.parseInt((String)strings.get(0)));
+            String heureDebut = (String)strings.get(1);
+            seance.setHeureDebut(heureDebut);
+            seance.setHeureFin(calculHeureFin(heureDebut));
+            System.out.println("Heure de début saisie par l'user pour la séance: " +heureDebut);
+            //Etape 1 Verification si tout les données entrées sont cohérents
+            okEtat = verifAndSetSeanceEtat(seance,(String)strings.get(3),((ArrayList<String>)strings.get(8)).size(),((ArrayList<String>)strings.get(6)).size());
+            okEnseignants = verifSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
+            //Ensemble salles et groupes car chacun ont bsn de voir les capa de l'autre
+            okGroupesSalles = verifSeanceGroupesEtSalles(seance,(ArrayList<String>)strings.get(7),(ArrayList<String>)strings.get(8)); 
+            
+            //Etape 2 Changement de données
+            if(okEtat && okEnseignants && okGroupesSalles)
+            {  
+                System.out.println("Verification RAS, modification des données OK pous séance : "+idSeance);
+                //Changement de données dans la variable seance (localement) et dans celui BDD
+                //Etat est déjà set localement
+                setSeanceCoursNom(seance,(String)strings.get(4));
+                setSeanceCoursType(seance,(String)strings.get(5));
+                setSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
+                setSeanceGroupes(seance,(ArrayList<String>)strings.get(7));
+                setSeanceSalles(seance, (ArrayList<String>)strings.get(8));
+                seance = seanceDAO.update(seance); //Pour ceux qui on été changé juste localement
+            }
+        }
+        else{
+            System.out.println("Un champ n'est pas saisie correctement");
+        }
+        majAllSeances();
+    }
+    /**
+     * Vérification/Changement d'état pour une séance sans le changer dans la BDD
+     * @param id_seance
+     * @param choix 
+     */
+    public boolean verifAndSetSeanceEtat(Seance seance, String choix, int tailleGroupe, int tailleEnseignant)
+    {
+        switch(choix)
+        {
+            case "1":
+            {
+                seance.setEtat(1);
+                return true;
+            }
+            case "2":
+            {
+                //LES CONDITIONS
+                if(tailleEnseignant != 0 && tailleGroupe != 0){
+                    seance.setEtat(2);
+                    return true;
+                }
+                else{System.out.println("On ne peux pas valider cette séance car il faut au minimum un enseignant et un groupe");} 
+                break;
+            }
+            case "3":
+            {
+                seance.setEtat(3);
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Verification des edt des enseignants selectionnés pour une séance donnée
+     * @param seance
+     * @param namesSelected
+     * @return 
+     */
+    public boolean verifSeanceEnseignants(Seance seance, ArrayList<String> namesSelected){
+        EnseignantDAO eDAO = new EnseignantDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        for(int i = 0 ; i < namesSelected.size();i++)
+        {
+            Enseignant tampon = eDAO.findByName(namesSelected.get(i));
+            if(sDAO.isTeacherNotFreeForThisSeance(tampon.getId(), seance))
+            {
+                System.out.println("pbl edt du prof : "+tampon.getPrenom()+ " "+tampon.getNom());
+                return false;
+            }
+        }
+        //Si aucune erreur de créneau n'est rencontré pour ces enseignants, (si on est encore dans la méthode), on continue
+        return true;
+    }
+    /**
+     * Verification des edt des groupes et salles selectionnés pour une séance donnée
+     * @param seance
+     * @param groupesSelected
+     * @param sallesSelected
+     * @return 
+     */
+    public boolean verifSeanceGroupesEtSalles(Seance seance, ArrayList<String> groupesSelected, ArrayList<String> sallesSelected)
+    {
+        SalleDAO salleDAO = new SalleDAO();
+        GroupeDAO grpDAO = new GroupeDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        
+        boolean okForGrps  = false; //On part de base que tout est faux
+        boolean okForSalles = false;//On part de base que tout est faux
+        
+        //Vérif créneau groupes + calcule capa total groupes
+        int capaciteGroupe = 0;
+        for (int i = 0 ; i < groupesSelected.size() ;i++)
+        {   //Vérification du créneau de chaque groupe
+            Groupe tampon = grpDAO.findByName(groupesSelected.get(i));
+            capaciteGroupe += sDAO.find_capacite_groupes_total(tampon.getId(), 0); //CapacitéTotal += capacité de chaque groupe
+            if(sDAO.isGroupNotFreeForThisSeance(tampon.getId(), seance)) //Si un groupe n'est pas libre
+            {
+                System.out.println("pbl edt du groupe : "+tampon.getNom()+ " "+tampon.getPromotion().getNom());
+                return false; //Faux d'office
+            }
+        }
+        //Verif créneau salles + calcule capa total salles
+        int capaciteSalle = 0;
+        for (int i = 0 ; i < sallesSelected.size(); i++)
+        {   //Vérification du créneau de chaque salle
+            Salle tampon = salleDAO.findByName(sallesSelected.get(i));
+            capaciteSalle += tampon.getCapacite(); //On calcule la capacité total (Pour plus tard si tout est bon)
+            if(sDAO.isSalleNotFreeForThisSeance(tampon.getId(), seance)) //Une salle n'est pas libre
+            {
+                System.out.println("pbl edt de la salle : "+tampon.getNom()+ " "+tampon.getSite().getNom());
+                return false; //Faux d'office
+            }
+        }
+        //Si tout est bon nv horaire (si on a pas quitté la méthode)
+        //Cas groupes
+        if(sallesSelected.isEmpty()) //Si aucune salle n'est selectionné, pas bsn de vérif capa groupe et salle
+        {
+            okForGrps = true;
+        }else{ //Si des salles sont déjà affectés à cette séance, on est oblgés de vérifier la capacité
+            if(capaciteGroupe <= capaciteSalle) //Capa groupe doit être <= capa salles
+            {
+                okForGrps = true;
+            }else{
+                System.out.println("Ensemble de groupe trop grand");
+            }
+        }
+        //Cas salles
+        if(groupesSelected.isEmpty()) 
+        {   
+            okForSalles = true;
+        }else{ //Si des groupes sont dans cette séance
+            if(capaciteSalle >= capaciteGroupe) //On vérifie si toute les salles peuvent supporter le nb
+            {   //Si les salles supportent les groupes
+                okForSalles = true;
+            }
+            else
+                System.out.print("Capacité insuffisante");
+        }
+        if(okForGrps && okForSalles) //Si tout est Ok
+        {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Requête de MAJ du nom de cours d'une séance donnée dans la BDD
+     * @param seance
+     * @param cours 
+     */
+    public void setSeanceCoursNom(Seance seance, String cours) {
+        CoursDAO cDAO = new CoursDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        seance.setCours(cDAO.findByName(cours));
+    }
+    /**
+     * Requête de MAJ du type de cours d'une séance donnée dans la BDD
+     * @param seance
+     * @param type 
+     */
+    public void setSeanceCoursType(Seance seance, String type) {
+        TypeCoursDAO tDAO = new TypeCoursDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        seance.setTypeCours(tDAO.findByName(type));
+    }
+    /**
+     * Requête de MAJ des enseignants d'une séance donnée dans la BDD
+     * @param seance
+     * @param namesSelected 
+     */
+    public void setSeanceEnseignants(Seance seance,ArrayList<String> namesSelected)
+    {
+        EnseignantDAO eDAO = new EnseignantDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        //On supprime tout, pour éviter tout doublons
+            for (int i = 0 ; i < seance.getEnseignants().size() ; i++)
+                sDAO.DeleteInJonction(seance.getId(), seance.getEnseignants().get(i).getId(), 1);
+            if(!namesSelected.isEmpty()) //Si c'est pas vide, on re/ajoute tous les enseignants saisies pas l'user
+                for (int i = 0 ; i < namesSelected.size() ; i++)
+                    sDAO.insertInJonction(seance.getId(), eDAO.findByName(namesSelected.get(i)).getId(), 1);
+    }
+    /**
+     * Requête de MAJ des groupes d'une séance donnée dans la BDD
+     * @param seance
+     * @param groupesSelected 
+     */
+    public void setSeanceGroupes(Seance seance,ArrayList<String> groupesSelected)
+    {
+        GroupeDAO grpDAO = new GroupeDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        for (int i = 0; i < seance.getGroupes().size() ; i++)
+            sDAO.DeleteInJonction(seance.getId(), seance.getGroupes().get(i).getId(), 2);//supprime tout les groupes de la séance
+        for (int i = 0; i < groupesSelected.size() ; i++)
+            sDAO.insertInJonction(seance.getId(), grpDAO.findByName(groupesSelected.get(i)).getId(), 2);//On ajoute tt les groupes selectionnées
+     
+    }
+    /**
+     * Requête de MAJ des salles d'une séance donnée dans la BDD
+     * @param seance
+     * @param sallesSelected 
+     */
+    public void setSeanceSalles(Seance seance,ArrayList<String> sallesSelected)
+    {
+        SalleDAO salleDAO = new SalleDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        for (int i = 0 ; i < seance.getSalles().size() ; i++)
+        {
+            sDAO.DeleteInJonction(seance.getId(), seance.getSalles().get(i).getId(), 3);//Suppression de toute les salles de cette séance dans la BDD 
+
+        }
+        for (int i = 0 ; i < sallesSelected.size() ; i++)
+        {
+             sDAO.insertInJonction(seance.getId(), salleDAO.findByName(sallesSelected.get(i)).getId(), 3); //On ajoute tout ce qui a été select
+
+        }    
     }
 }

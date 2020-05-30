@@ -9,6 +9,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import org.jfree.chart.ChartPanel;
 
 /**
  *
@@ -42,128 +43,108 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
-     * retourne le JSpinner contenant la date du jour dans l'onglet Home
-     * @return
+     * @return le JSpinner contenant la date du jour dans l'onglet Home
      */
     public JSpinner getDateHome() {
         return ongletHome.getDateHome(); //Spinner date
     }
     
     /**
-     * retourne le JTable contenant l'edt sur une journée 
-     * @return
+     * @return le JTable contenant l'edt sur une journée 
      */
     public JTable getEdtHome() {
         return ongletHome.getTabCoursHome(); //Emploi du temps 1 jour dans Home
     }
     
     /**
-     * retourne la barre de recherche dans l'onglet Cours
-     * @return
+     * @return la barre de recherche dans l'onglet Cours
      */
     public JTextField getRechercheBarreCours() {
         return ongletCours.getRechercheBarre(); //Barre de recherche
     }
     
     /**
-     * retourne le bouton rechercher 
-     * @return
+     * @return le bouton rechercher 
      */
     public JButton getRechercheBoutonCours() {
         return ongletCours.getRechercheBouton(); //Bouton de recherche
     }
     
     /**
-     * retourne la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
-     * @return
+     * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
      */
     public JComboBox getRechercheCours() {
         return ongletCours.getRecherche(); //Menu déroulant des utilisateurs
     }
     
     /**
-     * bis mais cette fois avec les groupes et promo
-     * @return
+     * @return bis mais cette fois avec les groupes et promo
      */
     public JComboBox getGroupesCours() {
         return ongletCours.getGroupes(); //Menu déroulant des groupes et promos
     }
     
     /**
-     * retourne la JComboBox contenant les semaines
-     * @return
+     * @return la JComboBox contenant les semaines
      */
     public JComboBox getSemaineCours() {
         return ongletCours.getSemaine(); //Menu déroulant des semaines dans Cours
     }
     
     /**
-     * retourne le JTable contenant l'edt sur une semaine
-     * @return
+     * @return le JTable contenant l'edt sur une semaine
      */
     public JTable getEdtCours() {
         return ongletCours.getEdt(); //Emploi du temps
     }
     
     /**
-     * retourne le JTable contenant le récapitulatif des cours
-     * @return
+     * @return le JTable contenant le récapitulatif des cours
      */
     public JTable getRecapCours() {
         return ongletCours.getRecap(); //Récapitulatif des cours
     }
     
     /**
-     * retourne la JComboBox contenant les semaines dans l'onglet Salles
-     * @return
+     * @return la JComboBox contenant les semaines dans l'onglet Salles
      */
     public JComboBox getSemaineSalles() {
         return ongletSalles.getSemaine(); //Menu déroulant des semaines dans Salles
     }
     
     /**
-     * retourne le bouton de déconnexion
-     * @return
+     * @return le bouton de déconnexion
      */
     public JButton getBoutonDeco() { //Pour passer au site lorsqu'on appuie sur le bouton connexion
         return ongletHome.getBoutonDeco();
     }
     
     /**
-     * retourne la liste de séances de la BDD de l'onglet SP
-     * @return
+     * @return la liste de séances de la BDD de l'onglet SP
      */
     public JList getListeSeances() {//Jsp
         return ongletSP.getListeSeances();
     }
 
     /**
-     * retourne le premier bouton valider de l'onglet Gérer les cours
-     * @return
+     * @return le premier bouton valider de l'onglet Gérer les cours
      */
     public JButton getBtnValider(){
         return ongletSP.getBtnValider();
     }
 
     /**
-     * retourne le second bouton valider de l'onglet Gérer les cours
-     * @return
+     * @return le second bouton valider de l'onglet Gérer les cours
      */
     public JButton getBtnValider2(){
         return ongletSP.getBtnValider2();
     }
 
     /**
-     * retourne le dernier bouton valider de l'onglet Gérer les cours
-     * @return
+     * @return le dernier bouton valider de l'onglet Gérer les cours
      */
     public JButton getBtnValider3(){
         return ongletSP.getBtnValider3();
-    }
-    
-    
-    public JButton getBoutonGraphe() {
-        return ongletHome.getBoutonGraphe();
     }
     
     /**
@@ -268,9 +249,36 @@ public class EmploiDuTemps extends JTabbedPane {
     public void setSeances(ArrayList<String> string){
         ongletSP.remplirListSeances(string);
     }
-    
+    /**
+     * Retourne les informations utiles saisies par l'user dans l'onglet OngletServicePlanification pour ajouter une séance
+     * @return 
+     */
     public ArrayList<Object> getInfosAddSeance()
     {
         return ongletSP.getInfosAddSeance();
+    }
+    /**
+     * Récupère et envoie les données d'une séance pour être séléctionnés dans OngletServicePlanification pour l'onglet OngletGererCoursSP
+     * @param forBeingSelectedByDefault 
+     */
+    public void dataToBeSelectedByDefault(ArrayList<Object> forBeingSelectedByDefault)
+    {
+        ongletSP.dataToBeSelectedByDefault(forBeingSelectedByDefault);
+    }
+    /**
+     * Retourne les données modifiés par l'user pour une séance donnée issues de OngletServicePlanification
+     * @return 
+     */
+    public ArrayList<Object> getInfosModifSeance()
+    {
+        return ongletSP.getInfosModifSeance();
+    }
+
+    /**
+     * ajout des graphes dans Home
+     * @param c
+     */
+    public void ajouterGraphes(ArrayList<ChartPanel> c) {
+        ongletHome.ajouterGraphes(c);
     }
 }

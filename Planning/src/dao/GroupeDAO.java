@@ -232,8 +232,9 @@ public class GroupeDAO extends DAO<Groupe> {
         String promo = infos.substring(espace+1, infos.length());
         try {
             ResultSet result=connect.createStatement()
-                                    .executeQuery("SELECT groupe.ID FROM groupe, promotion "
-                                                + "WHERE groupe.Nom = '"+td+"' AND promotion.Nom = '"+promo+"'"); // récup l'id du groupe
+                                    .executeQuery("SELECT groupe.ID FROM groupe "
+                                                + "LEFT JOIN promotion P ON P.ID = groupe.ID_promotion "
+                                                + "WHERE groupe.Nom = '"+td+"' AND P.Nom = '"+promo+"'"); // récup l'id du groupe
             if(result.first())
                 return find(result.getInt("groupe.ID"));
         }

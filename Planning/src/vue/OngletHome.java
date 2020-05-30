@@ -1,10 +1,12 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,11 +18,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerDateModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.chart.ChartPanel;
 
 /**
  * https://codes-sources.commentcamarche.net/forum/affich-659587-date-formatee-jj-mm-aaaa-dans-jspinner
@@ -33,7 +31,8 @@ public class OngletHome extends JSplitPane {
     private JSpinner date;
     private JButton linkCours;
     private JTable tabEdt;
-    private JButton boutonGraphe;//boutton graphe capacite des salles dans eiffel 1
+    private JPanel graphes;
+    //private JButton boutonGraphe; //boutton graphe capacite des salles dans eiffel 1
     private TableLabelRendererPanel p;
     private JButton deconnexion;
     
@@ -45,11 +44,10 @@ public class OngletHome extends JSplitPane {
         linkCours = new JButton(); //Bouton
         tabEdt = new JTable(); //Tableau 
         p = new TableLabelRendererPanel(tabEdt);
-        boutonGraphe = new JButton ("Afficher la capacité des salles pour Eiffel 1");
-
-        
+        //boutonGraphe = new JButton ("Afficher la capacité des salles pour Eiffel 1");    
         deconnexion = new JButton();
-              
+        graphes = new JPanel();
+               
         //Gauche
         JPanel container1 = new JPanel();
         container1.setLayout(new GridBagLayout()); //Initialisation du container
@@ -92,72 +90,56 @@ public class OngletHome extends JSplitPane {
         JPanel container2 = new JPanel();
         container2.setLayout(new GridBagLayout()); //Initialisation du container
         GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
-        t.fill = GridBagConstraints.HORIZONTAL;
+        t.fill = GridBagConstraints.BOTH;
         t.insets = new Insets(10,10,10,10);
         t.gridx = 0; t.gridy = 0;
-        t.gridwidth = 10;   //2 columns wide
-        t.weightx = 10;
         JLabel cursus = new JLabel("Graphes");
         container2.add(cursus, t); 
         
-        t.gridx = 1; t.gridy = 1;
-        container2.add(boutonGraphe,t);
-        
-        //boutonGraphe.addActionListener(new java.awt.event.ActionListener() {
-            //public void actionPerformed(java.awt.event.ActionEvent evt) {
-        container2.add(boutonGraphe,t);
-            //}
-        //});
-        
-        c.gridy = 2;
+        t.gridx = 1;
         deconnexion.setIcon(new ImageIcon("images\\icon_deconnexion.png"));
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.LINE_END;
-        c.weightx = 1;
+        t.fill = GridBagConstraints.NONE;
+        t.anchor = GridBagConstraints.LINE_END;
+        t.weightx = 1;
         deconnexion.setPreferredSize(new Dimension(25,25));
-        container2.add(deconnexion, c);
+        container2.add(deconnexion, t);
+        
+        t.gridy = 1; t.gridx = 0;
+        t.fill = GridBagConstraints.BOTH;
+        t.anchor = GridBagConstraints.FIRST_LINE_START;
+        t.gridwidth = 2;
+        t.weighty = 1;
+        container2.add(graphes, t);
         
         this.setRightComponent(container2);
     }
     
     /**
-     * retourne le bouton-lien dans Home vers l'edt par semaine dans Cours
-     * @return
+     * @return le bouton-lien dans Home vers l'edt par semaine dans Cours
      */
     public JButton getBouton() {
         return linkCours; //Ajout d'un lien vers un des onglet de JTabbedPane sur un JButton
     }
     
     /**
-     * retourne le bouton de déconnexion dans Home
-     * @return
+     * @return le bouton de déconnexion dans Home
      */
     public JButton getBoutonDeco() {
         return deconnexion;
     }
     
     /**
-     * retourne le JSpinner contenant la date dans l'onglet Home
-     * @return
+     * @return le JSpinner contenant la date dans l'onglet Home
      */
     public JSpinner getDateHome() {
         return date;
     }
     
     /**
-     * retourne le Jtable contenant l'edt sur un jour dans l'onglet Home
-     * @return
+     * @return le Jtable contenant l'edt sur un jour dans l'onglet Home
      */
     public JTable getTabCoursHome() {
         return tabEdt;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public JButton getBoutonGraphe() {
-        return boutonGraphe;
     }
     
     /**
@@ -202,4 +184,26 @@ public class OngletHome extends JSplitPane {
         custom.setHorizontalAlignment(JLabel.CENTER);
         tabEdt.getColumnModel().getColumn(0).setCellRenderer(custom);
     }    
+
+    /**
+     * ajout des graphes dans l'onglet Home
+     * @param c
+     */
+    void ajouterGraphes(ArrayList<ChartPanel> c) {
+        graphes.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
+        t.fill = GridBagConstraints.BOTH;
+        //t.insets = new Insets(10,10,10,10);
+        t.gridx = 0; t.gridy = 0;
+        //t.anchor = GridBagConstraints.FIRST_LINE_START;
+        t.weightx = 1; t.weighty = 1;
+        
+        graphes.setBackground(Color.yellow);
+        
+        for(int i=0;i<c.size();i++) {
+            graphes.add(c.get(i), t);
+            t.gridx++;
+            System.out.println("gridx = " + t.gridx);
+        }
+    }
 }

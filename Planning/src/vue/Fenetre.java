@@ -18,11 +18,7 @@ import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.chart.ChartPanel;
 
 /**
  *http://www.codeurjava.com/2015/05/comment-dimensionner-fenetre-selon-ecran.html
@@ -51,38 +47,34 @@ public class Fenetre extends JFrame {
         initContent(); //Initialisation du contenu actif de la frame (CardLayout et JPanel)
         initFrame(); //Initialisation de la frame au 2/3 de l'écran
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
-        
+                
         //TRICHE CO RAPIDE
         connexion.setEmailPassWord("admin@gmail.com", "admin");
     }
     
     /**
-     * retourne l'onglet Emploi du temps
-     * @return
+     * @return l'onglet Emploi du temps
      */
     public EmploiDuTemps getEdt() { 
         return this.edt;
     }
     
     /**
-     * retourne le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
-     * @return
+     * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
      */
     public JTable getEdtCours() {
         return edt.getEdtCours(); 
     }
     
     /**
-     * retourne le tableau contenant la liste de seances sur une annee scolaire
-     * @return
+     * @return le tableau contenant la liste de seances sur une annee scolaire
      */
     public JTable getRecapCours() {
         return edt.getRecapCours();
     }
     
     /**
-     * retourn le tableau contenant l'emploi du temps sur une journée dans l'onglet Home
-     * @return
+     * @return le tableau contenant l'emploi du temps sur une journée dans l'onglet Home
      */
     public JTable getEdtHome() {
         return edt.getEdtHome();
@@ -181,13 +173,9 @@ public class Fenetre extends JFrame {
             public void mouseExited(MouseEvent me) {}
         });
         
-        
-        
-        //Onglethome qui est dans EDT qui est dans THIS
-        //Pour appeler l'action controle.NOM SOUS Programme
-        edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton afficher graphe
+        /*edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton afficher graphe
             controle.afficherGrapheHeureSeanceSemestre();
-        });
+        });*/
     }
     
     /**
@@ -201,26 +189,40 @@ public class Fenetre extends JFrame {
         });
      
         edt.getBtnValider2().addActionListener((ActionEvent event)->{
-            System.out.println("Valider2: Tu veux quoi ? ");
+            if(!edt.getListeSeances().isSelectionEmpty()){
+                //Extraction de l'id de la séance
+                String selected = edt.getListeSeances().getSelectedValue().toString();
+                int start = selected.indexOf("°");
+                int end = selected.indexOf(" ", start);
+                int idSeance = Integer.parseInt(selected.substring(start+1, end));
+                controle.demandeModifSeance(idSeance,edt.getInfosModifSeance());
+            }
         });
         
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
             System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
         });
-        
-        edt.getListeSeances().addListSelectionListener(new ListSelectionListener(){
-            @Override
-            public void valueChanged(ListSelectionEvent lse) {
-                if(!lse.getValueIsAdjusting()){
-                    if(!edt.getListeSeances().isSelectionEmpty())
-                    {
-                        JList source = (JList)lse.getSource();
+        edt.getListeSeances().addListSelectionListener((ListSelectionEvent lse) -> {
+            if(!lse.getValueIsAdjusting()){
+                if(!edt.getListeSeances().isSelectionEmpty())
+                {
+                    JList source = (JList)lse.getSource();
                         String selected = source.getSelectedValue().toString();
-                        System.out.println("Bon je fais quoi après ça : "+selected);
-                    }
+                        //Extraction de l'id de la séance
+                        int start = selected.indexOf("°");
+                        int end = selected.indexOf(" ", start);
+                        int idSeance = Integer.parseInt(selected.substring(start+1, end));
+                        edt.dataToBeSelectedByDefault(controle.demandeInfosSelectedSeance(idSeance));
                 }
             }
         });
+    }
+    
+    /**
+     * intialisation des graphes dans Home
+     */
+    public void initGraphes() {
+        controle.creationGraphe();
     }
     
     /**
@@ -240,6 +242,7 @@ public class Fenetre extends JFrame {
             remplirComboRecherche(email, password); //Utile pour TOUS les profil car on set l'edt selon son contenu
             remplirComboGroupes(); //Juste pour le référent [?]
             remplirDonneesAdmin(); //Juste pour l'admin
+            initGraphes(); //Graphes dans Home
             controle.seancesRecap(connexion.getEmail(), connexion.getPassword()); //Set edt de l'utilisateur courant (par défaut)
         }
     }
@@ -331,8 +334,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * calcul de l'année scolaire en cours (retourne une string)
-     * @return
+     * @return l'année scolaire en cours (retourne une string)
      */
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
         int annee = Calendar.getInstance().get(Calendar.YEAR); //Année courante
@@ -388,7 +390,7 @@ public class Fenetre extends JFrame {
      */
     public void majEdtGroupe() {
         String recherche = edt.getGroupesCours().getSelectedItem().toString();
-        if(recherche != "Groupes") 
+        if(!recherche.equals("Groupes")) 
             controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
     }
         
@@ -409,7 +411,7 @@ public class Fenetre extends JFrame {
     public void majEdtCoursParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineCours().getSelectedItem().toString();
-        if (semaine == "Semaine") {
+        if (semaine.equals("Semaine")) {
             edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
             majEdt();
         }
@@ -440,7 +442,7 @@ public class Fenetre extends JFrame {
     public void majEdtGroupeCoursParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineCours().getSelectedItem().toString();
-        if (semaine == "Semaine") {
+        if (semaine.equals("Semaine")) {
             edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
             majEdtGroupe();
         }
@@ -449,6 +451,14 @@ public class Fenetre extends JFrame {
             edt.setEdtCours(Integer.parseInt(semaine));
             majEdtGroupe();
         }
+    }
+    
+    /**
+     *
+     * @param c
+     */
+    public void ajouterGraphes(ArrayList<ChartPanel> c) {
+        edt.ajouterGraphes(c);
     }
 }
 

@@ -142,13 +142,6 @@ public class SeanceDAO extends DAO<Seance> {
                     ", ID_type = '" + object.getTypeCours().getId() + "'"+
                     " WHERE ID = " + object.getId()
                  );
-                
-             //update jonction seance_salles, pas après le find() car écrase les données
-            connect.createStatement().executeUpdate(
-                           "DELETE FROM seance_salles WHERE ID_seance = "+object.getId()); //On supprime tout, pour éviter les doublons
-            for (int i = 0 ; i <object.getSalles().size();i++)
-            insertInJonction(object.getId(),object.getSalles().get(i).getId(),3);
-                
             
             //Pour appelé les updates des autres classes
             object = this.find(object.getId());

@@ -25,6 +25,12 @@ import modele.Salle;
 import modele.Seance;
 import modele.TypeCours;
 import modele.Utilisateur;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 import vue.Fenetre;
 
 /**
@@ -53,27 +59,67 @@ public class Controle {
         //Ouverture interface graphique        
         new Controle();
     }
-    
-    //SOUS PROGRAMME QUI FAIT LE LISTENER
-    //void {
-    //DAO -> info
-    public void Graphe(){
-        //CA JE SAIS PAS SI CEST UTILE ?
-        //Ouverture interface graphique
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
-           public void run() {
-                new JFreeChartTest().setVisible(true);
-            }
-        });*/
+
+    public void creationGraphe() {
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<ChartPanel> c = new ArrayList<>();
+
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
         
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
+            pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+           }
+
+        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
+        PiePlot P=(PiePlot)chart.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartPanel p = new ChartPanel(chart);
+        c.add(p);
+        
+        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 1
+        
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
+            pieDataset2.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
+
+        JFreeChart chart2 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 2", pieDataset2, true, true, true);//eiffel 1
+        PiePlot P2=(PiePlot)chart2.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartPanel p2 = new ChartPanel(chart2);
+        c.add(p2);
+        
+        fenetre.ajouterGraphes(c);
     }
-    //}
-    
+    /*
+    public void afficherGrapheHeureSeanceSemestre() {
+        SalleDAO sDAO = new SalleDAO();
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<String> s = new ArrayList<>();
+
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        
+        for (int i = 0 ; i <salles.size(); i++){
+            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
+            pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
+
+        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
+
+        PiePlot P=(PiePlot)chart.getPlot();
+
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartFrame frame = new ChartFrame("Capacité des salles pour Eiffel 1", chart );
+
+        frame.setVisible(true);
+        frame.setSize(500,500);
+   }*/
+     
     /**
-     * retourne true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
      * @param email
      * @param password
-     * @return
+     * @return true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
      */
     public Boolean demandeConnexion(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);       
@@ -81,11 +127,10 @@ public class Controle {
     }
     
     /**
-     * retourne une chaine de caractère avec prenom et nom de l'utilisateur courrant
      * utilisé pour set le titre de la frame
      * @param email
      * @param password
-     * @return
+     * @return une chaine de caractère avec prenom et nom de l'utilisateur courrant
      */
     public String utilisateurCourant(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);
@@ -93,10 +138,9 @@ public class Controle {
     }
     
     /**
-     * retourne un utilisateur à partir de son email et password
      * @param email
      * @param password
-     * @return
+     * @return un utilisateur à partir de son email et password
      */
     public Utilisateur recupUtilisateur(String email, String password) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
@@ -104,8 +148,7 @@ public class Controle {
     }
     
     /**
-     * récupération de tous les utilisateurs de la BDD
-     * @return
+     * @return tous les utilisateurs de la BDD dans un ArrayList d'utilisateurs
      */
     public ArrayList<Utilisateur> recupUtilisateurs() {
         UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
@@ -113,8 +156,7 @@ public class Controle {
     }
     
     /**
-     * récupération de tous les groupes de la BDD
-     * @return
+     * @return tous les groupes de la BDD
      */
     public ArrayList<Groupe> recupGroupes() {
         GroupeDAO gDAO = new GroupeDAO();
@@ -122,9 +164,8 @@ public class Controle {
     }
     
     /**
-     * si l'utilisateur est un étudiant, on récupère ses données étudiante
      * @param utilisateur
-     * @return
+     * @return les données étudiantes de l'utilisateur
      */
     public Etudiant recupEtudiant(Utilisateur utilisateur) {
         EtudiantDAO eDAO = new EtudiantDAO();
@@ -132,9 +173,8 @@ public class Controle {
     }
 
     /**
-     * si l'utilisateur est un enseignant, on récupère ses données enseignant
      * @param utilisateur
-     * @return
+     * @return les données enseignantes de l'utilisateur
      */
     public Enseignant recupEnseignant(Utilisateur utilisateur) {
         EnseignantDAO eDAO = new EnseignantDAO();
@@ -142,11 +182,10 @@ public class Controle {
     }
 
     /**
-     * retourne true si l'utilisateur est un admin
      * utilisé pour créer des listeners que seuls les admins ont
      * @param email
      * @param password
-     * @return
+     * @return true si l'utilisateur est un admin
      */
     public Boolean admin(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
@@ -154,11 +193,10 @@ public class Controle {
     }
 
     /**
-     * récupération de certaines données selon profil
      * utilisé pour set le titre de la frame
      * @param email
      * @param password
-     * @return
+     * @return certaines données selon profil
      */
     public String recupInfo(String email, String password) {
         Utilisateur u = recupUtilisateur(email, password);
@@ -667,9 +705,9 @@ public class Controle {
     }
 
     /**
-     * retourne un ArrayList de String (Prenom Non) de tous les utilisateurs de la BDD
+     * Permet d'obtenir tout les prenoms et noms des utilisateurs
      * utilisé pour la recherche du référent par exemple
-     * @return
+     * @return un ArrayList de tous les utilisateurs de la BDD
      */
     public ArrayList<String> allUsersToStrings() {
         ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
@@ -682,9 +720,9 @@ public class Controle {
     }
 
     /**
-     * retourne un ArrayList String (TD Promo) de tous les groupes de la BDD
+     * Permet d'obtenir tout les groupes par nom et nom de la promotion
      * utilisé pour la recherche du référent par exemple
-     * @return
+     * @return un ArrayList de tous les groupes de la BDD
      */
     public ArrayList<String> allGroupsToStrings() {
         ArrayList<Groupe> groupes = recupGroupes();
@@ -697,8 +735,8 @@ public class Controle {
     }
     
     /**
-     * Retourne tous les types de cours de la BDD
-     * @return
+     * Permet d'obtenir tout les Types de la BDD
+     * @return tous les types de cours de la BDD
      */
     public ArrayList<TypeCours> recupAllTypes(){
         TypeCoursDAO tDAO =new TypeCoursDAO();
@@ -706,8 +744,8 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de String de tous les types de cours de la BDD
-     * @return
+     * Permet d'obtenir tout les noms des types
+     * @return un ArrayList de tous les types de cours de la BDD
      */
     public ArrayList<String> allTypeToStrings(){
         ArrayList<TypeCours> types = recupAllTypes();
@@ -719,8 +757,8 @@ public class Controle {
     }
     
     /**
-     * Retourne tous les cours de la BDD
-     * @return
+     * Permet d'obtenir tout les cours de la BDD
+     * @return tous les cours de la BDD
      */
     public ArrayList<Cours> recupAllCours(){
         CoursDAO DAO =new CoursDAO();
@@ -728,8 +766,8 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de tous les cours de la BD
-     * @return
+     * Permet d'obtenir tout les nom des cours de la BDD
+     * @return un ArrayList de tous les cours de la BD
      */
     public ArrayList<String> allCoursToStrings(){
         ArrayList<Cours> cours = recupAllCours();
@@ -741,8 +779,8 @@ public class Controle {
     }
     
     /**
-     * Retourne toutes les salles de la BDD
-     * @return
+     * Permet d'obtenir tout les salles de la BDD
+     * @return toutes les salles de la BDD
      */
     public ArrayList<Salle> recupAllSalles(){
         SalleDAO DAO = new SalleDAO();
@@ -750,8 +788,8 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de string (nom de la salle , nom du site) de tous les salles de la BDD
-     * @return
+     * Permet d'obtenir tout les noms des salles et leur site
+     * @return un ArrayList de tous les salles de la BDD
      */
     public ArrayList<String> allSallesToStrings(){
         ArrayList<Salle> salles = recupAllSalles();
@@ -763,8 +801,8 @@ public class Controle {
     }
     
     /**
-     * retourne tous les enseignants de la BDD
-     * @return
+     * Permet d'obtenir tout les enseignants de la BDD
+     * @return tous les enseignants de la BDD
      */
     public ArrayList<Enseignant> recupAllEnseignants(){
         EnseignantDAO eDAO = new EnseignantDAO();
@@ -772,8 +810,8 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de tous les enseignants de la BDD
-     * @return
+     * Permet d'obtenir tout les eneignants par prénom et nom
+     * @return un ArrayList de tous les enseignants de la BDD
      */
     public ArrayList<String> allEnseignantsToStrings(){
         ArrayList<Enseignant> ens = recupAllEnseignants();
@@ -785,8 +823,8 @@ public class Controle {
     }
     
     /**
-     * retourne toutes les seances de la BDD
-     * @return
+     * Permet d'obtenir tout les séances de la BDD
+     * @return toutes les seances de la BDD
      */
     public ArrayList<Seance> recupAllSeances(){
         SeanceDAO dao = new SeanceDAO();
@@ -794,8 +832,8 @@ public class Controle {
     }
     
     /**
-     * retourne un ArrayList de toutes les seances de la BDD
-     * @return
+     * Permet d'obtenir tout les informations des toutes les séance sous forme d'une phrase pour chaque séance
+     * @return un ArrayList de toutes les seances de la BDD
      */
     public ArrayList<String> allSeancesToStrings(){
         ArrayList<Seance> seances = recupAllSeances();
@@ -816,9 +854,9 @@ public class Controle {
     }
     
     /**
-     * Calcul l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
+     * Calcul l'heure de fin à partir de l'heure de début
      * @param debut
-     * @return 
+     * @return l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
      */
     public String calculHeureFin(String debut)
     {
@@ -950,7 +988,7 @@ public class Controle {
     }
     
     /**
-     * Mise à jour au niveau visuelle si tout les données sont cohérents
+     * Mise à jour au niveau visuel si toutes les données sont cohérentss
      */
     public void majAllSeances()
     {   //Du controleur à la vue
@@ -1024,7 +1062,7 @@ public class Controle {
             //Etape 2 Changement de données
             if(okEtat && okEnseignants && okGroupesSalles)
             {  
-                System.out.println("Verification RAS, modification des données OK.");
+                System.out.println("Verification RAS, modification des données OK pous séance : "+idSeance);
                 //Changement de données dans la variable seance (localement) et dans celui BDD
                 //Etat est déjà set localement
                 setSeanceCoursNom(seance,(String)strings.get(4));

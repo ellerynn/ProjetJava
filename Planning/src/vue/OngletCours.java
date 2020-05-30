@@ -340,7 +340,7 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
-     * calcul de l'année scolaire en cours (retourne seulement le premier ex 2019/2020 -> 2019)
+     * calcul de l'année scolaire en cours (retourne seulement le premier ex 2019/2020 = 2019)
      * @return
      */
     public int calculAnneeScolaire() {

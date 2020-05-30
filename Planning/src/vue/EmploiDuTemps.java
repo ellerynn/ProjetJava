@@ -259,7 +259,7 @@ public class EmploiDuTemps extends JTabbedPane {
 
     /**
      * ajout des graphes dans Home
-     * @param pane
+     * @param c
      */
     void ajouterGraphes(ArrayList<ChartPanel> c) {
         ongletHome.ajouterGraphes(c);

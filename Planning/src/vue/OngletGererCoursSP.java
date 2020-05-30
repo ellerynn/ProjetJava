@@ -4,10 +4,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -119,7 +123,7 @@ public class OngletGererCoursSP extends JSplitPane {
         
         c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
         date.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
-        date.setEditor(new JSpinner.DateEditor(date, "dd/MM/yyyy hh:mm"));
+        date.setEditor(new JSpinner.DateEditor(date, "dd/MM/yyyy HH:mm"));
         container2.add(date, c);
         
         JLabel etats = new JLabel("Etat :");
@@ -207,6 +211,7 @@ public class OngletGererCoursSP extends JSplitPane {
         
         c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
         date2.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
+        date2.setEditor(new JSpinner.DateEditor(date2, "dd/MM/yyyy HH:mm"));
         container2.add(date2, c);
         
         JLabel etats2 = new JLabel("Etat :");
@@ -501,12 +506,12 @@ public class OngletGererCoursSP extends JSplitPane {
     }
     
     /**
-     * ???????????????????????????
+     * rempli une JComboBox avec un ArrayList<String> 
      * @param box
      * @param intitule
      * @param string
     */
-    public void remplirComboBoxType(JComboBox box, String intitule, ArrayList<String> string) {
+    public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
         for(int i = 0; i < string.size(); i++) {
             box.addItem(string.get(i));
@@ -541,5 +546,58 @@ public class OngletGererCoursSP extends JSplitPane {
     public JRadioButton getEtatV()
     {
         return etatV;
+    }
+    /**
+     * 
+     * @return 
+     */
+    public String getDate2()
+    {
+        String temp = String.valueOf(date2.getValue()).substring(11, 19); //On récup l'heure
+        String jour=DateFormat.getDateInstance(3).format(date2.getValue()).substring(0,2); //On recup le jour
+        String mois=DateFormat.getDateInstance(3).format(date2.getValue()).substring(3,5); //On recup le mois
+        String annee = DateFormat.getDateInstance(2).format(date2.getValue()).substring(8); //On récup l'année en yyyy
+        temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
+        return temp;
+    }
+    /**
+     * 
+     * @return 
+     */
+    public JRadioButton getEtatEC2()
+    {
+        return etatEC2;
+    }
+    /**
+     * 
+     * @return 
+     */
+    public JRadioButton getEtatV2()
+    {
+        return etatV2;
+    }
+    /**
+     * 
+     * @return 
+     */
+    public JRadioButton getEtatA()
+    {
+        return etatA;
+    }
+    /**
+     * Set le Jspinner date2 (date et heure)
+     * @param val 
+     */
+    public void setDate2(String val)
+    {
+        if(!val.equals(getDate2())) //Si les données ne sont pas pareil, on set sinon on fait rien (pour éviter de rollback)
+        {
+            try { 
+                Date laDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(val);
+                date2.setValue(laDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(OngletServicePlanification.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

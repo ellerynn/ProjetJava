@@ -82,10 +82,9 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
       
     /**
-     * trouver utilisateur via email et password
      * @param email
      * @param psw
-     * @return
+     * @return utilisateur via email et password
      */
     public Utilisateur find(String email, String psw) {
         Utilisateur utilisateur = new Utilisateur();      
@@ -95,16 +94,22 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
     
     /**
-     * trouver utilisateur via nom et prenom
      * @param prenom
      * @param nom
-     * @return
+     * @return utilisateur via nom et prenom
      */
     public Utilisateur findByName(String prenom, String nom) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE Prenom = '" + prenom + "' AND Nom = '" + nom +"'";
         requeteFind(maRequete, utilisateur);
         return utilisateur;  
+    }
+    
+    public Utilisateur findForSearch(String recherche) {
+        Utilisateur utilisateur = new Utilisateur();      
+        String maRequete = "SELECT * FROM utilisateur WHERE Prenom LIKE '" + recherche + "' OR Nom LIKE '" + recherche +"'";
+        requeteFind(maRequete, utilisateur);
+        return utilisateur;
     }
     
     /**

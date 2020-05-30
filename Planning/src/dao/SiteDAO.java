@@ -111,9 +111,8 @@ public class SiteDAO extends DAO<Site> {
     }
     
     /**
-     * trouver tous les sites
      * pour l'admin
-     * @return
+     * @return un ArrayList de Sites
      */
     public ArrayList<Site> findAllSites() //NE SERA PEUT ETRE JAMAIS USE (car salles possèdent dj l'info du site)
     {
@@ -123,6 +122,22 @@ public class SiteDAO extends DAO<Site> {
             
                 while(result.next()) {
                     sites.add(find(result.getInt("ID")));
+                }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("pas trouvé");
+        }
+        return sites;
+    }
+    
+    public ArrayList<String> allSitesToString() {
+        ArrayList<String> sites = new ArrayList<>();
+        try {
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM site ORDER BY ID"); // Récup tout types
+            
+                while(result.next()) {
+                    sites.add(find(result.getInt("ID")).getNom());
                 }
         }
         catch (SQLException e) {

@@ -6,6 +6,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
@@ -17,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.jfree.chart.ChartPanel;
 
 /**
@@ -118,8 +118,9 @@ public class Fenetre extends JFrame {
         edt.getBoutonDeco().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton connexion
             c.previous(content); 
             rendreInvisible();
+            edt.remove(edt.getOngletSP());
             //Nouveau titre de la frame
-            //setTitle("Connexion"); 
+            setTitle("Connexion"); 
         });
         
         //COMBOBOX DES SEMAINES dans Cours et dans Salles
@@ -173,9 +174,20 @@ public class Fenetre extends JFrame {
             public void mouseExited(MouseEvent me) {}
         });
         
-        /*edt.getBoutonGraphe().addActionListener((ActionEvent event) -> { //Définition de l'action du bouton afficher graphe
-            controle.afficherGrapheHeureSeanceSemestre();
-        });*/
+        edt.getRechercheBoutonCours().addActionListener((ActionEvent event) -> {
+            String recherche = edt.getRechercheBarreCours().getText();
+            String semaine = edt.getSemaineCours().getSelectedItem().toString();
+            if (semaine.equals("Semaine")) {
+                edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                controle.rechercheUtilisateur(recherche, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            }
+
+            else {
+                //System.out.println("Semaine selectionnee : " + semaine);
+                edt.setEdtCours(Integer.parseInt(semaine));
+                controle.rechercheUtilisateur(recherche, Integer.parseInt(semaine));
+            }
+        });
     }
     
     /**
@@ -222,7 +234,7 @@ public class Fenetre extends JFrame {
      * intialisation des graphes dans Home
      */
     public void initGraphes() {
-        controle.creationGraphe();
+        controle.creationGraphe(connexion.getEmail(), connexion.getPassword());
     }
     
     /**
@@ -454,11 +466,12 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     *
+     * ajouter les graphes de reporting
      * @param c
+     * @param t
      */
-    public void ajouterGraphes(ArrayList<ChartPanel> c) {
-        edt.ajouterGraphes(c);
+    public void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
+        edt.ajouterGraphes(c, t);
     }
 }
 

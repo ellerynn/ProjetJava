@@ -189,21 +189,29 @@ public class OngletHome extends JSplitPane {
      * ajout des graphes dans l'onglet Home
      * @param c
      */
-    void ajouterGraphes(ArrayList<ChartPanel> c) {
+    void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
+        graphes.removeAll();
         graphes.setLayout(new GridBagLayout()); //Initialisation du container
-        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
-        t.fill = GridBagConstraints.BOTH;
+        GridBagConstraints g = new GridBagConstraints(); //Contraintes d'ajout des composants
+        g.fill = GridBagConstraints.BOTH;
         //t.insets = new Insets(10,10,10,10);
-        t.gridx = 0; t.gridy = 0;
+        g.gridx = 0; g.gridy = 0;
         //t.anchor = GridBagConstraints.FIRST_LINE_START;
-        t.weightx = 1; t.weighty = 1;
+        g.weightx = 1; g.weighty = 1;
         
         graphes.setBackground(Color.yellow);
         
         for(int i=0;i<c.size();i++) {
-            graphes.add(c.get(i), t);
-            t.gridx++;
-            System.out.println("gridx = " + t.gridx);
+            graphes.add(c.get(i), g);
+            g.gridx++;
+            System.out.println("gridx = " + g.gridx);
+        }
+        
+        g.gridy = 1; g.gridx = 0;
+        for(int i=0;i<t.size();i++) {
+            graphes.add(t.get(i), g);
+            g.gridx++;
+            System.out.println("gridx = " + g.gridx);
         }
     }
 }

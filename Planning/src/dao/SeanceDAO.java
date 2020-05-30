@@ -164,9 +164,8 @@ public class SeanceDAO extends DAO<Seance> {
     
     /**
      * find
-     * trouver seance via id
      * @param id
-     * @return
+     * @return seance via id
      */
     @Override
     public Seance find(int id) {
@@ -237,10 +236,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-      trouver seance via id utilisateur et semaine
      * @param id
      * @param semaine
-     * @return
+     * @return seance via id utilisateur et semaine
      */
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
@@ -282,12 +280,11 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * trouver seance via utilisateur et jour
      * @param id
      * @param jour
      * @param mois
      * @param annee
-     * @return
+     * @return seance via utilisateur et jour
      */
     public ArrayList<Seance> findSeancesByUserAndDay(int id, int jour, int mois, int annee){
         ArrayList<Seance> listSeancesbyDay = new ArrayList<>();
@@ -342,10 +339,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * trouver seance via id groupe et semaine
      * @param id
      * @param semaine
-     * @return
+     * @return seance via id groupe et semaine
      */
     public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
     {
@@ -372,10 +368,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * trouver seance via id promo et semaine
      * @param id
      * @param semaine
-     * @return
+     * @return seance via id promo et semaine
      */
     public ArrayList<Seance> findSeancesByPromoAndWeek(int id, int semaine)
     {
@@ -403,10 +398,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * trouver seance via id salle et semaine
      * @param id
      * @param semaine
-     * @return
+     * @return seance via id salle et semaine
      */
     public ArrayList<Seance> findSeancesBySalle(int id, int semaine)
     {
@@ -434,11 +428,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
        
     /**
-     * récupère toutes les seances d'un utilisateur dans l'ordre
      * @param id
      * @param debut
      * @param fin
-     * @return
+     * @return toutes les seances d'un utilisateur dans l'ordre
      */
     public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
     {
@@ -454,7 +447,7 @@ public class SeanceDAO extends DAO<Seance> {
             if(result.first())
             {
                 String requete = new String();
-                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2) { //Professeur, trouver les séances de ce prof
+                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2 || result.getInt("Droit") == 1) { //Professeur, trouver les séances de ce prof
                     requete = "SELECT Seance.ID FROM Seance\n" +
                               "LEFT JOIN seance_enseignants SE ON SE.ID_seance = Seance.ID " +
                               "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
@@ -510,11 +503,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * renvoie un array liste avec que les séances d'une matière avec les mêmes Groupes
      * @param fourreTout
      * @param indice
      * @param toCompare
-     * @return
+     * @return un array liste avec que les séances d'une matière avec les mêmes Groupes
      */
     public ArrayList<Seance> rec1 (ArrayList<Seance> fourreTout, int indice, ArrayList<Object> toCompare)
     {
@@ -524,7 +516,6 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     *
      * @param fourreTout
      * @param identique
      * @param indice
@@ -575,9 +566,8 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     *
      * @param liste
-     * @return
+     * @return le nombre total d'heures des seances
      */
     public String heureTotalSeances(ArrayList<Seance> liste)
     {

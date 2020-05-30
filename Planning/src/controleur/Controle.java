@@ -7,6 +7,7 @@ import dao.GroupeDAO;
 import dao.PromotionDAO;
 import dao.SalleDAO;
 import dao.SeanceDAO;
+import dao.SiteDAO;
 import dao.TypeCoursDAO;
 import dao.UtilisateurDAO;
 import java.awt.Component;
@@ -59,290 +60,7 @@ public class Controle {
         //Ouverture interface graphique        
         new Controle();
     }
-
-    public void creationGraphe() {
-        ArrayList<Salle> salles = recupAllSalles();
-        ArrayList<ChartPanel> c = new ArrayList<>();
-
-        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
-        
-        for (int i = 0 ; i <salles.size(); i++){
-            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
-            pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-           }
-
-        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
-        PiePlot P=(PiePlot)chart.getPlot();
-        //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartPanel p = new ChartPanel(chart);
-        c.add(p);
-        
-        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 1
-        
-        for (int i = 0 ; i <salles.size(); i++){
-            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
-            pieDataset2.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-        }
-
-        JFreeChart chart2 = ChartFactory.createPieChart("Capacité des salles pour Eiffel 2", pieDataset2, true, true, true);//eiffel 1
-        PiePlot P2=(PiePlot)chart2.getPlot();
-        //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartPanel p2 = new ChartPanel(chart2);
-        c.add(p2);
-        fenetre.ajouterGraphes(c);
-  } //premier graphe
   
-  public void afficherGrapheHeureSeanceSemestre() {
-        ArrayList<Seance> seances = recupAllSeances();
-        ArrayList<Cours> cours = recupAllCours();
-        
-        int calculheuretotal = 0;int calculheuretotal0 = 0;int calculheuretotal1 = 0;int calculheuretotal2 = 0;int calculheuretotal3 = 0;int calculheuretotal4 = 0;int calculheuretotal5 = 0;int calculheuretotal6 = 0; int calculheuretotal7 = 0;int calculheuretotal8 = 0;
-        int comparaison = 0;int comparaison0 = 0;int comparaison1 = 0;int comparaison2 = 0;int comparaison3 = 0;int comparaison4 = 0;int comparaison5 = 0; int comparaison6 = 0; int comparaison7 = 0; int comparaison8 = 0;
-         
-        
-        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
-        
-        for (int i = 0 ; i <seances.size(); i++){
-            if(seances.get(i).getCours().getId() == 1){
-                if(calculheuretotal!=60){
-                    comparaison += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal==60)
-                     {
-                         comparaison += 1 ;
-                         calculheuretotal = 0;
-                     }
-                }     
-            }
-            if(seances.get(i).getCours().getId() == 2){
-                if(calculheuretotal0!=60){
-                    comparaison0 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal0 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal0==60){
-                         comparaison0 += 1 ;
-                         calculheuretotal0 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 3){
-                if(calculheuretotal1!=60){
-                    comparaison1 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal1 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal1==60){
-                         comparaison1 += 1 ;
-                         calculheuretotal1 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 4){
-                if(calculheuretotal2!=60){
-                    comparaison2 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal2 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal2==60){
-                         comparaison2 += 1 ;
-                         calculheuretotal2 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 5){
-                if(calculheuretotal3!=60){
-                    comparaison3 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal3 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal3==60){
-                         comparaison3 += 1 ;
-                         calculheuretotal3 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 6){
-                if(calculheuretotal4!=60){
-                    comparaison4 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal4 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal4==60){
-                         comparaison4 += 1 ;
-                         calculheuretotal4 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 7){
-                if(calculheuretotal5!=60){
-                    comparaison5 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal5 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal5==60){
-                         comparaison5 += 1 ;
-                         calculheuretotal5 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 8){
-                if(calculheuretotal6!=60){
-                    comparaison6 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal6 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal6==60){
-                         comparaison6 += 1 ;
-                         calculheuretotal6 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 9){
-                if(calculheuretotal7!=60){
-                    comparaison7 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                     calculheuretotal7 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal7==60){
-                         comparaison7 += 1 ;
-                         calculheuretotal7 = 0;
-                     }
-                } 
-            }
-            if(seances.get(i).getCours().getId() == 10){
-                if(calculheuretotal8!=60){
-                    comparaison8 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
-                    calculheuretotal8 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
-                     if(calculheuretotal8==60){
-                         comparaison8 += 1 ;
-                         calculheuretotal8 = 0;
-                     }
-                } 
-            }             
-        }
-        
-        for(int j =0; j<cours.size();j++)
-        {
-            if(j == 0)
-            {
-                if(calculheuretotal!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison + "h"+calculheuretotal, new Integer(comparaison));
-                if(calculheuretotal==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison+"h", new Integer(comparaison));
-            }
-            
-            if(j == 1)
-            {
-                if(calculheuretotal0!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison0 + "h"+calculheuretotal0, new Integer(comparaison0));
-                if(calculheuretotal0==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison0+"h", new Integer(comparaison0));
-            }
-            if(j == 2)
-            {
-                if(calculheuretotal1!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison1 + "h"+calculheuretotal1, new Integer(comparaison1));
-                if(calculheuretotal1==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison1+"h", new Integer(comparaison1));
-            }
-            if(j == 3)
-            {
-                if(calculheuretotal2!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison2 + "h"+calculheuretotal2, new Integer(comparaison2));
-                if(calculheuretotal2==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison2+"h", new Integer(comparaison2));
-            }
-            if(j == 4)
-            {
-                if(calculheuretotal3!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison3 + "h"+calculheuretotal3, new Integer(comparaison3));
-                if(calculheuretotal3==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison3+"h", new Integer(comparaison3));
-            }
-            if(j == 5)
-            {
-                if(calculheuretotal4!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison4 + "h"+calculheuretotal4, new Integer(comparaison4));
-                if(calculheuretotal4==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison4+"h", new Integer(comparaison4));
-            }
-            if(j == 6)
-            {
-                if(calculheuretotal5!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison5 + "h"+calculheuretotal5, new Integer(comparaison5));
-                if(calculheuretotal5==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison5+"h", new Integer(comparaison5));
-            }
-            if(j == 7)
-            {
-                if(calculheuretotal6!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison6 + "h"+calculheuretotal6, new Integer(comparaison6));
-                if(calculheuretotal6==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison6 + "h", new Integer(comparaison6));
-            }
-            if(j == 8)
-            {
-                if(calculheuretotal7!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison7 + "h"+calculheuretotal7, new Integer(comparaison7));
-                if(calculheuretotal7==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison7+"h", new Integer(comparaison7));
-            }
-            if(j == 9)
-            {
-                if(calculheuretotal8!=0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison8 + "h"+calculheuretotal8, new Integer(comparaison8));
-                if(calculheuretotal8==0)
-                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison8+"h", new Integer(comparaison8));
-            }
-
-        }
-        
-        JFreeChart chart = ChartFactory.createPieChart("Nombres d'heures total d'un cours dans un semestre", pieDataset, true, true, true);//eiffel 1
-        PiePlot P=(PiePlot)chart.getPlot();
-        //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartFrame frame = new ChartFrame("Nombres d'heures total d'un cours dans un semestre", chart );
-        frame.setVisible(true);
-        frame.setSize(500,500);
-  }//deuxieme graphe
-  
-   public void afficherGrapheSeanceSemestre() {
-        ArrayList<Seance> seances = recupAllSeances();
-        ArrayList<Cours> cours = recupAllCours();
-        //declaration de plusieurs entiers, j'anticipe le nombre de cours en tout, car on peu en rajouter
-        int calculseance = 0;int calculseance0 = 0;int calculseance1 = 0;int calculseance2 = 0;int calculseance3 = 0;int calculseance4 = 0;int calculseance5 = 0;
-        ArrayList<String> s = new ArrayList<>();
-        
-        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
-        
-        //boucle qui permet de compter le nombre de seances pour tous les differents cours sur un semestre
-        for (int i = 0 ; i <seances.size(); i++){
-            if(seances.get(i).getCours().getId() == 1)
-                calculseance ++; 
-            if(seances.get(i).getCours().getId() == 2)
-                calculseance0 ++; 
-            if(seances.get(i).getCours().getId() == 3)
-                calculseance1 ++;
-            if(seances.get(i).getCours().getId() == 4)
-                calculseance2 ++;
-            if(seances.get(i).getCours().getId() == 5)
-                calculseance3 ++;
-            if(seances.get(i).getCours().getId() == 6)
-                calculseance4 ++; 
-            if(seances.get(i).getCours().getId() == 7)
-                calculseance5 ++;
-        }
-        for(int j =0; j<cours.size();j++)
-        {
-            if(j==0)
-            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance, new Integer(calculseance));
-            if(j==1)
-            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance0, new Integer(calculseance0));
-            if(j==2)
-            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance1, new Integer(calculseance1));
-            if(j==3)
-            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance2, new Integer(calculseance2));
-            if(j==4)
-            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance3, new Integer(calculseance3));
-            if(j==5)
-            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance4, new Integer(calculseance4));
-            if(j==6)
-            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance5, new Integer(calculseance5));
-        }
-        
-
-        JFreeChart chart = ChartFactory.createPieChart("Nombres de seances total d'un cours dans un semestre", pieDataset, true, true, true);//eiffel 1
-        PiePlot P=(PiePlot)chart.getPlot();
-        //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartFrame frame = new ChartFrame("Nombres de seances total d'un cours dans un semestre", chart );
-        frame.setVisible(true);
-        frame.setSize(500,500);
-  }//troisieme graphe
-    
     /**
      * @param email
      * @param password
@@ -362,6 +80,17 @@ public class Controle {
     public String utilisateurCourant(String email, String password) {
         Utilisateur utilisateur = recupUtilisateur(email, password);
         return utilisateur.getPrenom() + " " + utilisateur.getNom();
+    }
+    
+    /**
+     * utilisé pour créer des listeners que seuls les admins ont
+     * @param email
+     * @param password
+     * @return true si l'utilisateur est un admin
+     */
+    public Boolean admin(String email, String password) {
+        Utilisateur u = recupUtilisateur(email, password);
+        return u.getDroit() == 1;
     }
     
     /**
@@ -388,7 +117,7 @@ public class Controle {
     public ArrayList<Groupe> recupGroupes() {
         GroupeDAO gDAO = new GroupeDAO();
         return gDAO.find();
-    }
+    }    
     
     /**
      * @param utilisateur
@@ -407,16 +136,41 @@ public class Controle {
         EnseignantDAO eDAO = new EnseignantDAO();
         return eDAO.find(utilisateur.getId());
     }
-
+    
     /**
-     * utilisé pour créer des listeners que seuls les admins ont
-     * @param email
-     * @param password
-     * @return true si l'utilisateur est un admin
+     * Permet d'obtenir tout les Types de la BDD
+     * @return tous les types de cours de la BDD
      */
-    public Boolean admin(String email, String password) {
-        Utilisateur u = recupUtilisateur(email, password);
-        return u.getDroit() == 1;
+    public ArrayList<TypeCours> recupAllTypes(){
+        TypeCoursDAO tDAO =new TypeCoursDAO();
+        return tDAO.findAllTypes();
+    }
+    
+    /**
+     * Permet d'obtenir tout les cours de la BDD
+     * @return tous les cours de la BDD
+     */
+    public ArrayList<Cours> recupAllCours(){
+        CoursDAO DAO =new CoursDAO();
+        return DAO.findAllCours();
+    }
+    
+    /**
+     * Permet d'obtenir tout les salles de la BDD
+     * @return toutes les salles de la BDD
+     */
+    public ArrayList<Salle> recupAllSalles(){
+        SalleDAO DAO = new SalleDAO();
+        return DAO.findAllSalles();
+    }
+    
+    /**
+     * Permet d'obtenir tout les séances de la BDD
+     * @return toutes les seances de la BDD
+     */
+    public ArrayList<Seance> recupAllSeances(){
+        SeanceDAO dao = new SeanceDAO();
+        return dao.findAllSeances();
     }
 
     /**
@@ -447,12 +201,643 @@ public class Controle {
         if(u.getDroit() == 1) {
             info = "Administrateur";
             fenetre.getEdt().addOngletServicePlanification();
+            fenetre.rendreVisible();
         }
         
         return info;
     }
      
     /**
+     * Permet d'obtenir tout les prenoms et noms des utilisateurs
+     * utilisé pour la recherche du référent par exemple
+     * @return un ArrayList de tous les utilisateurs de la BDD
+     */
+    public ArrayList<String> allUsersToStrings() {
+        ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
+        ArrayList<String> preNom = new ArrayList<>();
+        
+        for(int i=0;i<utilisateurs.size();i++)
+            preNom.add(utilisateurs.get(i).getPrenom() + " " + utilisateurs.get(i).getNom());
+         
+        return preNom;
+    }
+
+    /**
+     * Permet d'obtenir tout les groupes par nom et nom de la promotion
+     * utilisé pour la recherche du référent par exemple
+     * @return un ArrayList de tous les groupes de la BDD
+     */
+    public ArrayList<String> allGroupsToStrings() {
+        ArrayList<Groupe> groupes = recupGroupes();
+        ArrayList<String> gp = new ArrayList<>();
+        
+        for(int i=0;i<groupes.size();i++)
+            gp.add(groupes.get(i).getNom() + " " + groupes.get(i).getPromotion().getNom());
+         
+        return gp;
+    }
+    
+    /**
+     * Permet d'obtenir tout les noms des types
+     * @return un ArrayList de tous les types de cours de la BDD
+     */
+    public ArrayList<String> allTypeToStrings(){
+        ArrayList<TypeCours> types = recupAllTypes();
+        ArrayList<String> tp = new ArrayList<>();
+        
+        for (int i = 0 ; i <types.size(); i++)
+            tp.add(types.get(i).getNom());
+        return tp;
+    }
+    
+    /**
+     * Permet d'obtenir tout les nom des cours de la BDD
+     * @return un ArrayList de tous les cours de la BD
+     */
+    public ArrayList<String> allCoursToStrings(){
+        ArrayList<Cours> cours = recupAllCours();
+        ArrayList<String> c = new ArrayList<>();
+        
+        for (int i = 0 ; i <cours.size(); i++)
+            c.add(cours.get(i).getNom());
+        return c;
+    }
+    
+    /**
+     * Permet d'obtenir tout les noms des salles et leur site
+     * @return un ArrayList de tous les salles de la BDD
+     */
+    public ArrayList<String> allSallesToStrings(){
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<String> s = new ArrayList<>();
+        
+        for (int i = 0 ; i <salles.size(); i++)
+            s.add(salles.get(i).getNom()+" "+ salles.get(i).getSite().getNom());
+        return s;
+    }
+    
+    /**
+     * Permet d'obtenir tout les eneignants par prénom et nom
+     * @return un ArrayList de tous les enseignants de la BDD
+     */
+    public ArrayList<String> allEnseignantsToStrings(){
+        EnseignantDAO eDAO = new EnseignantDAO();
+        ArrayList<Enseignant> ens = eDAO.findAllTeacher();
+        ArrayList<String> s = new ArrayList<>();
+        
+        for (int i = 0 ; i <ens.size(); i++)
+            s.add(ens.get(i).getPrenom()+" "+ ens.get(i).getNom());
+        return s;
+    }
+    
+    /**
+     *
+     * @return un ArrayList de String (nom des sites)
+     */
+    public ArrayList<String> allSitesToStrings() {
+        SiteDAO sDAO = new SiteDAO();
+        return sDAO.allSitesToString();
+    }
+    
+    /**
+     * Permet d'obtenir tout les informations des toutes les séance sous forme d'une phrase pour chaque séance
+     * @return un ArrayList de toutes les seances de la BDD
+     */
+    public ArrayList<String> allSeancesToStrings(){
+        ArrayList<Seance> seances = recupAllSeances();
+        ArrayList<String> string = new ArrayList<>();
+        for (int i = 0 ; i < seances.size() ; i++)
+        {
+            ArrayList<String> temp = seances.get(i).toArrayListOfString();
+            String msg = "Seance N°"+seances.get(i).getId()+" "+seances.get(i).getSemaine()+" "+seances.get(i).getDate()+" "+seances.get(i).getHeureDebut()+"-"+seances.get(i).getHeureFin()+" ";
+            if(seances.get(i).getEtat() != 2) //si pas valide, car temp est de taille 6
+                msg+=temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4)+" "+temp.get(5);
+            else //Si valide temp est de taille 5
+                msg+= temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4);
+            
+            string.add(msg);
+        }
+        
+        return string;
+    }
+
+    /**
+     * creations des graphes dans Home
+     */
+    public void creationGraphe(String email, String password) {
+        //GRAPHES SITES
+        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<String> sites = allSitesToStrings();
+        ArrayList<ChartPanel> c = new ArrayList<>();
+        
+        for(int j=0;j<sites.size();j++) {
+            DefaultPieDataset pieDataset = new DefaultPieDataset();
+            for (int i = 0 ; i <salles.size(); i++){
+                if(salles.get(i).getSite().getNom().equals(sites.get(j)))
+                    pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+            }
+            JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour " + sites.get(j), pieDataset, true, true, true);//eiffel 1
+            PiePlot P =(PiePlot)chart.getPlot();
+            ChartPanel p = new ChartPanel(chart);
+            c.add(p);
+        }
+        
+        //GRAPHES SEANCES -> combien de cours restant sur l'annee scolaire en cours
+        String debut = fenetre.calculAnneeScolaire().substring(0, 4) + "-09-01";
+        int pos = fenetre.calculAnneeScolaire().indexOf("/");
+        String fin = fenetre.calculAnneeScolaire().substring(pos+1) + "-08-01";
+        //Pour l'utilisateur connecté
+        SeanceDAO sDAO = new SeanceDAO();
+        Utilisateur u = recupUtilisateur(email, password);
+        ArrayList<ChartPanel> t = new ArrayList();
+        if(u.getDroit() != 1) {
+            ArrayList<ArrayList<Seance>> seances = sDAO.findSeancesOfUserByDate(u.getId(), debut, fin);
+            int compteur = 0;
+            
+            DefaultPieDataset pieDataset = new DefaultPieDataset();
+            for(int i=0;i<seances.size();i++) {
+
+                for(int j=0;j<seances.get(i).size();j++) {
+                    compteur++; //Compte le nombre de seances pour un cours
+                    pieDataset.setValue(seances.get(i).get(j).getCours().getNom(), new Integer(compteur));
+                }
+            }
+            JFreeChart chart = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset, true, true, true);
+            PiePlot P =(PiePlot)chart.getPlot();
+            ChartPanel p = new ChartPanel(chart);
+            t.add(p);
+        }
+        else {
+            ArrayList<Seance> seances = recupAllSeances();
+            int compteur = 0;
+            
+            DefaultPieDataset pieDataset = new DefaultPieDataset();
+            for(int j=0;j<seances.size();j++) {
+                compteur++; //Compte le nombre de seances pour un cours
+                pieDataset.setValue(seances.get(j).getCours().getNom(), new Integer(compteur));
+            }
+            JFreeChart chart = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset, true, true, true);
+            PiePlot P =(PiePlot)chart.getPlot();
+            ChartPanel p = new ChartPanel(chart);
+            t.add(p);
+        }
+        
+        fenetre.ajouterGraphes(c, t);
+    } 
+    
+    public void rechercheUtilisateur(String recherche, int semaine) {
+        //Saisi d'un nom et prenom, peut etre pas complets
+        int pos = recherche.indexOf(" ");
+        UtilisateurDAO uDAO = new UtilisateurDAO();
+        Utilisateur u = new Utilisateur();
+        if(pos != -1) {
+            String prenom = recherche.substring(0, pos-1);
+            String nom = recherche.substring(pos+1);
+            u = uDAO.findByName(prenom, nom);
+        }
+        //Saisi d'un nom ou prenom, peut etre pas complet
+        else {
+            u = uDAO.findForSearch(recherche);
+        }
+        
+        if(u.getEmail() != null && u.getPassword() != null) {
+            seancesEdt(semaine, u.getEmail(), u.getPassword());
+        }
+            
+    }
+    
+    /**
+     * Calcul l'heure de fin à partir de l'heure de début
+     * @param debut
+     * @return l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
+     */
+    public String calculHeureFin(String debut)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020,01,01, Integer.parseInt(debut.substring(0,2)), Integer.parseInt(debut.substring(3,5)),0); //Date au pif
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        cal.add(Calendar.MINUTE, 30);
+        Date date = cal.getTime();
+        String fin = date.toString().substring(11,19); //On récupère la position de l'heure
+        return fin;
+    }
+    
+    /**
+     * Demande d'ajout d'une séance par la vue vers le controleur en récupérant tout les données nécessaires saisies par l'user
+     * @param strings 
+     */
+    public void demandeAddSeance(ArrayList<Object> strings)
+    {   
+        SalleDAO salleDAO = new SalleDAO();
+        GroupeDAO gDAO = new GroupeDAO();
+        EnseignantDAO uDAO = new EnseignantDAO();
+        TypeCoursDAO tDAO = new TypeCoursDAO();
+        CoursDAO cDAO = new CoursDAO();
+        if(strings.size() != 9)
+            System.out.println("Que "+strings.size()+" Champs sur 9 obligatoires sont remplis");
+        else{
+            int semaine = Integer.parseInt((String)strings.get(0));//Semaine
+            String heureDebut = (String)strings.get(1);//Heure de début
+            String heureFin = calculHeureFin(heureDebut);//Heure de fin
+            String date = (String)strings.get(2);//Date
+            int etat = Integer.parseInt((String)strings.get(3));//Etat
+            Cours cours = cDAO.findByName((String)strings.get(4));//Cours
+            TypeCours type = tDAO.findByName((String)strings.get(5));//Type
+            
+            List list;
+            ArrayList<Enseignant> enseignants = new ArrayList<>();    
+            if(strings.get(6) != null)
+            {
+                list = (List)strings.get(6);                       
+                for (Iterator it = list.iterator() ; it.hasNext(); ){
+                    enseignants.add(uDAO.findByName((String)it.next()));//Enseignants
+                }
+            }
+            
+            ArrayList<Groupe> groupes = new ArrayList<>();
+            if(strings.get(7) != null)
+            {
+                list = (List)strings.get(7);
+                for (Iterator it = list.iterator() ; it.hasNext(); ){
+                    groupes.add(gDAO.findByName((String)it.next()));//Groupes
+                }
+            }
+            
+            ArrayList<Salle> salles = new ArrayList<>();
+            if(strings.get(8) != null)
+            {
+                list = (List)strings.get(8);
+                for (Iterator it = list.iterator() ; it.hasNext(); ){
+                    salles.add(salleDAO.findByName((String)it.next()));//Salles
+                }
+            }
+            ajouterSeanceInModel(semaine,date,heureDebut,heureFin,etat,cours,type,groupes, enseignants,salles);
+        }
+    }
+    
+    /**
+     * Le controleur demande au model l'ajout d'une séance en lui fournissant les données issues de la vue
+     * le modèle renvoie des réponses vers le controleur pour savoir si tels données sont acceptables et si 
+     * toutes les données saisies sont cohérentes
+     * @param Semaine
+     * @param Date
+     * @param Heure_Debut
+     * @param Heure_Fin
+     * @param Etat
+     * @param cours
+     * @param type
+     * @param groupes
+     * @param enseignants
+     * @param salles 
+     */
+    public void ajouterSeanceInModel(int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, Cours cours,TypeCours type, ArrayList<Groupe> groupes, ArrayList<Enseignant> enseignants, ArrayList<Salle> salles) 
+    {   
+        SeanceDAO sDAO = new SeanceDAO();
+        Seance seance = new Seance(Semaine, Heure_Debut, Heure_Fin,Date, Etat, cours, type); //instanciation de la nvlle seance avec les premiers données
+        boolean okForCreate = true; //On considère au début que tout est ok pour créer cette séance dans la BDD
+        //On ajoute les salles en accord avec leur créneau dispo/Duplication sans vérif la capa car rien à vérifier au début vu qu'aucun grp n'ai encore add dans séance
+        for (int i = 0 ; i < salles.size();i++)
+        {
+            if (sDAO.canIAjouterSalleSeance(seance, salles.get(i).getId()))
+               seance.ajouterSalle(salles.get(i)); 
+            else{
+                okForCreate = false;
+                i = 100; // Dès qu'il y a un false on arrête tout
+            }
+        }
+        if(okForCreate) //Si les vérifs des salles sont bon, on continue
+        {
+            for (int i = 0; i <Math.max(groupes.size(), enseignants.size()); i++) // Pour éviter 2 for
+            {
+                if (i< groupes.size())
+                {
+                    //Si groupes non duplication/pbl crénaux /Pas de pbl de place, tout est bon
+                    if (sDAO.canIAjoutGroupeSeance(seance, groupes.get(i).getId()))
+                        seance.ajouterGroupe(groupes.get(i));
+                    else{
+                        okForCreate = false;
+                        i = 1000; //On arrete tout
+                    }
+                }
+                if (i<enseignants.size())
+                {   //Si enseignants non duplication/pbl crénaux tout est bon
+                    if ( sDAO.canIAjouterEnseignantSeance(seance, enseignants.get(i).getId()))
+                        seance.ajouterEnseignant(enseignants.get(i));
+                    else{
+                        okForCreate = false;
+                        i = 1000; //On arrete tout
+                    }
+                }
+            }
+        }
+        if (okForCreate) //Si tout les conditions sont réunis, on create, si il y a eu un faux, on ne create pas.
+        {
+            seance = sDAO.create(seance);
+            System.out.println("Ajouter avec succes");
+            majAllSeances();
+        }else{
+            System.out.println("La seance n'a pas été ajouté");
+        }
+    }
+    
+    /**
+     * Mise à jour au niveau visuel si toutes les données sont cohérentss
+     */
+    public void majAllSeances()
+    {   //Du controleur à la vue
+        fenetre.remplirListSeances();
+    }
+   
+    /**
+     * Demande de la vue pour savoir quelles sont les informations qui doivent être séléctionner dans le vue dans l'ongletGererCoursSP
+     * en fournissant au controleur l'id de cette séance
+     * @param id_seance
+     * @return 
+     */
+    public ArrayList<Object> demandeInfosSelectedSeance(int id_seance)
+    {   //de la vue au controleur
+        ArrayList<Object> strings = new ArrayList<>();
+        SeanceDAO sDAO = new SeanceDAO();
+        //Obtention données de modèle pour répondre à la requete de la vue
+        Seance seance = sDAO.find(id_seance);
+        
+        strings.add(seance.getDate()+" "+seance.getHeureDebut());
+        strings.add(seance.getEtat());
+        strings.add(seance.getCours().getNom());
+        strings.add(seance.getTypeCours().getNom());
+        
+        ArrayList<String> e = new ArrayList<>();
+        ArrayList<String> g = new ArrayList<>();
+        ArrayList<String> s = new ArrayList<>();
+        for (int i = 0 ; i < Math.max(seance.getEnseignants().size(),Math.max(seance.getGroupes().size(),seance.getSalles().size()));i++)
+        {
+            if(i < seance.getEnseignants().size())
+                e.add(seance.getEnseignants().get(i).getPrenom()+ " "+seance.getEnseignants().get(i).getNom());
+            if(i< seance.getGroupes().size())
+                g.add(seance.getGroupes().get(i).getNom()+" "+seance.getGroupes().get(i).getPromotion().getNom());
+            if(i<seance.getSalles().size())
+                s.add(seance.getSalles().get(i).getNom()+ " "+seance.getSalles().get(i).getSite().getNom());
+        }
+        strings.add(e);
+        strings.add(g);
+        strings.add(s);        
+        
+        //On retourne les données reçus à la vue
+        return strings;
+    }
+    
+    /**
+     * Requête de la vue pour modifier une séance en fournissant toutes les infos nécessaires saisies par l'user 
+     * @param idSeance
+     * @param strings 
+     */
+    public void demandeModifSeance(int idSeance, ArrayList<Object> strings)
+    {   //Contenu du strings:
+        // 0: Semaine, 1: Heure de début, 2: Date, 3: Etat, 4: Cours, 5: Type, 6:Enseignants, 7:Groupes, 8: Salles
+        if(strings.size() == 9)//Ceux qui ne sont pas rempli sont déclaré à null, donc on a toujours = 9
+        {
+            SeanceDAO seanceDAO = new SeanceDAO();
+            Seance seance = seanceDAO.find(idSeance);
+            boolean okEtat = true;
+            boolean okEnseignants = true;
+            boolean okGroupesSalles = true;
+            
+            //Changement de date localement (si pas changé, ça ne fait que l'écraser)
+            seance.setSemaine(Integer.parseInt((String)strings.get(0)));
+            String heureDebut = (String)strings.get(1);
+            seance.setHeureDebut(heureDebut);
+            seance.setHeureFin(calculHeureFin(heureDebut));
+            System.out.println("Heure de début saisie par l'user pour la séance: " +heureDebut);
+            //Etape 1 Verification si tout les données entrées sont cohérents
+            okEtat = verifAndSetSeanceEtat(seance,(String)strings.get(3),((ArrayList<String>)strings.get(8)).size(),((ArrayList<String>)strings.get(6)).size());
+            okEnseignants = verifSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
+            //Ensemble salles et groupes car chacun ont bsn de voir les capa de l'autre
+            okGroupesSalles = verifSeanceGroupesEtSalles(seance,(ArrayList<String>)strings.get(7),(ArrayList<String>)strings.get(8)); 
+            
+            //Etape 2 Changement de données
+            if(okEtat && okEnseignants && okGroupesSalles)
+            {  
+                System.out.println("Verification RAS, modification des données OK pous séance : "+idSeance);
+                //Changement de données dans la variable seance (localement) et dans celui BDD
+                //Etat est déjà set localement
+                setSeanceCoursNom(seance,(String)strings.get(4));
+                setSeanceCoursType(seance,(String)strings.get(5));
+                setSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
+                setSeanceGroupes(seance,(ArrayList<String>)strings.get(7));
+                setSeanceSalles(seance, (ArrayList<String>)strings.get(8));
+                seance = seanceDAO.update(seance); //Pour ceux qui on été changé juste localement
+            }
+        }
+        else{
+            System.out.println("Un champ n'est pas saisie correctement");
+        }
+        majAllSeances();
+    }
+
+    /**
+     * Vérification/Changement d'état pour une séance sans le changer dans la BDD
+     * @param seance
+     * @param tailleGroupe
+     * @param tailleEnseignant
+     * @param choix 
+     * @return  
+     */
+    public boolean verifAndSetSeanceEtat(Seance seance, String choix, int tailleGroupe, int tailleEnseignant)
+    {
+        switch(choix)
+        {
+            case "1":
+            {
+                seance.setEtat(1);
+                return true;
+            }
+            case "2":
+            {
+                //LES CONDITIONS
+                if(tailleEnseignant != 0 && tailleGroupe != 0){
+                    seance.setEtat(2);
+                    return true;
+                }
+                else{System.out.println("On ne peux pas valider cette séance car il faut au minimum un enseignant et un groupe");} 
+                break;
+            }
+            case "3":
+            {
+                seance.setEtat(3);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verification des edt des enseignants selectionnés pour une séance donnée
+     * @param seance
+     * @param namesSelected
+     * @return 
+     */
+    public boolean verifSeanceEnseignants(Seance seance, ArrayList<String> namesSelected){
+        EnseignantDAO eDAO = new EnseignantDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        for(int i = 0 ; i < namesSelected.size();i++)
+        {
+            Enseignant tampon = eDAO.findByName(namesSelected.get(i));
+            if(sDAO.isTeacherNotFreeForThisSeance(tampon.getId(), seance))
+            {
+                System.out.println("pbl edt du prof : "+tampon.getPrenom()+ " "+tampon.getNom());
+                return false;
+            }
+        }
+        //Si aucune erreur de créneau n'est rencontré pour ces enseignants, (si on est encore dans la méthode), on continue
+        return true;
+    }
+
+    /**
+     * Verification des edt des groupes et salles selectionnés pour une séance donnée
+     * @param seance
+     * @param groupesSelected
+     * @param sallesSelected
+     * @return 
+     */
+    public boolean verifSeanceGroupesEtSalles(Seance seance, ArrayList<String> groupesSelected, ArrayList<String> sallesSelected)
+    {
+        SalleDAO salleDAO = new SalleDAO();
+        GroupeDAO grpDAO = new GroupeDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        
+        boolean okForGrps  = false; //On part de base que tout est faux
+        boolean okForSalles = false;//On part de base que tout est faux
+        
+        //Vérif créneau groupes + calcule capa total groupes
+        int capaciteGroupe = 0;
+        for (int i = 0 ; i < groupesSelected.size() ;i++)
+        {   //Vérification du créneau de chaque groupe
+            Groupe tampon = grpDAO.findByName(groupesSelected.get(i));
+            capaciteGroupe += sDAO.find_capacite_groupes_total(tampon.getId(), 0); //CapacitéTotal += capacité de chaque groupe
+            if(sDAO.isGroupNotFreeForThisSeance(tampon.getId(), seance)) //Si un groupe n'est pas libre
+            {
+                System.out.println("pbl edt du groupe : "+tampon.getNom()+ " "+tampon.getPromotion().getNom());
+                return false; //Faux d'office
+            }
+        }
+        //Verif créneau salles + calcule capa total salles
+        int capaciteSalle = 0;
+        for (int i = 0 ; i < sallesSelected.size(); i++)
+        {   //Vérification du créneau de chaque salle
+            Salle tampon = salleDAO.findByName(sallesSelected.get(i));
+            capaciteSalle += tampon.getCapacite(); //On calcule la capacité total (Pour plus tard si tout est bon)
+            if(sDAO.isSalleNotFreeForThisSeance(tampon.getId(), seance)) //Une salle n'est pas libre
+            {
+                System.out.println("pbl edt de la salle : "+tampon.getNom()+ " "+tampon.getSite().getNom());
+                return false; //Faux d'office
+            }
+        }
+        //Si tout est bon nv horaire (si on a pas quitté la méthode)
+        //Cas groupes
+        if(sallesSelected.isEmpty()) //Si aucune salle n'est selectionné, pas bsn de vérif capa groupe et salle
+        {
+            okForGrps = true;
+        }else{ //Si des salles sont déjà affectés à cette séance, on est oblgés de vérifier la capacité
+            if(capaciteGroupe <= capaciteSalle) //Capa groupe doit être <= capa salles
+            {
+                okForGrps = true;
+            }else{
+                System.out.println("Ensemble de groupe trop grand");
+            }
+        }
+        //Cas salles
+        if(groupesSelected.isEmpty()) 
+        {   
+            okForSalles = true;
+        }else{ //Si des groupes sont dans cette séance
+            if(capaciteSalle >= capaciteGroupe) //On vérifie si toute les salles peuvent supporter le nb
+            {   //Si les salles supportent les groupes
+                okForSalles = true;
+            }
+            else
+                System.out.print("Capacité insuffisante");
+        }
+        if(okForGrps && okForSalles) //Si tout est Ok
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Requête de MAJ du nom de cours d'une séance donnée dans la BDD
+     * @param seance
+     * @param cours 
+     */
+    public void setSeanceCoursNom(Seance seance, String cours) {
+        CoursDAO cDAO = new CoursDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        seance.setCours(cDAO.findByName(cours));
+    }
+
+    /**
+     * Requête de MAJ du type de cours d'une séance donnée dans la BDD
+     * @param seance
+     * @param type 
+     */
+    public void setSeanceCoursType(Seance seance, String type) {
+        TypeCoursDAO tDAO = new TypeCoursDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        seance.setTypeCours(tDAO.findByName(type));
+    }
+
+    /**
+     * Requête de MAJ des enseignants d'une séance donnée dans la BDD
+     * @param seance
+     * @param namesSelected 
+     */
+    public void setSeanceEnseignants(Seance seance,ArrayList<String> namesSelected)
+    {
+        EnseignantDAO eDAO = new EnseignantDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        //On supprime tout, pour éviter tout doublons
+            for (int i = 0 ; i < seance.getEnseignants().size() ; i++)
+                sDAO.DeleteInJonction(seance.getId(), seance.getEnseignants().get(i).getId(), 1);
+            if(!namesSelected.isEmpty()) //Si c'est pas vide, on re/ajoute tous les enseignants saisies pas l'user
+                for (int i = 0 ; i < namesSelected.size() ; i++)
+                    sDAO.insertInJonction(seance.getId(), eDAO.findByName(namesSelected.get(i)).getId(), 1);
+    }
+
+    /**
+     * Requête de MAJ des groupes d'une séance donnée dans la BDD
+     * @param seance
+     * @param groupesSelected 
+     */
+    public void setSeanceGroupes(Seance seance,ArrayList<String> groupesSelected)
+    {
+        GroupeDAO grpDAO = new GroupeDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        for (int i = 0; i < seance.getGroupes().size() ; i++)
+            sDAO.DeleteInJonction(seance.getId(), seance.getGroupes().get(i).getId(), 2);//supprime tout les groupes de la séance
+        for (int i = 0; i < groupesSelected.size() ; i++)
+            sDAO.insertInJonction(seance.getId(), grpDAO.findByName(groupesSelected.get(i)).getId(), 2);//On ajoute tt les groupes selectionnées
+     
+    }
+    
+    /**
+     * Requête de MAJ des salles d'une séance donnée dans la BDD
+     * @param seance
+     * @param sallesSelected 
+     */
+    public void setSeanceSalles(Seance seance,ArrayList<String> sallesSelected)
+    {
+        SalleDAO salleDAO = new SalleDAO();
+        SeanceDAO sDAO = new SeanceDAO();
+        for (int i = 0 ; i < seance.getSalles().size() ; i++) {
+            sDAO.DeleteInJonction(seance.getId(), seance.getSalles().get(i).getId(), 3);//Suppression de toute les salles de cette séance dans la BDD 
+        }
+        for (int i = 0 ; i < sallesSelected.size() ; i++) {
+            sDAO.insertInJonction(seance.getId(), salleDAO.findByName(sallesSelected.get(i)).getId(), 3); //On ajoute tout ce qui a été select
+
+        }    
+    }
+    
+     /**
      * affichage de l'emploi du temps dans l'onglet Cours
      * @param semaine
      * @param prenom
@@ -931,573 +1316,202 @@ public class Controle {
         fenetre.getRecapCours().setRowHeight(row, rowHeight);
     }
 
-    /**
-     * Permet d'obtenir tout les prenoms et noms des utilisateurs
-     * utilisé pour la recherche du référent par exemple
-     * @return un ArrayList de tous les utilisateurs de la BDD
-     */
-    public ArrayList<String> allUsersToStrings() {
-        ArrayList<Utilisateur> utilisateurs = recupUtilisateurs();
-        ArrayList<String> preNom = new ArrayList<>();
-        
-        for(int i=0;i<utilisateurs.size();i++)
-            preNom.add(utilisateurs.get(i).getPrenom() + " " + utilisateurs.get(i).getNom());
-         
-        return preNom;
-    }
-
-    /**
-     * Permet d'obtenir tout les groupes par nom et nom de la promotion
-     * utilisé pour la recherche du référent par exemple
-     * @return un ArrayList de tous les groupes de la BDD
-     */
-    public ArrayList<String> allGroupsToStrings() {
-        ArrayList<Groupe> groupes = recupGroupes();
-        ArrayList<String> gp = new ArrayList<>();
-        
-        for(int i=0;i<groupes.size();i++)
-            gp.add(groupes.get(i).getNom() + " " + groupes.get(i).getPromotion().getNom());
-         
-        return gp;
-    }
-    
-    /**
-     * Permet d'obtenir tout les Types de la BDD
-     * @return tous les types de cours de la BDD
-     */
-    public ArrayList<TypeCours> recupAllTypes(){
-        TypeCoursDAO tDAO =new TypeCoursDAO();
-        return tDAO.findAllTypes();
-    }
-    
-    /**
-     * Permet d'obtenir tout les noms des types
-     * @return un ArrayList de tous les types de cours de la BDD
-     */
-    public ArrayList<String> allTypeToStrings(){
-        ArrayList<TypeCours> types = recupAllTypes();
-        ArrayList<String> tp = new ArrayList<>();
-        
-        for (int i = 0 ; i <types.size(); i++)
-            tp.add(types.get(i).getNom());
-        return tp;
-    }
-    
-    /**
-     * Permet d'obtenir tout les cours de la BDD
-     * @return tous les cours de la BDD
-     */
-    public ArrayList<Cours> recupAllCours(){
-        CoursDAO DAO =new CoursDAO();
-        return DAO.findAllCours();
-    }
-    
-    /**
-     * Permet d'obtenir tout les nom des cours de la BDD
-     * @return un ArrayList de tous les cours de la BD
-     */
-    public ArrayList<String> allCoursToStrings(){
-        ArrayList<Cours> cours = recupAllCours();
-        ArrayList<String> c = new ArrayList<>();
-        
-        for (int i = 0 ; i <cours.size(); i++)
-            c.add(cours.get(i).getNom());
-        return c;
-    }
-    
-    /**
-     * Permet d'obtenir tout les salles de la BDD
-     * @return toutes les salles de la BDD
-     */
-    public ArrayList<Salle> recupAllSalles(){
-        SalleDAO DAO = new SalleDAO();
-        return DAO.findAllSalles();
-    }
-    
-    /**
-     * Permet d'obtenir tout les noms des salles et leur site
-     * @return un ArrayList de tous les salles de la BDD
-     */
-    public ArrayList<String> allSallesToStrings(){
-        ArrayList<Salle> salles = recupAllSalles();
-        ArrayList<String> s = new ArrayList<>();
-        
-        for (int i = 0 ; i <salles.size(); i++)
-            s.add(salles.get(i).getNom()+" "+ salles.get(i).getSite().getNom());
-        return s;
-    }
-    
-    /**
-     * Permet d'obtenir tout les enseignants de la BDD
-     * @return tous les enseignants de la BDD
-     */
-    public ArrayList<Enseignant> recupAllEnseignants(){
-        EnseignantDAO eDAO = new EnseignantDAO();
-        return eDAO.findAllTeacher();
-    }
-    
-    /**
-     * Permet d'obtenir tout les eneignants par prénom et nom
-     * @return un ArrayList de tous les enseignants de la BDD
-     */
-    public ArrayList<String> allEnseignantsToStrings(){
-        ArrayList<Enseignant> ens = recupAllEnseignants();
-        ArrayList<String> s = new ArrayList<>();
-        
-        for (int i = 0 ; i <ens.size(); i++)
-            s.add(ens.get(i).getPrenom()+" "+ ens.get(i).getNom());
-        return s;
-    }
-    
-    /**
-     * Permet d'obtenir tout les séances de la BDD
-     * @return toutes les seances de la BDD
-     */
-    public ArrayList<Seance> recupAllSeances(){
-        SeanceDAO dao = new SeanceDAO();
-        return dao.findAllSeances();
-    }
-    
-    /**
-     * Permet d'obtenir tout les informations des toutes les séance sous forme d'une phrase pour chaque séance
-     * @return un ArrayList de toutes les seances de la BDD
-     */
-    public ArrayList<String> allSeancesToStrings(){
+    public void afficherGrapheHeureSeanceSemestre() {
         ArrayList<Seance> seances = recupAllSeances();
-        ArrayList<String> string = new ArrayList<>();
-        for (int i = 0 ; i < seances.size() ; i++)
-        {
-            ArrayList<String> temp = seances.get(i).toArrayListOfString();
-            String msg = "Seance N°"+seances.get(i).getId()+" "+seances.get(i).getSemaine()+" "+seances.get(i).getDate()+" "+seances.get(i).getHeureDebut()+"-"+seances.get(i).getHeureFin()+" ";
-            if(seances.get(i).getEtat() != 2) //si pas valide, car temp est de taille 6
-                msg+=temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4)+" "+temp.get(5);
-            else //Si valide temp est de taille 5
-                msg+= temp.get(0)+" "+temp.get(1)+" "+temp.get(2)+" "+temp.get(3)+" "+temp.get(4);
-            
-            string.add(msg);
+        ArrayList<Cours> cours = recupAllCours();
+        
+        int calculheuretotal = 0;int calculheuretotal0 = 0;int calculheuretotal1 = 0;int calculheuretotal2 = 0;int calculheuretotal3 = 0;int calculheuretotal4 = 0;int calculheuretotal5 = 0;int calculheuretotal6 = 0; int calculheuretotal7 = 0;int calculheuretotal8 = 0;
+        int comparaison = 0;int comparaison0 = 0;int comparaison1 = 0;int comparaison2 = 0;int comparaison3 = 0;int comparaison4 = 0;int comparaison5 = 0; int comparaison6 = 0; int comparaison7 = 0; int comparaison8 = 0;
+         
+        
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        
+        for (int i = 0 ; i <seances.size(); i++){
+            if(seances.get(i).getCours().getId() == 1){
+                if(calculheuretotal!=60){
+                    comparaison += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal==60)
+                     {
+                         comparaison += 1 ;
+                         calculheuretotal = 0;
+                     }
+                }     
+            }
+            if(seances.get(i).getCours().getId() == 2){
+                if(calculheuretotal0!=60){
+                    comparaison0 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal0 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal0==60){
+                         comparaison0 += 1 ;
+                         calculheuretotal0 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 3){
+                if(calculheuretotal1!=60){
+                    comparaison1 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal1 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal1==60){
+                         comparaison1 += 1 ;
+                         calculheuretotal1 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 4){
+                if(calculheuretotal2!=60){
+                    comparaison2 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal2 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal2==60){
+                         comparaison2 += 1 ;
+                         calculheuretotal2 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 5){
+                if(calculheuretotal3!=60){
+                    comparaison3 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal3 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal3==60){
+                         comparaison3 += 1 ;
+                         calculheuretotal3 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 6){
+                if(calculheuretotal4!=60){
+                    comparaison4 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal4 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal4==60){
+                         comparaison4 += 1 ;
+                         calculheuretotal4 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 7){
+                if(calculheuretotal5!=60){
+                    comparaison5 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal5 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal5==60){
+                         comparaison5 += 1 ;
+                         calculheuretotal5 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 8){
+                if(calculheuretotal6!=60){
+                    comparaison6 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal6 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal6==60){
+                         comparaison6 += 1 ;
+                         calculheuretotal6 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 9){
+                if(calculheuretotal7!=60){
+                    comparaison7 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal7 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal7==60){
+                         comparaison7 += 1 ;
+                         calculheuretotal7 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 10){
+                if(calculheuretotal8!=60){
+                    comparaison8 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                    calculheuretotal8 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal8==60){
+                         comparaison8 += 1 ;
+                         calculheuretotal8 = 0;
+                     }
+                } 
+            }             
         }
         
-        return string;
-    }
-    
-    /**
-     * Calcul l'heure de fin à partir de l'heure de début
-     * @param debut
-     * @return l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
-     */
-    public String calculHeureFin(String debut)
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.set(2020,01,01, Integer.parseInt(debut.substring(0,2)), Integer.parseInt(debut.substring(3,5)),0); //Date au pif
-        cal.add(Calendar.HOUR_OF_DAY, 1);
-        cal.add(Calendar.MINUTE, 30);
-        Date date = cal.getTime();
-        String fin = date.toString().substring(11,19); //On récupère la position de l'heure
-        return fin;
-    }
-    
-    /**
-     * Demande d'ajout d'une séance par la vue vers le controleur en récupérant tout les données nécessaires saisies par l'user
-     * @param strings 
-     */
-    public void demandeAddSeance(ArrayList<Object> strings)
-    {   
-        SalleDAO salleDAO = new SalleDAO();
-        GroupeDAO gDAO = new GroupeDAO();
-        EnseignantDAO uDAO = new EnseignantDAO();
-        TypeCoursDAO tDAO = new TypeCoursDAO();
-        CoursDAO cDAO = new CoursDAO();
-        if(strings.size() != 9)
-            System.out.println("Que "+strings.size()+" Champs sur 9 obligatoires sont remplis");
-        else{
-            int semaine = Integer.parseInt((String)strings.get(0));//Semaine
-            String heureDebut = (String)strings.get(1);//Heure de début
-            String heureFin = calculHeureFin(heureDebut);//Heure de fin
-            String date = (String)strings.get(2);//Date
-            int etat = Integer.parseInt((String)strings.get(3));//Etat
-            Cours cours = cDAO.findByName((String)strings.get(4));//Cours
-            TypeCours type = tDAO.findByName((String)strings.get(5));//Type
-            
-            List list;
-            ArrayList<Enseignant> enseignants = new ArrayList<>();    
-            if(strings.get(6) != null)
+        for(int j =0; j<cours.size();j++)
+        {
+            if(j == 0)
             {
-                list = (List)strings.get(6);                       
-                for (Iterator it = list.iterator() ; it.hasNext(); ){
-                    enseignants.add(uDAO.findByName((String)it.next()));//Enseignants
-                }
+                if(calculheuretotal!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison + "h"+calculheuretotal, new Integer(comparaison));
+                if(calculheuretotal==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison+"h", new Integer(comparaison));
             }
             
-            ArrayList<Groupe> groupes = new ArrayList<>();
-            if(strings.get(7) != null)
+            if(j == 1)
             {
-                list = (List)strings.get(7);
-                for (Iterator it = list.iterator() ; it.hasNext(); ){
-                    groupes.add(gDAO.findByName((String)it.next()));//Groupes
-                }
+                if(calculheuretotal0!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison0 + "h"+calculheuretotal0, new Integer(comparaison0));
+                if(calculheuretotal0==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison0+"h", new Integer(comparaison0));
             }
-            
-            ArrayList<Salle> salles = new ArrayList<>();
-            if(strings.get(8) != null)
+            if(j == 2)
             {
-                list = (List)strings.get(8);
-                for (Iterator it = list.iterator() ; it.hasNext(); ){
-                    salles.add(salleDAO.findByName((String)it.next()));//Salles
-                }
+                if(calculheuretotal1!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison1 + "h"+calculheuretotal1, new Integer(comparaison1));
+                if(calculheuretotal1==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison1+"h", new Integer(comparaison1));
             }
-            ajouterSeanceInModel(semaine,date,heureDebut,heureFin,etat,cours,type,groupes, enseignants,salles);
-        }
-    }
-    
-    /**
-     * Le controleur demande au model l'ajout d'une séance en lui fournissant les données issues de la vue
-     * le modèle renvoie des réponses vers le controleur pour savoir si tels données sont acceptables et si 
-     * toutes les données saisies sont cohérentes
-     * @param Semaine
-     * @param Date
-     * @param Heure_Debut
-     * @param Heure_Fin
-     * @param Etat
-     * @param cours
-     * @param type
-     * @param groupes
-     * @param enseignants
-     * @param salles 
-     */
-    public void ajouterSeanceInModel(int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, Cours cours,TypeCours type, ArrayList<Groupe> groupes, ArrayList<Enseignant> enseignants, ArrayList<Salle> salles) 
-    {   
-        SeanceDAO sDAO = new SeanceDAO();
-        Seance seance = new Seance(Semaine, Heure_Debut, Heure_Fin,Date, Etat, cours, type); //instanciation de la nvlle seance avec les premiers données
-        boolean okForCreate = true; //On considère au début que tout est ok pour créer cette séance dans la BDD
-        //On ajoute les salles en accord avec leur créneau dispo/Duplication sans vérif la capa car rien à vérifier au début vu qu'aucun grp n'ai encore add dans séance
-        for (int i = 0 ; i < salles.size();i++)
-        {
-            if (sDAO.canIAjouterSalleSeance(seance, salles.get(i).getId()))
-               seance.ajouterSalle(salles.get(i)); 
-            else{
-                okForCreate = false;
-                i = 100; // Dès qu'il y a un false on arrête tout
-            }
-        }
-        if(okForCreate) //Si les vérifs des salles sont bon, on continue
-        {
-            for (int i = 0; i <Math.max(groupes.size(), enseignants.size()); i++) // Pour éviter 2 for
+            if(j == 3)
             {
-                if (i< groupes.size())
-                {
-                    //Si groupes non duplication/pbl crénaux /Pas de pbl de place, tout est bon
-                    if (sDAO.canIAjoutGroupeSeance(seance, groupes.get(i).getId()))
-                        seance.ajouterGroupe(groupes.get(i));
-                    else{
-                        okForCreate = false;
-                        i = 1000; //On arrete tout
-                    }
-                }
-                if (i<enseignants.size())
-                {   //Si enseignants non duplication/pbl crénaux tout est bon
-                    if ( sDAO.canIAjouterEnseignantSeance(seance, enseignants.get(i).getId()))
-                        seance.ajouterEnseignant(enseignants.get(i));
-                    else{
-                        okForCreate = false;
-                        i = 1000; //On arrete tout
-                    }
-                }
+                if(calculheuretotal2!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison2 + "h"+calculheuretotal2, new Integer(comparaison2));
+                if(calculheuretotal2==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison2+"h", new Integer(comparaison2));
             }
-        }
-        if (okForCreate) //Si tout les conditions sont réunis, on create, si il y a eu un faux, on ne create pas.
-        {
-            seance = sDAO.create(seance);
-            System.out.println("Ajouter avec succes");
-            majAllSeances();
-        }else{
-            System.out.println("La seance n'a pas été ajouté");
-        }
-    }
-    
-    /**
-     * Mise à jour au niveau visuel si toutes les données sont cohérentss
-     */
-    public void majAllSeances()
-    {   //Du controleur à la vue
-        fenetre.remplirListSeances();
-    }
-    /**
-     * Demande de la vue pour savoir quelles sont les informations qui doivent être séléctionner dans le vue dans l'ongletGererCoursSP
-     * en fournissant au controleur l'id de cette séance
-     * @param id_seance
-     * @return 
-     */
-    public ArrayList<Object> demandeInfosSelectedSeance(int id_seance)
-    {   //de la vue au controleur
-        ArrayList<Object> strings = new ArrayList<>();
-        SeanceDAO sDAO = new SeanceDAO();
-        //Obtention données de modèle pour répondre à la requete de la vue
-        Seance seance = sDAO.find(id_seance);
-        
-        strings.add(seance.getDate()+" "+seance.getHeureDebut());
-        strings.add(seance.getEtat());
-        strings.add(seance.getCours().getNom());
-        strings.add(seance.getTypeCours().getNom());
-        
-        ArrayList<String> e = new ArrayList<>();
-        ArrayList<String> g = new ArrayList<>();
-        ArrayList<String> s = new ArrayList<>();
-        for (int i = 0 ; i < Math.max(seance.getEnseignants().size(),Math.max(seance.getGroupes().size(),seance.getSalles().size()));i++)
-        {
-            if(i < seance.getEnseignants().size())
-                e.add(seance.getEnseignants().get(i).getPrenom()+ " "+seance.getEnseignants().get(i).getNom());
-            if(i< seance.getGroupes().size())
-                g.add(seance.getGroupes().get(i).getNom()+" "+seance.getGroupes().get(i).getPromotion().getNom());
-            if(i<seance.getSalles().size())
-                s.add(seance.getSalles().get(i).getNom()+ " "+seance.getSalles().get(i).getSite().getNom());
-        }
-        strings.add(e);
-        strings.add(g);
-        strings.add(s);        
-        
-        //On retourne les données reçus à la vue
-        return strings;
-    }
-    /**
-     * Requête de la vue pour modifier une séance en fournissant toutes les infos nécessaires saisies par l'user 
-     * @param idSeance
-     * @param strings 
-     */
-    public void demandeModifSeance(int idSeance, ArrayList<Object> strings)
-    {   //Contenu du strings:
-        // 0: Semaine, 1: Heure de début, 2: Date, 3: Etat, 4: Cours, 5: Type, 6:Enseignants, 7:Groupes, 8: Salles
-        if(strings.size() == 9)//Ceux qui ne sont pas rempli sont déclaré à null, donc on a toujours = 9
-        {
-            SeanceDAO seanceDAO = new SeanceDAO();
-            Seance seance = seanceDAO.find(idSeance);
-            boolean okEtat = true;
-            boolean okEnseignants = true;
-            boolean okGroupesSalles = true;
-            
-            //Changement de date localement (si pas changé, ça ne fait que l'écraser)
-            seance.setSemaine(Integer.parseInt((String)strings.get(0)));
-            String heureDebut = (String)strings.get(1);
-            seance.setHeureDebut(heureDebut);
-            seance.setHeureFin(calculHeureFin(heureDebut));
-            System.out.println("Heure de début saisie par l'user pour la séance: " +heureDebut);
-            //Etape 1 Verification si tout les données entrées sont cohérents
-            okEtat = verifAndSetSeanceEtat(seance,(String)strings.get(3),((ArrayList<String>)strings.get(8)).size(),((ArrayList<String>)strings.get(6)).size());
-            okEnseignants = verifSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
-            //Ensemble salles et groupes car chacun ont bsn de voir les capa de l'autre
-            okGroupesSalles = verifSeanceGroupesEtSalles(seance,(ArrayList<String>)strings.get(7),(ArrayList<String>)strings.get(8)); 
-            
-            //Etape 2 Changement de données
-            if(okEtat && okEnseignants && okGroupesSalles)
-            {  
-                System.out.println("Verification RAS, modification des données OK pous séance : "+idSeance);
-                //Changement de données dans la variable seance (localement) et dans celui BDD
-                //Etat est déjà set localement
-                setSeanceCoursNom(seance,(String)strings.get(4));
-                setSeanceCoursType(seance,(String)strings.get(5));
-                setSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
-                setSeanceGroupes(seance,(ArrayList<String>)strings.get(7));
-                setSeanceSalles(seance, (ArrayList<String>)strings.get(8));
-                seance = seanceDAO.update(seance); //Pour ceux qui on été changé juste localement
-            }
-        }
-        else{
-            System.out.println("Un champ n'est pas saisie correctement");
-        }
-        majAllSeances();
-    }
-    /**
-     * Vérification/Changement d'état pour une séance sans le changer dans la BDD
-     * @param id_seance
-     * @param choix 
-     */
-    public boolean verifAndSetSeanceEtat(Seance seance, String choix, int tailleGroupe, int tailleEnseignant)
-    {
-        switch(choix)
-        {
-            case "1":
+            if(j == 4)
             {
-                seance.setEtat(1);
-                return true;
+                if(calculheuretotal3!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison3 + "h"+calculheuretotal3, new Integer(comparaison3));
+                if(calculheuretotal3==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison3+"h", new Integer(comparaison3));
             }
-            case "2":
+            if(j == 5)
             {
-                //LES CONDITIONS
-                if(tailleEnseignant != 0 && tailleGroupe != 0){
-                    seance.setEtat(2);
-                    return true;
-                }
-                else{System.out.println("On ne peux pas valider cette séance car il faut au minimum un enseignant et un groupe");} 
-                break;
+                if(calculheuretotal4!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison4 + "h"+calculheuretotal4, new Integer(comparaison4));
+                if(calculheuretotal4==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison4+"h", new Integer(comparaison4));
             }
-            case "3":
+            if(j == 6)
             {
-                seance.setEtat(3);
-                return true;
+                if(calculheuretotal5!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison5 + "h"+calculheuretotal5, new Integer(comparaison5));
+                if(calculheuretotal5==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison5+"h", new Integer(comparaison5));
             }
-        }
-        return false;
-    }
-    /**
-     * Verification des edt des enseignants selectionnés pour une séance donnée
-     * @param seance
-     * @param namesSelected
-     * @return 
-     */
-    public boolean verifSeanceEnseignants(Seance seance, ArrayList<String> namesSelected){
-        EnseignantDAO eDAO = new EnseignantDAO();
-        SeanceDAO sDAO = new SeanceDAO();
-        for(int i = 0 ; i < namesSelected.size();i++)
-        {
-            Enseignant tampon = eDAO.findByName(namesSelected.get(i));
-            if(sDAO.isTeacherNotFreeForThisSeance(tampon.getId(), seance))
+            if(j == 7)
             {
-                System.out.println("pbl edt du prof : "+tampon.getPrenom()+ " "+tampon.getNom());
-                return false;
+                if(calculheuretotal6!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison6 + "h"+calculheuretotal6, new Integer(comparaison6));
+                if(calculheuretotal6==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison6 + "h", new Integer(comparaison6));
             }
-        }
-        //Si aucune erreur de créneau n'est rencontré pour ces enseignants, (si on est encore dans la méthode), on continue
-        return true;
-    }
-    /**
-     * Verification des edt des groupes et salles selectionnés pour une séance donnée
-     * @param seance
-     * @param groupesSelected
-     * @param sallesSelected
-     * @return 
-     */
-    public boolean verifSeanceGroupesEtSalles(Seance seance, ArrayList<String> groupesSelected, ArrayList<String> sallesSelected)
-    {
-        SalleDAO salleDAO = new SalleDAO();
-        GroupeDAO grpDAO = new GroupeDAO();
-        SeanceDAO sDAO = new SeanceDAO();
-        
-        boolean okForGrps  = false; //On part de base que tout est faux
-        boolean okForSalles = false;//On part de base que tout est faux
-        
-        //Vérif créneau groupes + calcule capa total groupes
-        int capaciteGroupe = 0;
-        for (int i = 0 ; i < groupesSelected.size() ;i++)
-        {   //Vérification du créneau de chaque groupe
-            Groupe tampon = grpDAO.findByName(groupesSelected.get(i));
-            capaciteGroupe += sDAO.find_capacite_groupes_total(tampon.getId(), 0); //CapacitéTotal += capacité de chaque groupe
-            if(sDAO.isGroupNotFreeForThisSeance(tampon.getId(), seance)) //Si un groupe n'est pas libre
+            if(j == 8)
             {
-                System.out.println("pbl edt du groupe : "+tampon.getNom()+ " "+tampon.getPromotion().getNom());
-                return false; //Faux d'office
+                if(calculheuretotal7!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison7 + "h"+calculheuretotal7, new Integer(comparaison7));
+                if(calculheuretotal7==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison7+"h", new Integer(comparaison7));
             }
-        }
-        //Verif créneau salles + calcule capa total salles
-        int capaciteSalle = 0;
-        for (int i = 0 ; i < sallesSelected.size(); i++)
-        {   //Vérification du créneau de chaque salle
-            Salle tampon = salleDAO.findByName(sallesSelected.get(i));
-            capaciteSalle += tampon.getCapacite(); //On calcule la capacité total (Pour plus tard si tout est bon)
-            if(sDAO.isSalleNotFreeForThisSeance(tampon.getId(), seance)) //Une salle n'est pas libre
+            if(j == 9)
             {
-                System.out.println("pbl edt de la salle : "+tampon.getNom()+ " "+tampon.getSite().getNom());
-                return false; //Faux d'office
+                if(calculheuretotal8!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison8 + "h"+calculheuretotal8, new Integer(comparaison8));
+                if(calculheuretotal8==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison8+"h", new Integer(comparaison8));
             }
-        }
-        //Si tout est bon nv horaire (si on a pas quitté la méthode)
-        //Cas groupes
-        if(sallesSelected.isEmpty()) //Si aucune salle n'est selectionné, pas bsn de vérif capa groupe et salle
-        {
-            okForGrps = true;
-        }else{ //Si des salles sont déjà affectés à cette séance, on est oblgés de vérifier la capacité
-            if(capaciteGroupe <= capaciteSalle) //Capa groupe doit être <= capa salles
-            {
-                okForGrps = true;
-            }else{
-                System.out.println("Ensemble de groupe trop grand");
-            }
-        }
-        //Cas salles
-        if(groupesSelected.isEmpty()) 
-        {   
-            okForSalles = true;
-        }else{ //Si des groupes sont dans cette séance
-            if(capaciteSalle >= capaciteGroupe) //On vérifie si toute les salles peuvent supporter le nb
-            {   //Si les salles supportent les groupes
-                okForSalles = true;
-            }
-            else
-                System.out.print("Capacité insuffisante");
-        }
-        if(okForGrps && okForSalles) //Si tout est Ok
-        {
-            return true;
-        }
-        return false;
-    }
-    /**
-     * Requête de MAJ du nom de cours d'une séance donnée dans la BDD
-     * @param seance
-     * @param cours 
-     */
-    public void setSeanceCoursNom(Seance seance, String cours) {
-        CoursDAO cDAO = new CoursDAO();
-        SeanceDAO sDAO = new SeanceDAO();
-        seance.setCours(cDAO.findByName(cours));
-    }
-    /**
-     * Requête de MAJ du type de cours d'une séance donnée dans la BDD
-     * @param seance
-     * @param type 
-     */
-    public void setSeanceCoursType(Seance seance, String type) {
-        TypeCoursDAO tDAO = new TypeCoursDAO();
-        SeanceDAO sDAO = new SeanceDAO();
-        seance.setTypeCours(tDAO.findByName(type));
-    }
-    /**
-     * Requête de MAJ des enseignants d'une séance donnée dans la BDD
-     * @param seance
-     * @param namesSelected 
-     */
-    public void setSeanceEnseignants(Seance seance,ArrayList<String> namesSelected)
-    {
-        EnseignantDAO eDAO = new EnseignantDAO();
-        SeanceDAO sDAO = new SeanceDAO();
-        //On supprime tout, pour éviter tout doublons
-            for (int i = 0 ; i < seance.getEnseignants().size() ; i++)
-                sDAO.DeleteInJonction(seance.getId(), seance.getEnseignants().get(i).getId(), 1);
-            if(!namesSelected.isEmpty()) //Si c'est pas vide, on re/ajoute tous les enseignants saisies pas l'user
-                for (int i = 0 ; i < namesSelected.size() ; i++)
-                    sDAO.insertInJonction(seance.getId(), eDAO.findByName(namesSelected.get(i)).getId(), 1);
-    }
-    /**
-     * Requête de MAJ des groupes d'une séance donnée dans la BDD
-     * @param seance
-     * @param groupesSelected 
-     */
-    public void setSeanceGroupes(Seance seance,ArrayList<String> groupesSelected)
-    {
-        GroupeDAO grpDAO = new GroupeDAO();
-        SeanceDAO sDAO = new SeanceDAO();
-        for (int i = 0; i < seance.getGroupes().size() ; i++)
-            sDAO.DeleteInJonction(seance.getId(), seance.getGroupes().get(i).getId(), 2);//supprime tout les groupes de la séance
-        for (int i = 0; i < groupesSelected.size() ; i++)
-            sDAO.insertInJonction(seance.getId(), grpDAO.findByName(groupesSelected.get(i)).getId(), 2);//On ajoute tt les groupes selectionnées
-     
-    }
-    /**
-     * Requête de MAJ des salles d'une séance donnée dans la BDD
-     * @param seance
-     * @param sallesSelected 
-     */
-    public void setSeanceSalles(Seance seance,ArrayList<String> sallesSelected)
-    {
-        SalleDAO salleDAO = new SalleDAO();
-        SeanceDAO sDAO = new SeanceDAO();
-        for (int i = 0 ; i < seance.getSalles().size() ; i++)
-        {
-            sDAO.DeleteInJonction(seance.getId(), seance.getSalles().get(i).getId(), 3);//Suppression de toute les salles de cette séance dans la BDD 
 
         }
-        for (int i = 0 ; i < sallesSelected.size() ; i++)
-        {
-             sDAO.insertInJonction(seance.getId(), salleDAO.findByName(sallesSelected.get(i)).getId(), 3); //On ajoute tout ce qui a été select
-
-        }    
-    }
+        
+        JFreeChart chart = ChartFactory.createPieChart("Nombres d'heures total d'un cours dans un semestre", pieDataset, true, true, true);//eiffel 1
+        PiePlot P=(PiePlot)chart.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartFrame frame = new ChartFrame("Nombres d'heures total d'un cours dans un semestre", chart );
+        frame.setVisible(true);
+        frame.setSize(500,500);
+  }//deuxieme graphe
+  
 }

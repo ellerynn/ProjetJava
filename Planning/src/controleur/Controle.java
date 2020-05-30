@@ -100,30 +100,259 @@ public class Controle {
         
         frame3.setVisible(true);
         frame3.setSize(500,500);
-  }
+  } //premier graphe
   
   public void afficherGrapheHeureSeanceSemestre() {
-        SalleDAO sDAO = new SalleDAO();
-        ArrayList<Salle> salles = recupAllSalles();
+        ArrayList<Seance> seances = recupAllSeances();
+        ArrayList<Cours> cours = recupAllCours();
+        
+        int calculheuretotal = 0;int calculheuretotal0 = 0;int calculheuretotal1 = 0;int calculheuretotal2 = 0;int calculheuretotal3 = 0;int calculheuretotal4 = 0;int calculheuretotal5 = 0;int calculheuretotal6 = 0; int calculheuretotal7 = 0;int calculheuretotal8 = 0;
+        int comparaison = 0;int comparaison0 = 0;int comparaison1 = 0;int comparaison2 = 0;int comparaison3 = 0;int comparaison4 = 0;int comparaison5 = 0; int comparaison6 = 0; int comparaison7 = 0; int comparaison8 = 0;
+        
         ArrayList<String> s = new ArrayList<>();
-
+        
         DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
         
-        for (int i = 0 ; i <salles.size(); i++){
-            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
-            pieDataset.setValue(salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        for (int i = 0 ; i <seances.size(); i++){
+            if(seances.get(i).getCours().getId() == 1){
+                if(calculheuretotal!=60){
+                    comparaison += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal==60)
+                     {
+                         comparaison += 1 ;
+                         calculheuretotal = 0;
+                     }
+                }     
+            }
+            if(seances.get(i).getCours().getId() == 2){
+                if(calculheuretotal0!=60){
+                    comparaison0 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal0 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal0==60){
+                         comparaison0 += 1 ;
+                         calculheuretotal0 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 3){
+                if(calculheuretotal1!=60){
+                    comparaison1 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal1 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal1==60){
+                         comparaison1 += 1 ;
+                         calculheuretotal1 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 4){
+                if(calculheuretotal2!=60){
+                    comparaison2 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal2 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal2==60){
+                         comparaison2 += 1 ;
+                         calculheuretotal2 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 5){
+                if(calculheuretotal3!=60){
+                    comparaison3 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal3 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal3==60){
+                         comparaison3 += 1 ;
+                         calculheuretotal3 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 6){
+                if(calculheuretotal4!=60){
+                    comparaison4 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal4 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal4==60){
+                         comparaison4 += 1 ;
+                         calculheuretotal4 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 7){
+                if(calculheuretotal5!=60){
+                    comparaison5 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal5 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal5==60){
+                         comparaison5 += 1 ;
+                         calculheuretotal5 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 8){
+                if(calculheuretotal6!=60){
+                    comparaison6 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal6 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal6==60){
+                         comparaison6 += 1 ;
+                         calculheuretotal6 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 9){
+                if(calculheuretotal7!=60){
+                    comparaison7 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                     calculheuretotal7 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal7==60){
+                         comparaison7 += 1 ;
+                         calculheuretotal7 = 0;
+                     }
+                } 
+            }
+            if(seances.get(i).getCours().getId() == 10){
+                if(calculheuretotal8!=60){
+                    comparaison8 += Integer.parseInt(seances.get(i).calculDuree().substring(0,1));
+                    calculheuretotal8 += Integer.parseInt(seances.get(i).calculDuree().substring(2));
+                     if(calculheuretotal8==60){
+                         comparaison8 += 1 ;
+                         calculheuretotal8 = 0;
+                     }
+                } 
+            }             
         }
+        
+        for(int j =0; j<cours.size();j++)
+        {
+            if(j == 0)
+            {
+                if(calculheuretotal!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison + "h"+calculheuretotal, new Integer(comparaison));
+                if(calculheuretotal==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison+"h", new Integer(comparaison));
+            }
+            
+            if(j == 1)
+            {
+                if(calculheuretotal0!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison0 + "h"+calculheuretotal0, new Integer(comparaison0));
+                if(calculheuretotal0==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison0+"h", new Integer(comparaison0));
+            }
+            if(j == 2)
+            {
+                if(calculheuretotal1!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison1 + "h"+calculheuretotal1, new Integer(comparaison1));
+                if(calculheuretotal1==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison1+"h", new Integer(comparaison1));
+            }
+            if(j == 3)
+            {
+                if(calculheuretotal2!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison2 + "h"+calculheuretotal2, new Integer(comparaison2));
+                if(calculheuretotal2==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison2+"h", new Integer(comparaison2));
+            }
+            if(j == 4)
+            {
+                if(calculheuretotal3!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison3 + "h"+calculheuretotal3, new Integer(comparaison3));
+                if(calculheuretotal3==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison3+"h", new Integer(comparaison3));
+            }
+            if(j == 5)
+            {
+                if(calculheuretotal4!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison4 + "h"+calculheuretotal4, new Integer(comparaison4));
+                if(calculheuretotal4==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison4+"h", new Integer(comparaison4));
+            }
+            if(j == 6)
+            {
+                if(calculheuretotal5!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison5 + "h"+calculheuretotal5, new Integer(comparaison5));
+                if(calculheuretotal5==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison5+"h", new Integer(comparaison5));
+            }
+            if(j == 7)
+            {
+                if(calculheuretotal6!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison6 + "h"+calculheuretotal6, new Integer(comparaison6));
+                if(calculheuretotal6==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison6 + "h", new Integer(comparaison6));
+            }
+            if(j == 8)
+            {
+                if(calculheuretotal7!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison7 + "h"+calculheuretotal7, new Integer(comparaison7));
+                if(calculheuretotal7==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison7+"h", new Integer(comparaison7));
+            }
+            if(j == 9)
+            {
+                if(calculheuretotal8!=0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison8 + "h"+calculheuretotal8, new Integer(comparaison8));
+                if(calculheuretotal8==0)
+                    pieDataset.setValue(" Nombre d'Heure total du cours "+ cours.get(j).getNom()+" est: "+ comparaison8+"h", new Integer(comparaison8));
+            }
 
-        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour Eiffel 1", pieDataset, true, true, true);//eiffel 1
-
+        }
+        
+        JFreeChart chart = ChartFactory.createPieChart("Nombres d'heures total d'un cours dans un semestre", pieDataset, true, true, true);//eiffel 1
         PiePlot P=(PiePlot)chart.getPlot();
-
         //P.setForegroundAlpha(TOP_ALIGNMENT);
-        ChartFrame frame = new ChartFrame("Capacité des salles pour Eiffel 1", chart );
-
+        ChartFrame frame = new ChartFrame("Nombres d'heures total d'un cours dans un semestre", chart );
         frame.setVisible(true);
         frame.setSize(500,500);
-  }
+  }//deuxieme graphe
+  
+   public void afficherGrapheSeanceSemestre() {
+        ArrayList<Seance> seances = recupAllSeances();
+        ArrayList<Cours> cours = recupAllCours();
+        //declaration de plusieurs entiers, j'anticipe le nombre de cours en tout, car on peu en rajouter
+        int calculseance = 0;int calculseance0 = 0;int calculseance1 = 0;int calculseance2 = 0;int calculseance3 = 0;int calculseance4 = 0;int calculseance5 = 0;
+        ArrayList<String> s = new ArrayList<>();
+        
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        
+        //boucle qui permet de compter le nombre de seances pour tous les differents cours sur un semestre
+        for (int i = 0 ; i <seances.size(); i++){
+            if(seances.get(i).getCours().getId() == 1)
+                calculseance ++; 
+            if(seances.get(i).getCours().getId() == 2)
+                calculseance0 ++; 
+            if(seances.get(i).getCours().getId() == 3)
+                calculseance1 ++;
+            if(seances.get(i).getCours().getId() == 4)
+                calculseance2 ++;
+            if(seances.get(i).getCours().getId() == 5)
+                calculseance3 ++;
+            if(seances.get(i).getCours().getId() == 6)
+                calculseance4 ++; 
+            if(seances.get(i).getCours().getId() == 7)
+                calculseance5 ++;
+        }
+        for(int j =0; j<cours.size();j++)
+        {
+            if(j==0)
+            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance, new Integer(calculseance));
+            if(j==1)
+            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance0, new Integer(calculseance0));
+            if(j==2)
+            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance1, new Integer(calculseance1));
+            if(j==3)
+            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance2, new Integer(calculseance2));
+            if(j==4)
+            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance3, new Integer(calculseance3));
+            if(j==5)
+            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance4, new Integer(calculseance4));
+            if(j==6)
+            pieDataset.setValue((" Nombre de seances pour le cours " + cours.get(j).getNom()+ ": ")+ calculseance5, new Integer(calculseance5));
+        }
+        
+
+        JFreeChart chart = ChartFactory.createPieChart("Nombres de seances total d'un cours dans un semestre", pieDataset, true, true, true);//eiffel 1
+        PiePlot P=(PiePlot)chart.getPlot();
+        //P.setForegroundAlpha(TOP_ALIGNMENT);
+        ChartFrame frame = new ChartFrame("Nombres de seances total d'un cours dans un semestre", chart );
+        frame.setVisible(true);
+        frame.setSize(500,500);
+  }//troisieme graphe
      
     /**
      * @param email

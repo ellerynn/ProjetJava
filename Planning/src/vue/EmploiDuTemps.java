@@ -268,9 +268,28 @@ public class EmploiDuTemps extends JTabbedPane {
     public void setSeances(ArrayList<String> string){
         ongletSP.remplirListSeances(string);
     }
-    
+    /**
+     * Retourne les informations utiles saisies par l'user dans l'onglet OngletServicePlanification pour ajouter une séance
+     * @return 
+     */
     public ArrayList<Object> getInfosAddSeance()
     {
         return ongletSP.getInfosAddSeance();
+    }
+    /**
+     * Récupère et envoie les données d'une séance pour être séléctionnés dans OngletServicePlanification pour l'onglet OngletGererCoursSP
+     * @param forBeingSelectedByDefault 
+     */
+    public void dataToBeSelectedByDefault(ArrayList<Object> forBeingSelectedByDefault)
+    {
+        ongletSP.dataToBeSelectedByDefault(forBeingSelectedByDefault);
+    }
+    /**
+     * Retourne les données modifiés par l'user pour une séance donnée issues de OngletServicePlanification
+     * @return 
+     */
+    public ArrayList<Object> getInfosModifSeance()
+    {
+        return ongletSP.getInfosModifSeance();
     }
 }

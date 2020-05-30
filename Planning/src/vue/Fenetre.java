@@ -196,7 +196,14 @@ public class Fenetre extends JFrame {
         });
      
         edt.getBtnValider2().addActionListener((ActionEvent event)->{
-            System.out.println("Valider2: Tu veux quoi ? ");
+            if(!edt.getListeSeances().isSelectionEmpty()){
+                //Extraction de l'id de la séance
+                String selected = edt.getListeSeances().getSelectedValue().toString();
+                int start = selected.indexOf("°");
+                int end = selected.indexOf(" ", start);
+                int idSeance = Integer.parseInt(selected.substring(start+1, end));
+                controle.demandeModifSeance(idSeance,edt.getInfosModifSeance());
+            }
         });
         
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
@@ -211,10 +218,14 @@ public class Fenetre extends JFrame {
                     {
                         JList source = (JList)lse.getSource();
                         String selected = source.getSelectedValue().toString();
-                        System.out.println("Bon je fais quoi après ça : "+selected);
-                    }
-                }
-            }
+                        //Extraction de l'id de la séance
+                        int start = selected.indexOf("°");
+                        int end = selected.indexOf(" ", start);
+                        int idSeance = Integer.parseInt(selected.substring(start+1, end));
+                        edt.dataToBeSelectedByDefault(controle.demandeInfosSelectedSeance(idSeance));
+                    }//END OF IF
+                }//END OF IF
+            }//END OF VALUECHANGED
         });
     }
     

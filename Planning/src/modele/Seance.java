@@ -469,7 +469,7 @@ public class Seance {
         
         String str3 = new String(); //Salles
         for(int i=0;i<salles.size();i++) {
-            str3 = str3 + " " + salles.get(i).getNom() + " à " + salles.get(i).getSite().getNom();
+            str3 = str3 + " " + salles.get(i).getNom() + " " + salles.get(i).getSite().getNom();
             if(i != salles.size()-1)
                 str3 = str3 + ", ";
         }

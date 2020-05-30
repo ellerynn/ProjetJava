@@ -167,7 +167,8 @@ public class SalleDAO extends DAO<Salle>{
         String site = infos.substring(espace+1, infos.length());
         try {
             ResultSet result=connect.createStatement()
-                                    .executeQuery("SELECT salle.ID FROM salle, site "
+                                    .executeQuery("SELECT salle.ID FROM salle "
+                                                + "LEFT JOIN site ON site.ID = salle.ID_site "
                                                 + "WHERE salle.Nom = '"+salle+"' AND site.Nom = '"+site+"'"); // récup l'id de la salle
             if(result.first())
                 return find(result.getInt("salle.ID"));

@@ -102,7 +102,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
      */
     public Utilisateur findByName(String prenom, String nom) {
         Utilisateur utilisateur = new Utilisateur();      
-        String maRequete = "SELECT * FROM utilisateur WHERE Prenom LIKE '%" + prenom + "%' AND Nom LIKE '%" + nom +"%'";
+        String maRequete = "SELECT * FROM utilisateur WHERE Prenom = '" + prenom + "' AND Nom = '" + nom +"'";
         requeteFind(maRequete, utilisateur);
         return utilisateur;  
     }

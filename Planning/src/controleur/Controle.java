@@ -606,8 +606,8 @@ public class Controle {
             seance.setSemaine(Integer.parseInt((String)strings.get(0)));
             String heureDebut = (String)strings.get(1);
             seance.setHeureDebut(heureDebut);
+            seance.setDate((String)strings.get(2));
             seance.setHeureFin(calculHeureFin(heureDebut));
-            System.out.println("Heure de début saisie par l'user pour la séance: " +heureDebut);
             //Etape 1 Verification si tout les données entrées sont cohérents
             okEtat = verifAndSetSeanceEtat(seance,(String)strings.get(3),((ArrayList<String>)strings.get(8)).size(),((ArrayList<String>)strings.get(6)).size());
             okEnseignants = verifSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));

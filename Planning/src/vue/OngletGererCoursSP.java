@@ -458,7 +458,10 @@ public class OngletGererCoursSP extends JSplitPane {
         String temp = String.valueOf(date.getValue()).substring(11, 19); //On récup l'heure
         String jour=DateFormat.getDateInstance(3).format(date.getValue()).substring(0,2); //On recup le jour
         String mois=DateFormat.getDateInstance(3).format(date.getValue()).substring(3,5); //On recup le mois
-        String annee = DateFormat.getDateInstance(2).format(date.getValue()).substring(8); //On récup l'année en yyyy
+        String formatAnnee = DateFormat.getDateInstance(2).format(date.getValue());
+        int posAnnee = formatAnnee.lastIndexOf(" ");
+        String annee = formatAnnee.substring(posAnnee+1); //On récup l'année en yyyy
+        
         
         temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
         return temp;
@@ -556,7 +559,9 @@ public class OngletGererCoursSP extends JSplitPane {
         String temp = String.valueOf(date2.getValue()).substring(11, 19); //On récup l'heure
         String jour=DateFormat.getDateInstance(3).format(date2.getValue()).substring(0,2); //On recup le jour
         String mois=DateFormat.getDateInstance(3).format(date2.getValue()).substring(3,5); //On recup le mois
-        String annee = DateFormat.getDateInstance(2).format(date2.getValue()).substring(8); //On récup l'année en yyyy
+        String formatAnnee = DateFormat.getDateInstance(2).format(date.getValue());
+        int posAnnee = formatAnnee.lastIndexOf(" ");
+        String annee = formatAnnee.substring(posAnnee+1); //On récup l'année en yyyy
         temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
         return temp;
     }

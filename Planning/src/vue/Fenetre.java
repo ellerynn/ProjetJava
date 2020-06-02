@@ -197,11 +197,12 @@ public class Fenetre extends JFrame {
     //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
     //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
         edt.getBtnValider().addActionListener((ActionEvent event)->{
-            controle.demandeAddSeance(edt.getInfosAddSeance());
+            if(edt.getInfosAddSeance().size() != 0)
+                controle.demandeAddSeance(edt.getInfosAddSeance());
         });
      
         edt.getBtnValider2().addActionListener((ActionEvent event)->{
-            if(!edt.getListeSeances().isSelectionEmpty()){
+            if(!edt.getListeSeances().isSelectionEmpty() && (edt.getInfosModifSeance().size() != 0) ){
                 //Extraction de l'id de la séance
                 String selected = edt.getListeSeances().getSelectedValue().toString();
                 int start = selected.indexOf("°");

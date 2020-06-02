@@ -1,7 +1,12 @@
 package vue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JTabbedPane;
@@ -150,45 +155,80 @@ public class OngletServicePlanification extends JTabbedPane {
     public ArrayList<Object> getInfosAddSeance()
     {
         ArrayList<Object> strings = new ArrayList<>();
-        //Semaine
-        String date = ongletGererCours.getDate().substring(9,19);
+        boolean isOk = true;
+        //BLINDAGE Decalaration
+        String donnees = ongletGererCours.getDate();
+        String date = donnees.substring(9,19);
+        String heure = donnees.substring(0,8);
         Calendar cal = Calendar.getInstance();
-        cal.set(Integer.parseInt(date.substring(0,4)), Integer.parseInt(date.substring(5,7))-1,Integer.parseInt(date.substring(8,10)));
-        strings.add(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
-        //Heure de debut
-        strings.add(ongletGererCours.getDate().substring(0,8));             
-        //Date
-        strings.add(date);                                                    
-        //Etat
-        if(ongletGererCours.getEtatEC().isSelected())//Etat de la séance
+        
+        cal.set(Integer.parseInt(date.substring(0,4)), Integer.parseInt(date.substring(5,7))-1,Integer.parseInt(date.substring(8,10)),Integer.parseInt(heure.substring(0,2)),Integer.parseInt(heure.substring(3,5)),0);
+        String jour =cal.getTime().toString();
+        //Dimanche Samedi
+        if(jour.contains("Sat") || jour.contains("Sun"))
         {
-            strings.add("1"); //Si radio bouton EC cliqué, on stock "1" 
-        }else if(ongletGererCours.getEtatV().isSelected()){
-            strings.add("2"); //Si radio bouton V cliqué, on stock "2"
+            System.out.println("Impssible d'ajouter une séance a un samedi ou dimanche.");
+            isOk = false;
         }
-        //Cours
-        if(!ongletGererCours.getSelectCours().getSelectedItem().toString().equals("cours")){
-            strings.add(ongletGererCours.getSelectCours().getSelectedItem().toString()); //Cours selectionné
+        //avant 8h, après 19h (fermture 20h30)
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
+        try {
+            Date dateActuelle = format.parse(donnees);
+            Date ouverture = format.parse("08:00:00 "+ date);
+            Date fermeture = format.parse("19:00:00 "+ date);
+            if(dateActuelle.before(ouverture))
+            {
+                System.out.println("Impossible l'école n'est pas ouvert.");
+                isOk = false;
+            }
+            if(dateActuelle.after(fermeture))
+            {
+                System.out.println("Impossible l'école va être fermer avant même d'avoir finit la séance.");
+                isOk = false;
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(OngletServicePlanification.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //Type
-        if(!ongletGererCours.getSelectType().getSelectedItem().toString().equals("type")){
-            strings.add(ongletGererCours.getSelectType().getSelectedItem().toString()); //Type selectionné
+        if(isOk)
+        {
+            //Semaine
+            strings.add(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
+            //Heure de debut
+            strings.add(heure);             
+            //Date
+            strings.add(date);                                                    
+            //Etat
+            if(ongletGererCours.getEtatEC().isSelected())//Etat de la séance
+            {
+                strings.add("1"); //Si radio bouton EC cliqué, on stock "1" 
+            }else if(ongletGererCours.getEtatV().isSelected()){
+                strings.add("2"); //Si radio bouton V cliqué, on stock "2"
+            }
+            //Cours
+            if(!ongletGererCours.getSelectCours().getSelectedItem().toString().equals("cours")){
+                strings.add(ongletGererCours.getSelectCours().getSelectedItem().toString()); //Cours selectionné
+            }
+            //Type
+            if(!ongletGererCours.getSelectType().getSelectedItem().toString().equals("type")){
+                strings.add(ongletGererCours.getSelectType().getSelectedItem().toString()); //Type selectionné
+            }
+            //Enseignants
+            if(!ongletGererCours.getListeEnseignants().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
+                strings.add(ongletGererCours.getListeEnseignants().getSelectedValuesList()); //On add
+            else
+                strings.add(null);
+            //Groupes
+            if(!ongletGererCours.getListeGroupes().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
+                strings.add(ongletGererCours.getListeGroupes().getSelectedValuesList()); //On add
+            else
+                strings.add(null);
+            //Salles
+            if(!ongletGererCours.getListeSalles().getSelectedValuesList().isEmpty())//Si liste salles non vide
+                strings.add(ongletGererCours.getListeSalles().getSelectedValuesList());//On add
+            else
+                strings.add(null);
         }
-        //Enseignants
-        if(!ongletGererCours.getListeEnseignants().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
-            strings.add(ongletGererCours.getListeEnseignants().getSelectedValuesList()); //On add
-        else
-            strings.add(null);
-        //Groupes
-        if(!ongletGererCours.getListeGroupes().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
-            strings.add(ongletGererCours.getListeGroupes().getSelectedValuesList()); //On add
-        else
-            strings.add(null);
-        //Salles
-        if(!ongletGererCours.getListeSalles().getSelectedValuesList().isEmpty())//Si liste salles non vide
-            strings.add(ongletGererCours.getListeSalles().getSelectedValuesList());//On add
-        else
-            strings.add(null);
+        //Si tout est bien saisie, la taille de size > 0 sinon = 0
         return strings;
     }
     /**
@@ -252,47 +292,81 @@ public class OngletServicePlanification extends JTabbedPane {
     public ArrayList<Object> getInfosModifSeance()
     {
         ArrayList<Object> strings = new ArrayList<>();
-        //Semaine
-        String date = ongletGererCours.getDate2().substring(9,19);
+        boolean isOk = true;
+        //BLINDAGE Decalaration
+        String donnees = ongletGererCours.getDate2(); //Données date issu du Jspinner
+        String date = donnees.substring(9,19);
+        String heure = donnees.substring(0,8);
         Calendar cal = Calendar.getInstance();
+        
         cal.set(Integer.parseInt(date.substring(0,4)), Integer.parseInt(date.substring(5,7))-1,Integer.parseInt(date.substring(8,10)));
-        strings.add(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
-        //Heure de debut
-        strings.add(ongletGererCours.getDate2().substring(0,8));       
-        //Date
-        strings.add(date);                                                    
-        //Etat
-        if(ongletGererCours.getEtatEC2().isSelected())//Etat de la séance
+        String jour =cal.getTime().toString();
+        //Dimanche Samedi
+        if(jour.contains("Sat") || jour.contains("Sun"))
         {
-            strings.add("1"); //Si radio bouton EC cliqué, on stock "1" 
-        }else if(ongletGererCours.getEtatV2().isSelected()){
-            strings.add("2"); //Si radio bouton V cliqué, on stock "2"
-        }else if(ongletGererCours.getEtatA().isSelected()){
-            strings.add("3"); //Si radio annulé cliqué, on stock "3"
+            System.out.println("Impssible d'ajouter une séance a un samedi ou dimanche.");
+            isOk = false;
         }
-        //Cours
-        if(!ongletGererCours.getSelectCours2().getSelectedItem().toString().equals("cours")){
-            strings.add(ongletGererCours.getSelectCours2().getSelectedItem().toString()); //Cours selectionné
+        //avant 8h, après 19h (fermture 20h30)
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
+        try {
+            Date dateActuelle = format.parse(donnees);
+            Date ouverture = format.parse("08:00:00 "+ date);
+            Date fermeture = format.parse("19:00:00 "+ date);
+            if(dateActuelle.before(ouverture))
+            {
+                System.out.println("Impossible l'école n'est pas ouvert.");
+                isOk = false;
+            }
+            if(dateActuelle.after(fermeture))
+            {
+                System.out.println("Impossible l'école va être fermer avant même d'avoir finit la séance.");
+                isOk = false;
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(OngletServicePlanification.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //Type
-        if(!ongletGererCours.getSelectType2().getSelectedItem().toString().equals("type")){
-            strings.add(ongletGererCours.getSelectType2().getSelectedItem().toString()); //Type selectionné
+        if(isOk)
+        {
+            //Semaine
+            strings.add(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
+            //Heure de debut
+            strings.add(heure);       
+            //Date
+            strings.add(date);
+            //Etat
+            if(ongletGererCours.getEtatEC2().isSelected())//Etat de la séance
+            {
+                strings.add("1"); //Si radio bouton EC cliqué, on stock "1" 
+            }else if(ongletGererCours.getEtatV2().isSelected()){
+                strings.add("2"); //Si radio bouton V cliqué, on stock "2"
+            }else if(ongletGererCours.getEtatA().isSelected()){
+                strings.add("3"); //Si radio annulé cliqué, on stock "3"
+            }
+            //Cours
+            if(!ongletGererCours.getSelectCours2().getSelectedItem().toString().equals("cours")){
+                strings.add(ongletGererCours.getSelectCours2().getSelectedItem().toString()); //Cours selectionné
+            }
+            //Type
+            if(!ongletGererCours.getSelectType2().getSelectedItem().toString().equals("type")){
+                strings.add(ongletGererCours.getSelectType2().getSelectedItem().toString()); //Type selectionné
+            }
+            //Enseignants
+            if(!ongletGererCours.getListeEnseignants2().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
+                strings.add(ongletGererCours.getListeEnseignants2().getSelectedValuesList()); //On add
+            else
+                strings.add(new ArrayList<>());
+            //Groupes
+            if(!ongletGererCours.getListeGroupes2().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
+                strings.add(ongletGererCours.getListeGroupes2().getSelectedValuesList()); //On add
+            else
+                strings.add(new ArrayList<>());
+            //Salles
+            if(!ongletGererCours.getListeSalles2().getSelectedValuesList().isEmpty())//Si liste salles non vide
+                strings.add(ongletGererCours.getListeSalles2().getSelectedValuesList());//On add
+            else
+                strings.add(new ArrayList<>());
         }
-        //Enseignants
-        if(!ongletGererCours.getListeEnseignants2().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
-            strings.add(ongletGererCours.getListeEnseignants2().getSelectedValuesList()); //On add
-        else
-            strings.add(new ArrayList<>());
-        //Groupes
-        if(!ongletGererCours.getListeGroupes2().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
-            strings.add(ongletGererCours.getListeGroupes2().getSelectedValuesList()); //On add
-        else
-            strings.add(new ArrayList<>());
-        //Salles
-        if(!ongletGererCours.getListeSalles2().getSelectedValuesList().isEmpty())//Si liste salles non vide
-            strings.add(ongletGererCours.getListeSalles2().getSelectedValuesList());//On add
-        else
-            strings.add(new ArrayList<>());
         return strings;
     }
 }

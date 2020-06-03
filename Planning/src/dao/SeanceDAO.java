@@ -454,6 +454,7 @@ public class SeanceDAO extends DAO<Seance> {
                               "WHERE SE.ID_enseignant = " + id + " "+
                               "AND Seance.Date >= '" + debut + "' "+
                               "AND Seance.Date <= '" + fin + "' " +
+                              "AND Seance.Etat = 2 " +
                               "ORDER BY cours.Nom, Date, Heure_debut";
                 }
                 if (result.getInt("Droit") == 4) { //Etudiant, trouver les séances de cet étudiant
@@ -464,6 +465,7 @@ public class SeanceDAO extends DAO<Seance> {
                               "LEFT JOIN etudiant SE ON SE.ID_groupe = SG.ID_groupe WHERE SE.ID_utilisateur = " + id + " " +
                               "AND Seance.Date >= '" + debut + "' " +
                               "AND Seance.Date <= '" + fin + "' " +
+                              "AND Seance.Etat = 2 " +
                               "ORDER BY cours.Nom, Date, Heure_debut";
                 }
                 ResultSet resultSeances = connect.createStatement().executeQuery(requete);

@@ -1326,21 +1326,6 @@ public class Controle {
         if(u.getDroit() == 4) {
             et = recupEtudiant(u);
             seances = sDAO.findSeancesOfUserByDate(et.getId(), debut, fin);
-            
-            //Ne doit pas voir les séances en cours de validation (etat = 1)
-            for(int i=0;i<seances.size();i++) {
-                for(int j=0;j<seances.get(i).size();j++) {
-                    /*System.out.println("Taille seances = " + seances.size());
-                    System.out.print("Etat = " + seances.get(i).get(j).getEtat() + " ");
-                    System.out.println(seances.get(i).toString());
-                    System.out.println("Tour de boucle" + i);*/
-                    if(seances.get(i).get(j).getEtat() == 1) {
-                        seances.get(i).remove(j); //Effacer la séance
-                        //System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
-                        j--; //On retourne une case en arrière
-                    }
-                }
-            }
         }
         
         ((DefaultTableModel) fenetre.getRecapCours().getModel()).setRowCount(seances.size());

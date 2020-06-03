@@ -73,6 +73,13 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Salles
+     */
+    public JTable getListeSalles() {
+        return edt.getJTListeSalles(); 
+    }
+    
+    /**
      * @return le tableau contenant la liste de seances sur une annee scolaire
      */
     public JTable getRecapCours() {
@@ -143,6 +150,22 @@ public class Fenetre extends JFrame {
             }
         });
         
+        edt.getVueSalles().addActionListener((ActionEvent event) -> {
+            String recherche = edt.getRechercheSalles().getSelectedItem().toString();
+            if(edt.getVueSalles().getSelectedItem() == "en grille") {
+                if (!recherche.equals("Veuillez sélectionner"))
+                    majEdtSallesParSemaine();
+                edt.getGrilleSalles().setVisible(true);
+                edt.getListeSalles().setVisible(false);
+            }
+            else {
+                if (!recherche.equals("Veuillez sélectionner"))
+                    majListeSallesParSemaine();
+                edt.getListeSalles().setVisible(true);
+                edt.getGrilleSalles().setVisible(false);
+            }
+        });
+        
         //COMBOBOX DES SEMAINES dans Cours et dans Salles
         edt.getSemaineCours().addActionListener((ActionEvent event) -> {
             if(edt.getVueCours().getSelectedItem() == "en grille") {
@@ -156,7 +179,14 @@ public class Fenetre extends JFrame {
         });
         
         edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
-            majEdtSallesParSemaine();
+            if(edt.getVueSalles().getSelectedItem() == "en grille") {
+                System.out.println("grille");
+                majEdtSallesParSemaine();
+            }
+            else {
+                System.out.println("liste");
+                majListeSallesParSemaine();
+            }
         });
         
         //COMBOBOX DE RECHERCHE POUR LES REFERENTS ET ADMIN
@@ -171,6 +201,21 @@ public class Fenetre extends JFrame {
                 else {
                     System.out.println("liste");
                     majListeCoursParSemaine();
+                }
+            } 
+        });
+        
+        edt.getRechercheSalles().addActionListener((ActionEvent event) -> {
+            String recherche = edt.getRechercheSalles().getSelectedItem().toString();
+            System.out.println("recherche : " + recherche);
+            if (!recherche.equals("Veuillez sélectionner")) {
+                if(edt.getVueSalles().getSelectedItem() == "en grille") {
+                    System.out.println("grille");
+                    majEdtSallesParSemaine();
+                }
+                else {
+                    System.out.println("liste");
+                    majListeSallesParSemaine();
                 }
             } 
         });
@@ -217,17 +262,46 @@ public class Fenetre extends JFrame {
         });
         
         edt.getRechercheBoutonCours().addActionListener((ActionEvent event) -> {
+            Boolean grille = false;
+            if(edt.getVueCours().getSelectedItem() == "en grille") {
+                grille = true;
+            }
+            
             String recherche = edt.getRechercheBarreCours().getText();
             String semaine = edt.getSemaineCours().getSelectedItem().toString();
             if (semaine.equals("Semaine")) {
                 edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-                controle.rechercheUtilisateur(recherche, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                edt.setListeCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                controle.rechercheUtilisateur(recherche, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), grille);
             }
 
             else {
                 //System.out.println("Semaine selectionnee : " + semaine);
                 edt.setEdtCours(Integer.parseInt(semaine));
-                controle.rechercheUtilisateur(recherche, Integer.parseInt(semaine));
+                edt.setListeCours(Integer.parseInt(semaine));
+                controle.rechercheUtilisateur(recherche, Integer.parseInt(semaine), grille);
+            }
+        });
+        
+        edt.getRechercheBoutonSalles().addActionListener((ActionEvent event) -> {
+            Boolean grille = false;
+            if(edt.getVueSalles().getSelectedItem() == "en grille") {
+                grille = true;
+            }
+            
+            String recherche = edt.getRechercheBarreSalles().getText();
+            String semaine = edt.getSemaineSalles().getSelectedItem().toString();
+            if (semaine.equals("Semaine")) {
+                edt.setEdtSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                edt.setListeSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+                controle.rechercheSalle(recherche, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), grille);
+            }
+
+            else {
+                //System.out.println("Semaine selectionnee : " + semaine);
+                edt.setEdtSalles(Integer.parseInt(semaine));
+                edt.setListeSalles(Integer.parseInt(semaine));
+                controle.rechercheSalle(recherche, Integer.parseInt(semaine), grille);
             }
         });
     }
@@ -296,12 +370,15 @@ public class Fenetre extends JFrame {
             //INITIALISATIONS COMBOBOX
             remplirComboRecherche(email, password); //Utile pour TOUS les profil car on set l'edt selon son contenu
             remplirComboGroupes(); //Juste pour le référent [?]
+            remplirComboSalles();
             remplirDonneesAdmin(); //Juste pour l'admin
             initGraphes(); //Graphes dans Home
             //majEdtCoursParSemaine();
             edt.getGrilleCours().setVisible(true); //Affichage en grille par defaut
             controle.seancesRecap(connexion.getEmail(), connexion.getPassword()); //Set edt de l'utilisateur courant (par défaut)
+            edt.setEdtHome();
             majEdtJour();
+            edt.getGrilleSalles().setVisible(true);
         }
     }
     
@@ -357,6 +434,15 @@ public class Fenetre extends JFrame {
     public void remplirComboCours(){
         ArrayList<String> ttLesCours = controle.allCoursToStrings();
         edt.setCours(ttLesCours);
+    }
+    
+    /**
+     * rempli la combobox avec les salles de la BDD
+     */
+    public void remplirComboSalles(){
+        ArrayList<String> ttesLesSalles = controle.allSallesToStrings();
+        edt.setRechercheSalles(ttesLesSalles);
+        edt.getRechercheSalles().setSelectedIndex(0);
     }
     
     /**
@@ -466,6 +552,18 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
+     * par defaut utilisateur courant
+     * un utilisateur ne peut pas le modifier sauf s'il est référent
+     */
+    public void majListeSalles() {
+        String salles = edt.getRechercheSalles().getSelectedItem().toString();
+        System.out.println("\njcombobox " + edt.getRechercheSalles().getSelectedItem().toString());
+               
+        controle.majSallesListe(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), salles);
+    }
+    
+    /**
      * MAJ Edt quand un referent cherche un groupe
      */
     public void majEdtGroupe() {
@@ -518,6 +616,21 @@ public class Fenetre extends JFrame {
             //System.out.println("Semaine selectionnee : " + semaine);
             edt.setListeCours(Integer.parseInt(semaine));
             majListe();
+        }
+    }
+    
+    public void majListeSallesParSemaine() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineSalles().getSelectedItem().toString();
+        if (semaine.equals("Semaine")) {
+            edt.setListeSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majListeSalles();
+        }
+
+        else {
+            //System.out.println("Semaine selectionnee : " + semaine);
+            edt.setListeSalles(Integer.parseInt(semaine));
+            majListeSalles();
         }
     }
     

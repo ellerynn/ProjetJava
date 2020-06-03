@@ -345,7 +345,7 @@ public class Controle {
             c.add(p);
         }
         
-        //GRAPHES SEANCES -> combien de cours restant sur l'annee scolaire en cours
+        //GRAPHES SEANCES -> combien de cours sur l'annee scolaire en cours
         String debut = fenetre.calculAnneeScolaire().substring(0, 4) + "-09-01";
         int pos = fenetre.calculAnneeScolaire().indexOf("/");
         String fin = fenetre.calculAnneeScolaire().substring(pos+1) + "-08-01";
@@ -355,15 +355,19 @@ public class Controle {
         ArrayList<ChartPanel> t = new ArrayList();
         if(u.getDroit() != 1) {
             ArrayList<ArrayList<Seance>> seances = sDAO.findSeancesOfUserByDate(u.getId(), debut, fin);
-            int compteur = 0;
             
             DefaultPieDataset pieDataset = new DefaultPieDataset();
+            int compteur = 0;
+               
             for(int i=0;i<seances.size();i++) {
-
-                for(int j=0;j<seances.get(i).size();j++) {
+                
+                for(int j=0;j<seances.get(i).size();j++) {                       
                     compteur++; //Compte le nombre de seances pour un cours
+                    System.out.println("i = " + i + " j = " + j + " compteur = " + compteur + "seance : " + seances.get(i).get(j).getCours().getNom());  
                     pieDataset.setValue(seances.get(i).get(j).getCours().getNom(), new Integer(compteur));
                 }
+                compteur = 0;
+                
             }
             JFreeChart chart = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset, true, true, true);
             PiePlot P =(PiePlot)chart.getPlot();
@@ -392,8 +396,9 @@ public class Controle {
      *
      * @param recherche
      * @param semaine
+     * @param grille
      */
-    public void rechercheUtilisateur(String recherche, int semaine) {
+    public void rechercheUtilisateur(String recherche, int semaine, boolean grille) {
         //Saisi d'un nom et prenom, peut etre pas complets
         int pos = recherche.indexOf(" ");
         UtilisateurDAO uDAO = new UtilisateurDAO();
@@ -409,9 +414,24 @@ public class Controle {
         }
         
         if(u.getEmail() != null && u.getPassword() != null) {
-            seancesEdt(semaine, u.getEmail(), u.getPassword());
+            if(grille)
+                seancesEdt(semaine, u.getEmail(), u.getPassword());
+            else
+                seancesListe(semaine, u.getEmail(), u.getPassword());
         }
             
+    }
+    
+    /**
+     *
+     * @param recherche
+     * @param semaine
+     */
+    public void rechercheSalle(String recherche, int semaine, boolean grille) {
+        if(grille)
+        {}    
+        else
+            majSallesListe(semaine, recherche);  
     }
     
     /**
@@ -856,6 +876,62 @@ public class Controle {
         Utilisateur u = uDAO.findByName(prenom, nom);
         //System.out.println("dans maj seances edt semaine prenom nom" + u.getPrenom() + " " + u.getNom());
         seancesEdt(semaine, u.getEmail(), u.getPassword());
+    }
+    
+    /**
+     *
+     * @param semaine
+     * @param infos
+     */
+    public void majSallesListe(int semaine, String infos) {
+        System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + infos);
+        SeanceDAO sDAO = new SeanceDAO();
+        SalleDAO s2DAO = new SalleDAO();
+        Salle s = s2DAO.findByName(infos);
+        ArrayList<Seance> seances = new ArrayList();
+        if(s != null)
+            seances = sDAO.findSeancesBySalle(s.getId(), semaine);
+        String strSeances; //Conteneur des string relative a une seance
+        
+        for(int i=0;i<seances.size();i++) {
+            System.out.println("Taille seances = " + seances.size());
+            System.out.print("Etat = " + seances.get(i).getEtat() + " ");
+            System.out.println(seances.get(i).toString());
+            System.out.println("Tour de boucle" + i);
+            if(seances.get(i).getEtat() == 1) {
+                seances.remove(i); //Effacer la séance
+                System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
+                i--; //On retourne une case en arrière
+            }
+        }
+                      
+        for(int j=seances.size()-1;j>-1;j--) { //Pour toutes les seances            
+            String dateBDD = seances.get(j).getDate();
+            System.out.println(dateBDD); //AAAA-MM-JJ
+                
+            //Convertir la dateBDD en jour
+            String jourBDD = dateBDD.substring(8, 10); 
+            System.out.println(jourBDD);
+            
+            //LIGNE DEBUT
+            for(int i=0;i<fenetre.getListeCours().getRowCount();i++) { 
+                String date = fenetre.getListeCours().getValueAt(i, 0).toString(); 
+                String jourEdt = date.substring(5, 7);
+                if(jourEdt.endsWith(" ")) {
+                    jourEdt = "0" + jourEdt.substring(0, 1);
+                }
+                                    
+                if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
+                    strSeances = seances.get(j).getHeureDebut() + " à " + seances.get(j).getHeureFin() + " " + seances.get(j).toString();
+                    System.out.println(strSeances);
+                    Vector os = null;
+                    ((DefaultTableModel) fenetre.getListeSalles().getModel()).insertRow(i+1, os);
+                    fenetre.getListeSalles().setValueAt(strSeances, i+1, 0);
+                    i++;
+                }
+            }
+        } 
     }
     
     /**
@@ -1439,6 +1515,9 @@ public class Controle {
         fenetre.getRecapCours().setRowHeight(row, rowHeight);
     }
 
+    /**
+     *
+     */
     public void afficherGrapheHeureSeanceSemestre() {
         ArrayList<Seance> seances = recupAllSeances();
         ArrayList<Cours> cours = recupAllCours();

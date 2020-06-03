@@ -1,9 +1,11 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -34,22 +36,29 @@ public class OngletSalles extends JTabbedPane {
     private JComboBox<String> selectRecherche;
     private JComboBox<String> semaine;
     private JTable tabEdt;
+    private JTable listeEdt;
+    private TableLabelRendererPanel p;
+    private TableLabelRendererPanel p1;
     //Salles -> Salles libres
     private JTable tabLibres;
+    private  TableTreeRendererPanel p2;
     
     /**
      * constructeur
      */
     public OngletSalles() {
-        //Cours -> Emploi du temps
+        //Salles -> Emploi du temps
         vueEdt = new JComboBox<>();
         rechercheBarre = new JTextField();
         rechercheBouton = new JButton();
         selectRecherche = new JComboBox<>();
         semaine = new JComboBox<>();
-        tabEdt = new JTable();
-        //Cours -> Récapitulatifs des cours
+        tabEdt = new JTable();listeEdt = new JTable();
+        p = new TableLabelRendererPanel(tabEdt);
+        p1 = new TableLabelRendererPanel(listeEdt);
+        //Salles -> Salles libres
         tabLibres = new JTable();
+        p2 = new TableTreeRendererPanel(tabLibres);
         
         /*************************EMPLOI DU TEMPS*************************/
         JPanel cours = new JPanel();
@@ -68,7 +77,6 @@ public class OngletSalles extends JTabbedPane {
         
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
-        remplirComboBox(selectRecherche, "[Salle]", "[Salle]"); //Tous les étudiants de la BDD
         cours.add(selectRecherche, c);
         
         c.gridx = 2;
@@ -93,14 +101,19 @@ public class OngletSalles extends JTabbedPane {
         int week = cal.get(Calendar.WEEK_OF_YEAR);
         setEdt(week); //Remplir le tableau Emploi du temps
         
-        tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
         tabEdt.setRowHeight(100);
+        
         c.gridwidth = 8;   //2 columns wide
         c.gridx = 0; c.gridy = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        cours.add(new JScrollPane(tabEdt), c);
-        c.fill = GridBagConstraints.HORIZONTAL;
+        p.setVisible(false);
+        cours.add(p, c);
+        
+        setListeEdt(week);
+        p1.setBackground(Color.red);
+        p1.setVisible(false);
+        cours.add(p1, c);
           
         this.add("Emploi du temps", cours);
         
@@ -108,18 +121,16 @@ public class OngletSalles extends JTabbedPane {
         JPanel libres = new JPanel();
         libres.setLayout(new GridBagLayout()); //Initialisation du container
         GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
-        t.weightx = 1;
+        t.weightx = 1; t.weighty = 1;
         
         t.insets = new Insets(10,10,10,10);
         
-        tabLibres.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Site", "Date", "Durée", "Capacité"}));
-        tabLibres.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
-        tabLibres.setRowHeight(100);
+        setLibres();
         
         t.gridwidth = 8;   //2 columns wide
-        t.gridx = 0; c.gridy = 1;
+        t.gridx = 0; t.gridy = 1;
         t.fill = GridBagConstraints.BOTH;
-        libres.add(new JScrollPane(tabLibres), c);
+        libres.add(p2, t);
         
         this.add("Salles libres", libres);
     }
@@ -130,6 +141,62 @@ public class OngletSalles extends JTabbedPane {
      */
     public JComboBox getSemaine() {
         return this.semaine;
+    }
+    
+    /**
+     * retourne la barre de recherche
+     * @return
+     */
+    public JTextField getRechercheBarre() {
+        return this.rechercheBarre;
+    }
+    
+    /**
+     * retourne le bouton rechercher
+     * @return
+     */
+    public JButton getRechercheBouton() {
+        return this.rechercheBouton;
+    }
+    
+    /**
+     * retourne la JComboBox de recherche (utilisateurs de la BDD)
+     * @return
+     */
+    public JComboBox getRecherche() {
+        return this.selectRecherche;
+    }
+    
+    /**
+     *
+     * @return le type de vue souhaité : en grille ou en liste
+     */
+    public JComboBox getVue() {
+        return this.vueEdt;
+    }
+    
+    /**
+     *
+     * @return le conteneur de l'edt en grille
+     */
+    public TableLabelRendererPanel getGrille() {
+        return this.p;
+    }
+    
+    /**
+     *
+     * @return le conteneur de l'edt en liste
+     */
+    public TableLabelRendererPanel getListe() {
+        return this.p1;
+    }
+    
+    /**
+     * retourne le JTable contenant l'edt (cours) sur une semaine
+     * @return
+     */
+    public JTable getJTListe() {
+        return this.listeEdt;
     }
     
     /**
@@ -149,10 +216,10 @@ public class OngletSalles extends JTabbedPane {
      * @param intitule
      * @param objet
      */
-    public void remplirComboBox(JComboBox box, String intitule, Object objet) {
+    public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
-        for(int i = 1; i < 200; i++) {
-            box.addItem(objet.toString());
+        for(int i = 0; i < string.size(); i++) {
+            box.addItem(string.get(i));
         }
     }
     
@@ -283,5 +350,112 @@ public class OngletSalles extends JTabbedPane {
         else
             annee = cal.get(Calendar.YEAR)-1;
         return annee;
+    }
+    
+    /**
+     *
+     * @param semaine
+     */
+    public void setListeEdt(int semaine) {
+        //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
+        Calendar cal = Calendar.getInstance(); //Date du jour
+        int anneeScolaire = calculAnneeScolaire(); //2019
+        
+        cal.setWeekDate(cal.get(Calendar.YEAR), semaine, 2); //2 pour lundi ?
+        
+        if(cal.get(Calendar.MONTH)+1 >= 1 && cal.get(Calendar.MONTH)+1 <= 8 || semaine == 1)
+            cal.setWeekDate(anneeScolaire+1, semaine, 2); //2 pour lundi ?
+        
+        else 
+            cal.setWeekDate(anneeScolaire, semaine, 2); //2 pour lundi ?
+                       
+        //Maintenant, si j'affiche la date du jour, il me dira que nous sommes le lundi de la semaine (int semaine) de l'année courante
+        int mois = cal.get(Calendar.MONTH)+1; //Mois courant = mois retourné + 1
+        int jour = cal.get(Calendar.DAY_OF_MONTH); //Jour courant = jour retourné 
+        String[] dates = {"lun.", "mar.", "mer.", "jeu.", "ven.", "sam."};
+        String[] month = {" janvier", " février", " mars", " avril", " mai", " juin", 
+                          " juillet", " août", " septembre", " octobre", " novembre", " décembre", " janvier"};
+                
+        String mois_nom = month[mois-1];
+        
+        for (int i=0;i<6;i++) {         
+            //Blindage fin de mois !
+            if(anneeBissextile(cal.get(Calendar.YEAR))) { //Si c'est une année bissextile
+                if((jour > 29) && (cal.get(Calendar.MONTH) == 2)) {
+                    jour = 1;
+                    mois_nom = month[mois];
+                }               
+            }
+            else {
+                if((jour > 28) && (cal.get(Calendar.MONTH) == 2)) {
+                    jour = 1;
+                    mois_nom = month[mois];
+                }
+            }
+                
+            if((jour > 30) && (mois == 4 
+                               || mois == 6 
+                               || mois == 9 
+                               || mois == 11)) {
+                jour = 1;
+                mois_nom = month[mois];
+            }
+
+            if(jour > 31) {
+                jour = 1;
+                mois_nom = month[mois];
+            }  
+            
+            dates[i] = dates[i] + " " + jour++ + mois_nom;
+        }
+        
+        listeEdt.setModel(new DefaultTableModel() 
+        { 
+            boolean[] canEdit = new boolean [] {false};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        ((DefaultTableModel) listeEdt.getModel()).setColumnCount(1);
+        ((DefaultTableModel) listeEdt.getModel()).setRowCount(dates.length);
+        System.out.println("lignes " + dates.length);
+        
+        for(int i=0;i<dates.length;i++)
+            listeEdt.setValueAt(dates[i], i, 0);
+        
+        listeEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        
+        listeEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        listeEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        listeEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales
+    }
+    
+    /**
+     * misà jour du tableau contenant les salles libres (entêtes)
+     */
+    public void setLibres() {             
+        tabLibres.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Salles", 
+                                                                               "Campus", 
+                                                                               "Capacité"}){ 
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        tabLibres.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (tabLibres.getColumnModel().getColumnCount() > 0) {
+            tabLibres.getColumnModel().getColumn(2).setMaxWidth(30);
+        }
+        
+        tabLibres.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        tabLibres.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place        
     }
 }

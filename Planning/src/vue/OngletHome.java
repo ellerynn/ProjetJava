@@ -204,14 +204,14 @@ public class OngletHome extends JSplitPane {
         for(int i=0;i<c.size();i++) {
             graphes.add(c.get(i), g);
             g.gridx++;
-            System.out.println("gridx = " + g.gridx);
+            //System.out.println("gridx = " + g.gridx);
         }
         
         g.gridy = 1; g.gridx = 0;
         for(int i=0;i<t.size();i++) {
             graphes.add(t.get(i), g);
             g.gridx++;
-            System.out.println("gridx = " + g.gridx);
+            //System.out.println("gridx = " + g.gridx);
         }
     }
 }

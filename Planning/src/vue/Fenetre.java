@@ -6,7 +6,6 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
@@ -49,7 +48,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
                 
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("admin@gmail.com", "admin");
+        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
     }
     
     /**
@@ -64,6 +63,13 @@ public class Fenetre extends JFrame {
      */
     public JTable getEdtCours() {
         return edt.getEdtCours(); 
+    }
+    
+    /**
+     * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
+     */
+    public JTable getListeCours() {
+        return edt.getJTListeCours(); 
     }
     
     /**
@@ -123,9 +129,30 @@ public class Fenetre extends JFrame {
             setTitle("Connexion"); 
         });
         
+        //COMBOBOX DE VUE SOUHAITEE EDT
+        edt.getVueCours().addActionListener((ActionEvent event) -> {
+            if(edt.getVueCours().getSelectedItem() == "en grille") {
+                majEdtCoursParSemaine();
+                edt.getGrilleCours().setVisible(true);
+                edt.getListeCours().setVisible(false);
+            }
+            else {
+                majListeCoursParSemaine();
+                edt.getListeCours().setVisible(true);
+                edt.getGrilleCours().setVisible(false);
+            }
+        });
+        
         //COMBOBOX DES SEMAINES dans Cours et dans Salles
         edt.getSemaineCours().addActionListener((ActionEvent event) -> {
-            majEdtCoursParSemaine();
+            if(edt.getVueCours().getSelectedItem() == "en grille") {
+                System.out.println("grille");
+                majEdtCoursParSemaine();
+            }
+            else {
+                System.out.println("liste");
+                majListeCoursParSemaine();
+            }
         });
         
         edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
@@ -136,12 +163,27 @@ public class Fenetre extends JFrame {
         edt.getRechercheCours().addActionListener((ActionEvent event) -> {
             String recherche = edt.getRechercheCours().getSelectedItem().toString();
             System.out.println("recherche : " + recherche);
-            if (!recherche.equals("Veuillez sélectionner")) 
-                majEdtCoursParSemaine();
+            if (!recherche.equals("Veuillez sélectionner")) {
+                if(edt.getVueCours().getSelectedItem() == "en grille") {
+                    System.out.println("grille");
+                    majEdtCoursParSemaine();
+                }
+                else {
+                    System.out.println("liste");
+                    majListeCoursParSemaine();
+                }
+            } 
         });
         
         edt.getGroupesCours().addActionListener((ActionEvent event) -> {  
-            majEdtGroupeCoursParSemaine();
+            if(edt.getVueCours().getSelectedItem() == "en grille") {
+                System.out.println("grille");
+                majEdtGroupeCoursParSemaine();
+            }
+            else {
+                System.out.println("liste");
+                //CERTES
+            }
         });
         
         //SPINNER DATE HOME
@@ -256,7 +298,10 @@ public class Fenetre extends JFrame {
             remplirComboGroupes(); //Juste pour le référent [?]
             remplirDonneesAdmin(); //Juste pour l'admin
             initGraphes(); //Graphes dans Home
+            //majEdtCoursParSemaine();
+            edt.getGrilleCours().setVisible(true); //Affichage en grille par defaut
             controle.seancesRecap(connexion.getEmail(), connexion.getPassword()); //Set edt de l'utilisateur courant (par défaut)
+            majEdtJour();
         }
     }
     
@@ -399,6 +444,28 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
+     * par defaut utilisateur courant
+     * un utilisateur ne peut pas le modifier sauf s'il est référent
+     */
+    public void majListe() {
+        String user = edt.getRechercheCours().getSelectedItem().toString();
+        //System.out.println("\njcombobox " + edt.getRechercheCours().getSelectedItem().toString());
+           
+        //Récupérer le nom et le nom de famille
+        String prenom = new String();
+        String nom = new String();
+
+        int pos = user.indexOf(' ');
+        //System.out.println(user + " position " + pos);
+
+        prenom = user.substring(0, pos);
+        nom = user.substring(pos+1);
+
+        controle.majSeancesListe(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), prenom, nom);
+    }
+    
+    /**
      * MAJ Edt quand un referent cherche un groupe
      */
     public void majEdtGroupe() {
@@ -433,6 +500,24 @@ public class Fenetre extends JFrame {
             //System.out.println("Semaine selectionnee : " + semaine);
             edt.setEdtCours(Integer.parseInt(semaine));
             majEdt();
+        }
+    }
+    
+    /**
+     * recup semaine select puis maj edt Cours
+     */
+    public void majListeCoursParSemaine() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineCours().getSelectedItem().toString();
+        if (semaine.equals("Semaine")) {
+            edt.setListeCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majListe();
+        }
+
+        else {
+            //System.out.println("Semaine selectionnee : " + semaine);
+            edt.setListeCours(Integer.parseInt(semaine));
+            majListe();
         }
     }
     

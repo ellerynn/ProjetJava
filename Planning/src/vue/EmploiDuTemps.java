@@ -57,6 +57,30 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     *
+     * @return le type de vue souhaité : en grille ou en liste
+     */
+    public JComboBox getVueCours() {
+        return this.ongletCours.getVue();
+    }
+    
+    /**
+     *
+     * @return le conteneur de l'edt en grille
+     */
+    public TableLabelRendererPanel getGrilleCours() {
+        return this.ongletCours.getGrille();
+    }
+    
+    /**
+     *
+     * @return le conteneur de l'edt en liste
+     */
+    public TableLabelRendererPanel getListeCours() {
+        return this.ongletCours.getListe();
+    }
+    
+    /**
      * @return la barre de recherche dans l'onglet Cours
      */
     public JTextField getRechercheBarreCours() {
@@ -98,6 +122,13 @@ public class EmploiDuTemps extends JTabbedPane {
         return ongletCours.getEdt(); //Emploi du temps
     }
     
+    /**
+     * @return le JTable contenant l'edt sur une semaine
+     */
+    public JTable getJTListeCours() {
+        return ongletCours.getJTListe(); //Emploi du temps
+    }
+        
     /**
      * @return le JTable contenant le récapitulatif des cours
      */
@@ -175,6 +206,14 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public void setEdtCours(int semaine) {
         ongletCours.setEdt(semaine);
+    }
+    
+    /**
+     * MAJ de l'edt en liste sur une semaine dans l'onglet Cours
+     * @param semaine
+     */
+    public void setListeCours(int semaine) {
+        ongletCours.setListeEdt(semaine);
     }
     
     /**
@@ -281,6 +320,7 @@ public class EmploiDuTemps extends JTabbedPane {
     /**
      * ajout des graphes dans Home
      * @param c
+     * @param t
      */
     public void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
         ongletHome.ajouterGraphes(c, t);

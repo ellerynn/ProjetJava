@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -35,7 +36,9 @@ public class OngletCours extends JTabbedPane {
     private JComboBox<String> semaine;
     private JComboBox<String> groupes;
     private JTable tabEdt;
+    private JTable listeEdt;
     private TableLabelRendererPanel p;
+    private TableLabelRendererPanel p1;
     //Cours -> Récapitulatifs des cours
     private JTable tabRecap;
     private  TableTreeRendererPanel p2;
@@ -52,7 +55,9 @@ public class OngletCours extends JTabbedPane {
         semaine = new JComboBox<>();
         groupes = new JComboBox<>();
         tabEdt = new JTable();
+        listeEdt = new JTable();
         p = new TableLabelRendererPanel(tabEdt);
+        p1 = new TableLabelRendererPanel(listeEdt);
         //Cours -> Récapitulatifs des cours
         tabRecap = new JTable();
         p2 = new TableTreeRendererPanel(tabRecap);
@@ -109,7 +114,13 @@ public class OngletCours extends JTabbedPane {
         c.gridx = 0; c.gridy = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
+        p.setVisible(false);
         cours.add(p, c);
+        
+        setListeEdt(week);
+        p1.setBackground(Color.red);
+        p1.setVisible(false);
+        cours.add(p1, c);
           
         this.add("Emploi du temps", cours);
         
@@ -129,6 +140,30 @@ public class OngletCours extends JTabbedPane {
         recapCours.add(p2, t);
         
         this.add("Récapitulatif des cours", recapCours);
+    }
+    
+    /**
+     *
+     * @return le conteneur de l'edt en grille
+     */
+    public TableLabelRendererPanel getGrille() {
+        return this.p;
+    }
+    
+    /**
+     *
+     * @return le conteneur de l'edt en liste
+     */
+    public TableLabelRendererPanel getListe() {
+        return this.p1;
+    }
+    
+    /**
+     *
+     * @return le type de vue souhaité : en grille ou en liste
+     */
+    public JComboBox getVue() {
+        return this.vueEdt;
     }
     
     /**
@@ -180,6 +215,14 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
+     * retourne le JTable contenant l'edt (cours) sur une semaine
+     * @return
+     */
+    public JTable getJTListe() {
+        return this.listeEdt;
+    }
+    
+    /**
      * retourne le JTable contenant le récapitulatif des séances de l'année scolaire en cours
      * @return
      */
@@ -221,6 +264,83 @@ public class OngletCours extends JTabbedPane {
         for(int i = 0; i < string.size(); i++) {
             box.addItem(string.get(i));
         }
+    }
+    
+    public void setListeEdt(int semaine) {
+        //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
+        Calendar cal = Calendar.getInstance(); //Date du jour
+        int anneeScolaire = calculAnneeScolaire(); //2019
+        
+        cal.setWeekDate(cal.get(Calendar.YEAR), semaine, 2); //2 pour lundi ?
+        
+        if(cal.get(Calendar.MONTH)+1 >= 1 && cal.get(Calendar.MONTH)+1 <= 8 || semaine == 1)
+            cal.setWeekDate(anneeScolaire+1, semaine, 2); //2 pour lundi ?
+        
+        else 
+            cal.setWeekDate(anneeScolaire, semaine, 2); //2 pour lundi ?
+                       
+        //Maintenant, si j'affiche la date du jour, il me dira que nous sommes le lundi de la semaine (int semaine) de l'année courante
+        int mois = cal.get(Calendar.MONTH)+1; //Mois courant = mois retourné + 1
+        int jour = cal.get(Calendar.DAY_OF_MONTH); //Jour courant = jour retourné 
+        String[] dates = {"lun.", "mar.", "mer.", "jeu.", "ven.", "sam."};
+        String[] month = {" janvier", " février", " mars", " avril", " mai", " juin", 
+                          " juillet", " août", " septembre", " octobre", " novembre", " décembre", " janvier"};
+                
+        String mois_nom = month[mois-1];
+        
+        for (int i=0;i<6;i++) {         
+            //Blindage fin de mois !
+            if(anneeBissextile(cal.get(Calendar.YEAR))) { //Si c'est une année bissextile
+                if((jour > 29) && (cal.get(Calendar.MONTH) == 2)) {
+                    jour = 1;
+                    mois_nom = month[mois];
+                }               
+            }
+            else {
+                if((jour > 28) && (cal.get(Calendar.MONTH) == 2)) {
+                    jour = 1;
+                    mois_nom = month[mois];
+                }
+            }
+                
+            if((jour > 30) && (mois == 4 
+                               || mois == 6 
+                               || mois == 9 
+                               || mois == 11)) {
+                jour = 1;
+                mois_nom = month[mois];
+            }
+
+            if(jour > 31) {
+                jour = 1;
+                mois_nom = month[mois];
+            }  
+            
+            dates[i] = dates[i] + " " + jour++ + mois_nom;
+        }
+        
+        listeEdt.setModel(new DefaultTableModel() 
+        { 
+            boolean[] canEdit = new boolean [] {false};
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        
+        ((DefaultTableModel) listeEdt.getModel()).setColumnCount(1);
+        ((DefaultTableModel) listeEdt.getModel()).setRowCount(dates.length);
+        System.out.println("lignes " + dates.length);
+        
+        for(int i=0;i<dates.length;i++)
+            listeEdt.setValueAt(dates[i], i, 0);
+        
+        listeEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        
+        listeEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        listeEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        listeEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales
     }
     
     /**

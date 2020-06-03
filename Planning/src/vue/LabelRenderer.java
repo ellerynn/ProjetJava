@@ -69,7 +69,13 @@ public class LabelRenderer implements TableCellRenderer {
             else {
                 Font bold = new Font(label.getFont().getFontName(), Font.PLAIN, label.getFont().getSize());
                 label.setFont(bold);
-                label.setForeground(Color.red);
+                if(column != 0)
+                    label.setForeground(Color.red);
+                else {
+                    label.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Color.white)); //Design} 
+                    label.setOpaque(false);
+                }
+                
             }
 
             panel.add(label);

@@ -1,11 +1,11 @@
-package dao;
+package modele;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import modele.Cours;
+import modele.Site;
 
 /**
  *
@@ -13,32 +13,32 @@ import modele.Cours;
  * @author Sutharsan
  * @author Emilie
  */
+public class SiteDAO extends DAO<Site> {
 
-public class CoursDAO extends DAO<Cours> {
     /**
      * create
      * @param object
      * @return
      */
     @Override
-    public Cours create(Cours object) {
-        try {
+    public Site create(Site object) {
+        try{
             //On insère les données dans la BDD
             PreparedStatement requete = this.connect
                                             .prepareStatement(
-                                                "INSERT INTO cours (Nom) VALUES(?)"
+                                                "INSERT INTO site (Nom) VALUES(?)"
                                             );
             requete.setString(1, object.getNom());
             requete.executeUpdate();
             
-            //On récupère l'id
-            ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM cours");
-            if (result.first()) {
+            //On recupère l'id
+            ResultSet result = connect.createStatement().executeQuery("SELECT MAX(ID) FROM site");
+            if (result.first())
+            {
                 //On récupère tout les données lié à cette objet pour être sûr qu'on a tous
-                object = this.find(result.getInt("MAX(ID)")); //On récupère les nouvelles données
+                object = this.find(result.getInt("MAX(ID)"));
             }
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return object;
@@ -50,7 +50,7 @@ public class CoursDAO extends DAO<Cours> {
      * @return
      */
     @Override
-    public boolean delete(Cours object) {
+    public boolean delete(Site object) {
         return false;
     }
 
@@ -60,7 +60,7 @@ public class CoursDAO extends DAO<Cours> {
      * @return
      */
     @Override
-    public Cours update(Cours object) {
+    public Site update(Site object) {
         try {
 
             this.connect	
@@ -68,7 +68,7 @@ public class CoursDAO extends DAO<Cours> {
                     ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE
                  ).executeUpdate(
-                    "UPDATE cours SET Nom = '" + object.getNom() + "'"+
+                    "UPDATE site SET Nom = '" + object.getNom() + "'"+
                     " WHERE ID = " + object.getId()
                  );
                 object = this.find(object.getId());
@@ -78,16 +78,16 @@ public class CoursDAO extends DAO<Cours> {
         }
         return object;
     }
-    
+
     /**
      * find
-     * trouver cours via ID
+     * trouver un site via id
      * @param id
      * @return
      */
     @Override
-    public Cours find(int id) {
-        Cours cours = new Cours();      
+    public Site find(int id) {
+        Site site = new Site();      
 
         try {
             Statement st;
@@ -95,59 +95,55 @@ public class CoursDAO extends DAO<Cours> {
             //creation ordre SQL
             st = connect.createStatement();
 
-            result = st.executeQuery("SELECT * FROM cours WHERE ID = " + id);
+            result = st.executeQuery("SELECT * FROM site WHERE ID = " + id);
             if(result.first())
             {
-                cours.setId(result.getInt("ID"));
-                cours.setNom(result.getString("Nom"));
+                site.setId(result.getInt("ID"));
+                site.setNom(result.getString("Nom"));
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("pas trouvé");
+          e.printStackTrace();
+          System.out.println("pas trouvé");
         }
-        return cours;
+        
+        return site;
     }
     
     /**
-     * trouver tous les cours
      * pour l'admin
-     * @return
+     * @return un ArrayList de Sites
      */
-    public ArrayList<Cours> findAllCours()
+    public ArrayList<Site> findAllSites() //NE SERA PEUT ETRE JAMAIS USE (car salles possèdent dj l'info du site)
     {
-        ArrayList<Cours> cours = new ArrayList<>();
+        ArrayList<Site> sites = new ArrayList<>();
         try {
-            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM cours ORDER BY ID"); // Récup tout cours
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM site ORDER BY ID"); // Récup tout types
             
                 while(result.next()) {
-                    cours.add(find(result.getInt("ID")));
+                    sites.add(find(result.getInt("ID")));
                 }
         }
         catch (SQLException e) {
             e.printStackTrace();
             System.out.println("pas trouvé");
         }
-        return cours;
+        return sites;
     }
-    /**
-     * Prend un String en paramètre et retourne une classe Cours 
-     * il permet d'obtenir le cours en fonction de son nom 
-     * @param infos
-     * @return 
-     */
-    public Cours findByName(String infos){
+    
+    public ArrayList<String> allSitesToString() {
+        ArrayList<String> sites = new ArrayList<>();
         try {
-            ResultSet result=connect.createStatement()
-                                    .executeQuery("SELECT ID FROM cours "
-                                                + "WHERE Nom = '"+infos+"'"); // récup l'id du type
-            if(result.first())
-                return find(result.getInt("ID"));
+            ResultSet result=connect.createStatement().executeQuery("SELECT DISTINCT ID FROM site ORDER BY ID"); // Récup tout types
+            
+                while(result.next()) {
+                    sites.add(find(result.getInt("ID")).getNom());
+                }
         }
         catch (SQLException e) {
             e.printStackTrace();
             System.out.println("pas trouvé");
         }
-        return null;
+        return sites;
     }
 }

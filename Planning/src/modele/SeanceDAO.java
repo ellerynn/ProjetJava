@@ -1,4 +1,4 @@
-package dao;
+package modele;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -247,28 +247,31 @@ public class SeanceDAO extends DAO<Seance> {
             ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
             if(result.first())
             {
-                String requete = new String();
-                if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
-                    requete = "SELECT ID FROM Seance \n"
-                            +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
-                            +"WHERE Seance.Semaine = " + semaine + " AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
-                }
-                if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
-                    requete = "SELECT ID FROM Seance \n" +
-                                "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
-                                "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
-                                "WHERE Seance.Semaine = " + semaine + " AND user.ID_utilisateur = " + id + 
-                                " ORDER BY Seance.Date, seance.Heure_debut";
-                }
-                ResultSet resultSeances = connect.createStatement().executeQuery(requete);
-
-                if(resultSeances.first()) //On regarde si une ligne existe
+                if(result.getInt("Droit") != 1)
                 {
-                    resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                    while(resultSeances.next())  //On recupère les données de toute les lignes
+                    String requete = new String();
+                    if (result.getInt("Droit") == 3 || result.getInt("Droit") == 2){ //Professeur, trouver les séances de ce prof
+                        requete = "SELECT ID FROM Seance \n"
+                                +"LEFT JOIN seance_enseignants SE ON SE.ID_seance = seance.ID \n"
+                                +"WHERE Seance.Semaine = " + semaine + " AND SE.ID_enseignant = " + id + " ORDER BY Seance.Date, seance.Heure_debut";
+                    }
+                    if (result.getInt("Droit") == 4){ //Etudiant, trouver les séances de cet étudiant
+                        requete = "SELECT ID FROM Seance \n" +
+                                    "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID \n" +
+                                    "LEFT JOIN etudiant user ON user.ID_groupe = SG.ID_groupe \n" +
+                                    "WHERE Seance.Semaine = " + semaine + " AND user.ID_utilisateur = " + id + 
+                                    " ORDER BY Seance.Date, seance.Heure_debut";
+                    }
+                    ResultSet resultSeances = connect.createStatement().executeQuery(requete);
+
+                    if(resultSeances.first()) //On regarde si une ligne existe
                     {
-                        SeanceDAO sDAO = new SeanceDAO();
-                        listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                        resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
+                        while(resultSeances.next())  //On recupère les données de toute les lignes
+                        {
+                            SeanceDAO sDAO = new SeanceDAO();
+                            listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
+                        }
                     }
                 }
             }
@@ -454,6 +457,7 @@ public class SeanceDAO extends DAO<Seance> {
                               "WHERE SE.ID_enseignant = " + id + " "+
                               "AND Seance.Date >= '" + debut + "' "+
                               "AND Seance.Date <= '" + fin + "' " +
+                              "AND Seance.Etat = 2 " +
                               "ORDER BY cours.Nom, Date, Heure_debut";
                 }
                 if (result.getInt("Droit") == 4) { //Etudiant, trouver les séances de cet étudiant
@@ -464,6 +468,7 @@ public class SeanceDAO extends DAO<Seance> {
                               "LEFT JOIN etudiant SE ON SE.ID_groupe = SG.ID_groupe WHERE SE.ID_utilisateur = " + id + " " +
                               "AND Seance.Date >= '" + debut + "' " +
                               "AND Seance.Date <= '" + fin + "' " +
+                              "AND Seance.Etat = 2 " +
                               "ORDER BY cours.Nom, Date, Heure_debut";
                 }
                 ResultSet resultSeances = connect.createStatement().executeQuery(requete);

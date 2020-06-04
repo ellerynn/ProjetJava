@@ -73,6 +73,13 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
+     */
+    public JTable getEdtSalles() {
+        return edt.getEdtSalles(); 
+    }
+    
+    /**
      * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Salles
      */
     public JTable getListeSalles() {
@@ -313,7 +320,7 @@ public class Fenetre extends JFrame {
     //L'onglet SP est initialisé dans edt que quand l'admin se connecte, iniListeners n'accepte pas mes Listeners 
     //car c'est avant la connection et donc l'onglet SP est vide (= pas de JMachin encore) ;'(...
         edt.getBtnValider().addActionListener((ActionEvent event)->{
-            if(edt.getInfosAddSeance().size() != 0)
+            if(!edt.getInfosAddSeance().isEmpty())
                 controle.demandeAddSeance(edt.getInfosAddSeance());
         });
      
@@ -534,6 +541,17 @@ public class Fenetre extends JFrame {
      * par defaut utilisateur courant
      * un utilisateur ne peut pas le modifier sauf s'il est référent
      */
+    public void majSalles() {
+        String infos = edt.getRechercheSalles().getSelectedItem().toString();
+        
+        controle.majSeancesSalles(Integer.parseInt(edt.getSemaineSalles().getSelectedItem().toString()), infos);
+    }
+    
+    /**
+     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
+     * par defaut utilisateur courant
+     * un utilisateur ne peut pas le modifier sauf s'il est référent
+     */
     public void majListe() {
         String user = edt.getRechercheCours().getSelectedItem().toString();
         //System.out.println("\njcombobox " + edt.getRechercheCours().getSelectedItem().toString());
@@ -640,11 +658,14 @@ public class Fenetre extends JFrame {
     public void majEdtSallesParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineSalles().getSelectedItem().toString();
-        if (semaine.equals("Semaine")) 
+        if (semaine.equals("Semaine")) {
             edt.setEdtSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-
-        else
+            majSalles();
+        }
+        else {
             edt.setEdtSalles(Integer.parseInt(semaine));
+            majSalles();
+        }
     }
     
     /**

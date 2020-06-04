@@ -132,8 +132,6 @@ public class EmploiDuTemps extends JTabbedPane {
         return ongletSalles.getRechercheBouton(); //Bouton de recherche
     }
     
-    
-    
     /**
      * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
      */
@@ -167,6 +165,13 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public JTable getEdtCours() {
         return ongletCours.getEdt(); //Emploi du temps
+    }
+    
+    /**
+     * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Salles
+     */
+    public JTable getEdtSalles() {
+        return ongletSalles.getEdt(); 
     }
     
     /**

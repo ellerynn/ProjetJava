@@ -429,7 +429,7 @@ public class Controle {
      */
     public void rechercheSalle(String recherche, int semaine, boolean grille) {
         if(grille)
-        {}    
+            this.majSeancesSalles(semaine, recherche);
         else
             majSallesListe(semaine, recherche);  
     }
@@ -879,6 +879,18 @@ public class Controle {
     }
     
     /**
+     * affichage de l'emploi du temps dans l'onglet Cours
+     * @param semaine
+     * @param infos
+     */
+    public void majSeancesSalles(int semaine, String infos) {
+        SalleDAO s2DAO = new SalleDAO();
+        Salle s2 = s2DAO.findByName(infos);
+        
+        seancesSalles(semaine, s2);
+    }
+    
+    /**
      *
      * @param semaine
      * @param infos
@@ -1029,6 +1041,113 @@ public class Controle {
                     ((DefaultTableModel) fenetre.getListeCours().getModel()).insertRow(i+1, os);
                     fenetre.getListeCours().setValueAt(strSeances, i+1, 0);
                     i++;
+                }
+            }
+        } 
+    }
+    
+    /**
+     *
+     * @param semaine
+     * @param salle
+     */
+    public void seancesSalles(int semaine, Salle salle) {
+        System.out.println("\nSEANCES EDT - On veut afficher les seances de " + salle.getNom() + " " + salle.getSite().getNom());
+        SeanceDAO sDAO = new SeanceDAO();
+        ArrayList<Seance> seances = sDAO.findSeancesBySalle(salle.getId(), semaine);
+        ArrayList<String> strSeances = new ArrayList<>();
+        
+        for(int i=0;i<seances.size();i++) {
+            System.out.println("Taille seances = " + seances.size());
+            System.out.print("Etat = " + seances.get(i).getEtat() + " ");
+            System.out.println(seances.get(i).toString());
+            System.out.println("Tour de boucle" + i);
+            if(seances.get(i).getEtat() == 1 || seances.get(i).getEtat() == 3) {
+                seances.remove(i); //Effacer la séance
+                System.out.println("Cette séance est en cours de validation/annulée, on ne l'affiche pas");
+                i--; //On retourne une case en arrière
+            }
+        }
+        
+        //Trouver la ligne -> HEURE - Récuperer string, comparer a ce qui est dans seances de l'utilisateur
+        int ligne1 = 0; int ligne2 = 0; int colonne = 0; 
+        
+        for(int j=0;j<seances.size();j++) { //Pour toutes les seances
+            String heure1 = seances.get(j).getHeureDebut();
+            System.out.println("Heure début de la seance " + heure1);
+            
+            String heure2 = seances.get(j).getHeureFin();
+            System.out.println("Heure fin de la seance " + heure2);
+            
+            //Convertir l'heure1BDD en heureEdt : 12:00:00 -> 12h00
+            String heure1BDD = heure1.substring(0, 2) + "h" + heure1.substring(3, 5); 
+            System.out.println(heure1BDD);
+            
+            //Convertir l'heure2BDD en heureEdt : 12:00:00 -> 12h00
+            String heure2BDD = heure2.substring(0, 2) + "h" + heure2.substring(3, 5); 
+            System.out.println(heure2BDD);
+            
+            String date = seances.get(j).getDate();
+            System.out.println(date); //AAAA-MM-JJ
+                
+            //Convertir la dateBDD en jour
+            String jourBDD = date.substring(8, 10); 
+            System.out.println(jourBDD);
+            
+            //LIGNE DEBUT
+            for(int i=0;i<fenetre.getEdtSalles().getRowCount();i++) { 
+                String heureEdt = fenetre.getEdtSalles().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
+                
+                if(heureEdt.equals(heure1BDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
+                    ligne1 = i;
+                }
+            }
+            
+            //LIGNE FIN
+            for(int i=0;i<fenetre.getEdtSalles().getRowCount();i++) { 
+                String heureEdt = fenetre.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
+                
+                if(heureEdt.equals(heure2BDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
+                    ligne2 = i;
+                }
+            }
+            
+            for(int i=0;i<fenetre.getEdtCours().getColumnCount();i++) { //Pour chaque ligne
+                String entete = fenetre.getEdtSalles().getModel().getColumnName(i);
+                String jourEdt = entete.substring(5, 7);
+                if(jourEdt.endsWith(" ")) {
+                    jourEdt = "0" + jourEdt.substring(0, 1);
+                }
+                                    
+                if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
+                    colonne = i;
+                }
+            }
+            
+            //Un cours dure forcément 1h30 = 6 cases
+            strSeances = seances.get(j).toArrayListOfString();
+            
+            System.out.println("strSeances :");
+            
+            System.out.println(strSeances);
+            //RAPPEL cf. méthode dans Seance.java
+            //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
+            //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
+            //!! SI LA SEANCE EST VALIDEE = 5 CASES
+            
+            if(colonne != 0)  {
+                System.out.println("dans le if colonne");
+                for(int i=0;i<strSeances.size();i++) {
+                    fenetre.getEdtSalles().setValueAt(strSeances.get(i), ligne1+i, colonne);
+                    System.out.println("ajout de " + strSeances.get(i) + " l." + (ligne1+i) + " c." + colonne);
+                    
+                    //Si la séance est validée
+                    if(!strSeances.get(0).equals("ANNULEE") && !strSeances.get(0).equals("EN COURS DE VALIDATION")) {
+                        fenetre.getEdtSalles().setValueAt("    ", ligne1+5, colonne);
+                    } 
                 }
             }
         } 

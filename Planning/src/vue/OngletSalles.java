@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -100,9 +99,7 @@ public class OngletSalles extends JTabbedPane {
         
         int week = cal.get(Calendar.WEEK_OF_YEAR);
         setEdt(week); //Remplir le tableau Emploi du temps
-        
-        tabEdt.setRowHeight(100);
-        
+               
         c.gridwidth = 8;   //2 columns wide
         c.gridx = 0; c.gridy = 1;
         c.weighty = 1;
@@ -157,6 +154,14 @@ public class OngletSalles extends JTabbedPane {
      */
     public JButton getRechercheBouton() {
         return this.rechercheBouton;
+    }
+    
+    /**
+     * retourne le JTable contenant l'edt (salles) sur une semaine
+     * @return
+     */
+    public JTable getEdt() {
+        return this.tabEdt;
     }
     
     /**
@@ -314,6 +319,7 @@ public class OngletSalles extends JTabbedPane {
         DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
         custom.setHorizontalAlignment(JLabel.CENTER);
         tabEdt.getColumnModel().getColumn(0).setCellRenderer(custom);
+        tabEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales
     }    
     
     /**

@@ -1,15 +1,15 @@
 package controleur;
 
-import dao.CoursDAO;
-import dao.EnseignantDAO;
-import dao.EtudiantDAO;
-import dao.GroupeDAO;
-import dao.PromotionDAO;
-import dao.SalleDAO;
-import dao.SeanceDAO;
-import dao.SiteDAO;
-import dao.TypeCoursDAO;
-import dao.UtilisateurDAO;
+import modele.CoursDAO;
+import modele.EnseignantDAO;
+import modele.EtudiantDAO;
+import modele.GroupeDAO;
+import modele.PromotionDAO;
+import modele.SalleDAO;
+import modele.SeanceDAO;
+import modele.SiteDAO;
+import modele.TypeCoursDAO;
+import modele.UtilisateurDAO;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Calendar;

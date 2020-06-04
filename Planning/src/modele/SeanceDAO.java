@@ -461,7 +461,6 @@ public class SeanceDAO extends DAO<Seance> {
                               "ORDER BY cours.Nom, Date, Heure_debut";
                 }
                 if (result.getInt("Droit") == 4) { //Etudiant, trouver les séances de cet étudiant
-                    System.out.println("recup seances recap etu");
                     requete = "SELECT Seance.ID FROM Seance " +
                               "LEFT JOIN seance_groupes SG ON SG.ID_seance = Seance.ID " +
                               "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
@@ -488,7 +487,6 @@ public class SeanceDAO extends DAO<Seance> {
                 ArrayList<Object> toCompare = new ArrayList<>();
                 while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
                 {
-                    System.out.println("nom : " + unFourreTout.get(0).getCours().getNom());
                     
                     toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
                     toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
@@ -538,9 +536,7 @@ public class SeanceDAO extends DAO<Seance> {
                //On trie
                 ArrayList<Object> toCompare = new ArrayList<>();
                 while(!unFourreTout.isEmpty())//Chaque séance de la postion 0 de unFourreTout va chercher et récupérer ses semblables
-                {
-                    System.out.println("nom la puta : " + unFourreTout.get(0).getCours().getNom());
-                    
+                {     
                     toCompare.add(unFourreTout.get(0).getCours().getNom()); //On prend la nom de la matière de la séance à la position 0
                     toCompare.add(unFourreTout.get(0).getGroupes()); //On prend les groupes de la séance à la position 0
                     

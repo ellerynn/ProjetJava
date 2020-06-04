@@ -113,6 +113,14 @@ public class Controle {
     }
     
     /**
+     * @return toutes les promos de la BDD dans un ArrayList de promos
+     */
+    public ArrayList<Promotion> recupPromos() {
+        PromotionDAO pDAO = new PromotionDAO();
+        return pDAO.findAllPromo();
+    }
+    
+    /**
      * @return tous les groupes de la BDD
      */
     public ArrayList<Groupe> recupGroupes() {
@@ -236,6 +244,21 @@ public class Controle {
             gp.add(groupes.get(i).getNom() + " " + groupes.get(i).getPromotion().getNom());
          
         return gp;
+    }
+    
+    /**
+     * Permet d'obtenir toutes les promos par nom 
+     * utilisé pour la recherche du référent par exemple
+     * @return un ArrayList de toutes les promos de la BDD
+     */
+    public ArrayList<String> allPromosToStrings() {
+        ArrayList<Promotion> promos = recupPromos();
+        ArrayList<String> p = new ArrayList<>();
+        
+        for(int i=0;i<promos.size();i++)
+            p.add(promos.get(i).getNom());
+         
+        return p;
     }
     
     /**
@@ -532,10 +555,11 @@ public class Controle {
      *
      * @param recherche
      * @param semaine
+     * @param grille
      */
     public void rechercheSalle(String recherche, int semaine, boolean grille) {
         if(grille)
-            this.majSeancesSalles(semaine, recherche);
+            majSeancesSalles(semaine, recherche);
         else
             majSallesListe(semaine, recherche);  
     }
@@ -1579,7 +1603,7 @@ public class Controle {
     }
     
     /**
-     * affichage de l'edt d'un groupe pour référent
+     * affichage de l'edt d'un groupe pour référent, admin
      * @param semaine
      * @param recherche
      */
@@ -1610,6 +1634,39 @@ public class Controle {
         //System.out.println("etudiant recup " + e.getEmail() + " " + e.getPassword());
         
         seancesEdt(semaine, e.getEmail(), e.getPassword());
+    }
+    /**
+     * affichage de l'edt d'un groupe pour référent, admin
+     * @param semaine
+     * @param recherche 
+     */
+    public void majSeancesListe(int semaine, String recherche){
+        //Récupérer le groupe et la promo
+        String groupe = recherche.substring(0, 4);
+        String promo = recherche.substring(5, 9);
+
+        //System.out.println("recherche : " + groupe + " " + promo);
+        
+        //Trouver un etudiant qui appartient a ce groupe
+        //Trouver l'id de la promo
+        PromotionDAO pDAO = new PromotionDAO();
+        Promotion p = pDAO.findByName(promo);
+        
+        //System.out.println("promo recup " + p.getNom());
+        
+        //Trouver l'id du groupe
+        GroupeDAO gDAO = new GroupeDAO();
+        Groupe g = gDAO.findByNameAndPromo(groupe, p.getId());
+        
+        //System.out.println("groupe recup " + g.getNom() + "de la promo " + g.getPromotion().getNom());
+        
+        //Trouver etudiant by group -> email, password
+        EtudiantDAO eDAO = new EtudiantDAO();
+        Etudiant e = eDAO.findByGroup(g.getId());
+        
+        //System.out.println("etudiant recup " + e.getEmail() + " " + e.getPassword());
+        
+        seancesListe(semaine, e.getEmail(), e.getPassword());
     }
     
     /**

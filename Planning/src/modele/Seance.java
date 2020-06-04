@@ -405,7 +405,7 @@ public class Seance {
             
         String str2 = new String(); //Groupes
         for(int i=0;i<groupes.size();i++) {
-            str2 = str2 + " " + groupes.get(i).getNom();
+            str2 = str2 + " " + groupes.get(i).getNom()+ " "+ groupes.get(i).getPromotion().getNom();
             if(i != groupes.size()-1)
                 str2 = str2 + ", ";
         }
@@ -428,7 +428,7 @@ public class Seance {
         seance = seance + " " + cours.getNom() + "\n" //Cours
                         + str1 + "\n" //Enseignants
                         + str2 + "\n" //Groupes
-                        + str3 + "\n" //Salles
+                        + str3 + "\n " //Salles
                         + type.getNom() //Type du cours
         ;        
         return seance;

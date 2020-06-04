@@ -234,7 +234,7 @@ public class Fenetre extends JFrame {
             }
             else {
                 System.out.println("liste");
-                //CERTES
+                majListeGroupeCoursParSemaine();
             }
         });
         
@@ -582,12 +582,20 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * MAJ Edt quand un referent cherche un groupe
+     * MAJ Edt quand un referent, admin cherche un groupe
      */
     public void majEdtGroupe() {
         String recherche = edt.getGroupesCours().getSelectedItem().toString();
         if(!recherche.equals("Groupes")) 
             controle.majSeancesEdt(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
+    }
+    /**
+     * MAJ liste EDT quand un referent, admin cherche un groupe
+     */
+    public void majListeGroupe(){
+        String recherche = edt.getGroupesCours().getSelectedItem().toString();
+        if(!recherche.equals("Groupes")) 
+            controle.majSeancesListe(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
     }
         
     /**
@@ -669,7 +677,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * recup semaine select puis maj edt pour un groupe (fonction référent)
+     * recup semaine select puis maj edt pour un groupe (fonction référent,admin)
      */
     public void majEdtGroupeCoursParSemaine() {
         //On récupère la semaine sélectionnée
@@ -682,6 +690,22 @@ public class Fenetre extends JFrame {
         else {
             edt.setEdtCours(Integer.parseInt(semaine));
             majEdtGroupe();
+        }
+    }
+    /**
+     * recup semaine select puis maj liste edt pour un groupe (fonction référent, admin)
+     */
+    public void majListeGroupeCoursParSemaine() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineCours().getSelectedItem().toString();
+        if (semaine.equals("Semaine")) {
+            edt.setListeCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majListeGroupe();
+        }
+
+        else {
+            edt.setListeCours(Integer.parseInt(semaine));
+            majListeGroupe();
         }
     }
     

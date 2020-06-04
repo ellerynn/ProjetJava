@@ -1473,7 +1473,7 @@ public class Controle {
     }
     
     /**
-     * affichage de l'edt d'un groupe pour référent
+     * affichage de l'edt d'un groupe pour référent, admin
      * @param semaine
      * @param recherche
      */
@@ -1504,6 +1504,39 @@ public class Controle {
         //System.out.println("etudiant recup " + e.getEmail() + " " + e.getPassword());
         
         seancesEdt(semaine, e.getEmail(), e.getPassword());
+    }
+    /**
+     * affichage de l'edt d'un groupe pour référent, admin
+     * @param semaine
+     * @param recherche 
+     */
+    public void majSeancesListe(int semaine, String recherche){
+        //Récupérer le groupe et la promo
+        String groupe = recherche.substring(0, 4);
+        String promo = recherche.substring(5, 9);
+
+        //System.out.println("recherche : " + groupe + " " + promo);
+        
+        //Trouver un etudiant qui appartient a ce groupe
+        //Trouver l'id de la promo
+        PromotionDAO pDAO = new PromotionDAO();
+        Promotion p = pDAO.findByName(promo);
+        
+        //System.out.println("promo recup " + p.getNom());
+        
+        //Trouver l'id du groupe
+        GroupeDAO gDAO = new GroupeDAO();
+        Groupe g = gDAO.findByNameAndPromo(groupe, p.getId());
+        
+        //System.out.println("groupe recup " + g.getNom() + "de la promo " + g.getPromotion().getNom());
+        
+        //Trouver etudiant by group -> email, password
+        EtudiantDAO eDAO = new EtudiantDAO();
+        Etudiant e = eDAO.findByGroup(g.getId());
+        
+        //System.out.println("etudiant recup " + e.getEmail() + " " + e.getPassword());
+        
+        seancesListe(semaine, e.getEmail(), e.getPassword());
     }
     
     /**

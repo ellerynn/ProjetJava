@@ -1,4 +1,4 @@
-package dao;
+package modele;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -154,6 +154,7 @@ public class SalleDAO extends DAO<Salle>{
         }
         return salles;
     }
+    
     /**
      * Prend un String en paramètre et retourne une classe Salle 
      * il permet d'obtenir une salle en fonction du nom de la salle et du site, 
@@ -161,21 +162,37 @@ public class SalleDAO extends DAO<Salle>{
      * @param infos
      * @return 
      */
-    public Salle findByName(String infos){
+    public Salle findByName(String infos) {
         int espace = infos.indexOf(" ");
-        String salle = infos.substring(0,espace);
-        String site = infos.substring(espace+1, infos.length());
-        try {
-            ResultSet result=connect.createStatement()
-                                    .executeQuery("SELECT salle.ID FROM salle "
-                                                + "LEFT JOIN site ON site.ID = salle.ID_site "
-                                                + "WHERE salle.Nom = '"+salle+"' AND site.Nom = '"+site+"'"); // récup l'id de la salle
-            if(result.first())
-                return find(result.getInt("salle.ID"));
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("pas trouvé");
+        
+        if(espace != -1) {
+            String salle = infos.substring(0,espace);
+            System.out.println(salle + "/");
+            String site = infos.substring(espace+1, infos.length());
+            System.out.println(site + "/");
+            
+            try {
+                ResultSet result=connect.createStatement()
+                                        .executeQuery("SELECT salle.ID FROM salle "
+                                                    + "LEFT JOIN site ON site.ID = salle.ID_site "
+                                                    + "WHERE salle.Nom = '"+salle+"' AND site.Nom = '"+site+"'"); // récup l'id de la salle
+                if(result.first())
+                    return find(result.getInt("salle.ID"));
+                
+                else { //Si les infos sont saisies dans le desordre = salle = site et site = salle
+                    result=connect.createStatement()
+                                        .executeQuery("SELECT salle.ID FROM salle "
+                                                    + "LEFT JOIN site ON site.ID = salle.ID_site "
+                                                    + "WHERE salle.Nom = '"+site+"' AND site.Nom = '"+salle+"'"); // récup l'id de la salle
+                if(result.first())
+                    return find(result.getInt("salle.ID"));
+                }
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("pas trouvé");
+            }
+            
         }
         return null;
     }

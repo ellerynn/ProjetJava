@@ -1,4 +1,4 @@
-package dao;
+package modele;
 
 import controleur.ConnexionBDD;
 import java.sql.Connection;

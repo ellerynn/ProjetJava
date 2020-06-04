@@ -66,6 +66,14 @@ public class EmploiDuTemps extends JTabbedPane {
     
     /**
      *
+     * @return le type de vue souhaité : en grille ou en liste
+     */
+    public JComboBox getVueSalles() {
+        return this.ongletSalles.getVue();
+    }
+    
+    /**
+     *
      * @return le conteneur de l'edt en grille
      */
     public TableLabelRendererPanel getGrilleCours() {
@@ -74,10 +82,26 @@ public class EmploiDuTemps extends JTabbedPane {
     
     /**
      *
+     * @return le conteneur de l'edt des salles en grille
+     */
+    public TableLabelRendererPanel getGrilleSalles() {
+        return this.ongletSalles.getGrille();
+    }
+    
+    /**
+     *
      * @return le conteneur de l'edt en liste
      */
     public TableLabelRendererPanel getListeCours() {
         return this.ongletCours.getListe();
+    }
+    
+    /**
+     *
+     * @return le conteneur de l'edt en liste
+     */
+    public TableLabelRendererPanel getListeSalles() {
+        return this.ongletSalles.getListe();
     }
     
     /**
@@ -95,10 +119,31 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     * @return la barre de recherche dans l'onglet Salles
+     */
+    public JTextField getRechercheBarreSalles() {
+        return ongletSalles.getRechercheBarre(); //Barre de recherche
+    }
+    
+    /**
+     * @return le bouton rechercher 
+     */
+    public JButton getRechercheBoutonSalles() {
+        return ongletSalles.getRechercheBouton(); //Bouton de recherche
+    }
+    
+    /**
      * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
      */
     public JComboBox getRechercheCours() {
         return ongletCours.getRecherche(); //Menu déroulant des utilisateurs
+    }
+    
+    /**
+     * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
+     */
+    public JComboBox getRechercheSalles() {
+        return ongletSalles.getRecherche(); //Menu déroulant des utilisateurs
     }
     
     /**
@@ -123,12 +168,27 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Salles
+     */
+    public JTable getEdtSalles() {
+        return ongletSalles.getEdt(); 
+    }
+    
+    /**
      * @return le JTable contenant l'edt sur une semaine
      */
     public JTable getJTListeCours() {
         return ongletCours.getJTListe(); //Emploi du temps
     }
         
+    /**
+     * @return le JTable contenant l'edt sur une semaine
+     */
+    public JTable getJTListeSalles() {
+        return ongletSalles.getJTListe(); //Emploi du temps
+    }
+       
+    
     /**
      * @return le JTable contenant le récapitulatif des cours
      */
@@ -217,6 +277,14 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     * MAJ de l'edt en liste sur une semaine dans l'onglet Cours
+     * @param semaine
+     */
+    public void setListeSalles(int semaine) {
+        ongletSalles.setListeEdt(semaine);
+    }
+    
+    /**
      * MAJ du récap de séances dans l'onglet Cours
      * @param semaine
      */
@@ -238,6 +306,14 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public void setRechercheCours(ArrayList<String> string) {
         ongletCours.remplirComboBox(ongletCours.getRecherche(), "Veuillez sélectionner", string);
+    }
+    
+    /**
+     * rempli la JcomboBox de recherche salles dans l'onglet Salles
+     * @param string
+     */
+    public void setRechercheSalles(ArrayList<String> string) {
+        ongletSalles.remplirComboBox(ongletSalles.getRecherche(), "Veuillez sélectionner", string);
     }
     
     /**
@@ -295,6 +371,7 @@ public class EmploiDuTemps extends JTabbedPane {
     public void setSeances(ArrayList<String> string){
         ongletSP.remplirListSeances(string);
     }
+    
     /**
      * Retourne les informations utiles saisies par l'user dans l'onglet OngletServicePlanification pour ajouter une séance
      * @return 
@@ -302,6 +379,7 @@ public class EmploiDuTemps extends JTabbedPane {
     public ArrayList<Object> getInfosAddSeance() {
         return ongletSP.getInfosAddSeance();
     }
+    
     /**
      * Récupère et envoie les données d'une séance pour être séléctionnés dans OngletServicePlanification pour l'onglet OngletGererCoursSP
      * @param forBeingSelectedByDefault 
@@ -309,6 +387,7 @@ public class EmploiDuTemps extends JTabbedPane {
     public void dataToBeSelectedByDefault(ArrayList<Object> forBeingSelectedByDefault) {
         ongletSP.dataToBeSelectedByDefault(forBeingSelectedByDefault);
     }
+    
     /**
      * Retourne les données modifiés par l'user pour une séance donnée issues de OngletServicePlanification
      * @return 

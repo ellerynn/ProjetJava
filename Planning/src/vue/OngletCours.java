@@ -240,19 +240,7 @@ public class OngletCours extends JTabbedPane {
             box.addItem(String.valueOf(i));
         }
     }
-    
-    /**
-     * rempli une JComboBox avec l'ArrayList de string envoyé
-     * @param box
-     * @param string
-     */
-    public void remplirComboBox(JComboBox box, ArrayList<String> string) {
-        box.setModel(new DefaultComboBoxModel<>()); 
-        for(int i = 0; i < string.size(); i++) {
-            box.addItem(string.get(i));
-        }
-    }
-    
+       
     /**
      * cf. méthode précédente, intitulé en plus
      * @param box
@@ -266,9 +254,14 @@ public class OngletCours extends JTabbedPane {
         }
     }
     
+    /**
+     *
+     * @param semaine
+     */
     public void setListeEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
         Calendar cal = Calendar.getInstance(); //Date du jour
+        
         int anneeScolaire = calculAnneeScolaire(); //2019
         
         cal.setWeekDate(cal.get(Calendar.YEAR), semaine, 2); //2 pour lundi ?
@@ -319,7 +312,8 @@ public class OngletCours extends JTabbedPane {
             dates[i] = dates[i] + " " + jour++ + mois_nom;
         }
         
-        listeEdt.setModel(new DefaultTableModel() 
+        listeEdt.setModel(new DefaultTableModel(new Object [][] {},
+                                                new String[]{"Séances prévues cette semaine"})  
         { 
             boolean[] canEdit = new boolean [] {false};
 

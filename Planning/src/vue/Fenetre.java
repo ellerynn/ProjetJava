@@ -559,5 +559,16 @@ public class Fenetre extends JFrame {
     public void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
         edt.ajouterGraphes(c, t);
     }
+    /**
+     * Retourne les infos unique de la personne qui est connecté
+     * @return 
+     */
+    public ArrayList<String> recupMesInfos()
+    {
+        ArrayList<String> mesInfos = new ArrayList<>();
+        mesInfos.add(connexion.getEmail());
+        mesInfos.add(connexion.getPassword());
+        return mesInfos;
+    }
 }
 

@@ -544,7 +544,10 @@ public class Controle {
             u = uDAO.findForSearch(recherche);
         }
         
-        if(u.getEmail() != null && u.getPassword() != null) {
+        if(u.getId() != 0)
+        {
+            //On a trouvé la personne, on selectionne par défaut dans le menu des users dans l'onglet cours
+            fenetre.selectByDefaultUser(u.getPrenom()+" "+u.getNom());
             if(grille)
                 seancesEdt(semaine, u.getEmail(), u.getPassword());
             else

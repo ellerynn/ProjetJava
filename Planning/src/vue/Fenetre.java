@@ -175,13 +175,28 @@ public class Fenetre extends JFrame {
         
         //COMBOBOX DES SEMAINES dans Cours et dans Salles
         edt.getSemaineCours().addActionListener((ActionEvent event) -> {
-            if(edt.getVueCours().getSelectedItem() == "en grille") {
-                System.out.println("grille");
-                majEdtCoursParSemaine();
+            //S'il s'agit d'une recherche par user
+            if(!edt.getRechercheCours().getSelectedItem().toString().equals("Veuillez sélectionner")){
+                if(edt.getVueCours().getSelectedItem() == "en grille") {
+                    System.out.println("grille");
+                    majEdtCoursParSemaine();
+                }
+                else {
+                    System.out.println("liste");
+                    majListeCoursParSemaine();
+                }
             }
-            else {
-                System.out.println("liste");
-                majListeCoursParSemaine();
+            //S'il s'agit d'une recherche par Groupe
+            
+            if(!edt.getGroupesCours().getSelectedItem().toString().equals("Groupes")){
+                if(edt.getVueCours().getSelectedItem() == "en grille") {
+                    System.out.println("grille");
+                    majEdtGroupeCoursParSemaine();
+                }
+                else {
+                    System.out.println("liste oé");
+                    majListeGroupeCoursParSemaine();
+                }
             }
         });
         
@@ -201,6 +216,9 @@ public class Fenetre extends JFrame {
             String recherche = edt.getRechercheCours().getSelectedItem().toString();
             System.out.println("recherche : " + recherche);
             if (!recherche.equals("Veuillez sélectionner")) {
+                //Si tu cliques dans le menu user, c'est que tu recherches par user et non par groupe
+                edt.getGroupesCours().setSelectedItem("Groupes"); //Donc le menu groupe, on le remet par défaut
+                //Si c'est un enseignant ou un étudiant, ce bouton existe, mais il n'a pas accès donc c'est bon
                 if(edt.getVueCours().getSelectedItem() == "en grille") {
                     System.out.println("grille");
                     majEdtCoursParSemaine();
@@ -228,13 +246,18 @@ public class Fenetre extends JFrame {
         });
         
         edt.getGroupesCours().addActionListener((ActionEvent event) -> {  
-            if(edt.getVueCours().getSelectedItem() == "en grille") {
-                System.out.println("grille");
-                majEdtGroupeCoursParSemaine();
-            }
-            else {
-                System.out.println("liste");
-                majListeGroupeCoursParSemaine();
+            String recherche = edt.getGroupesCours().getSelectedItem().toString();
+            if (!recherche.equals("Groupes")) {
+                //Si tu cliques dans le menu groupe, c'est que tu recherches par groupe et non par user
+                edt.getRechercheCours().setSelectedItem("Veuillez sélectionner"); //Donc le menu user, on le remet par défaut
+                if(edt.getVueCours().getSelectedItem() == "en grille") {
+                    System.out.println("grille");
+                    majEdtGroupeCoursParSemaine();
+                }
+                else {
+                    System.out.println("liste");
+                    majListeGroupeCoursParSemaine();
+                }
             }
         });
         
@@ -727,6 +750,14 @@ public class Fenetre extends JFrame {
         mesInfos.add(connexion.getEmail());
         mesInfos.add(connexion.getPassword());
         return mesInfos;
+    }
+    /**
+     * Selectionne dans le menu déroulant des users, l'user en particulier
+     * @param name 
+     */
+    public void selectByDefaultUser(String name)
+    {
+        edt.getRechercheCours().setSelectedItem(name);
     }
 }
 

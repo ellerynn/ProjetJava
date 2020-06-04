@@ -6,7 +6,6 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
@@ -250,7 +249,7 @@ public class Fenetre extends JFrame {
             }
             else {
                 System.out.println("liste");
-                //CERTES
+                majListeGroupeCoursParSemaine();
             }
         });
         
@@ -619,6 +618,14 @@ public class Fenetre extends JFrame {
         if(!recherche.equals("Groupes")) 
             controle.majSeancesEdt(semaine, recherche);
     }
+    /**
+     * MAJ liste EDT quand un referent, admin cherche un groupe
+     */
+    public void majListeGroupe(){
+        String recherche = edt.getGroupesCours().getSelectedItem().toString();
+        if(!recherche.equals("Groupes")) 
+            controle.majSeancesListe(Integer.parseInt(edt.getSemaineCours().getSelectedItem().toString()), recherche);
+    }
         
     /**
      * MAJ Edt quand on change le jour dans Home
@@ -699,7 +706,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * recup semaine select puis maj edt pour un groupe (fonction référent)
+     * recup semaine select puis maj edt pour un groupe (fonction référent,admin)
      */
     public void majEdtGroupeCoursParSemaine() {
         //On récupère la semaine sélectionnée
@@ -714,6 +721,22 @@ public class Fenetre extends JFrame {
             majEdtGroupe(Integer.parseInt(semaine));
         }
     }
+    /**
+     * recup semaine select puis maj liste edt pour un groupe (fonction référent, admin)
+     */
+    public void majListeGroupeCoursParSemaine() {
+        //On récupère la semaine sélectionnée
+        String semaine = edt.getSemaineCours().getSelectedItem().toString();
+        if (semaine.equals("Semaine")) {
+            edt.setListeCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
+            majListeGroupe();
+        }
+
+        else {
+            edt.setListeCours(Integer.parseInt(semaine));
+            majListeGroupe();
+        }
+    }
     
     /**
      * ajouter les graphes de reporting
@@ -722,6 +745,17 @@ public class Fenetre extends JFrame {
      */
     public void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
         edt.ajouterGraphes(c, t);
+    }
+    /**
+     * Retourne les infos unique de la personne qui est connecté
+     * @return 
+     */
+    public ArrayList<String> recupMesInfos()
+    {
+        ArrayList<String> mesInfos = new ArrayList<>();
+        mesInfos.add(connexion.getEmail());
+        mesInfos.add(connexion.getPassword());
+        return mesInfos;
     }
 }
 

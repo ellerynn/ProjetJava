@@ -87,10 +87,14 @@ public class OngletCours extends JTabbedPane {
         cours.add(selectRecherche, c);
         
         c.gridx = 3;
+        promos.setVisible(false);
+        cours.add(promos, c);
+        
+        c.gridx = 4;
         rechercheBarre.setPreferredSize(new Dimension(250, 20));
         cours.add(rechercheBarre, c);
         
-        c.gridx = 4; 
+        c.gridx = 5; 
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.LINE_START;
         rechercheBouton.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
@@ -100,9 +104,6 @@ public class OngletCours extends JTabbedPane {
         rechercheBouton.setVisible(false);
         selectRecherche.setVisible(false);
         groupes.setVisible(false);
-        
-        c.gridx = 5;
-        cours.add(promos, c);
         
         c.anchor = GridBagConstraints.LINE_END;
         c.gridx = 7;

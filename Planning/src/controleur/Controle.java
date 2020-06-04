@@ -996,6 +996,50 @@ public class Controle {
     }
     
     /**
+     *
+     * @param semaine
+     * @param promo
+     */
+    public void majSeancesPromo(int semaine, String promo) {
+        PromotionDAO pDAO = new PromotionDAO();
+        Promotion p = pDAO.findByName(promo);
+        ArrayList<Seance> seances = new ArrayList<>();
+        if(p != null) {
+            SeanceDAO sDAO = new SeanceDAO();
+            seances = sDAO.findSeancesByPromoAndWeek(p.getId(), semaine);
+        }
+        
+        String strSeances; //Conteneur des string relative a une seance
+            
+        for(int j=seances.size()-1;j>-1;j--) { //Pour toutes les seances            
+            String dateBDD = seances.get(j).getDate();
+            System.out.println(dateBDD); //AAAA-MM-JJ
+                
+            //Convertir la dateBDD en jour
+            String jourBDD = dateBDD.substring(8, 10); 
+            System.out.println(jourBDD);
+            
+            //LIGNE DEBUT
+            for(int i=0;i<fenetre.getListeCours().getRowCount();i++) { 
+                String date = fenetre.getListeCours().getValueAt(i, 0).toString(); 
+                String jourEdt = date.substring(5, 7);
+                if(jourEdt.endsWith(" ")) {
+                    jourEdt = "0" + jourEdt.substring(0, 1);
+                }
+                                    
+                if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
+                    strSeances = seances.get(j).getHeureDebut() + " à " + seances.get(j).getHeureFin() + " " + seances.get(j).toString();
+                    Vector os = null;
+                    ((DefaultTableModel) fenetre.getListeCours().getModel()).insertRow(i+1, os);
+                    fenetre.getListeCours().setValueAt(strSeances, i+1, 0);
+                    i++;
+                }
+            }
+        }         
+    }
+    
+    /**
      * affichage de l'emploi du temps dans l'onglet Cours
      * @param semaine
      * @param prenom
@@ -1096,7 +1140,7 @@ public class Controle {
      * @param password
      */
     public void seancesListe(int semaine, String email, String password) {
-        System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + email);
+        //System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + email);
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();

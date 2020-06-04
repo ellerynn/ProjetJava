@@ -113,6 +113,14 @@ public class Controle {
     }
     
     /**
+     * @return toutes les promos de la BDD dans un ArrayList de promos
+     */
+    public ArrayList<Promotion> recupPromos() {
+        PromotionDAO pDAO = new PromotionDAO();
+        return pDAO.findAllPromo();
+    }
+    
+    /**
      * @return tous les groupes de la BDD
      */
     public ArrayList<Groupe> recupGroupes() {
@@ -236,6 +244,21 @@ public class Controle {
             gp.add(groupes.get(i).getNom() + " " + groupes.get(i).getPromotion().getNom());
          
         return gp;
+    }
+    
+    /**
+     * Permet d'obtenir toutes les promos par nom 
+     * utilisé pour la recherche du référent par exemple
+     * @return un ArrayList de toutes les promos de la BDD
+     */
+    public ArrayList<String> allPromosToStrings() {
+        ArrayList<Promotion> promos = recupPromos();
+        ArrayList<String> p = new ArrayList<>();
+        
+        for(int i=0;i<promos.size();i++)
+            p.add(promos.get(i).getNom());
+         
+        return p;
     }
     
     /**
@@ -426,10 +449,11 @@ public class Controle {
      *
      * @param recherche
      * @param semaine
+     * @param grille
      */
     public void rechercheSalle(String recherche, int semaine, boolean grille) {
         if(grille)
-            this.majSeancesSalles(semaine, recherche);
+            majSeancesSalles(semaine, recherche);
         else
             majSallesListe(semaine, recherche);  
     }

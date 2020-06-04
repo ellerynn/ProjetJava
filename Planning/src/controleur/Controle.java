@@ -1063,8 +1063,13 @@ public class Controle {
     public void majSeancesSalles(int semaine, String infos) {
         SalleDAO s2DAO = new SalleDAO();
         Salle s2 = s2DAO.findByName(infos);
-        
-        seancesSalles(semaine, s2);
+        System.out.println("la salle que je recherche:"+ infos);
+        if(s2 != null) //Si la salle est trouvé
+        {
+            fenetre.selectByDefaultSalle(s2.getNom()+" "+s2.getSite().getNom());
+            seancesSalles(semaine, s2); //Partie affichage de l'edt dans la vue
+        }else
+            fenetre.selectByDefaultSalle("Veuillez sélectionner"); //On remet par défaut le menu, vu que la salle recherché n'existe pas
     }
     
     /**
@@ -1079,7 +1084,13 @@ public class Controle {
         Salle s = s2DAO.findByName(infos);
         ArrayList<Seance> seances = new ArrayList();
         if(s != null)
+        {
+            //La séance est trouvé, donc on set par défaut la salle en particulier dans le menu déroulant des salles
+            fenetre.selectByDefaultSalle(s.getNom()+" "+s.getSite().getNom());
             seances = sDAO.findSeancesBySalle(s.getId(), semaine);
+        }else
+            fenetre.selectByDefaultSalle("Veuillez sélectionner");//On réinitialise le menu, si jamais aucune salle n'est trouvé pour évité de retourner en arrière
+            
         String strSeances; //Conteneur des string relative a une seance
         
         for(int i=0;i<seances.size();i++) {

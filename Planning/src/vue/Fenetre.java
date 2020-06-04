@@ -809,12 +809,20 @@ public class Fenetre extends JFrame {
         return mesInfos;
     }
     /**
-     * Selectionne dans le menu déroulant des users, l'user en particulier
+     * Selectionne dans le menu déroulant des users, l'user en particulier (utilisé surtout quand on fait une recherche dans la barre)
      * @param name 
      */
     public void selectByDefaultUser(String name)
     {
         edt.getRechercheCours().setSelectedItem(name);
+    }
+    /**
+     * Selectionne dans le menu des salles déroulant, la salle en particulier (utilisé surtout quand on fait une recherche dans la barre)
+     * @param name 
+     */
+    public void selectByDefaultSalle(String name)
+    {
+        edt.getRechercheSalles().setSelectedItem(name);
     }
 }
 

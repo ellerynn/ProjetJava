@@ -161,6 +161,14 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     *
+     * @return la JComboBox promo
+     */
+    public JComboBox getRecherchePromo() {
+        return ongletCours.getRecherchePromo();
+    }
+    
+    /**
      * @return le JTable contenant l'edt sur une semaine
      */
     public JTable getEdtCours() {
@@ -306,6 +314,14 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public void setRechercheCours(ArrayList<String> string) {
         ongletCours.remplirComboBox(ongletCours.getRecherche(), "Veuillez sélectionner", string);
+    }
+    
+    /**
+     * rempli la JcomboBox de recherche utilisateurs dans l'onglet Cours
+     * @param string
+     */
+    public void setPromosCours(ArrayList<String> string) {
+        ongletCours.remplirComboBox(ongletCours.getRecherchePromo(), "Promotions", string);
     }
     
     /**

@@ -113,6 +113,14 @@ public class Controle {
     }
     
     /**
+     * @return toutes les promos de la BDD dans un ArrayList de promos
+     */
+    public ArrayList<Promotion> recupPromos() {
+        PromotionDAO pDAO = new PromotionDAO();
+        return pDAO.findAllPromo();
+    }
+    
+    /**
      * @return tous les groupes de la BDD
      */
     public ArrayList<Groupe> recupGroupes() {
@@ -239,6 +247,21 @@ public class Controle {
     }
     
     /**
+     * Permet d'obtenir toutes les promos par nom 
+     * utilisé pour la recherche du référent par exemple
+     * @return un ArrayList de toutes les promos de la BDD
+     */
+    public ArrayList<String> allPromosToStrings() {
+        ArrayList<Promotion> promos = recupPromos();
+        ArrayList<String> p = new ArrayList<>();
+        
+        for(int i=0;i<promos.size();i++)
+            p.add(promos.get(i).getNom());
+         
+        return p;
+    }
+    
+    /**
      * Permet d'obtenir tout les noms des types
      * @return un ArrayList de tous les types de cours de la BDD
      */
@@ -331,8 +354,8 @@ public class Controle {
 /////////////////////////////////////////PREMIER PANEL
 ////////////////////////////////////////
 ///////////////////////////////////////
-        //GRAPHES SITES
-        //////////DEBUT DECLARATION
+//////////////////////////////////////GRAPHES SITES
+/////////////////////////////////////DEBUT DECLARATION
         ArrayList<Salle> salles = recupAllSalles();
         ArrayList<String> sites = allSitesToStrings();
         ArrayList<ChartPanel> c = new ArrayList<>();
@@ -342,11 +365,9 @@ public class Controle {
         int pos = fenetre.calculAnneeScolaire().indexOf("/");
         
         Calendar cal = Calendar.getInstance();//date du jour
-        int annee = cal.get(Calendar.YEAR) ;
         int mois = cal.get(Calendar.MONTH)+1;
         int jour = cal.get(Calendar.DAY_OF_MONTH);
         int heure = cal.get(Calendar.HOUR_OF_DAY);//heure du jour
-        int minute = cal.get(Calendar.MINUTE);//heure du jour
         String debut2 = fenetre.calculAnneeScolaire().substring(pos+1) + "-0"+mois+"-0"+jour;//debut2 pour cours restant
         String fin = fenetre.calculAnneeScolaire().substring(pos+1) + "-08-01";
         //Pour l'utilisateur connecté
@@ -355,29 +376,22 @@ public class Controle {
         ArrayList<ChartPanel> t = new ArrayList();
         //ArrayList<ArrayList<Seance>> seancesheure = sDAO.findSeancesOfUserByDate(1, debut, fin);//heure
         ArrayList<ArrayList<Seance>> seancesheure = sDAO.findAllSeancesByDate(debut, fin);//heure
-
-        ArrayList<Cours> cours = recupAllCours();
         int calculheuretotal = 0; //heure
         int comparaison = 0;
         
-        /////////FIN DECLARATION
+        ArrayList<ArrayList<Seance>> seances;
+        ArrayList<ArrayList<Seance>> seances2;
+/////////////////////////////FIN DECLARATION
         
         DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        DefaultPieDataset pieDataset5 = new DefaultPieDataset();//heure
         
-        for (int i = 0 ; i <salles.size(); i++){
-            if(salles.get(i).getSite().getNom().equals("Eiffel 1"))
+        for (int i = 0 ; i <salles.size(); i++){ //GRAPHE 1
             pieDataset.setValue("Site: "+salles.get(i).getSite().getNom()+","+salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
            }
 
-        DefaultPieDataset pieDataset2 = new DefaultPieDataset();//eiffel 1
-        DefaultPieDataset pieDataset5 = new DefaultPieDataset();//heure
         
-        for (int i = 0 ; i <salles.size(); i++){
-            if(salles.get(i).getSite().getNom().equals("Eiffel 2"))
-            pieDataset.setValue("Site: "+salles.get(i).getSite().getNom()+","+salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-        }
-        
-        for (int i = 0 ; i <seancesheure.size(); i++){
+        for (int i = 0 ; i <seancesheure.size(); i++){ //GRAPHE 2
             for(int j=0;j<seancesheure.get(i).size();j++){
             if(calculheuretotal!=60){
                 comparaison += Integer.parseInt(seancesheure.get(i).get(0).calculDuree().substring(0,1));
@@ -422,21 +436,25 @@ public class Controle {
         PiePlot P5=(PiePlot)chart5.getPlot();
         ChartPanel p5 = new ChartPanel(chart5);
         c.add(p5);
-        
-        if(u.getDroit() != 1) {
-            ArrayList<ArrayList<Seance>> seances = sDAO.findSeancesOfUserByDate(u.getId(), debut, fin);//cours total
-            ArrayList<ArrayList<Seance>> seances2 = sDAO.findSeancesOfUserByDate(u.getId(), debut2, fin);//cours restant
 
+        if(u.getDroit() != 1) {
+            seances = sDAO.findSeancesOfUserByDate(u.getId(), debut, fin);//cours total
+            seances2 = sDAO.findSeancesOfUserByDate(u.getId(), debut2, fin);//cours restant
+        }
+        else
+        {
+            seances = sDAO.findAllSeancesByDate(debut, fin);//cours total
+            seances2 = sDAO.findAllSeancesByDate(debut2, fin);//cours restant
+        }
             int compteur = 0;//cours total
             int compteur2=0;//cours restant
             
             DefaultPieDataset pieDataset3 = new DefaultPieDataset();//cours total
             DefaultPieDataset pieDataset4 = new DefaultPieDataset();//cours restant
             
-            int blindage=0;
             int pas_afficher=0;//variable qui permet de na pas afficher la seance si la dat est la meme et si lheure n'est pas superieur
             
-            for(int i=0;i<seances.size();i++) {//graphe seance 1
+            for(int i=0;i<seances.size();i++) {//graphe 3
                 for(int j=0;j<seances.get(i).size();j++) {
                         compteur++; //Compte le nombre de seances pour un cours
                 }
@@ -452,7 +470,7 @@ public class Controle {
                     compteur=0;
                 } 
             }
-            for(int l=0;l<seances2.size();l++) { //graphe seance 2
+            for(int l=0;l<seances2.size();l++) { //graphe 4
                 String dateblindage=seances.get(l).get(0).getDate();
                 int heureblindage=Integer.parseInt(seances.get(l).get(0).getHeureDebut().substring(0,2));
                     for(int j=0;j<seances2.get(l).size();j++) {
@@ -483,43 +501,23 @@ public class Controle {
                             pas_afficher=0;
                     }      
             }
-
-            JFreeChart chart2 = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset3, true, true, true);
-            PiePlot P3 =(PiePlot)chart2.getPlot();
-            ChartPanel p3 = new ChartPanel(chart2);
-            t.add(p3);
             
-            JFreeChart chart4 = ChartFactory.createPieChart("Nombres de séances par cours restant de l'année", pieDataset4, true, true, true);
-            PiePlot P4 =(PiePlot)chart4.getPlot();
-            ChartPanel p4 = new ChartPanel(chart4);
-            t.add(p4);
-            
-        }
-        else {
-            ArrayList<Seance> seances = recupAllSeances();
-            int compteur = 0;
-            int compteur2 = 0;//cours restant
-            int blindage_date = 0;
-            
-            DefaultPieDataset pieDataset53 = new DefaultPieDataset();
-            DefaultPieDataset pieDataset54 = new DefaultPieDataset();//couurs restant
-            
-            for(int j=0;j<seances.size();j++) {
-                compteur++; //Compte le nombre de seances pour un cours
-                pieDataset.setValue(seances.get(j).getCours().getNom(), new Integer(compteur));
-                
-                blindage_date = Integer.parseInt(seances.get(j).getDate());
-                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" + blindage_date);
-                if((seances.get(j).getDate()).equals(cal))
-                {
-                    
-                }
+            if(!seances.isEmpty())
+            {
+                JFreeChart chart2 = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset3, true, true, true);
+                PiePlot P3 =(PiePlot)chart2.getPlot();
+                ChartPanel p3 = new ChartPanel(chart2);
+                t.add(p3);
             }
-            JFreeChart chart53 = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset53, true, true, true);
-            PiePlot P53 =(PiePlot)chart53.getPlot();
-            ChartPanel p53 = new ChartPanel(chart53);
-            t.add(p53);
-        } 
+            if(!seances2.isEmpty())
+            {
+                JFreeChart chart4 = ChartFactory.createPieChart("Nombres de séances par cours restant de l'année", pieDataset4, true, true, true);
+                PiePlot P4 =(PiePlot)chart4.getPlot();
+                ChartPanel p4 = new ChartPanel(chart4);
+                t.add(p4);
+            }
+
+        
         fenetre.ajouterGraphes(c, t);
     } 
     
@@ -560,10 +558,11 @@ public class Controle {
      *
      * @param recherche
      * @param semaine
+     * @param grille
      */
     public void rechercheSalle(String recherche, int semaine, boolean grille) {
         if(grille)
-            this.majSeancesSalles(semaine, recherche);
+            majSeancesSalles(semaine, recherche);
         else
             majSallesListe(semaine, recherche);  
     }
@@ -1000,6 +999,50 @@ public class Controle {
     }
     
     /**
+     *
+     * @param semaine
+     * @param promo
+     */
+    public void majSeancesPromo(int semaine, String promo) {
+        PromotionDAO pDAO = new PromotionDAO();
+        Promotion p = pDAO.findByName(promo);
+        ArrayList<Seance> seances = new ArrayList<>();
+        if(p != null) {
+            SeanceDAO sDAO = new SeanceDAO();
+            seances = sDAO.findSeancesByPromoAndWeek(p.getId(), semaine);
+        }
+        
+        String strSeances; //Conteneur des string relative a une seance
+            
+        for(int j=seances.size()-1;j>-1;j--) { //Pour toutes les seances            
+            String dateBDD = seances.get(j).getDate();
+            System.out.println(dateBDD); //AAAA-MM-JJ
+                
+            //Convertir la dateBDD en jour
+            String jourBDD = dateBDD.substring(8, 10); 
+            System.out.println(jourBDD);
+            
+            //LIGNE DEBUT
+            for(int i=0;i<fenetre.getListeCours().getRowCount();i++) { 
+                String date = fenetre.getListeCours().getValueAt(i, 0).toString(); 
+                String jourEdt = date.substring(5, 7);
+                if(jourEdt.endsWith(" ")) {
+                    jourEdt = "0" + jourEdt.substring(0, 1);
+                }
+                                    
+                if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
+                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
+                    strSeances = seances.get(j).getHeureDebut() + " à " + seances.get(j).getHeureFin() + " " + seances.get(j).toString();
+                    Vector os = null;
+                    ((DefaultTableModel) fenetre.getListeCours().getModel()).insertRow(i+1, os);
+                    fenetre.getListeCours().setValueAt(strSeances, i+1, 0);
+                    i++;
+                }
+            }
+        }         
+    }
+    
+    /**
      * affichage de l'emploi du temps dans l'onglet Cours
      * @param semaine
      * @param prenom
@@ -1100,7 +1143,7 @@ public class Controle {
      * @param password
      */
     public void seancesListe(int semaine, String email, String password) {
-        System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + email);
+        //System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + email);
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();

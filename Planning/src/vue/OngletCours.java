@@ -35,6 +35,7 @@ public class OngletCours extends JTabbedPane {
     private JComboBox<String> selectRecherche;
     private JComboBox<String> semaine;
     private JComboBox<String> groupes;
+    private JComboBox<String> promos;
     private JTable tabEdt;
     private JTable listeEdt;
     private TableLabelRendererPanel p;
@@ -54,6 +55,7 @@ public class OngletCours extends JTabbedPane {
         selectRecherche = new JComboBox<>();
         semaine = new JComboBox<>();
         groupes = new JComboBox<>();
+        promos = new JComboBox<>();
         tabEdt = new JTable();
         listeEdt = new JTable();
         p = new TableLabelRendererPanel(tabEdt);
@@ -85,10 +87,14 @@ public class OngletCours extends JTabbedPane {
         cours.add(selectRecherche, c);
         
         c.gridx = 3;
+        promos.setVisible(false);
+        cours.add(promos, c);
+        
+        c.gridx = 4;
         rechercheBarre.setPreferredSize(new Dimension(250, 20));
         cours.add(rechercheBarre, c);
         
-        c.gridx = 4; 
+        c.gridx = 5; 
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.LINE_START;
         rechercheBouton.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
@@ -164,6 +170,14 @@ public class OngletCours extends JTabbedPane {
      */
     public JComboBox getVue() {
         return this.vueEdt;
+    }
+    
+    /**
+     *
+     * @return la JComboBox promo
+     */
+    public JComboBox getRecherchePromo() {
+        return this.promos;
     }
     
     /**

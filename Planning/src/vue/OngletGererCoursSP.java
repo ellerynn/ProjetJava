@@ -1,5 +1,10 @@
 package vue;
 
+/*SOURCES : 
+* https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html
+* https://www.tutorialspoint.com/java/util/calendar_setfield2.htm
+*/
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -122,7 +127,15 @@ public class OngletGererCoursSP extends JSplitPane {
         container2.add(dateHeure, c);
         
         c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
-        date.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
+        Calendar calendar = Calendar.getInstance();
+        
+        Date initDate = calendar.getTime();
+        calendar.add(Calendar.YEAR, -1);
+        calendar.set(calculAnneeScolaire(), 8, 1);
+        Date earliestDate = calendar.getTime();
+        calendar.set(calculAnneeScolaire() + 1, 7, 31);
+        Date latestDate = calendar.getTime();
+        date.setModel(new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.DAY_OF_MONTH));
         date.setEditor(new JSpinner.DateEditor(date, "dd/MM/yyyy HH:mm"));
         container2.add(date, c);
         
@@ -210,7 +223,7 @@ public class OngletGererCoursSP extends JSplitPane {
         container2.add(dateHeure2, c);
         
         c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
-        date2.setModel(new SpinnerDateModel(new Date(1598940000000L), new Date(1598940000000L), new Date(1627797600000L), Calendar.DAY_OF_MONTH));
+        date2.setModel(new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.DAY_OF_MONTH));
         date2.setEditor(new JSpinner.DateEditor(date2, "dd/MM/yyyy HH:mm"));
         container2.add(date2, c);
         
@@ -604,5 +617,22 @@ public class OngletGererCoursSP extends JSplitPane {
                 Logger.getLogger(OngletServicePlanification.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    /**
+     * calcul de l'année scolaire en cours (retourne seulement le premier ex 2019/2020 = 2019)
+     * @return
+     */
+    public int calculAnneeScolaire() {
+        Calendar cal = Calendar.getInstance();
+        int annee;
+        
+        if(cal.get(Calendar.MONTH)+1 >= 9 && cal.get(Calendar.MONTH)+1 <= 12) { //Entre septembre et décembre
+            annee = cal.get(Calendar.YEAR);
+        }
+        
+        else
+            annee = cal.get(Calendar.YEAR)-1;
+        return annee;
     }
 }

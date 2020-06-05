@@ -522,12 +522,11 @@ public class Controle {
     } 
     
     /**
-     *
+     * Recherche si un user réalisée à travers la barre de recherche existe ou pas si oui, on retourne le nom, si non on retourne un null
      * @param recherche
-     * @param semaine
-     * @param grille
+     * @return 
      */
-    public void rechercheUtilisateur(String recherche, int semaine, boolean grille) {
+    public String rechercheUtilisateur(String recherche) {
         //Saisi d'un nom et prenom, peut etre pas complets
         int pos = recherche.indexOf(" ");
         UtilisateurDAO uDAO = new UtilisateurDAO();
@@ -545,26 +544,24 @@ public class Controle {
         if(u.getId() != 0)
         {
             //On a trouvé la personne, on selectionne par défaut dans le menu des users dans l'onglet cours
-            fenetre.selectByDefaultUser(u.getPrenom()+" "+u.getNom());
-            if(grille)
-                seancesEdt(semaine, u.getEmail(), u.getPassword());
-            else
-                seancesListe(semaine, u.getEmail(), u.getPassword());
-        }
+            //ça enclenche le listener du menu user, qui va update la séance de ce user
+            return u.getPrenom()+" "+u.getNom();
+        }else
+            return null;
             
     }
     
     /**
-     *
+     * Recherche si une salle réalisée à travers la barre de recherche existe ou pas si oui, on retourne le nom, si non on retourne un null
      * @param recherche
-     * @param semaine
-     * @param grille
+     * @return 
      */
-    public void rechercheSalle(String recherche, int semaine, boolean grille) {
-        if(grille)
-            majSeancesSalles(semaine, recherche);
-        else
-            majSallesListe(semaine, recherche);  
+    public String rechercheSalle(String recherche) {
+        SalleDAO s2DAO = new SalleDAO();
+        Salle s2 = s2DAO.findByName(recherche);
+        if(s2 != null)
+            return s2.getNom()+ " "+ s2.getSite().getNom();
+        return null;
     }
     
     /**
@@ -1051,7 +1048,7 @@ public class Controle {
     public void majSeancesEdt(int semaine, String prenom, String nom) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         Utilisateur u = uDAO.findByName(prenom, nom);
-        //System.out.println("dans maj seances edt semaine prenom nom" + u.getPrenom() + " " + u.getNom());
+        System.out.println("dans maj seances edt semaine prenom nom" + u.getPrenom() + " " + u.getNom());
         seancesEdt(semaine, u.getEmail(), u.getPassword());
     }
     
@@ -1065,11 +1062,7 @@ public class Controle {
         Salle s2 = s2DAO.findByName(infos);
         System.out.println("la salle que je recherche:"+ infos);
         if(s2 != null) //Si la salle est trouvé
-        {
-            fenetre.selectByDefaultSalle(s2.getNom()+" "+s2.getSite().getNom());
             seancesSalles(semaine, s2); //Partie affichage de l'edt dans la vue
-        }else
-            fenetre.selectByDefaultSalle("Veuillez sélectionner"); //On remet par défaut le menu, vu que la salle recherché n'existe pas
     }
     
     /**
@@ -1083,14 +1076,7 @@ public class Controle {
         SalleDAO s2DAO = new SalleDAO();
         Salle s = s2DAO.findByName(infos);
         ArrayList<Seance> seances = new ArrayList();
-        if(s != null)
-        {
-            //La séance est trouvé, donc on set par défaut la salle en particulier dans le menu déroulant des salles
-            fenetre.selectByDefaultSalle(s.getNom()+" "+s.getSite().getNom());
-            seances = sDAO.findSeancesBySalle(s.getId(), semaine);
-        }else
-            fenetre.selectByDefaultSalle("Veuillez sélectionner");//On réinitialise le menu, si jamais aucune salle n'est trouvé pour évité de retourner en arrière
-            
+        seances = sDAO.findSeancesBySalle(s.getId(), semaine); //100% trouvé la salle, le rechercher par barre de recherche est vérifié dans rechercheSalle
         String strSeances; //Conteneur des string relative a une seance
         
         for(int i=0;i<seances.size();i++) {
@@ -1114,7 +1100,7 @@ public class Controle {
             System.out.println(jourBDD);
             
             //LIGNE DEBUT
-            for(int i=0;i<fenetre.getListeCours().getRowCount();i++) { 
+            for(int i=0;i<fenetre.getListeCours().getRowCount();i++) {
                 String date = fenetre.getListeCours().getValueAt(i, 0).toString(); 
                 String jourEdt = date.substring(5, 7);
                 if(jourEdt.endsWith(" ")) {
@@ -1412,7 +1398,8 @@ public class Controle {
                     }
                 }
             }
-        }else //On affiche TOUUT de la personne en question ou de celui selectionné
+        }
+        else //On affiche TOUUT de la personne en question ou de celui selectionné
         {
             seances = sDAO.findSeancesByUserAndWeek(u.getId(), semaine);
         }

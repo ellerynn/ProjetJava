@@ -161,13 +161,13 @@ public class Fenetre extends JFrame {
             String recherche = edt.getRechercheSalles().getSelectedItem().toString();
             if(edt.getVueSalles().getSelectedItem() == "en grille") {
                 if (!recherche.equals("Veuillez sélectionner"))
-                    majEdtSallesParSemaine();
+                    edt.getRechercheSalles().setSelectedItem(recherche); //On enclenche l'écouteur du menu, qui va update, afin d'éviter les doublons
                 edt.getGrilleSalles().setVisible(true);
                 edt.getListeSalles().setVisible(false);
             }
             else {
                 if (!recherche.equals("Veuillez sélectionner"))
-                    majListeSallesParSemaine();
+                    edt.getRechercheSalles().setSelectedItem(recherche); //On enclenche l'écouteur du menu, qui va update, afin d'éviter les doublons
                 edt.getListeSalles().setVisible(true);
                 edt.getGrilleSalles().setVisible(false);
             }
@@ -248,10 +248,10 @@ public class Fenetre extends JFrame {
                 }
            } 
         });
-        
+        //Menu déroulant de salles
         edt.getRechercheSalles().addActionListener((ActionEvent event) -> {
             String recherche = edt.getRechercheSalles().getSelectedItem().toString();
-            System.out.println("recherche : " + recherche);
+            System.out.println("recherche: " + recherche);
             if (!recherche.equals("Veuillez sélectionner")) {
                 if(edt.getVueSalles().getSelectedItem() == "en grille") {
                     System.out.println("grille");
@@ -311,25 +311,18 @@ public class Fenetre extends JFrame {
         });
         
         edt.getRechercheBoutonCours().addActionListener((ActionEvent event) -> {
-            Boolean grille = false;
-            if(edt.getVueCours().getSelectedItem() == "en grille") {
-                grille = true;
-            }
-            
+            System.out.println("JE SUIS LAAAAAAAA");
             String recherche = edt.getRechercheBarreCours().getText();
-            String semaine = edt.getSemaineCours().getSelectedItem().toString();
-            if (semaine.equals("Semaine")) {
-                edt.setEdtCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-                edt.setListeCours(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-                controle.rechercheUtilisateur(recherche, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), grille);
+            System.out.println("JE SUIS LAAAAAAAA");
+            String maRecherche = controle.rechercheUtilisateur(recherche);
+            System.out.println("JE SUIS LAAAAAAAA");
+            if(maRecherche != null)
+            {
+                edt.getRechercheCours().setSelectedItem(maRecherche);
             }
-
-            else {
-                //System.out.println("Semaine selectionnee : " + semaine);
-                edt.setEdtCours(Integer.parseInt(semaine));
-                edt.setListeCours(Integer.parseInt(semaine));
-                controle.rechercheUtilisateur(recherche, Integer.parseInt(semaine), grille);
-            }
+             else
+                System.out.println("Aucun utilisateur trouvé");
+            
         });
         
         edt.getRechercheBoutonRecapCours().addActionListener((ActionEvent event) -> {
@@ -339,26 +332,14 @@ public class Fenetre extends JFrame {
             controle.majRecapRechercheBarre(recherche);
         });
         
+        //Bouton de recherche salles
         edt.getRechercheBoutonSalles().addActionListener((ActionEvent event) -> {
-            Boolean grille = false;
-            if(edt.getVueSalles().getSelectedItem() == "en grille") {
-                grille = true;
-            }
-            
             String recherche = edt.getRechercheBarreSalles().getText();
-            String semaine = edt.getSemaineSalles().getSelectedItem().toString();
-            if (semaine.equals("Semaine")) {
-                edt.setEdtSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-                edt.setListeSalles(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR));
-                controle.rechercheSalle(recherche, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR), grille);
-            }
-
-            else {
-                //System.out.println("Semaine selectionnee : " + semaine);
-                edt.setEdtSalles(Integer.parseInt(semaine));
-                edt.setListeSalles(Integer.parseInt(semaine));
-                controle.rechercheSalle(recherche, Integer.parseInt(semaine), grille);
-            }
+            String maRecherche = controle.rechercheSalle(recherche);
+            if(maRecherche != null)
+                edt.getRechercheSalles().setSelectedItem(maRecherche); //C'est l'écouteur qui va update les séances de la salle
+            else
+                System.out.println("Aucune salle trouvé");
         });
     }
     
@@ -834,22 +815,6 @@ public class Fenetre extends JFrame {
         mesInfos.add(connexion.getEmail());
         mesInfos.add(connexion.getPassword());
         return mesInfos;
-    }
-    /**
-     * Selectionne dans le menu déroulant des users, l'user en particulier (utilisé surtout quand on fait une recherche dans la barre)
-     * @param name 
-     */
-    public void selectByDefaultUser(String name)
-    {
-        edt.getRechercheCours().setSelectedItem(name);
-    }
-    /**
-     * Selectionne dans le menu des salles déroulant, la salle en particulier (utilisé surtout quand on fait une recherche dans la barre)
-     * @param name 
-     */
-    public void selectByDefaultSalle(String name)
-    {
-        edt.getRechercheSalles().setSelectedItem(name);
     }
 }
 

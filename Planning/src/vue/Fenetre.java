@@ -372,6 +372,7 @@ public class Fenetre extends JFrame {
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
             System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
         });
+        
         edt.getListeSeances().addListSelectionListener((ListSelectionEvent lse) -> {
             if(!lse.getValueIsAdjusting()){
                 if(!edt.getListeSeances().isSelectionEmpty())

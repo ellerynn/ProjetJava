@@ -28,7 +28,6 @@ import modele.Seance;
 import modele.TypeCours;
 import modele.Utilisateur;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
@@ -1255,6 +1254,9 @@ public class Controle {
         int ligne1 = 0; int ligne2 = 0; int colonne = 0; 
         
         for(int j=0;j<seances.size();j++) { //Pour toutes les seances
+            int couleur = (int)(Math.random()*6); //*6 entre 0 et 5
+            fenetre.getEdt().getGrilleSalles().setAlea(couleur);
+            
             String heure1 = seances.get(j).getHeureDebut();
             System.out.println("Heure début de la seance " + heure1);
             
@@ -1304,23 +1306,27 @@ public class Controle {
                 }
                                     
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
-                    colonne = i;
+                    //System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
+                    colonne = i;strSeances = seances.get(j).toArrayListOfString();
+                    break;
+                }
+                
+                if(!jourEdt.equals(jourBDD)) {
+                    //System.out.println("Ces deux jour sont différents : " + jourBDD + " et " + jourEdt);
+                    colonne = 0;
+                    //System.out.println(colonne);
                 }
             }
             
-            //Un cours dure forcément 1h30 = 6 cases
-            strSeances = seances.get(j).toArrayListOfString();
+            //System.out.println("strSeances :");
             
-            System.out.println("strSeances :");
-            
-            System.out.println(strSeances);
+            //System.out.println(strSeances);
             //RAPPEL cf. méthode dans Seance.java
             //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
             //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
             //!! SI LA SEANCE EST VALIDEE = 5 CASES
             
-            if(colonne != 0)  {
+            if(colonne != 0)  {    
                 System.out.println("dans le if colonne");
                 for(int i=0;i<strSeances.size();i++) {
                     fenetre.getEdtSalles().setValueAt(strSeances.get(i), ligne1+i, colonne);
@@ -1347,7 +1353,7 @@ public class Controle {
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
         ArrayList<Seance> seances = new ArrayList<>(); //Conteneur de seances
-        ArrayList<String> strSeances; //Conteneur des string relative a une seance
+        ArrayList<String> strSeances = new ArrayList<>(); //Conteneur des string relative a une seance
         //On récupère l'utilisateur
         Utilisateur u = recupUtilisateur(email, password);
         ArrayList<String> mesInfos = fenetre.recupMesInfos();//Infos de l'user actuelle
@@ -1414,6 +1420,9 @@ public class Controle {
         int ligne1 = 0; int ligne2 = 0; int colonne = 0; 
         
         for(int j=0;j<seances.size();j++) { //Pour toutes les seances
+            int couleur = (int)(Math.random()*6); //*6 entre 0 et 5
+            fenetre.getEdt().getGrilleCours().setAlea(couleur);
+                                  
             String heure1 = seances.get(j).getHeureDebut();
             //System.out.println("Heure début de la seance " + heure1);
             
@@ -1465,21 +1474,26 @@ public class Controle {
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
                     //System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     colonne = i;
+                    //Un cours dure forcément 1h30 = 6 cases
+                    strSeances = seances.get(j).toArrayListOfString();
+                    break;
+                }
+                
+                if(!jourEdt.equals(jourBDD)) {
+                    //System.out.println("Ces deux jour sont différents : " + jourBDD + " et " + jourEdt);
+                    colonne = 0;
+                    //System.out.println(colonne);
                 }
             }
-            
-            //Un cours dure forcément 1h30 = 6 cases
-            strSeances = seances.get(j).toArrayListOfString();
-            
-            //System.out.println("strSeances :");
-            
-            //System.out.println(strSeances);
+                     
+            System.out.println("strSeances :");
+            System.out.println(strSeances);
             //RAPPEL cf. méthode dans Seance.java
             //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
             //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
             //!! SI LA SEANCE EST VALIDEE = 5 CASES
             
-            if(colonne != 0)  {
+            if(colonne != 0)  {               
                 //System.out.println("dans le if colonne");
                 for(int i=0;i<strSeances.size();i++) {
                     fenetre.getEdtCours().setValueAt(strSeances.get(i), ligne1+i, colonne);
@@ -1595,6 +1609,9 @@ public class Controle {
         int ligne1 = 0, ligne2 = 0; 
         
         for(int j=0;j<seances.size();j++) { //Pour toutes les seances
+            int couleur = (int)(Math.random()*6); //*6 entre 0 et 5
+            fenetre.getEdt().getGrilleHome().setAlea(couleur);
+                
             String heure1 = seances.get(j).getHeureDebut();
             //System.out.println("Heure début de la seance " + heure1);
             
@@ -1636,7 +1653,7 @@ public class Controle {
             //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
             //!! SI LA SEANCE EST VALIDEE = 5 CASES
             
-            for(int i=0;i<strSeances.size();i++) {
+            for(int i=0;i<strSeances.size();i++) {             
                 fenetre.getEdtHome().setValueAt(strSeances.get(i), ligne1+i, 1);
 
                 //Si la séance est validée

@@ -92,6 +92,14 @@ public class EmploiDuTemps extends JTabbedPane {
     
     /**
      *
+     * @return le conteneur de l'edt home en grille
+     */
+    public TableLabelRendererPanel getGrilleHome() {
+        return this.ongletHome.getGrille();
+    }
+    
+    /**
+     *
      * @return le conteneur de l'edt en liste
      */
     public TableLabelRendererPanel getListeCours() {

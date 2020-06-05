@@ -143,6 +143,14 @@ public class OngletHome extends JSplitPane {
     }
     
     /**
+     *
+     * @return le conteneur de l'edt home en grille
+     */
+    public TableLabelRendererPanel getGrille() {
+        return this.p;
+    }
+    
+    /**
      * mise à jour de l'entête et de la première colonne de l'edt dans l'onglet Home
      */
     public void setEdt() {

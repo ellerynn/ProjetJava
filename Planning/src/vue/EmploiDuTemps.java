@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
@@ -140,6 +141,27 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     * @return la barre de recherche dans l'onglet Cours
+     */
+    public JTextField getRechercheBarreRecapCours() {
+        return ongletCours.getRechercheBarre2(); //Barre de recherche
+    }
+    
+    /**
+     * @return le bouton rechercher 
+     */
+    public JButton getRechercheBoutonRecapCours() {
+        return ongletCours.getRechercheBouton2(); //Bouton de recherche
+    }
+    
+    /**
+     * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
+     */
+    public JComboBox getRechercheRecapCours() {
+        return ongletCours.getRecherche2(); //Menu déroulant des utilisateurs
+    }
+    
+    /**
      * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
      */
     public JComboBox getRechercheSalles() {
@@ -254,6 +276,14 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     *
+     * @return le JLabel contenant la periode
+     */
+    public JLabel getPeriode() {
+        return ongletCours.getPeriode();
+    }
+    
+    /**
      * ajoute l'onglet Service planification si besoin
      */
     public void addOngletServicePlanification() {
@@ -322,6 +352,14 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public void setPromosCours(ArrayList<String> string) {
         ongletCours.remplirComboBox(ongletCours.getRecherchePromo(), "Promotions", string);
+    }
+    
+    /**
+     * rempli la JcomboBox de recherche utilisateurs dans l'onglet Cours
+     * @param string
+     */
+    public void setRechercheRecapCours(ArrayList<String> string) {
+        ongletCours.remplirComboBox(ongletCours.getRecherche2(), "Veuillez sélectionner", string);
     }
     
     /**

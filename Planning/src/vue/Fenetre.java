@@ -230,6 +230,14 @@ public class Fenetre extends JFrame {
             }
         });
         
+        edt.getRechercheRecapCours().addActionListener((ActionEvent event) -> {
+            String recherche = edt.getRechercheRecapCours().getSelectedItem().toString();
+            System.out.println("recherche : " + recherche);
+            if (!recherche.equals("Veuillez sélectionner")) {
+                controle.majRecapRecherche(recherche);
+            }
+        });
+        
         edt.getRecherchePromo().addActionListener((ActionEvent event) -> {
             String recherche = edt.getRecherchePromo().getSelectedItem().toString();
             System.out.println("recherche : " + recherche);
@@ -322,6 +330,13 @@ public class Fenetre extends JFrame {
                 edt.setListeCours(Integer.parseInt(semaine));
                 controle.rechercheUtilisateur(recherche, Integer.parseInt(semaine), grille);
             }
+        });
+        
+        edt.getRechercheBoutonRecapCours().addActionListener((ActionEvent event) -> {
+            Boolean grille = false;
+            
+            String recherche = edt.getRechercheBarreRecapCours().getText();
+            controle.majRecapRechercheBarre(recherche);
         });
         
         edt.getRechercheBoutonSalles().addActionListener((ActionEvent event) -> {
@@ -436,6 +451,9 @@ public class Fenetre extends JFrame {
         
         String utilisateur = controle.utilisateurCourant(email, password);
         edt.getRechercheCours().setSelectedItem(utilisateur);
+        
+        edt.setRechercheRecapCours(ttLeMonde); 
+        edt.getRechercheRecapCours().setSelectedItem(utilisateur);
     }
     
     /**
@@ -547,6 +565,10 @@ public class Fenetre extends JFrame {
         edt.getRechercheBoutonCours().setVisible(true);
         edt.getGroupesCours().setVisible(true);
         edt.getRecherchePromo().setVisible(true);
+        
+        edt.getRechercheRecapCours().setVisible(true);
+        edt.getRechercheBarreRecapCours().setVisible(true);
+        edt.getRechercheBoutonRecapCours().setVisible(true);
     }
     
     /**
@@ -558,6 +580,10 @@ public class Fenetre extends JFrame {
         edt.getRechercheBoutonCours().setVisible(false);
         edt.getGroupesCours().setVisible(false);
         edt.getRecherchePromo().setVisible(false);
+        
+        edt.getRechercheRecapCours().setVisible(false);
+        edt.getRechercheBarreRecapCours().setVisible(false);
+        edt.getRechercheBoutonRecapCours().setVisible(false);
     }
 
     /**

@@ -1749,6 +1749,9 @@ public class Controle {
         String fin = fenetre.calculAnneeScolaire().substring(pos+1) + "-08-01";
         //System.out.println("\n" + d + "/" + f);
         
+        String periode = "  du " + debut + " au " + fin + ".";
+        fenetre.getEdt().getPeriode().setText(periode);
+        
         if(u.getDroit() == 1) { //Pour un admin, on recupère toutes les séances de tout le monde
             seances = sDAO.findAllSeancesByDate(debut, fin);
         }
@@ -1865,5 +1868,46 @@ public class Controle {
         rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
         fenetre.getRecapCours().setRowHeight(row, rowHeight);
     }
+    
+    /**
+     *
+     * @param recherche
+     */
+    public void majRecapRecherche(String recherche) {
+        int pos = recherche.indexOf(" ");
+        String prenom = recherche.substring(0, pos);
+        System.out.println(prenom);
+        String nom = recherche.substring(pos+1);
+        System.out.println(nom);
+        
+        UtilisateurDAO uDAO = new UtilisateurDAO();
+        Utilisateur u = uDAO.findByName(prenom, nom);
+        
+        seancesRecap(u.getEmail(), u.getPassword());
+    }
   
+    /**
+     *
+     * @param recherche
+     */
+    public void majRecapRechercheBarre(String recherche) {
+        //Saisi d'un nom et prenom, peut etre pas complets
+        int pos = recherche.indexOf(" ");
+        UtilisateurDAO uDAO = new UtilisateurDAO();
+        Utilisateur u = new Utilisateur();
+        if(pos != -1) {
+            String prenom = recherche.substring(0, pos-1);
+            String nom = recherche.substring(pos+1);
+            u = uDAO.findByName(prenom, nom);
+        }
+        //Saisi d'un nom ou prenom, peut etre pas complet
+        else {
+            u = uDAO.findForSearch(recherche);
+        }
+        
+        if(u.getId() != 0)
+        {
+            seancesRecap(u.getEmail(), u.getPassword());
+        }
+    }
 }

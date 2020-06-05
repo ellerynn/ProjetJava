@@ -41,8 +41,12 @@ public class OngletCours extends JTabbedPane {
     private TableLabelRendererPanel p;
     private TableLabelRendererPanel p1;
     //Cours -> Récapitulatifs des cours
+    private JLabel periode;
     private JTable tabRecap;
     private  TableTreeRendererPanel p2;
+    private JTextField rechercheBarre2;
+    private JButton rechercheBouton2;
+    private JComboBox<String> selectRecherche2;
     
     /**
      * constructeur
@@ -61,8 +65,12 @@ public class OngletCours extends JTabbedPane {
         p = new TableLabelRendererPanel(tabEdt);
         p1 = new TableLabelRendererPanel(listeEdt);
         //Cours -> Récapitulatifs des cours
+        periode = new JLabel("du X au X");
         tabRecap = new JTable();
         p2 = new TableTreeRendererPanel(tabRecap);
+        rechercheBarre2 = new JTextField();
+        rechercheBouton2 = new JButton();
+        selectRecherche2 = new JComboBox<>();
         
         /*************************EMPLOI DU TEMPS*************************/
         JPanel cours = new JPanel();
@@ -133,15 +141,38 @@ public class OngletCours extends JTabbedPane {
         /*************************RECAPITULATIF DES COURS*************************/
         JPanel recapCours = new JPanel();
         recapCours.setLayout(new GridBagLayout()); //Initialisation du container
-        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
-        t.weightx = 1; t.weighty = 1;
-        
+        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants        
         t.insets = new Insets(10,10,10,10);
         
-        setRecap();
+        t.gridx = 0; c.gridy = 0; //Position
+        t.anchor = GridBagConstraints.LINE_START;
+        t.fill = GridBagConstraints.HORIZONTAL;        
+        recapCours.add(new JLabel("Récapitulatif des cours : "), t);
         
-        t.gridwidth = 8;   //2 columns wide
+        t.gridx = 1;
+        recapCours.add(selectRecherche2, t);
+                
+        t.gridx = 3;
+        rechercheBarre2.setPreferredSize(new Dimension(250, 20));
+        recapCours.add(rechercheBarre2, t);
+        
+        t.gridx = 4; 
+        t.fill = GridBagConstraints.NONE;
+        t.anchor = GridBagConstraints.LINE_START;
+        rechercheBouton2.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
+        rechercheBouton2.setPreferredSize(new Dimension(28, 28));
+        recapCours.add(rechercheBouton2, t);
+        rechercheBarre2.setVisible(false);
+        rechercheBouton2.setVisible(false);
+        selectRecherche2.setVisible(false);
+        
         t.gridx = 0; t.gridy = 1;
+        recapCours.add(periode, t);
+        
+        t.weightx = 1; t.weighty = 1;
+        setRecap();
+        t.gridwidth = 8;   //2 columns wide
+        t.gridx = 0; t.gridy = 2;
         t.fill = GridBagConstraints.BOTH;
         recapCours.add(p2, t);
         
@@ -162,6 +193,14 @@ public class OngletCours extends JTabbedPane {
      */
     public TableLabelRendererPanel getListe() {
         return this.p1;
+    }
+    
+    /**
+     *
+     * @return le JLabel contenant la periode
+     */
+    public JLabel getPeriode() {
+        return this.periode;
     }
     
     /**
@@ -242,6 +281,30 @@ public class OngletCours extends JTabbedPane {
      */
     public JTable getRecap() {
         return this.tabRecap;
+    }
+    
+    /**
+     * retourne la barre de recherche
+     * @return
+     */
+    public JTextField getRechercheBarre2() {
+        return this.rechercheBarre2;
+    }
+    
+    /**
+     * retourne le bouton rechercher
+     * @return
+     */
+    public JButton getRechercheBouton2() {
+        return this.rechercheBouton2;
+    }
+    
+    /**
+     * retourne la JComboBox de recherche (utilisateurs de la BDD)
+     * @return
+     */
+    public JComboBox getRecherche2() {
+        return this.selectRecherche2;
     }
 
     /**

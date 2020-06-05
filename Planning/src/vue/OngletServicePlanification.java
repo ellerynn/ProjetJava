@@ -913,4 +913,12 @@ public class OngletServicePlanification extends JSplitPane {
         remplirListe(getListeSeances(), string);
         remplirListe(getListeSeances2(), string);
     }
+    /**
+     * Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours
+     * @return 
+     */
+    public JTextField getIntitule()
+    {
+        return intitule;
+    }
 }

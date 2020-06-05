@@ -48,7 +48,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
                 
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
+        connexion.setEmailPassWord("admin@gmail.com", "admin");
     }
     
     /**
@@ -198,6 +198,13 @@ public class Fenetre extends JFrame {
                     majListeGroupeCoursParSemaine();
                 }
             }
+            //S'il s'agit d'une recherch par promo
+            if(!edt.getRecherchePromo().getSelectedItem().toString().equals("Promos")){
+                if(edt.getVueCours().getSelectedItem() == "en liste") {
+                    System.out.println("liste");
+                    majListePromoParSemaine();
+                }
+            }
         });
         
         edt.getSemaineSalles().addActionListener((ActionEvent event) -> {
@@ -219,6 +226,7 @@ public class Fenetre extends JFrame {
                 //Si tu cliques dans le menu user, c'est que tu recherches par user et non par groupe
                 edt.getGroupesCours().setSelectedItem("Groupes"); //Donc le menu groupe, on le remet par défaut
                 //Si c'est un enseignant ou un étudiant, ce bouton existe, mais il n'a pas accès donc c'est bon
+                edt.getRecherchePromo().setSelectedItem("Promos");
                 if(edt.getVueCours().getSelectedItem() == "en grille") {
                     System.out.println("grille");
                     majEdtCoursParSemaine();
@@ -242,6 +250,8 @@ public class Fenetre extends JFrame {
             String recherche = edt.getRecherchePromo().getSelectedItem().toString();
             System.out.println("recherche : " + recherche);
             if (!recherche.equals("Promos")) {
+                edt.getRechercheCours().setSelectedItem("Veuillez sélectionner");
+                edt.getGroupesCours().setSelectedItem("Groupes");
                 if(edt.getVueCours().getSelectedItem() == "en liste") {
                     System.out.println("liste");
                     majListePromoParSemaine();
@@ -269,6 +279,7 @@ public class Fenetre extends JFrame {
             if (!recherche.equals("Groupes")) {
                 //Si tu cliques dans le menu groupe, c'est que tu recherches par groupe et non par user
                 edt.getRechercheCours().setSelectedItem("Veuillez sélectionner"); //Donc le menu user, on le remet par défaut
+                edt.getRecherchePromo().setSelectedItem("Promos");
                 if(edt.getVueCours().getSelectedItem() == "en grille") {
                     System.out.println("grille");
                     majEdtGroupeCoursParSemaine();
@@ -311,11 +322,8 @@ public class Fenetre extends JFrame {
         });
         
         edt.getRechercheBoutonCours().addActionListener((ActionEvent event) -> {
-            System.out.println("JE SUIS LAAAAAAAA");
             String recherche = edt.getRechercheBarreCours().getText();
-            System.out.println("JE SUIS LAAAAAAAA");
             String maRecherche = controle.rechercheUtilisateur(recherche);
-            System.out.println("JE SUIS LAAAAAAAA");
             if(maRecherche != null)
             {
                 edt.getRechercheCours().setSelectedItem(maRecherche);
@@ -366,7 +374,11 @@ public class Fenetre extends JFrame {
         });
         
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
-            System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
+            String matiereToBeAdded = edt.getIntitule().getText();
+            if(!matiereToBeAdded.isEmpty())
+                controle.createMatiere(matiereToBeAdded);
+            else
+                System.out.println("Rien a été saisie");
         });
         
         edt.getListeSeances().addListSelectionListener((ListSelectionEvent lse) -> {

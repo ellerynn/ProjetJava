@@ -649,8 +649,9 @@ public class Controle {
      */
     public void ajouterSeanceInModel(int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, Cours cours,TypeCours type, ArrayList<Groupe> groupes, ArrayList<Enseignant> enseignants, ArrayList<Salle> salles) 
     {   
+        //MODIFIER
         SeanceDAO sDAO = new SeanceDAO();
-        Seance seance = new Seance(Semaine, Heure_Debut, Heure_Fin,Date, Etat, cours, type); //instanciation de la nvlle seance avec les premiers données
+        Seance seance = new Seance(Semaine, Heure_Debut, Heure_Fin,Date, 3, cours, type); //instanciation de la nvlle seance avec les premiers données
         boolean okForCreate = true; //On considère au début que tout est ok pour créer cette séance dans la BDD
         //On ajoute les salles en accord avec leur créneau dispo/Duplication sans vérif la capa car rien à vérifier au début vu qu'aucun grp n'ai encore add dans séance
         for (int i = 0 ; i < salles.size();i++)
@@ -687,6 +688,7 @@ public class Controle {
                 }
             }
         }
+        okForCreate = verifAndSetSeanceEtat(seance,""+Etat,seance.getGroupes().size(),seance.getEnseignants().size());
         if (okForCreate) //Si tout les conditions sont réunis, on create, si il y a eu un faux, on ne create pas.
         {
             seance = sDAO.create(seance);
@@ -1913,5 +1915,20 @@ public class Controle {
         {
             seancesRecap(u.getEmail(), u.getPassword());
         }
+    }
+    /**
+     * La vue fournie les données utiles pour créer l'intitulé d'un cours 
+     * au controleur, le Modèle le crée, le controleur renvoie les données 
+     * à mettre à jour visuellement  
+     * @param name 
+     */
+    public void createMatiere(String name)
+    {
+        CoursDAO cDAO = new CoursDAO();
+        Cours monCours = new Cours();
+        monCours.setNom(name);
+        monCours = cDAO.create(monCours);
+        System.out.println("matière ajouté avec succès");
+        fenetre.remplirComboCours();
     }
 }

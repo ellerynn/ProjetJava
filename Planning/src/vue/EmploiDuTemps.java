@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -271,7 +272,7 @@ public class EmploiDuTemps extends JTabbedPane {
     /**
      * @return onglet SP
      */
-    public JTabbedPane getOngletSP() {
+    public JSplitPane getOngletSP() {
         return ongletSP;
     }
     

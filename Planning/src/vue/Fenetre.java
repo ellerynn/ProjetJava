@@ -48,7 +48,7 @@ public class Fenetre extends JFrame {
         initListeners(); //Ajout de listeners sur les différents composants des pages et onglets
                 
         //TRICHE CO RAPIDE
-        connexion.setEmailPassWord("segado@edu.ece.fr", "referent");
+        connexion.setEmailPassWord("admin@gmail.com", "admin");
     }
     
     /**
@@ -322,11 +322,8 @@ public class Fenetre extends JFrame {
         });
         
         edt.getRechercheBoutonCours().addActionListener((ActionEvent event) -> {
-            System.out.println("JE SUIS LAAAAAAAA");
             String recherche = edt.getRechercheBarreCours().getText();
-            System.out.println("JE SUIS LAAAAAAAA");
             String maRecherche = controle.rechercheUtilisateur(recherche);
-            System.out.println("JE SUIS LAAAAAAAA");
             if(maRecherche != null)
             {
                 edt.getRechercheCours().setSelectedItem(maRecherche);
@@ -377,7 +374,11 @@ public class Fenetre extends JFrame {
         });
         
         edt.getBtnValider3().addActionListener((ActionEvent event)->{
-            System.out.println("Valider3: Tu veux une tarte, c'est ça ? ");
+            String matiereToBeAdded = edt.getIntitule().getText();
+            if(!matiereToBeAdded.isEmpty())
+                controle.createMatiere(matiereToBeAdded);
+            else
+                System.out.println("Rien a été saisie");
         });
         
         edt.getListeSeances().addListSelectionListener((ListSelectionEvent lse) -> {

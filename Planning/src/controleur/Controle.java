@@ -1897,4 +1897,19 @@ public class Controle {
             seancesRecap(u.getEmail(), u.getPassword());
         }
     }
+    /**
+     * La vue fournie les données utiles pour créer l'intitulé d'un cours 
+     * au controleur, le Modèle le crée, le controleur renvoie les données 
+     * à mettre à jour visuellement  
+     * @param name 
+     */
+    public void createMatiere(String name)
+    {
+        CoursDAO cDAO = new CoursDAO();
+        Cours monCours = new Cours();
+        monCours.setNom(name);
+        monCours = cDAO.create(monCours);
+        System.out.println("matière ajouté avec succès");
+        fenetre.remplirComboCours();
+    }
 }

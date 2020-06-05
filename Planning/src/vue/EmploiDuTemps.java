@@ -459,4 +459,12 @@ public class EmploiDuTemps extends JTabbedPane {
     public void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
         ongletHome.ajouterGraphes(c, t);
     }
+    /**
+     * Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours issu du service de planification
+     * @return 
+     */
+    public JTextField getIntitule()
+    {
+        return ongletSP.getIntitule();
+    }
 }

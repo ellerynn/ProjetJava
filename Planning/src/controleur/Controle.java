@@ -1735,6 +1735,10 @@ public class Controle {
         String fin = fenetre.calculAnneeScolaire().substring(pos+1) + "-08-01";
         //System.out.println("\n" + d + "/" + f);
         
+        if(u.getDroit() == 1) { //Pour un admin, on recupère toutes les séances de tout le monde
+            seances = sDAO.findAllSeancesByDate(debut, fin);
+        }
+        
         //On récupère les données de l'utilisateurs selon son profil (étudiant, enseignant dont référent)
         if(u.getDroit() == 3 || u.getDroit() == 2) {
             en = recupEnseignant(u);
@@ -1754,6 +1758,12 @@ public class Controle {
             //System.out.println("******************************************");
             //System.out.println("Matiere - Public:");
             String nom = seances.get(i).get(0).getCours().getNom();
+            
+            if(u.getDroit() == 1) {
+                ArrayList<Enseignant> enseignants = seances.get(i).get(0).getEnseignants();
+                for(int j=0;j<enseignants.size();j++)
+                    nom += ", " + enseignants.get(j).getPrenom() + " " + enseignants.get(j).getNom();
+            }
             
             for (int a = 0; a<seances.get(i).get(0).getGroupes().size(); a++)
             {

@@ -688,7 +688,7 @@ public class Controle {
                 }
             }
         }
-        okForCreate = verifAndSetSeanceEtat(seance,""+Etat,seance.getGroupes().size(),seance.getEnseignants().size());
+        okForCreate = verifAndSetSeanceEtat(seance,""+Etat,seance.getGroupes().size(),seance.getEnseignants().size(),seance.getSalles().size());
         if (okForCreate) //Si tout les conditions sont réunis, on create, si il y a eu un faux, on ne create pas.
         {
             seance = sDAO.create(seance);
@@ -767,8 +767,10 @@ public class Controle {
             seance.setHeureDebut(heureDebut);
             seance.setDate((String)strings.get(2));
             seance.setHeureFin(calculHeureFin(heureDebut));
+            setSeanceCoursNom(seance,(String)strings.get(4));
+            setSeanceCoursType(seance,(String)strings.get(5));
             //Etape 1 Verification si tout les données entrées sont cohérents
-            okEtat = verifAndSetSeanceEtat(seance,(String)strings.get(3),((ArrayList<String>)strings.get(8)).size(),((ArrayList<String>)strings.get(6)).size());
+            okEtat = verifAndSetSeanceEtat(seance,(String)strings.get(3),((ArrayList<String>)strings.get(7)).size(),((ArrayList<String>)strings.get(6)).size(),((ArrayList<String>)strings.get(7)).size());
             okEnseignants = verifSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
             //Ensemble salles et groupes car chacun ont bsn de voir les capa de l'autre
             okGroupesSalles = verifSeanceGroupesEtSalles(seance,(ArrayList<String>)strings.get(7),(ArrayList<String>)strings.get(8)); 
@@ -779,8 +781,6 @@ public class Controle {
                 System.out.println("Verification RAS, modification des données OK pous séance : "+idSeance);
                 //Changement de données dans la variable seance (localement) et dans celui BDD
                 //Etat est déjà set localement
-                setSeanceCoursNom(seance,(String)strings.get(4));
-                setSeanceCoursType(seance,(String)strings.get(5));
                 setSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
                 setSeanceGroupes(seance,(ArrayList<String>)strings.get(7));
                 setSeanceSalles(seance, (ArrayList<String>)strings.get(8));
@@ -801,7 +801,7 @@ public class Controle {
      * @param choix 
      * @return  
      */
-    public boolean verifAndSetSeanceEtat(Seance seance, String choix, int tailleGroupe, int tailleEnseignant)
+    public boolean verifAndSetSeanceEtat(Seance seance, String choix, int tailleGroupe, int tailleEnseignant, int tailleSalles)
     {
         switch(choix)
         {
@@ -813,11 +813,11 @@ public class Controle {
             case "2":
             {
                 //LES CONDITIONS
-                if(tailleEnseignant != 0 && tailleGroupe != 0){
+                if(tailleEnseignant != 0 && tailleGroupe != 0 && tailleSalles != 0){
                     seance.setEtat(2);
                     return true;
                 }
-                else{System.out.println("On ne peux pas valider cette séance car il faut au minimum un enseignant et un groupe");} 
+                else{System.out.println("On ne peux pas valider cette séance car il faut au minimum un enseignant et un groupe et une salle");} 
                 break;
             }
             case "3":
@@ -895,6 +895,7 @@ public class Controle {
         //Cas groupes
         if(sallesSelected.isEmpty()) //Si aucune salle n'est selectionné, pas bsn de vérif capa groupe et salle
         {
+            System.out.println("oui");
             okForGrps = true;
         }else{ //Si des salles sont déjà affectés à cette séance, on est oblgés de vérifier la capacité
             if(capaciteGroupe <= capaciteSalle) //Capa groupe doit être <= capa salles
@@ -908,13 +909,17 @@ public class Controle {
         if(groupesSelected.isEmpty()) 
         {   
             okForSalles = true;
-        }else{ //Si des groupes sont dans cette séance
+        }else if(!sallesSelected.isEmpty()){ //Si des groupes sont dans cette séance
             if(capaciteSalle >= capaciteGroupe) //On vérifie si toute les salles peuvent supporter le nb
             {   //Si les salles supportent les groupes
                 okForSalles = true;
             }
             else
                 System.out.print("Capacité insuffisante");
+        }
+        if(sallesSelected.isEmpty())
+        {
+            okForSalles = true; //Si salle vide jusqu'en bas, alors c'est Ok, pas bsn pour groupe car il est vérif avant salle
         }
         if(okForGrps && okForSalles) //Si tout est Ok
         {

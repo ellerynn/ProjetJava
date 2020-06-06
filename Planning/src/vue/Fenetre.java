@@ -355,6 +355,11 @@ public class Fenetre extends JFrame {
             controle.majRecapRechercheBarre(recherche);
         });
         
+        edt.getRechercheBoutonLibres().addActionListener((ActionEvent event) -> {          
+            String recherche = edt.getRechercheBarreLibres().getText();
+            controle.sallesLibres(recherche);
+        });
+        
         //Bouton de recherche salles
         edt.getRechercheBoutonSalles().addActionListener((ActionEvent event) -> {
             String recherche = edt.getRechercheBarreSalles().getText();

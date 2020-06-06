@@ -12,6 +12,7 @@ import modele.TypeCoursDAO;
 import modele.UtilisateurDAO;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -1842,6 +1843,200 @@ public class Controle {
             String nb = String.valueOf(dernier+1);
             fenetre.getRecapCours().setValueAt(nb, i, 4);
         }      
+    }
+    
+    /**
+     * affichage de toutes les salles libres de ajd a ajd + 1 mois
+     */
+    public void sallesLibres(String recherche) {
+        SalleDAO sDAO = new SalleDAO();
+        Salle s = sDAO.findByName(recherche);
+        String debut = new String();
+        String[] horaires = {"08:00:00","08:15:00","08:30:00","08:45:00", 
+                            "09:00:00","09:15:00","09:30:00","09:45:00", 
+                            "10:00:00","10:15:00","10:30:00","10:45:00", 
+                            "11:00:00","11:15:00","11:30:00","11:45:00", 
+                            "12:00:00","12:15:00","12:30:00","12:45:00", 
+                            "13:00:00","13:15:00","13:30:00","13:45:00", 
+                            "14:00:00","14:15:00","14:30:00","14:45:00", 
+                            "15:00:00","15:15:00","15:30:00","15:45:00", 
+                            "16:00:00","16:15:00","16:30:00","16:45:00", 
+                            "17:00:00","17:15:00","17:30:00","17:45:00", 
+                            "18:00:00","18:15:00","18:30:00","18:45:00", 
+                            "19:00:00","19:15:00","19:30:00","19:45:00", 
+                            "20:00:00","20:15:00","20:30:00","20:45:00"};
+        
+        int jour = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        System.out.println("jour " + jour);
+        int mois = Calendar.getInstance().get(Calendar.MONTH)+1;
+        System.out.println("mois " + mois);
+        int annee = Calendar.getInstance().get(Calendar.YEAR);
+        System.out.println("annee " + annee);
+        int tampon = mois;
+        
+        String d = new String();
+        String m = new String();
+        if(jour<10)
+            d = "0" + jour;
+        else d = String.valueOf(jour);
+
+        if(tampon<10)
+            m = "0" + tampon;
+        else m = String.valueOf(tampon);
+
+        debut = annee + "-" + m + "-" + d;
+        
+        System.out.println("date debut " + debut);
+        
+        int pos = fenetre.calculAnneeScolaire().indexOf("/");
+        String fin = new String();
+        
+        if(tampon == 12) {
+            annee += 1;
+            tampon = 1;
+        }
+        else {
+            tampon += 1;
+        }
+        
+        if(tampon<10)
+            m = "0" + tampon;
+        else m = String.valueOf(tampon);
+
+        fin = annee + "-" + m + "-" + d;
+        System.out.println("date fin " + fin);
+        
+        String periode = "  du " + debut + " au " + fin + ".";
+        fenetre.getEdt().getPeriode2().setText(periode);
+        int anneeFev = Integer.parseInt(fenetre.calculAnneeScolaire().substring(pos+1));
+        
+        String date = new String();
+        ArrayList<String> joursRestants = new ArrayList<>();
+        while(!date.equals(fin)) {
+            Boolean nextMonth = false;
+            if(jour == 30 && (mois == 4 || mois == 6 || mois == 9 || mois == 11)) {
+                nextMonth = true;
+            }
+            else if(jour == 31 && (mois == 1 || mois == 3 || mois == 5 || mois == 7 || mois == 8 || mois == 10 || mois == 12)) {
+                nextMonth = true;
+            }
+            else if(anneeBissextile(anneeFev)) {
+                if(jour == 29 && mois == 2) {
+                    nextMonth = true;
+                }
+            }
+            else if(jour == 28 && mois == 2) {
+                nextMonth = true;
+            }
+                    
+            if(nextMonth && mois != 12) {
+                mois++;
+                jour = 1;
+            }
+            else {
+                jour++;
+            }
+            
+            if(annee != anneeFev && mois == 12 && nextMonth) {
+                annee += 1;
+                mois = 1;
+                jour = 1;
+            }
+            
+            String day = new String();
+            String month = new String();
+            if(jour<10)
+                day = "0" + jour;
+            else day = String.valueOf(jour);
+            
+            if(mois<10)
+                month = "0" + mois;
+            else month = String.valueOf(mois);
+            
+            date = annee + "-" + month + "-" + day;
+            //System.out.println("date : " + date);
+            joursRestants.add(date);
+        }        
+        
+        ((DefaultTableModel) fenetre.getLibres().getModel()).setRowCount(joursRestants.size());
+        
+        String cap = s.getCapacite() + " pers.";
+                        
+        for (int i = 0 ; i < joursRestants.size() ; i++)
+        {
+            fenetre.getLibres().setValueAt("Le " + joursRestants.get(i), i, 0);
+            
+            String h = new String();
+            ArrayList<String> htamp = new ArrayList<>();
+            for(int j=0;j<horaires.length;j++) {
+                htamp.add(horaires[j]);
+            }
+            //String[] htamp = horaires;
+            //Quand salle occupée, on remplace l'horaire par X
+            for(int j=0;j<htamp.size();j++) {
+                if(!sDAO.estLibre(s.getId(), htamp.get(j), joursRestants.get(i))) {
+                    htamp.set(j, "X");
+                }
+            }
+//            for(int j=0;j<htamp.length;j++)
+//                System.out.println(htamp[j]);
+            
+            StringBuilder tamp = new StringBuilder();
+            for(int j=0;j<htamp.size();j++) {
+                if(!"X".equals(htamp.get(j))) {
+                    if(tamp.indexOf("/") == -1 && tamp.indexOf("F") == -1)
+                        tamp.insert(0, "De " + htamp.get(j) + " /");
+                    else if(tamp.indexOf("F") != -1) {
+                        int f = tamp.indexOf("F");
+                        tamp.deleteCharAt(f);
+                        tamp.insert(f, "; De " + htamp.get(j) + " /");
+                    }
+                    
+                    if(j == htamp.size()-1) {
+                        //System.out.println("fin boucle");
+                        tamp.insert(tamp.indexOf("/"), " à " + htamp.get(j));
+                        tamp.deleteCharAt(tamp.length()-1);
+                        h = tamp.toString();
+                        tamp.delete(0, tamp.length());
+                        //System.out.println("horaires" + Arrays.toString(horaires));
+                        //System.out.println("nouveau htamp" + htamp.toString());
+                        //System.out.println("delete" + tamp);
+                    }
+                }
+                else {
+                    if(tamp.indexOf("/") != -1) {
+                        if(htamp.get(j-1) == "X" && htamp.get(j) == "X")
+                            j++;
+                        tamp.insert(tamp.indexOf("/"), " à " + htamp.get(j-1) + "F");
+                        tamp.deleteCharAt(tamp.length()-1);
+                    }
+                }
+            }
+            
+            
+            fenetre.getLibres().setValueAt(h, i, 1);
+            
+            fenetre.getLibres().setValueAt(cap, i, 2);
+        }      
+    }
+    
+    /**
+     * retourne true si l'annee est bissextile
+     * @param annee
+     * @return
+     */
+    public Boolean anneeBissextile(int annee) {
+        if(annee%4 == 0) { 
+            if(annee%100 == 0) { 
+                if(annee%400 == 0)
+                    return true;
+                else 
+                    return false;
+            }
+            else 
+                return true;
+        }
+        return false;
     }
     
     /**

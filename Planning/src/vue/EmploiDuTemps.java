@@ -171,6 +171,27 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     * @return la barre de recherche dans l'onglet Cours
+     */
+    public JTextField getRechercheBarreLibres() {
+        return ongletSalles.getRechercheBarre2(); //Barre de recherche
+    }
+    
+    /**
+     * @return le bouton rechercher 
+     */
+    public JButton getRechercheBoutonLibres() {
+        return ongletSalles.getRechercheBouton2(); //Bouton de recherche
+    }
+    
+    /**
+     * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
+     */
+    public JComboBox getRechercheLibres() {
+        return ongletSalles.getRecherche2(); //Menu déroulant des utilisateurs
+    }
+    
+    /**
      * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
      */
     public JComboBox getRechercheSalles() {
@@ -226,7 +247,13 @@ public class EmploiDuTemps extends JTabbedPane {
     public JTable getJTListeSalles() {
         return ongletSalles.getJTListe(); //Emploi du temps
     }
-       
+     
+    /**
+     * @return le JTable contenant le récapitulatif des cours
+     */
+    public JTable getLibres() {
+        return ongletSalles.getLibres(); //Récapitulatif des cours
+    }
     
     /**
      * @return le JTable contenant le récapitulatif des cours
@@ -290,6 +317,14 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public JLabel getPeriode() {
         return ongletCours.getPeriode();
+    }
+    
+    /**
+     *
+     * @return le JLabel contenant la periode
+     */
+    public JLabel getPeriode2() {
+        return ongletSalles.getPeriode();
     }
     
     /**
@@ -377,6 +412,14 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public void setRechercheSalles(ArrayList<String> string) {
         ongletSalles.remplirComboBox(ongletSalles.getRecherche(), "Veuillez sélectionner", string);
+    }
+    
+    /**
+     * rempli la JcomboBox de recherche salles dans l'onglet Salles
+     * @param string
+     */
+    public void setRechercheLibres(ArrayList<String> string) {
+        ongletSalles.remplirComboBox(ongletSalles.getRecherche2(), "Veuillez sélectionner", string);
     }
     
     /**

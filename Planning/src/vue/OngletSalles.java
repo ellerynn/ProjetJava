@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -40,7 +41,11 @@ public class OngletSalles extends JTabbedPane {
     private TableLabelRendererPanel p1;
     //Salles -> Salles libres
     private JTable tabLibres;
-    private  TableTreeRendererPanel p2;
+    private JScrollPane p2;
+    private JLabel periode;
+    private JTextField rechercheBarre2;
+    private JButton rechercheBouton2;
+    private JComboBox<String> selectRecherche2;
     
     /**
      * constructeur
@@ -57,7 +62,11 @@ public class OngletSalles extends JTabbedPane {
         p1 = new TableLabelRendererPanel(listeEdt);
         //Salles -> Salles libres
         tabLibres = new JTable();
-        p2 = new TableTreeRendererPanel(tabLibres);
+        p2 = new JScrollPane(tabLibres);
+        periode = new JLabel("du X au X");
+        rechercheBarre2 = new JTextField();
+        rechercheBouton2 = new JButton();
+        selectRecherche2 = new JComboBox<>();
         
         /*************************EMPLOI DU TEMPS*************************/
         JPanel cours = new JPanel();
@@ -117,15 +126,35 @@ public class OngletSalles extends JTabbedPane {
         /*************************SALLES LIBRES*************************/
         JPanel libres = new JPanel();
         libres.setLayout(new GridBagLayout()); //Initialisation du container
-        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants
-        t.weightx = 1; t.weighty = 1;
-        
+        GridBagConstraints t = new GridBagConstraints(); //Contraintes d'ajout des composants        
         t.insets = new Insets(10,10,10,10);
         
-        setLibres();
+        t.gridx = 0; c.gridy = 0; //Position
+        t.anchor = GridBagConstraints.LINE_START;
+        t.fill = GridBagConstraints.HORIZONTAL;        
+        libres.add(new JLabel("Salles libres : "), t);
         
-        t.gridwidth = 8;   //2 columns wide
+        t.gridx = 1;
+        libres.add(selectRecherche2, t);
+                
+        t.gridx = 3;
+        rechercheBarre2.setPreferredSize(new Dimension(250, 20));
+        libres.add(rechercheBarre2, t);
+        
+        t.gridx = 4; 
+        t.fill = GridBagConstraints.NONE;
+        t.anchor = GridBagConstraints.LINE_START;
+        rechercheBouton2.setIcon(new ImageIcon("images\\icon_recherche.png")); //Icone loupe dans bouton rechercher
+        rechercheBouton2.setPreferredSize(new Dimension(28, 28));
+        libres.add(rechercheBouton2, t);
+        
         t.gridx = 0; t.gridy = 1;
+        libres.add(periode, t);
+        
+        t.weightx = 1; t.weighty = 1;
+        setLibres();
+        t.gridwidth = 8;   //2 columns wide
+        t.gridx = 0; t.gridy = 2;
         t.fill = GridBagConstraints.BOTH;
         libres.add(p2, t);
         
@@ -165,11 +194,51 @@ public class OngletSalles extends JTabbedPane {
     }
     
     /**
+     * retourne le JTable contenant l'edt (salles) sur une semaine
+     * @return
+     */
+    public JTable getLibres() {
+        return this.tabLibres;
+    }
+    
+    /**
      * retourne la JComboBox de recherche (utilisateurs de la BDD)
      * @return
      */
     public JComboBox getRecherche() {
         return this.selectRecherche;
+    }
+    
+     /**
+     *
+     * @return le JLabel contenant la periode
+     */
+    public JLabel getPeriode() {
+        return this.periode;
+    }
+    
+    /**
+     * retourne la barre de recherche
+     * @return
+     */
+    public JTextField getRechercheBarre2() {
+        return this.rechercheBarre2;
+    }
+    
+    /**
+     * retourne le bouton rechercher
+     * @return
+     */
+    public JButton getRechercheBouton2() {
+        return this.rechercheBouton2;
+    }
+    
+    /**
+     * retourne la JComboBox de recherche (utilisateurs de la BDD)
+     * @return
+     */
+    public JComboBox getRecherche2() {
+        return this.selectRecherche2;
     }
     
     /**
@@ -219,7 +288,7 @@ public class OngletSalles extends JTabbedPane {
      * rempli un JComboBox avec un objet
      * @param box
      * @param intitule
-     * @param objet
+     * @param string
      */
     public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
@@ -313,13 +382,16 @@ public class OngletSalles extends JTabbedPane {
         
         tabEdt.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tabEdt.getColumnModel().getColumnCount() > 0) {
-            tabEdt.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabEdt.getColumnModel().getColumn(0).setMaxWidth(55);
         }
         
         DefaultTableCellRenderer custom = new DefaultTableCellRenderer();
         custom.setHorizontalAlignment(JLabel.CENTER);
         tabEdt.getColumnModel().getColumn(0).setCellRenderer(custom);
-        tabEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales
+        
+        tabEdt.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes
+        tabEdt.getTableHeader().setReorderingAllowed(false); //On ne peut pas échanger les colonnes de place
+        tabEdt.setShowHorizontalLines(false); //On n'affiche pas les lignes horizontales    
     }    
     
     /**
@@ -443,8 +515,8 @@ public class OngletSalles extends JTabbedPane {
      * misà jour du tableau contenant les salles libres (entêtes)
      */
     public void setLibres() {             
-        tabLibres.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Salles", 
-                                                                               "Campus", 
+        tabLibres.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"Jour", 
+                                                                               "Horaires", 
                                                                                "Capacité"}){ 
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -458,7 +530,7 @@ public class OngletSalles extends JTabbedPane {
         
         tabLibres.getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tabLibres.getColumnModel().getColumnCount() > 0) {
-            tabLibres.getColumnModel().getColumn(2).setMaxWidth(30);
+            tabLibres.getColumnModel().getColumn(2).setMaxWidth(70);
         }
         
         tabLibres.getTableHeader().setResizingAllowed(false); //On ne peut pas changer la taille des colonnes

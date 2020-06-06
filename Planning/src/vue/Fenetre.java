@@ -94,6 +94,13 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * @return le tableau contenant la liste de seances sur une annee scolaire
+     */
+    public JTable getLibres() {
+        return edt.getLibres();
+    }
+    
+    /**
      * @return le tableau contenant l'emploi du temps sur une journée dans l'onglet Home
      */
     public JTable getEdtHome() {
@@ -274,6 +281,14 @@ public class Fenetre extends JFrame {
             } 
         });
         
+        edt.getRechercheLibres().addActionListener((ActionEvent event) -> {
+            String recherche = edt.getRechercheLibres().getSelectedItem().toString();
+            System.out.println("recherche: " + recherche);
+            if (!recherche.equals("Veuillez sélectionner")) {
+                controle.sallesLibres(recherche);
+            } 
+        });
+        
         edt.getGroupesCours().addActionListener((ActionEvent event) -> {  
             String recherche = edt.getGroupesCours().getSelectedItem().toString();
             if (!recherche.equals("Groupes")) {
@@ -320,7 +335,7 @@ public class Fenetre extends JFrame {
             @Override
             public void mouseExited(MouseEvent me) {}
         });
-        
+                
         edt.getRechercheBoutonCours().addActionListener((ActionEvent event) -> {
             String recherche = edt.getRechercheBarreCours().getText();
             String maRecherche = controle.rechercheUtilisateur(recherche);
@@ -504,7 +519,9 @@ public class Fenetre extends JFrame {
     public void remplirComboSalles(){
         ArrayList<String> ttesLesSalles = controle.allSallesToStrings();
         edt.setRechercheSalles(ttesLesSalles);
+        edt.setRechercheLibres(ttesLesSalles);
         edt.getRechercheSalles().setSelectedIndex(0);
+        edt.getRechercheLibres().setSelectedIndex(0);
     }
     
     /**

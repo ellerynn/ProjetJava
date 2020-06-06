@@ -796,12 +796,11 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return false;
     }
-
+    
     /**
-     * retourne true si une salle a deja une seance prevue
      * @param id_salle
      * @param seance
-     * @return
+     * @return true si une salle a deja une seance prevue
      */
     public Boolean isSalleNotFreeForThisSeance (int id_salle, Seance seance ){
         try

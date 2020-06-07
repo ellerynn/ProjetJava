@@ -61,9 +61,7 @@ public class OngletHome extends JSplitPane {
         
         date.setModel(new SpinnerDateModel()); //Contient une date
         date.setEditor(new JSpinner.DateEditor(date, "dd/MM/yyyy"));
-                
-        System.out.print(DateFormat.getDateInstance(1).format(date.getValue())) ;
-        
+                        
         c.gridx = 1;
         container1.add(date, c);
         
@@ -71,7 +69,7 @@ public class OngletHome extends JSplitPane {
         c.gridx = 2;
         c.anchor = GridBagConstraints.LINE_END;
         c.fill = GridBagConstraints.NONE;
-        linkCours.setPreferredSize(new Dimension(18,18));
+        linkCours.setMaximumSize(new Dimension(10,10)); //MARCHE PAS ???
         c.insets = new Insets(10,100,10,10);
         container1.add(linkCours, c);
         
@@ -101,7 +99,7 @@ public class OngletHome extends JSplitPane {
         t.fill = GridBagConstraints.NONE;
         t.anchor = GridBagConstraints.LINE_END;
         t.weightx = 1;
-        deconnexion.setPreferredSize(new Dimension(25,25));
+        //deconnexion.setMaximumSize(new Dimension(25,25));
         container2.add(deconnexion, t);
         
         t.gridy = 1; t.gridx = 0;

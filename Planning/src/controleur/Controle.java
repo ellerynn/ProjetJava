@@ -441,82 +441,82 @@ public class Controle {
             seances = sDAO.findSeancesOfUserByDate(u.getId(), debut, fin);//cours total
             seances2 = sDAO.findSeancesOfUserByDate(u.getId(), debut2, fin);//cours restant
         }
-        else
-        {
+        else {
             seances = sDAO.findAllSeancesByDate(debut, fin);//cours total
             seances2 = sDAO.findAllSeancesByDate(debut2, fin);//cours restant
         }
-            int compteur = 0;//cours total
-            int compteur2=0;//cours restant
-            
-            DefaultPieDataset pieDataset3 = new DefaultPieDataset();//cours total
-            DefaultPieDataset pieDataset4 = new DefaultPieDataset();//cours restant
-            
-            int pas_afficher=0;//variable qui permet de na pas afficher la seance si la dat est la meme et si lheure n'est pas superieur
-            
-            for(int i=0;i<seances.size();i++) {//graphe 3
-                for(int j=0;j<seances.get(i).size();j++) {
-                        compteur++; //Compte le nombre de seances pour un cours
-                }
-                if (i+1 < seances.size() ){
-                    if(!seances.get(i+1).get(0).getCours().getNom().equals(seances.get(i).get(0).getCours().getNom())){
-                        //On peut prendre j = 0 car pour tout j il aura le même nom
-                        pieDataset3.setValue("Séance : "+seances.get(i).get(0).getCours().getNom()+" Nombre de séances: " + compteur, new Integer(compteur));
-                        compteur=0;
-                    }
-                }
-                if(i == seances.size()-1){
+        
+        int compteur = 0;//cours total
+        int compteur2=0;//cours restant
+
+        DefaultPieDataset pieDataset3 = new DefaultPieDataset();//cours total
+        DefaultPieDataset pieDataset4 = new DefaultPieDataset();//cours restant
+
+        int pas_afficher=0;//variable qui permet de na pas afficher la seance si la dat est la meme et si lheure n'est pas superieur
+
+        for(int i=0;i<seances.size();i++) {//graphe 3
+            for(int j=0;j<seances.get(i).size();j++) {
+                    compteur++; //Compte le nombre de seances pour un cours
+            }
+            if (i+1 < seances.size() ){
+                if(!seances.get(i+1).get(0).getCours().getNom().equals(seances.get(i).get(0).getCours().getNom())){
+                    //On peut prendre j = 0 car pour tout j il aura le même nom
                     pieDataset3.setValue("Séance : "+seances.get(i).get(0).getCours().getNom()+" Nombre de séances: " + compteur, new Integer(compteur));
                     compteur=0;
-                } 
+                }
             }
-            for(int l=0;l<seances2.size();l++) { //graphe 4
-                String dateblindage=seances.get(l).get(0).getDate();
-                int heureblindage=Integer.parseInt(seances.get(l).get(0).getHeureDebut().substring(0,2));
-                    for(int j=0;j<seances2.get(l).size();j++) {
-                        if(debut2.equals(dateblindage)){
-                            if(heureblindage > heure){
-                                compteur2++;
-                            }else 
-                                pas_afficher++; 
+            if(i == seances.size()-1){
+                pieDataset3.setValue("Séance : "+seances.get(i).get(0).getCours().getNom()+" Nombre de séances: " + compteur, new Integer(compteur));
+                compteur=0;
+            } 
+        }
+        
+        for(int l=0;l<seances2.size();l++) { //graphe 4
+            String dateblindage=seances2.get(l).get(0).getDate();
+            int heureblindage=Integer.parseInt(seances2.get(l).get(0).getHeureDebut().substring(0,2));
+                for(int j=0;j<seances2.get(l).size();j++) {
+                    if(debut2.equals(dateblindage)){
+                        if(heureblindage > heure){
+                            compteur2++;
                         }
                         else 
-                            compteur2++; //Compte le nombre de seances pour un cours
+                            pas_afficher++; 
                     }
-                    if (l+1 < seances2.size() ){
-                        if(!seances2.get(l+1).get(0).getCours().getNom().equals(seances2.get(l).get(0).getCours().getNom())){
-                            //On peut prendre j = 0 car pour tout j il aura le même nom
-                            if(pas_afficher==0){
-                                pieDataset4.setValue("Séance : "+seances2.get(l).get(0).getCours().getNom()+" Nombre de séances: " + compteur2, new Integer(compteur2));
-                                compteur2=0;
-                            }else
-                                pas_afficher=0;
-                        }
-                    }
-                    if(l == seances2.size()-1){
+                    else 
+                        compteur2++; //Compte le nombre de seances pour un cours
+                }
+                if (l+1 < seances2.size() ){
+                    if(!seances2.get(l+1).get(0).getCours().getNom().equals(seances2.get(l).get(0).getCours().getNom())){
+                        //On peut prendre j = 0 car pour tout j il aura le même nom
                         if(pas_afficher==0){
                             pieDataset4.setValue("Séance : "+seances2.get(l).get(0).getCours().getNom()+" Nombre de séances: " + compteur2, new Integer(compteur2));
                             compteur2=0;
                         }else
                             pas_afficher=0;
-                    }      
-            }
-            
-            if(!seances.isEmpty())
-            {
-                JFreeChart chart2 = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset3, true, true, true);
-                PiePlot P3 =(PiePlot)chart2.getPlot();
-                ChartPanel p3 = new ChartPanel(chart2);
-                t.add(p3);
-            }
-            if(!seances2.isEmpty())
-            {
-                JFreeChart chart4 = ChartFactory.createPieChart("Nombres de séances par cours restant de l'année", pieDataset4, true, true, true);
-                PiePlot P4 =(PiePlot)chart4.getPlot();
-                ChartPanel p4 = new ChartPanel(chart4);
-                t.add(p4);
-            }
+                    }
+                }
+                if(l == seances2.size()-1){
+                    if(pas_afficher==0){
+                        pieDataset4.setValue("Séance : "+seances2.get(l).get(0).getCours().getNom()+" Nombre de séances: " + compteur2, new Integer(compteur2));
+                        compteur2=0;
+                    }
+                    else
+                        pas_afficher=0;
+                }      
+        }
 
+        if(!seances.isEmpty()) {
+            JFreeChart chart2 = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset3, true, true, true);
+            PiePlot P3 =(PiePlot)chart2.getPlot();
+            ChartPanel p3 = new ChartPanel(chart2);
+            t.add(p3);
+        }
+        if(!seances2.isEmpty()) {
+            JFreeChart chart4 = ChartFactory.createPieChart("Nombres de séances par cours restant de l'année", pieDataset4, true, true, true);
+            PiePlot P4 =(PiePlot)chart4.getPlot();
+            ChartPanel p4 = new ChartPanel(chart4);
+            t.add(p4);
+        }
         
         fenetre.ajouterGraphes(c, t);
     } 
@@ -1915,6 +1915,7 @@ public class Controle {
 
             String periode = "  du " + debut + " au " + fin + ".";
             fenetre.getEdt().getPeriode2().setText(periode);
+            fenetre.getEdt().getPeriode2().setVisible(true);
             int anneeFev = Integer.parseInt(fenetre.calculAnneeScolaire().substring(pos+1));
 
             String date = new String();

@@ -149,6 +149,7 @@ public class OngletSalles extends JTabbedPane {
         libres.add(rechercheBouton2, t);
         
         t.gridx = 0; t.gridy = 1;
+        periode.setVisible(false);
         libres.add(periode, t);
         
         t.weightx = 1; t.weighty = 1;

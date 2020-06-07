@@ -369,6 +369,7 @@ public class Fenetre extends JFrame {
         edt.getBtnValider().addActionListener((ActionEvent event)->{
             if(!edt.getInfosAddSeance().isEmpty())
                 controle.demandeAddSeance(edt.getInfosAddSeance());
+                controle.creationGraphe(connexion.getEmail(), connexion.getPassword());
         });
      
         edt.getBtnValider2().addActionListener((ActionEvent event)->{
@@ -379,6 +380,7 @@ public class Fenetre extends JFrame {
                 int end = selected.indexOf(" ", start);
                 int idSeance = Integer.parseInt(selected.substring(start+1, end));
                 controle.demandeModifSeance(idSeance,edt.getInfosModifSeance());
+                controle.creationGraphe(connexion.getEmail(), connexion.getPassword());
             }
         });
         

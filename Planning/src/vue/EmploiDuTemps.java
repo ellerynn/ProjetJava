@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -90,6 +92,14 @@ public class EmploiDuTemps extends JTabbedPane {
     
     /**
      *
+     * @return le conteneur de l'edt home en grille
+     */
+    public TableLabelRendererPanel getGrilleHome() {
+        return this.ongletHome.getGrille();
+    }
+    
+    /**
+     *
      * @return le conteneur de l'edt en liste
      */
     public TableLabelRendererPanel getListeCours() {
@@ -137,6 +147,48 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public JComboBox getRechercheCours() {
         return ongletCours.getRecherche(); //Menu déroulant des utilisateurs
+    }
+    
+    /**
+     * @return la barre de recherche dans l'onglet Cours
+     */
+    public JTextField getRechercheBarreRecapCours() {
+        return ongletCours.getRechercheBarre2(); //Barre de recherche
+    }
+    
+    /**
+     * @return le bouton rechercher 
+     */
+    public JButton getRechercheBoutonRecapCours() {
+        return ongletCours.getRechercheBouton2(); //Bouton de recherche
+    }
+    
+    /**
+     * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
+     */
+    public JComboBox getRechercheRecapCours() {
+        return ongletCours.getRecherche2(); //Menu déroulant des utilisateurs
+    }
+    
+    /**
+     * @return la barre de recherche dans l'onglet Cours
+     */
+    public JTextField getRechercheBarreLibres() {
+        return ongletSalles.getRechercheBarre2(); //Barre de recherche
+    }
+    
+    /**
+     * @return le bouton rechercher 
+     */
+    public JButton getRechercheBoutonLibres() {
+        return ongletSalles.getRechercheBouton2(); //Bouton de recherche
+    }
+    
+    /**
+     * @return la JComboBox de recherche de l'edt avec les utilisateurs de la BDD
+     */
+    public JComboBox getRechercheLibres() {
+        return ongletSalles.getRecherche2(); //Menu déroulant des utilisateurs
     }
     
     /**
@@ -195,7 +247,13 @@ public class EmploiDuTemps extends JTabbedPane {
     public JTable getJTListeSalles() {
         return ongletSalles.getJTListe(); //Emploi du temps
     }
-       
+     
+    /**
+     * @return le JTable contenant le récapitulatif des cours
+     */
+    public JTable getLibres() {
+        return ongletSalles.getLibres(); //Récapitulatif des cours
+    }
     
     /**
      * @return le JTable contenant le récapitulatif des cours
@@ -249,8 +307,24 @@ public class EmploiDuTemps extends JTabbedPane {
     /**
      * @return onglet SP
      */
-    public JTabbedPane getOngletSP() {
+    public JSplitPane getOngletSP() {
         return ongletSP;
+    }
+    
+    /**
+     *
+     * @return le JLabel contenant la periode
+     */
+    public JLabel getPeriode() {
+        return ongletCours.getPeriode();
+    }
+    
+    /**
+     *
+     * @return le JLabel contenant la periode
+     */
+    public JLabel getPeriode2() {
+        return ongletSalles.getPeriode();
     }
     
     /**
@@ -325,11 +399,27 @@ public class EmploiDuTemps extends JTabbedPane {
     }
     
     /**
+     * rempli la JcomboBox de recherche utilisateurs dans l'onglet Cours
+     * @param string
+     */
+    public void setRechercheRecapCours(ArrayList<String> string) {
+        ongletCours.remplirComboBox(ongletCours.getRecherche2(), "Veuillez sélectionner", string);
+    }
+    
+    /**
      * rempli la JcomboBox de recherche salles dans l'onglet Salles
      * @param string
      */
     public void setRechercheSalles(ArrayList<String> string) {
         ongletSalles.remplirComboBox(ongletSalles.getRecherche(), "Veuillez sélectionner", string);
+    }
+    
+    /**
+     * rempli la JcomboBox de recherche salles dans l'onglet Salles
+     * @param string
+     */
+    public void setRechercheLibres(ArrayList<String> string) {
+        ongletSalles.remplirComboBox(ongletSalles.getRecherche2(), "Veuillez sélectionner", string);
     }
     
     /**
@@ -419,5 +509,13 @@ public class EmploiDuTemps extends JTabbedPane {
      */
     public void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
         ongletHome.ajouterGraphes(c, t);
+    }
+    /**
+     * Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours issu du service de planification
+     * @return 
+     */
+    public JTextField getIntitule()
+    {
+        return ongletSP.getIntitule();
     }
 }

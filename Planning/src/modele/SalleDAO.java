@@ -196,4 +196,27 @@ public class SalleDAO extends DAO<Salle>{
         }
         return null;
     }
+    
+    /**
+     * @param id_salle
+     * @param debut
+     * @param fin
+     * @param date
+     * @return false si une salle a deja une seance prevue
+     */
+    public Boolean estLibre(int id_salle, String horaire, String date) {
+        try {
+            ResultSet maRequete = this.connect.createStatement()
+                    .executeQuery("SELECT * FROM seance\n" +
+                                "LEFT JOIN seance_salles SS ON seance.ID = SS.ID_seance\n" +
+                                "WHERE SS.ID_salle = "+id_salle+" AND seance.Date = '"+ date +"' "+
+                                "AND (seance.Heure_fin > '"+horaire+"' AND seance.Heure_debut < '"+horaire+"') ");
+            if(maRequete.first())
+                return false; //Des séances sont éxistant dans le créneau 
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return true;
+    }
 }

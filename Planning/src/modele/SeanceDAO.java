@@ -5,12 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import modele.Cours;
-import modele.Enseignant;
-import modele.Groupe;
-import modele.Salle;
-import modele.Seance;
-import modele.TypeCours;
 
 /**
  *
@@ -20,9 +14,8 @@ import modele.TypeCours;
  */
 public class SeanceDAO extends DAO<Seance> {
     /**
-     * create
      * @param object
-     * @return
+     * @return une nouvelle seance
      */
     @Override
     public Seance create(Seance object) {
@@ -111,9 +104,8 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     /**
-     * delete
      * @param object
-     * @return
+     * @return false
      */
     @Override
     public boolean delete(Seance object) {
@@ -121,9 +113,8 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * upadte
      * @param object
-     * @return
+     * @return une seance mise a jour
      */
     @Override
     public Seance update(Seance object) {
@@ -805,12 +796,11 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return false;
     }
-
+    
     /**
-     * retourne true si une salle a deja une seance prevue
      * @param id_salle
      * @param seance
-     * @return
+     * @return true si une salle a deja une seance prevue
      */
     public Boolean isSalleNotFreeForThisSeance (int id_salle, Seance seance ){
         try

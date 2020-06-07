@@ -1,15 +1,35 @@
 package vue;
 
+/*SOURCES : 
+* https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html
+* https://www.tutorialspoint.com/java/util/calendar_setfield2.htm
+*/
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.text.Position;
 
 /**
@@ -18,134 +38,603 @@ import javax.swing.text.Position;
  * @author Sutharsan
  * @author Emilie
  */
-public class OngletServicePlanification extends JTabbedPane {
-    private OngletGererCoursSP ongletGererCours;
-    private OngletGererUtilisateursSP ongletGererUtilisateurs;
-    private OngletGererSiteSP ongletGererSite;
+public class OngletServicePlanification extends JSplitPane {
+    //Ajouter une seance
+    private JList<String> listeSeances;
+    private JSpinner date;
+    private JRadioButton etatEC;
+    private JRadioButton etatV;
+    private JComboBox<String> selectCours;
+    private JComboBox<String> selectType;
+    private JList<String> listeEnseignants;
+    private JList<String> listeGroupes;
+    private JList<String> listeSalles;
+    private JButton valider;
+    //Modifier une seance
+    private JList<String> listeSeances2;
+    private JSpinner date2;
+    private JRadioButton etatEC2;
+    private JRadioButton etatV2;
+    private JRadioButton etatA;
+    private JComboBox<String> selectCours2;
+    private JComboBox<String> selectType2;
+    private JList<String> listeEnseignants2;
+    private JList<String> listeGroupes2;
+    private JList<String> listeSalles2;
+    private JButton valider2;
+    //Ajouter un cours
+    private JTextField intitule;
+    private JButton valider3;
+    //Supprimer un cours
+    private JComboBox<String> selectCours3;
+    private JButton supprimer;
     
     /**
      * constructeur
      */
     public OngletServicePlanification() {
-        ongletGererCours = new OngletGererCoursSP();
-        this.add("Gérer les cours", ongletGererCours);
+        listeSeances = new JList<>();
+        date = new JSpinner();
+        etatEC = new JRadioButton("En cours de validation");
+        etatV = new JRadioButton("Validée");
+        selectCours = new JComboBox<>();
+        selectType = new JComboBox<>();
+        listeEnseignants = new JList<>();
+        listeGroupes = new JList<>();
+        listeSalles = new JList<>();
+        valider = new JButton("Valider");
         
-        ongletGererUtilisateurs = new OngletGererUtilisateursSP();
-        this.add("Gérer les utilisateurs", ongletGererUtilisateurs);
+        listeSeances2 = new JList<>();
+        date2 = new JSpinner();
+        etatEC2 = new JRadioButton("En cours de validation");
+        etatV2 = new JRadioButton("Validée");
+        etatA = new JRadioButton("Annulée");
+        selectCours2 = new JComboBox<>();
+        selectType2 = new JComboBox<>();
+        listeEnseignants2 = new JList<>();
+        listeGroupes2 = new JList<>();
+        listeSalles2 = new JList<>();
+        valider2 = new JButton("Valider");
         
-        ongletGererSite = new OngletGererSiteSP();
-        this.add("Gérer le site", ongletGererSite);
+        intitule = new JTextField();
+        valider3 = new JButton("Valider");
+        
+        selectCours3 = new JComboBox<String>();
+        supprimer = new JButton("Supprimer");
+                
+        //Liste des séances a droite
+        JScrollPane container1 = new JScrollPane(listeSeances);
+        remplirListe(listeSeances);
+        this.setRightComponent(container1);
+        
+        //A gauche
+        JPanel container2 = new JPanel();
+        container2.setLayout(new GridBagLayout()); //Initialisation du container
+        GridBagConstraints c = new GridBagConstraints(); //Contraintes d'ajout des composants
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.weighty = 1;
+        
+        /***********************************AJOUTER UNE SEANCE***********************************/
+        c.insets = new Insets(0,10,0,0);
+        JLabel titre1 = new JLabel("Ajouter une seance"); //JLabel titre
+        
+        c.gridx = 0; c.gridy = 0; //Position
+        container2.add(titre1, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        JLabel dateHeure = new JLabel("Date et heure :"); //Sous-titre
+        c.gridx = 1; c.gridy = 1; //On décalle tout de 1
+        container2.add(dateHeure, c);
+        
+        c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
+        Calendar calendar = Calendar.getInstance();
+        
+        Date initDate = calendar.getTime();
+        calendar.add(Calendar.YEAR, -1);
+        calendar.set(calculAnneeScolaire(), 8, 1);
+        Date earliestDate = calendar.getTime();
+        calendar.set(calculAnneeScolaire() + 1, 7, 31);
+        Date latestDate = calendar.getTime();
+        date.setModel(new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.DAY_OF_MONTH));
+        date.setEditor(new JSpinner.DateEditor(date, "dd/MM/yyyy HH:mm"));
+        container2.add(date, c);
+        
+        JLabel etats = new JLabel("Etat :");
+        c.gridy = 2; c.gridx  = 1;
+        container2.add(etats, c);
+        
+        ButtonGroup groupeEtat = new ButtonGroup();
+        groupeEtat.add(etatEC);
+        groupeEtat.add(etatV);
+        
+        c.gridx  = 2;
+        container2.add(etatEC, c);
+        c.gridx = 3;
+        container2.add(etatV, c);
+        
+        JLabel cours = new JLabel("Cours :");
+        c.gridy = 3; c.gridx = 1;
+        container2.add(cours, c);
+        
+        c.gridx = 2;
+        remplirComboBox(selectCours, "Veuillez sélectionner", "Cours");
+        container2.add(selectCours, c);
+        
+        JLabel type = new JLabel("Type du cours : ");
+        c.gridy = 4; c.gridx = 1;
+        container2.add(type, c);
+        
+        c.gridx = 2;
+        //remplirComboBoxType(selectType);
+        container2.add(selectType, c);
+        
+        c.gridy = 5; c.gridx = 1;
+        JLabel profs = new JLabel("Enseignants : ");
+        container2.add(profs, c);
+        
+        c.gridx = 2;
+        JLabel tds = new JLabel("Groupes : ");
+        container2.add(tds, c);
+        
+        c.gridx = 3;
+        JLabel salles = new JLabel("Salles : ");
+        container2.add(salles, c);
+        
+        JScrollPane container3 = new JScrollPane(listeEnseignants);
+        listeEnseignants.setVisibleRowCount(2);
+        remplirListe(listeEnseignants);
+	c.insets = new Insets(5,0,10,10);  //padding
+	c.gridx = 1;       //aligned with date
+	c.gridwidth = 1;   //2 columns wide
+        c.gridy = 6;       //third row
+        container2.add(container3, c);
+        
+        JScrollPane container4 = new JScrollPane(listeGroupes);
+        listeGroupes.setVisibleRowCount(2);
+        remplirListe(listeGroupes);
+	c.gridx = 2;       //aligned with date
+        container2.add(container4, c);
+        
+        JScrollPane container5 = new JScrollPane(listeSalles);
+        listeSalles.setVisibleRowCount(2);
+        remplirListe(listeSalles);
+        c.gridwidth = 2;
+	c.gridx = 3;       //aligned with date
+        container2.add(container5, c);
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 6;
+        c.insets = new Insets(0,0,10,10);
+        container2.add(valider, c);
+        
+        c.insets = new Insets(0,0,0,0);  //padding
+        
+        /***********************************MODIFIER UNE SEANCE***********************************/
+        c.insets = new Insets(0,10,0,0);
+        JLabel titre2 = new JLabel("Modifier une seance"); //JLabel titre
+
+        c.gridx = 0; c.gridy = 7; //Position
+        container2.add(titre2, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        JLabel dateHeure2 = new JLabel("Date et heure :"); //Sous-titre
+        c.gridx = 1; c.gridy = 8; //On décalle tout de 1
+        container2.add(dateHeure2, c);
+        
+        c.gridx = 2; //On décalle juste la position en x -> alignement avec sous-titre
+        date2.setModel(new SpinnerDateModel(initDate, earliestDate, latestDate, Calendar.DAY_OF_MONTH));
+        date2.setEditor(new JSpinner.DateEditor(date2, "dd/MM/yyyy HH:mm"));
+        container2.add(date2, c);
+        
+        JLabel etats2 = new JLabel("Etat :");
+        c.gridy = 9; c.gridx  = 1;
+        container2.add(etats2, c);
+        
+        ButtonGroup groupeEtat2 = new ButtonGroup();
+        groupeEtat2.add(etatEC2);
+        groupeEtat2.add(etatV2);
+        groupeEtat2.add(etatA);
+        
+        c.gridx  = 2;
+        container2.add(etatEC2, c);
+        c.gridx = 3;
+        container2.add(etatV2, c);
+        c.gridx = 4;
+        container2.add(etatA, c);
+        
+        JLabel cours2 = new JLabel("Cours :");
+        c.gridy = 10; c.gridx = 1;
+        container2.add(cours2, c);
+        
+        c.gridx = 2;
+        remplirComboBox(selectCours2, "Veuillez sélectionner", "Cours");
+        container2.add(selectCours2, c);
+        
+        JLabel type2 = new JLabel("Type du cours : ");
+        c.gridy = 11; c.gridx = 1;
+        container2.add(type2, c);
+        
+        c.gridx = 2;
+        remplirComboBoxType(selectType2);
+        container2.add(selectType2, c);
+        
+        c.gridy = 12; c.gridx = 1;
+        JLabel profs2 = new JLabel("Enseignants : ");
+        container2.add(profs2, c);
+        
+        c.gridy = 12; c.gridx = 2;
+        JLabel tds2 = new JLabel("Groupes : ");
+        container2.add(tds2, c);
+        
+        c.gridy = 12; c.gridx = 3;
+        JLabel salles2 = new JLabel("Salles : ");
+        container2.add(salles2, c);
+        
+        JScrollPane container6 = new JScrollPane(listeEnseignants2);
+        listeEnseignants2.setVisibleRowCount(2);
+        remplirListe(listeEnseignants2);
+	c.insets = new Insets(5,0,10,10);  //padding
+	c.gridx = 1;       //aligned with date
+        c.gridy = 13;       //third row
+        container2.add(container6, c);
+        
+        JScrollPane container7 = new JScrollPane(listeGroupes2);
+        listeGroupes2.setVisibleRowCount(2);
+        remplirListe(listeGroupes2);
+	c.gridx = 2;       //aligned with date
+        container2.add(container7, c);
+        
+        JScrollPane container8 = new JScrollPane(listeSalles2);
+        listeSalles2.setVisibleRowCount(2);
+        remplirListe(listeSalles2);
+        c.gridwidth = 2;   //2 columns wide
+	c.gridx = 3;       //aligned with date
+        container2.add(container8, c);  
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 13;
+        c.insets = new Insets(0,0,10,10);
+        container2.add(valider2, c);
+        
+        c.insets = new Insets(0,10,0,0);  //padding
+        
+        /***********************************AJOUTER UN COURS***********************************/
+        JLabel titre3 = new JLabel("Ajouter un cours"); //JLabel titre
+
+        c.gridx = 0; c.gridy = 14; //Position
+        container2.add(titre3, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        JLabel cours3 = new JLabel("Intitulé du cours : "); //Sous-titre
+        c.gridx = 1; c.gridy = 15;  //On décalle tout de 1
+        container2.add(cours3, c);
+        
+        c.gridx = 2; c.gridwidth = 4;
+        c.insets = new Insets(0,0,0,10);
+        container2.add(intitule, c);
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 15;
+        c.insets = new Insets(0,0,0,10);
+        container2.add(valider3, c);
+        
+        /***********************************SUPPRIMER UN COURS***********************************/
+        c.insets = new Insets(0,10,0,0);
+        JLabel titre4 = new JLabel("Supprimer un cours"); //JLabel titre
+
+        c.gridx = 0; c.gridy = 16; //Position
+        container2.add(titre4, c); //Ajout au conteneur
+        
+        c.insets = new Insets(0,0,0,0);
+        remplirComboBox(selectCours3, "Veuillez sélectionner", "Cours");
+        c.gridx = 1; c.gridy = 17; c.gridwidth = 1; //On décalle tout de 1
+        container2.add(selectCours3, c);
+        
+        c.gridwidth = 1;  
+        c.gridx = 7;
+        c.gridy = 17;
+        c.insets = new Insets(0,0,0,10);
+        container2.add(supprimer, c);
+                
+        this.setLeftComponent(container2);
+        
     }
     
     /**
-     * récupère l'onglet Gérer les cours de l'onglet SP
+     * 
      * @return
      */
-    public OngletGererCoursSP getOngletGererCours() {
-        return ongletGererCours;
+    public JComboBox getSelectType() {
+        return this.selectType;
     }
-    
+
     /**
-     * récupère la liste des séances de l'onglet Gérer les cours
+     *
      * @return
      */
-    public JList getListeSeances(){ 
-        return ongletGererCours.getListeSeances();
+    public JComboBox getSelectType2() {
+        return this.selectType2;
     }
-    
+
     /**
-     * récupère le premier bouton valider de l'onglet Gérer les cours
+     *
+     * @return
+     */
+    public JComboBox getSelectCours() {
+        return this.selectCours;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JComboBox getSelectCours2() {
+        return this.selectCours2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSalles() {
+        return this.listeSalles;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSalles2() {
+        return this.listeSalles2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeGroupes(){
+        return this.listeGroupes;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeGroupes2(){
+        return this.listeGroupes2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeEnseignants(){
+        return this.listeEnseignants;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeEnseignants2(){
+        return this.listeEnseignants2;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSeances(){
+        return this.listeSeances;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JList getListeSeances2(){
+        return this.listeSeances2;
+    }
+
+    /**
+     *
      * @return
      */
     public JButton getBtnValider(){
-        return ongletGererCours.getBtnValider();
+        return this.valider;
     }
 
     /**
-     * récupère le second bouton valider de l'onglet Gérer les cours
+     *
      * @return
      */
     public JButton getBtnValider2(){
-        return ongletGererCours.getBtnValider2();
+        return this.valider2;
     }
 
     /**
-     * récupère le dernier bouton valider de l'onglet Gérer les cours
+     *
      * @return
      */
     public JButton getBtnValider3(){
-        return ongletGererCours.getBtnValider3();
+        return this.valider3;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getDate() {
+        String temp = String.valueOf(date.getValue()).substring(11, 19); //On récup l'heure
+        String jour=DateFormat.getDateInstance(3).format(date.getValue()).substring(0,2); //On recup le jour
+        String mois=DateFormat.getDateInstance(3).format(date.getValue()).substring(3,5); //On recup le mois
+        String formatAnnee = DateFormat.getDateInstance(2).format(date.getValue());
+        int posAnnee = formatAnnee.lastIndexOf(" ");
+        String annee = formatAnnee.substring(posAnnee+1); //On récup l'année en yyyy
+        
+        
+        temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
+        return temp;
     }
     
     /**
-     * récupère l'onglet Gérer les utilisateurs de l'onglet SP
-     * @return
+     * 
+     * @param liste
      */
-    public OngletGererUtilisateursSP getOngletGererUtilisateurs() {
-        return ongletGererUtilisateurs;
+    public void remplirListe(JList liste) {
+        Vector<String> listData = new Vector();
+        for(int i=1;i<101;i++)
+            listData.add("Item liste "+i);
+        liste.setListData(listData);
     }
     
     /**
-     * récupère l'onglet Gérer les sites de l'onglet SP
+     * rempli une JComboBox avec un objet
+     * @param box
+     * @param intitule
+     * @param objet
+     */
+    public void remplirComboBox(JComboBox box, String intitule, Object objet) {
+        box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
+        for(int i = 1; i < 200; i++) {
+            box.addItem(objet.toString());
+        }
+    }
+    
+    /**
+     *
+     * @param box
+     */
+    public void remplirComboBoxType(JComboBox box) {
+        box.setModel(new DefaultComboBoxModel<>(new String[] { "Veuillez sélectionner", 
+                                                               "Magistral", 
+                                                               "TP", 
+                                                               "TD", 
+                                                               "Interactif", 
+                                                               "Projet", 
+                                                               "Soutien", 
+                                                               "DS", 
+                                                               "Partiel", 
+                                                               "Rattrapage" }));
+    }
+    
+    /**
+     * rempli une JComboBox avec un ArrayList<String> 
+     * @param box
+     * @param intitule
+     * @param string
+    */
+    public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
+        box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
+        for(int i = 0; i < string.size(); i++) {
+            box.addItem(string.get(i));
+        }
+    }
+
+    /**
+     * rempli une liste avec un ArrayList de String
+     * @param liste
+     * @param string
+     */
+    public void remplirListe(JList liste, ArrayList<String> string) {
+        Vector<String> listData = new Vector();
+        for(String s : string)
+            listData.add(s);
+        liste.setListData(listData);
+    }
+
+    /**
+     *
      * @return
      */
-    public OngletGererSiteSP getOngletGererSite() {
-        return ongletGererSite;
+    public JRadioButton getEtatEC()
+    {
+        return etatEC;
     }
 
     /**
-     * rempli les JComboBox de l'onglet Gérer les cours avec les types de cours
-     * @param string
+     *
+     * @return
      */
-    public void remplirComboTypes(ArrayList<String> string) {
-        ongletGererCours.remplirComboBox(ongletGererCours.getSelectType(),"type", string);
-        ongletGererCours.remplirComboBox(ongletGererCours.getSelectType2(),"type", string);
+    public JRadioButton getEtatV()
+    {
+        return etatV;
     }
-
     /**
-     * rempli les JComboBox de l'onglet Gérer les cours avec les intitulés des cours
-     * @param string
+     * 
+     * @return 
      */
-    public void remplirComboCours(ArrayList<String> string) {
-        ongletGererCours.remplirComboBox(ongletGererCours.getSelectCours(),"cours", string);
-        ongletGererCours.remplirComboBox(ongletGererCours.getSelectCours2(),"cours", string);
-
+    public String getDate2()
+    {
+        String temp = String.valueOf(date2.getValue()).substring(11, 19); //On récup l'heure
+        String jour=DateFormat.getDateInstance(3).format(date2.getValue()).substring(0,2); //On recup le jour
+        String mois=DateFormat.getDateInstance(3).format(date2.getValue()).substring(3,5); //On recup le mois
+        String formatAnnee = DateFormat.getDateInstance(2).format(date.getValue());
+        int posAnnee = formatAnnee.lastIndexOf(" ");
+        String annee = formatAnnee.substring(posAnnee+1); //On récup l'année en yyyy
+        temp +=" "+annee+"-"+mois+"-"+jour; //Et on assemble
+        return temp;
     }
-
     /**
-     * rempli les listes de l'onglet Gérer les cours avec les salles
-     * @param string
+     * 
+     * @return 
      */
-    public void remplirListSalle(ArrayList<String> string) {
-        ongletGererCours.remplirListe(ongletGererCours.getListeSalles(), string);
-        ongletGererCours.remplirListe(ongletGererCours.getListeSalles2(), string);
+    public JRadioButton getEtatEC2()
+    {
+        return etatEC2;
     }
-
     /**
-     * rempli les listes de l'onglet Gérer les cours avec les groupes
-     * @param string
+     * 
+     * @return 
      */
-    public void remplirListGroupes(ArrayList<String> string) {
-        ongletGererCours.remplirListe(ongletGererCours.getListeGroupes(), string);
-        ongletGererCours.remplirListe(ongletGererCours.getListeGroupes2(), string);
+    public JRadioButton getEtatV2()
+    {
+        return etatV2;
     }
-
     /**
-     * rempli les listes de l'onglet Gérer les cours avec les enseignants
-     * @param string
+     * 
+     * @return 
      */
-    public void remplirListEnseignants(ArrayList<String> string) {
-        ongletGererCours.remplirListe(ongletGererCours.getListeEnseignants(), string);
-        ongletGererCours.remplirListe(ongletGererCours.getListeEnseignants2(), string);
+    public JRadioButton getEtatA()
+    {
+        return etatA;
     }
-
     /**
-     * rempli les liste de l'onglet Gérer les cours avec les séances
-     * @param string
+     * Set le Jspinner date2 (date et heure)
+     * @param val 
      */
-    public void remplirListSeances(ArrayList<String> string) {
-        ongletGererCours.remplirListe(ongletGererCours.getListeSeances(), string);
-        ongletGererCours.remplirListe(ongletGererCours.getListeSeances2(), string);
+    public void setDate2(String val)
+    {
+        if(!val.equals(getDate2())) //Si les données ne sont pas pareil, on set sinon on fait rien (pour éviter de rollback)
+        {
+            try { 
+                Date laDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(val);
+                date2.setValue(laDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(OngletServicePlanification.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    /**
+     * calcul de l'année scolaire en cours (retourne seulement le premier ex 2019/2020 = 2019)
+     * @return
+     */
+    public int calculAnneeScolaire() {
+        Calendar cal = Calendar.getInstance();
+        int annee;
+        
+        if(cal.get(Calendar.MONTH)+1 >= 9 && cal.get(Calendar.MONTH)+1 <= 12) { //Entre septembre et décembre
+            annee = cal.get(Calendar.YEAR);
+        }
+        
+        else
+            annee = cal.get(Calendar.YEAR)-1;
+        return annee;
     }
     
     /**
@@ -157,7 +646,7 @@ public class OngletServicePlanification extends JTabbedPane {
         ArrayList<Object> strings = new ArrayList<>();
         boolean isOk = true;
         //BLINDAGE Decalaration
-        String donnees = ongletGererCours.getDate();
+        String donnees = this.getDate();
         String date = donnees.substring(9,19);
         String heure = donnees.substring(0,8);
         Calendar cal = Calendar.getInstance();
@@ -198,33 +687,33 @@ public class OngletServicePlanification extends JTabbedPane {
             //Date
             strings.add(date);                                                    
             //Etat
-            if(ongletGererCours.getEtatEC().isSelected())//Etat de la séance
+            if(this.getEtatEC().isSelected())//Etat de la séance
             {
                 strings.add("1"); //Si radio bouton EC cliqué, on stock "1" 
-            }else if(ongletGererCours.getEtatV().isSelected()){
+            }else if(this.getEtatV().isSelected()){
                 strings.add("2"); //Si radio bouton V cliqué, on stock "2"
             }
             //Cours
-            if(!ongletGererCours.getSelectCours().getSelectedItem().toString().equals("cours")){
-                strings.add(ongletGererCours.getSelectCours().getSelectedItem().toString()); //Cours selectionné
+            if(!this.getSelectCours().getSelectedItem().toString().equals("cours")){
+                strings.add(this.getSelectCours().getSelectedItem().toString()); //Cours selectionné
             }
             //Type
-            if(!ongletGererCours.getSelectType().getSelectedItem().toString().equals("type")){
-                strings.add(ongletGererCours.getSelectType().getSelectedItem().toString()); //Type selectionné
+            if(!this.getSelectType().getSelectedItem().toString().equals("type")){
+                strings.add(this.getSelectType().getSelectedItem().toString()); //Type selectionné
             }
             //Enseignants
-            if(!ongletGererCours.getListeEnseignants().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
-                strings.add(ongletGererCours.getListeEnseignants().getSelectedValuesList()); //On add
+            if(!this.getListeEnseignants().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
+                strings.add(this.getListeEnseignants().getSelectedValuesList()); //On add
             else
                 strings.add(null);
             //Groupes
-            if(!ongletGererCours.getListeGroupes().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
-                strings.add(ongletGererCours.getListeGroupes().getSelectedValuesList()); //On add
+            if(!this.getListeGroupes().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
+                strings.add(this.getListeGroupes().getSelectedValuesList()); //On add
             else
                 strings.add(null);
             //Salles
-            if(!ongletGererCours.getListeSalles().getSelectedValuesList().isEmpty())//Si liste salles non vide
-                strings.add(ongletGererCours.getListeSalles().getSelectedValuesList());//On add
+            if(!this.getListeSalles().getSelectedValuesList().isEmpty())//Si liste salles non vide
+                strings.add(this.getListeSalles().getSelectedValuesList());//On add
             else
                 strings.add(null);
         }
@@ -243,42 +732,42 @@ public class OngletServicePlanification extends JTabbedPane {
             for(int i = 0 ; i < forBeingSelectedByDefault.size() ; i++)
             {
                 if(i==0)//Date et heure
-                    ongletGererCours.setDate2((String)forBeingSelectedByDefault.get(i));
+                    this.setDate2((String)forBeingSelectedByDefault.get(i));
                 if(i==1) //Etat
                 {
                     if ((Integer)forBeingSelectedByDefault.get(i) == 1)
-                        ongletGererCours.getEtatEC2().setSelected(true);
+                        this.getEtatEC2().setSelected(true);
                     if((Integer)forBeingSelectedByDefault.get(i) == 2)
-                        ongletGererCours.getEtatV2().setSelected(true);
+                        this.getEtatV2().setSelected(true);
                     if((Integer)forBeingSelectedByDefault.get(i) == 3)
-                        ongletGererCours.getEtatA().setSelected(true);
+                        this.getEtatA().setSelected(true);
                 }
                 if(i==2) //Cours
-                    ongletGererCours.getSelectCours2().setSelectedItem((String)forBeingSelectedByDefault.get(i));
+                    this.getSelectCours2().setSelectedItem((String)forBeingSelectedByDefault.get(i));
                 if(i==3) //Type
-                    ongletGererCours.getSelectType2().setSelectedItem((String)forBeingSelectedByDefault.get(i));
+                    this.getSelectType2().setSelectedItem((String)forBeingSelectedByDefault.get(i));
                 
                 if(i==4) //Enseignants
                 {
                     int[] index = new int[((ArrayList<String>)forBeingSelectedByDefault.get(i)).size()];
                     for (int a = 0 ; a < ((ArrayList<String>)forBeingSelectedByDefault.get(i)).size(); a++)
-                        index[a] =ongletGererCours.getListeEnseignants2().getNextMatch(((ArrayList<String>)forBeingSelectedByDefault.get(i)).get(a), 0, Position.Bias.Forward);
-                    ongletGererCours.getListeEnseignants2().setSelectedIndices(index);
+                        index[a] =this.getListeEnseignants2().getNextMatch(((ArrayList<String>)forBeingSelectedByDefault.get(i)).get(a), 0, Position.Bias.Forward);
+                    this.getListeEnseignants2().setSelectedIndices(index);
                 }
                 
                 if(i==5) //Groupes 
                 {
                     int[] index = new int[((ArrayList<String>)forBeingSelectedByDefault.get(i)).size()];
                     for (int a = 0 ; a < ((ArrayList<String>)forBeingSelectedByDefault.get(i)).size(); a++)
-                        index[a] =ongletGererCours.getListeGroupes2().getNextMatch(((ArrayList<String>)forBeingSelectedByDefault.get(i)).get(a), 0, Position.Bias.Forward);
-                    ongletGererCours.getListeGroupes2().setSelectedIndices(index);
+                        index[a] =this.getListeGroupes2().getNextMatch(((ArrayList<String>)forBeingSelectedByDefault.get(i)).get(a), 0, Position.Bias.Forward);
+                    this.getListeGroupes2().setSelectedIndices(index);
                 }
                 if(i==6) //Salles
                 {
                     int[] index = new int[((ArrayList<String>)forBeingSelectedByDefault.get(i)).size()];
                     for (int a = 0 ; a < ((ArrayList<String>)forBeingSelectedByDefault.get(i)).size(); a++)
-                        index[a] =ongletGererCours.getListeSalles2().getNextMatch(((ArrayList<String>)forBeingSelectedByDefault.get(i)).get(a), 0, Position.Bias.Forward);
-                    ongletGererCours.getListeSalles2().setSelectedIndices(index);
+                        index[a] =this.getListeSalles2().getNextMatch(((ArrayList<String>)forBeingSelectedByDefault.get(i)).get(a), 0, Position.Bias.Forward);
+                    this.getListeSalles2().setSelectedIndices(index);
                 }
             }
                 
@@ -294,7 +783,7 @@ public class OngletServicePlanification extends JTabbedPane {
         ArrayList<Object> strings = new ArrayList<>();
         boolean isOk = true;
         //BLINDAGE Decalaration
-        String donnees = ongletGererCours.getDate2(); //Données date issu du Jspinner
+        String donnees = this.getDate2(); //Données date issu du Jspinner
         String date = donnees.substring(9,19);
         String heure = donnees.substring(0,8);
         Calendar cal = Calendar.getInstance();
@@ -335,38 +824,101 @@ public class OngletServicePlanification extends JTabbedPane {
             //Date
             strings.add(date);
             //Etat
-            if(ongletGererCours.getEtatEC2().isSelected())//Etat de la séance
+            if(this.getEtatEC2().isSelected())//Etat de la séance
             {
                 strings.add("1"); //Si radio bouton EC cliqué, on stock "1" 
-            }else if(ongletGererCours.getEtatV2().isSelected()){
+            }else if(this.getEtatV2().isSelected()){
                 strings.add("2"); //Si radio bouton V cliqué, on stock "2"
-            }else if(ongletGererCours.getEtatA().isSelected()){
+            }else if(this.getEtatA().isSelected()){
                 strings.add("3"); //Si radio annulé cliqué, on stock "3"
             }
             //Cours
-            if(!ongletGererCours.getSelectCours2().getSelectedItem().toString().equals("cours")){
-                strings.add(ongletGererCours.getSelectCours2().getSelectedItem().toString()); //Cours selectionné
+            if(!this.getSelectCours2().getSelectedItem().toString().equals("cours")){
+                strings.add(this.getSelectCours2().getSelectedItem().toString()); //Cours selectionné
             }
             //Type
-            if(!ongletGererCours.getSelectType2().getSelectedItem().toString().equals("type")){
-                strings.add(ongletGererCours.getSelectType2().getSelectedItem().toString()); //Type selectionné
+            if(!this.getSelectType2().getSelectedItem().toString().equals("type")){
+                strings.add(this.getSelectType2().getSelectedItem().toString()); //Type selectionné
             }
             //Enseignants
-            if(!ongletGererCours.getListeEnseignants2().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
-                strings.add(ongletGererCours.getListeEnseignants2().getSelectedValuesList()); //On add
+            if(!this.getListeEnseignants2().getSelectedValuesList().isEmpty()) //Si liste enseignants non vide
+                strings.add(this.getListeEnseignants2().getSelectedValuesList()); //On add
             else
                 strings.add(new ArrayList<>());
             //Groupes
-            if(!ongletGererCours.getListeGroupes2().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
-                strings.add(ongletGererCours.getListeGroupes2().getSelectedValuesList()); //On add
+            if(!this.getListeGroupes2().getSelectedValuesList().isEmpty()) //Si liste groupes non vide
+                strings.add(this.getListeGroupes2().getSelectedValuesList()); //On add
             else
                 strings.add(new ArrayList<>());
             //Salles
-            if(!ongletGererCours.getListeSalles2().getSelectedValuesList().isEmpty())//Si liste salles non vide
-                strings.add(ongletGererCours.getListeSalles2().getSelectedValuesList());//On add
+            if(!this.getListeSalles2().getSelectedValuesList().isEmpty())//Si liste salles non vide
+                strings.add(this.getListeSalles2().getSelectedValuesList());//On add
             else
                 strings.add(new ArrayList<>());
         }
         return strings;
+    }    
+
+    /**
+     * rempli les JComboBox de l'onglet Gérer les cours avec les types de cours
+     * @param string
+     */
+    public void remplirComboTypes(ArrayList<String> string) {
+        remplirComboBox(getSelectType(),"type", string);
+        remplirComboBox(getSelectType2(),"type", string);
+    }
+
+    /**
+     * rempli les JComboBox de l'onglet Gérer les cours avec les intitulés des cours
+     * @param string
+     */
+    public void remplirComboCours(ArrayList<String> string) {
+        remplirComboBox(getSelectCours(),"cours", string);
+        remplirComboBox(getSelectCours2(),"cours", string);
+
+    }
+
+    /**
+     * rempli les listes de l'onglet Gérer les cours avec les salles
+     * @param string
+     */
+    public void remplirListSalle(ArrayList<String> string) {
+        remplirListe(getListeSalles(), string);
+        remplirListe(getListeSalles2(), string);
+    }
+
+    /**
+     * rempli les listes de l'onglet Gérer les cours avec les groupes
+     * @param string
+     */
+    public void remplirListGroupes(ArrayList<String> string) {
+        remplirListe(getListeGroupes(), string);
+        remplirListe(getListeGroupes2(), string);
+    }
+
+    /**
+     * rempli les listes de l'onglet Gérer les cours avec les enseignants
+     * @param string
+     */
+    public void remplirListEnseignants(ArrayList<String> string) {
+        remplirListe(getListeEnseignants(), string);
+        remplirListe(getListeEnseignants2(), string);
+    }
+
+    /**
+     * rempli les liste de l'onglet Gérer les cours avec les séances
+     * @param string
+     */
+    public void remplirListSeances(ArrayList<String> string) {
+        remplirListe(getListeSeances(), string);
+        remplirListe(getListeSeances2(), string);
+    }
+    /**
+     * Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours
+     * @return 
+     */
+    public JTextField getIntitule()
+    {
+        return intitule;
     }
 }

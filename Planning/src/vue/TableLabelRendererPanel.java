@@ -22,4 +22,12 @@ public class TableLabelRendererPanel extends JScrollPane {
         renderer = new LabelRenderer();
         table.setDefaultRenderer(Object.class, renderer);
     }
+    
+    /**
+     *
+     * @param alea
+     */
+    public void setAlea(int alea) {
+        this.renderer.setAlea(alea);
+    }
 }

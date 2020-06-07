@@ -35,7 +35,7 @@ public class Fenetre extends JFrame {
     private Controle controle; //Lien avec le controle -> Controle recup BDD via modele et envoie instructions ici
 
     /**
-     *
+     * constructeur
      * @param controle
      */
     public Fenetre(Controle controle) {
@@ -52,6 +52,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne l'onglet Emploi du temps
      * @return l'onglet Emploi du temps
      */
     public EmploiDuTemps getEdt() { 
@@ -59,6 +60,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
      * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
      */
     public JTable getEdtCours() {
@@ -66,6 +68,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
      * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
      */
     public JTable getListeCours() {
@@ -73,6 +76,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
      * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Cours
      */
     public JTable getEdtSalles() {
@@ -80,6 +84,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne le tableau contenant l'emploi du temps sur une semaine dans l'onglet Salles
      * @return le tableau contenant l'emploi du temps sur une semaine dans l'onglet Salles
      */
     public JTable getListeSalles() {
@@ -87,6 +92,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne le tableau contenant la liste de seances sur une annee scolaire
      * @return le tableau contenant la liste de seances sur une annee scolaire
      */
     public JTable getRecapCours() {
@@ -94,6 +100,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne le tableau contenant la liste de seances sur une annee scolaire
      * @return le tableau contenant la liste de seances sur une annee scolaire
      */
     public JTable getLibres() {
@@ -101,6 +108,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * retourne le tableau contenant l'emploi du temps sur une journée dans l'onglet Home
      * @return le tableau contenant l'emploi du temps sur une journée dans l'onglet Home
      */
     public JTable getEdtHome() {
@@ -427,8 +435,8 @@ public class Fenetre extends JFrame {
     /**
      * connexion
      * si l'utilisateur a saisi son email et son mdp et que cela correspond à la BDD, on passe à la suite
-     * @param email
-     * @param password
+     * @param email email de l'utilisateur
+     * @param password mot de passe de l'utilisateur
      */
     public void connect(String email, String password) {
         if(controle.demandeConnexion(email, password)) { 
@@ -454,9 +462,9 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * rempli la JComboBox avec les utilisateurs de la BDD
-     * @param email
-     * @param password
+     * rempli les JComboBox de rechercher utilisateur avec les utilisateurs de la BDD et set les JComboBox avec l'utilisateur courant
+     * @param email email de l'utilisateur
+     * @param password mot de passe de l'utilisateur
      */
     public void remplirComboRecherche(String email, String password) {
         ArrayList<String> ttLeMonde = controle.allUsersToStrings();
@@ -562,6 +570,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
+     * Calcul l'année scolaire en cours
      * @return l'année scolaire en cours (retourne une string)
      */
     public String calculAnneeScolaire() { //Pour affichage dans titre de la frame
@@ -605,7 +614,7 @@ public class Fenetre extends JFrame {
      * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
      * par defaut utilisateur courant
      * un utilisateur ne peut pas le modifier sauf s'il est référent
-     * @param semaine
+     * @param semaine la semaine en question
      */
     public void majEdt(int semaine) {
         String user = edt.getRechercheCours().getSelectedItem().toString();
@@ -625,10 +634,8 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
-     * par defaut utilisateur courant
-     * un utilisateur ne peut pas le modifier sauf s'il est référent
-     * @param semaine
+     * MAJ Edt de la promotion contenue dans la JComboBox promos
+     * @param semaine la semaine en question
      */
     public void majEdtPromo(int semaine) {
         String promo = edt.getRecherchePromo().getSelectedItem().toString();
@@ -637,10 +644,8 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
-     * par defaut utilisateur courant
-     * un utilisateur ne peut pas le modifier sauf s'il est référent
-     * @param semaine
+     * MAJ Edt de la salle contenue dans la JComboBox salles
+     * @param semaine la semaine en question
      */
     public void majSalles(int semaine) {
         String infos = edt.getRechercheSalles().getSelectedItem().toString();
@@ -649,10 +654,10 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
+     * MAJ Edt en liste de la personne contenue dans la JComboBox utilisateurs
      * par defaut utilisateur courant
      * un utilisateur ne peut pas le modifier sauf s'il est référent
-     * @param semaine
+     * @param semaine la semaine en question
      */
     public void majListe(int semaine) {
         String user = edt.getRechercheCours().getSelectedItem().toString();
@@ -672,10 +677,8 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * MAJ Edt de la personne contenue dans la JComboBox utilisateurs
-     * par defaut utilisateur courant
-     * un utilisateur ne peut pas le modifier sauf s'il est référent
-     * @param semaine
+     * MAJ Edt en liste de la salle contenue dans la JComboBox salles
+     * @param semaine la semaine en question
      */
     public void majListeSalles(int semaine) {
         String salles = edt.getRechercheSalles().getSelectedItem().toString();
@@ -686,7 +689,7 @@ public class Fenetre extends JFrame {
     
     /**
      * MAJ Edt quand un referent cherche un groupe
-     * @param semaine
+     * @param semaine le semaine en question
      */
     public void majEdtGroupe(int semaine) {
         String recherche = edt.getGroupesCours().getSelectedItem().toString();
@@ -714,7 +717,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * recup semaine select puis maj edt Cours
+     * Méthode qui récupère la semaine selectionnée puis met à jour l'edt d'un utilisateur
      */
     public void majEdtCoursParSemaine() {
         //On récupère la semaine sélectionnée
@@ -732,7 +735,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * recup semaine select puis maj edt Cours
+     * Méthode qui récupère la semaine selectionnée puis met à jour l'edt d'une promotion sous forme de liste
      */
     public void majListePromoParSemaine() {
         //On récupère la semaine sélectionnée
@@ -750,7 +753,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * recup semaine select puis maj edt Cours
+     * Méthode qui récupère la semaine selectionnée puis met à jour l'edt d'un utilisateur sous forme de liste
      */
     public void majListeCoursParSemaine() {
         //On récupère la semaine sélectionnée
@@ -766,7 +769,9 @@ public class Fenetre extends JFrame {
             majListe(Integer.parseInt(semaine));
         }
     }
-    
+    /**
+     * Méthode qui récupère la semaine selectionnée puis met à jour l'edt d'une salle sous forme de liste
+     */
     public void majListeSallesParSemaine() {
         //On récupère la semaine sélectionnée
         String semaine = edt.getSemaineSalles().getSelectedItem().toString();
@@ -783,7 +788,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * recup semaine select puis maj edt Salles
+     * Méthode qui récupère la semaine selectionnée puis met à jour l'edt d'une salle
      */
     public void majEdtSallesParSemaine() {
         //On récupère la semaine sélectionnée
@@ -799,7 +804,7 @@ public class Fenetre extends JFrame {
     }
     
     /**
-     * recup semaine select puis maj edt pour un groupe (fonction référent,admin)
+     * Méthode qui récupère la semaine selectionnée puis met à jour l'edt d'un groupe
      */
     public void majEdtGroupeCoursParSemaine() {
         //On récupère la semaine sélectionnée
@@ -815,7 +820,7 @@ public class Fenetre extends JFrame {
         }
     }
     /**
-     * recup semaine select puis maj liste edt pour un groupe (fonction référent, admin)
+     * Méthode qui récupère la semaine selectionnée puis met à jour l'edt d'un groupe sous forme d'une liste
      */
     public void majListeGroupeCoursParSemaine() {
         //On récupère la semaine sélectionnée
@@ -833,15 +838,15 @@ public class Fenetre extends JFrame {
     
     /**
      * ajouter les graphes de reporting
-     * @param c
-     * @param t
+     * @param c les chartPanel de la première ligne
+     * @param t les chartPanel de la deuxième ligne
      */
     public void ajouterGraphes(ArrayList<ChartPanel> c, ArrayList<ChartPanel> t) {
         edt.ajouterGraphes(c, t);
     }
     /**
      * Retourne les infos unique de la personne qui est connecté
-     * @return 
+     * @return Retourne les infos unique de la personne qui est connecté
      */
     public ArrayList<String> recupMesInfos()
     {

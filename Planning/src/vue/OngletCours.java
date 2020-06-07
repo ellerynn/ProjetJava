@@ -180,7 +180,7 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
-     *
+     * retourne le conteneur de l'edt en grille
      * @return le conteneur de l'edt en grille
      */
     public TableLabelRendererPanel getGrille() {
@@ -188,7 +188,7 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
-     *
+     * retourne le conteneur de l'edt en liste
      * @return le conteneur de l'edt en liste
      */
     public TableLabelRendererPanel getListe() {
@@ -196,7 +196,7 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
-     *
+     * retourne le JLabel contenant la periode
      * @return le JLabel contenant la periode
      */
     public JLabel getPeriode() {
@@ -204,7 +204,7 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
-     *
+     * retourne le type de vue souhaité : en grille ou en liste
      * @return le type de vue souhaité : en grille ou en liste
      */
     public JComboBox getVue() {
@@ -212,16 +212,16 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
-     *
+     * retourne la JComboBox promo
      * @return la JComboBox promo
      */
     public JComboBox getRecherchePromo() {
         return this.promos;
     }
     
-    /**
+    /** 
      * retourne la barre de recherche
-     * @return
+     * @return la barre de recherche
      */
     public JTextField getRechercheBarre() {
         return this.rechercheBarre;
@@ -229,7 +229,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne le bouton rechercher
-     * @return
+     * @return le bouton rechercher
      */
     public JButton getRechercheBouton() {
         return this.rechercheBouton;
@@ -237,7 +237,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne la JComboBox de recherche (utilisateurs de la BDD)
-     * @return
+     * @return la JComboBox de recherche (utilisateurs de la BDD)
      */
     public JComboBox getRecherche() {
         return this.selectRecherche;
@@ -245,7 +245,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne la JComboBo de recherche (groupes)
-     * @return
+     * @return la JComboBo de recherche (groupes)
      */
     public JComboBox getGroupes() {
         return this.groupes;
@@ -253,7 +253,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne la JComboBox des semaines 
-     * @return
+     * @return la JComboBox des semaines
      */
     public JComboBox getSemaine() {
         return this.semaine;
@@ -261,7 +261,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne le JTable contenant l'edt (cours) sur une semaine
-     * @return
+     * @return le JTable contenant l'edt (cours) sur une semaine
      */
     public JTable getEdt() {
         return this.tabEdt;
@@ -269,7 +269,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne le JTable contenant l'edt (cours) sur une semaine
-     * @return
+     * @return le JTable contenant l'edt (cours) sur une semaine
      */
     public JTable getJTListe() {
         return this.listeEdt;
@@ -277,7 +277,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne le JTable contenant le récapitulatif des séances de l'année scolaire en cours
-     * @return
+     * @return le JTable contenant le récapitulatif des séances de l'année scolaire en cours
      */
     public JTable getRecap() {
         return this.tabRecap;
@@ -285,7 +285,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne la barre de recherche
-     * @return
+     * @return la barre de recherche
      */
     public JTextField getRechercheBarre2() {
         return this.rechercheBarre2;
@@ -293,7 +293,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne le bouton rechercher
-     * @return
+     * @return le bouton rechercher
      */
     public JButton getRechercheBouton2() {
         return this.rechercheBouton2;
@@ -301,15 +301,15 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * retourne la JComboBox de recherche (utilisateurs de la BDD)
-     * @return
+     * @return la JComboBox de recherche (utilisateurs de la BDD)
      */
     public JComboBox getRecherche2() {
         return this.selectRecherche2;
     }
 
     /**
-     * remplo la JComboBox des semaines
-     * @param box
+     * rempli la JComboBox des semaines
+     * @param box la JComboBox en question
      */
     public void remplirComboBoxSemaine(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{"Semaine"})); 
@@ -320,9 +320,9 @@ public class OngletCours extends JTabbedPane {
        
     /**
      * cf. méthode précédente, intitulé en plus
-     * @param box
-     * @param intitule
-     * @param string
+     * @param box la JComboBox en question
+     * @param intitule l'intitulé de la JComboBox
+     * @param string les données à mettre dans la JComboBox
      */
     public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
@@ -332,8 +332,8 @@ public class OngletCours extends JTabbedPane {
     }
     
     /**
-     *
-     * @param semaine
+     * mise à jour de l'edt sous forme de liste en fonction de la semaine
+     * @param semaine la semaine en question
      */
     public void setListeEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
@@ -416,7 +416,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * mise à jour de l'edt en fonction de la semaine (entêtes et horaires)
-     * @param semaine
+     * @param semaine la semaine en question
      */
     public void setEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
@@ -512,9 +512,9 @@ public class OngletCours extends JTabbedPane {
     }    
     
     /**
-     * retourne true si l'annee est bissextile
-     * @param annee
-     * @return
+     * Méthode qui permet de savoir si une année est bissextile
+     * @param annee l'année en question
+     * @return retourne true si une année est bissextile
      */
     public Boolean anneeBissextile(int annee) {
         if(annee%4 == 0) { 
@@ -532,7 +532,7 @@ public class OngletCours extends JTabbedPane {
     
     /**
      * calcul de l'année scolaire en cours (retourne seulement le premier ex 2019/2020 = 2019)
-     * @return
+     * @return retourne l'année scolaire en cours 
      */
     public int calculAnneeScolaire() {
         Calendar cal = Calendar.getInstance();

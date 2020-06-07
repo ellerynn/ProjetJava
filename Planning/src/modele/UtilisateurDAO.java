@@ -16,8 +16,8 @@ import modele.Utilisateur;
 public class UtilisateurDAO extends DAO<Utilisateur> {
     /**
      * create
-     * @param object
-     * @return
+     * @param object Utilisateur à créer dans la BDD
+     * @return Retourne l'utilisateur créé dans la BDD
      */
     @Override
     public Utilisateur create(Utilisateur object) {
@@ -49,8 +49,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Utilisateur à supprimer de la BDD
+     * @return indique si supprimé ou pas
      */
     @Override
     public boolean delete(Utilisateur object) {
@@ -59,8 +59,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
 
     /**
      * update
-     * @param object
-     * @return
+     * @param object Utilisateur à mettre à jours dans la BDD
+     * @return Retourne l'utilisateur qui a été mise à jours
      */
     @Override
     public Utilisateur update(Utilisateur object) {
@@ -70,8 +70,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     /**
      * find
      * trouver utilisateur via id
-     * @param id
-     * @return
+     * @param id Id de l'utilisateur
+     * @return Retourne l'utilisateur trouvé
      */
     @Override
     public Utilisateur find(int id) {
@@ -82,6 +82,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
       
     /**
+     * Trouve l'utilisateur à partir de son mail et mot de passe
      * @param email
      * @param psw
      * @return utilisateur via email et password
@@ -94,6 +95,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
     
     /**
+     * Trouve l'utilisateur à partir de prénom et nom
      * @param prenom
      * @param nom
      * @return utilisateur via nom et prenom
@@ -104,7 +106,11 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         requeteFind(maRequete, utilisateur);
         return utilisateur;  
     }
-    
+    /**
+     * Trouve l'utilisateur à partir d'une recherche
+     * @param recherche donnée saisie à partir d'une barre de recherche
+     * @return Retourne l'utilisateur trouvé
+     */
     public Utilisateur findForSearch(String recherche) {
         Utilisateur utilisateur = new Utilisateur();      
         String maRequete = "SELECT * FROM utilisateur WHERE Prenom LIKE '" + recherche + "' OR Nom LIKE '" + recherche +"'";
@@ -114,7 +120,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     
     /**
      * trouver tous les utilisateurs
-     * @return
+     * @return Retourne tout les utilisateurs
      */
     public ArrayList<Utilisateur> find() {
         ArrayList<Utilisateur> utilisateurs = new ArrayList<>();
@@ -152,9 +158,9 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
     
     /**
-     * eviter duplicatat
-     * @param requete
-     * @param utilisateur
+     * lance une requête SQ et evite des duplicatats
+     * @param requete la requete sql
+     * @param utilisateur l'utilisateur qui récupère les données trouvés
      */
     public void requeteFind(String requete, Utilisateur utilisateur) {
         try {
@@ -184,8 +190,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     }
     
     /**
-     * ????
-     * @return
+     * Récupère le nombre maximum d'utilisateur dans la BDD
+     * @return Retourne le nombre maximum
      */
     public int nombreMax(){
         int nb = 0;

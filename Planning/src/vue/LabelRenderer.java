@@ -104,8 +104,8 @@ public class LabelRenderer implements TableCellRenderer {
     }
     
     /**
-     *
-     * @param alea
+     * set Alea
+     * @param alea l'alea souhaité
      */
     public void setAlea(int alea) {
         this.alea = alea;

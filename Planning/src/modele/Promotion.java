@@ -20,7 +20,7 @@ public class Promotion {
 
     /**
      * constructeur
-     * @param nom
+     * @param nom Nom de la promotion
      */
     public Promotion(String nom) {
         this.nom = nom;
@@ -28,7 +28,7 @@ public class Promotion {
     
     /**
      * retourne id promo
-     * @return
+     * @return retourne id promo
      */
     public int getId() {
         return id;
@@ -36,7 +36,7 @@ public class Promotion {
     
     /**
      * retourne nom promo
-     * @return
+     * @return retourne nom promo
      */
     public String getNom() {
         return nom;
@@ -44,7 +44,7 @@ public class Promotion {
     
     /**
      * set id promo
-     * @param id
+     * @param id id promo
      */
     public void setId(int id) {
         this.id = id;
@@ -52,7 +52,7 @@ public class Promotion {
     
     /**
      * set nom promo
-     * @param nom
+     * @param nom nom promo
      */
     public void setNom(String nom) {
         this.nom = nom;

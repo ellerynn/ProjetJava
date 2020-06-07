@@ -22,8 +22,8 @@ public class Groupe {
     
     /**
      * constructeur
-     * @param nom
-     * @param promotion
+     * @param nom Nom du groupe
+     * @param promotion Promotion du groupe
      */
     public Groupe(String nom, Promotion promotion) {
         //Un administrateur peut créer un nouveau groupe
@@ -33,7 +33,7 @@ public class Groupe {
     
     /**
      * retourne id groupe
-     * @return
+     * @return retourne id groupe
      */
     public int getId() {
         return id;
@@ -41,7 +41,7 @@ public class Groupe {
     
     /**
      * retourne nom groupe
-     * @return
+     * @return retourne nom groupe
      */
     public String getNom() {
         return nom;
@@ -49,7 +49,7 @@ public class Groupe {
     
     /**
      * retourne promo groupe
-     * @return
+     * @return retourne promo groupe
      */
     public Promotion getPromotion() {
         return promotion;
@@ -57,7 +57,7 @@ public class Groupe {
     
     /**
      * set id groupe
-     * @param id
+     * @param id id groupe
      */
     public void setId(int id) {
         this.id = id;
@@ -65,7 +65,7 @@ public class Groupe {
     
     /**
      * set nom groupe
-     * @param nom
+     * @param nom nom groupe
      */
     public void setNom(String nom) {
         this.nom = nom;
@@ -73,7 +73,7 @@ public class Groupe {
     
     /**
      * set promo groupe
-     * @param promotion
+     * @param promotion promo groupe
      */
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;

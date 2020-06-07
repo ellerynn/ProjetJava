@@ -17,8 +17,8 @@ import modele.Promotion;
 public class GroupeDAO extends DAO<Groupe> {
     /**
      * create
-     * @param object
-     * @return
+     * @param object Groupe à créer
+     * @return Retourne le Groupe créé
      */
     @Override
     public Groupe create(Groupe object) {
@@ -53,8 +53,8 @@ public class GroupeDAO extends DAO<Groupe> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Groupe à supprimer de la BDD
+     * @return Retourne un boolean si groupe supprimer ou pas 
      */
     @Override
     public boolean delete(Groupe object) {
@@ -63,8 +63,8 @@ public class GroupeDAO extends DAO<Groupe> {
     
     /**
      * update
-     * @param object
-     * @return
+     * @param object Groupe à mettre à jours de la BDD
+     * @return Retourne le Groupe qui a été mise à jours
      */
     @Override
     public Groupe update(Groupe object) {
@@ -96,8 +96,8 @@ public class GroupeDAO extends DAO<Groupe> {
     /**
      * find
      * trouver groupe via id
-     * @param id
-     * @return
+     * @param id Id du groupe
+     * @return Retourne le groupe trouvé
      */
     @Override
     public Groupe find(int id) {
@@ -133,8 +133,8 @@ public class GroupeDAO extends DAO<Groupe> {
     
     /**
      * pour éviter le duplicatat de code
-     * @param requete
-     * @param groupe
+     * @param requete Requete sql
+     * @param groupe Le groupe en question récupérer les données trouvés
      */
     public void requeteFind(String requete, Groupe groupe) {
         try {
@@ -166,9 +166,9 @@ public class GroupeDAO extends DAO<Groupe> {
     
     /**
      * trouver groupe via nom du groupe et id promo
-     * @param groupe
-     * @param promo
-     * @return
+     * @param groupe Données du groupe en String
+     * @param promo Id de la promotion
+     * @return Retourne le groupe trouvé
      */
     public Groupe findByNameAndPromo(String groupe, int promo) {
         Groupe g = new Groupe();      
@@ -180,7 +180,7 @@ public class GroupeDAO extends DAO<Groupe> {
     
     /**
      * trouver tous les groupes 
-     * @return
+     * @return Retourne tout les groupes trouvés
      */
     public ArrayList<Groupe> find() {
         ArrayList<Groupe> groupes = new ArrayList<>();
@@ -223,8 +223,8 @@ public class GroupeDAO extends DAO<Groupe> {
     /**
      * Prend un String en paramètre et une classe Groupe, 
      * il permet d'obtenir un groupe en fonction du nom du groupe et de sa promotion
-     * @param infos
-     * @return 
+     * @param infos Données du groupe en String : td promo
+     * @return Retourne le groupe trouvé
      */
     public Groupe findByName(String infos){
         int espace = infos.indexOf(" ");

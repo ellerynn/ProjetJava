@@ -14,7 +14,7 @@ public class TableTreeRendererPanel extends JScrollPane {
     
     /**
      * constructeur
-     * @param table
+     * @param table la JTable en quesion
      */
     public TableTreeRendererPanel(JTable table)
     {

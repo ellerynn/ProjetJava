@@ -17,8 +17,8 @@ import modele.Site;
 public class SalleDAO extends DAO<Salle>{
     /**
      * create
-     * @param object
-     * @return
+     * @param object Salle à créer dans la BDD
+     * @return Retourne la salle créée
      */
     @Override
     public Salle create(Salle object) {
@@ -54,8 +54,8 @@ public class SalleDAO extends DAO<Salle>{
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Salle à supprimer de la BDD
+     * @return Retourne si salle créer ou pas
      */
     @Override
     public boolean delete(Salle object) {
@@ -64,8 +64,8 @@ public class SalleDAO extends DAO<Salle>{
 
     /**
      * update
-     * @param object
-     * @return
+     * @param object Salle à mettre à jours dans la BDD
+     * @return Salle qui a été mise à jours
      */
     @Override
     public Salle update(Salle object) {
@@ -98,8 +98,8 @@ public class SalleDAO extends DAO<Salle>{
     /**
      * find
      * trouver salle via id
-     * @param id
-     * @return
+     * @param id Id de la salle
+     * @return Retourne la salle trouvée
      */
     @Override
     public Salle find(int id) {
@@ -136,7 +136,7 @@ public class SalleDAO extends DAO<Salle>{
     /**
      * trouver toutes les salles
      * pour admin
-     * @return
+     * @return Retourne toute les salles trouvés de la BDD
      */
     public ArrayList<Salle> findAllSalles()
     {
@@ -159,8 +159,8 @@ public class SalleDAO extends DAO<Salle>{
      * Prend un String en paramètre et retourne une classe Salle 
      * il permet d'obtenir une salle en fonction du nom de la salle et du site, 
      * si rien n'est trouvé, il retourne 0
-     * @param infos
-     * @return 
+     * @param infos Données en String d'une salle (nom et nom du site)
+     * @return Retourne la salle trouvée
      */
     public Salle findByName(String infos) {
         int espace = infos.indexOf(" ");
@@ -198,11 +198,11 @@ public class SalleDAO extends DAO<Salle>{
     }
     
     /**
-     * @param id_salle
-     * @param debut
-     * @param fin
-     * @param date
-     * @return false si une salle a deja une seance prevue
+     * Méthode qui permet de savoir si une salle est libre ou pas dans un horaire
+     * @param id_salle id de la salle
+     * @param horaire horaire à vérifier
+     * @param date Date à vérifier
+     * @return boolean indiquant si cette salle libre ou pas
      */
     public Boolean estLibre(int id_salle, String horaire, String date) {
         try {

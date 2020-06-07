@@ -30,7 +30,7 @@ public class Salle {
 
     /**
      * ajouter seance
-     * @param s
+     * @param s seance à ajouter parmis les séances de la salle
      */
     public void addSeances(Seance s){
         seances.add(s);
@@ -38,9 +38,9 @@ public class Salle {
     
     /**
      * cosntructeur
-     * @param nom
-     * @param capacite
-     * @param site
+     * @param nom Nom de la salle
+     * @param capacite capacité de la salle
+     * @param site site de la salle
      */
     public Salle(String nom, int capacite, Site site) {
         //Un administrateur peut créer une nouvelle salle
@@ -52,7 +52,7 @@ public class Salle {
     
     /**
      * retourne id salle
-     * @return
+     * @return retourne id salle
      */
     public int getId() {
         return id;
@@ -60,7 +60,7 @@ public class Salle {
     
     /**
      * retourne nom salle
-     * @return
+     * @return retourne nom salle
      */
     public String getNom() {
         return nom;
@@ -68,7 +68,7 @@ public class Salle {
     
     /**
      * retourne capacite salle
-     * @return
+     * @return retourne capacite salle
      */
     public int getCapacite() {
         return capacite;
@@ -76,7 +76,7 @@ public class Salle {
     
     /**
      * retourne site salle
-     * @return
+     * @return retourne site salle
      */
     public Site getSite() {
         return site;
@@ -84,7 +84,7 @@ public class Salle {
 
     /** retourne seances salle
      *
-     * @return
+     * @return retourne seances salle
      */
     public ArrayList<Seance> getSeances() {
         return seances;
@@ -92,7 +92,7 @@ public class Salle {
     
     /**
      * set id salle
-     * @param id
+     * @param id id salle
      */
     public void setId(int id) {
         this.id = id;
@@ -100,7 +100,7 @@ public class Salle {
     
     /**
      * set nom salle
-     * @param nom
+     * @param nom nom salle
      */
     public void setNom(String nom) {
         this.nom = nom;
@@ -108,7 +108,7 @@ public class Salle {
     
     /**
      * set capacite salle
-     * @param capacite
+     * @param capacite capacite salle
      */
     public void setCapacite(int capacite) {
         this.capacite = capacite;
@@ -116,7 +116,7 @@ public class Salle {
     
     /**
      * set site salle
-     * @param site
+     * @param site site de la salle
      */
     public void setSite(Site site) {
         this.site = site;
@@ -124,7 +124,7 @@ public class Salle {
     
     /**
      * ajouter seance
-     * @param seance
+     * @param seance seance à ajouter parmis les séances de la salle
      */
     public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à une salle
         this.seances.add(seance);

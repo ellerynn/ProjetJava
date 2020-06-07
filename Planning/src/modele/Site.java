@@ -20,7 +20,7 @@ public class Site {
     
     /**
      * constructeur
-     * @param nom
+     * @param nom Nom du site
      */
     public Site(String nom) {
         this.nom = nom;
@@ -28,7 +28,7 @@ public class Site {
     
     /**
      * retourne id site
-     * @return
+     * @return retourne id site
      */
     public int getId() {
         return id;
@@ -36,7 +36,7 @@ public class Site {
     
     /**
      * retourne nom site
-     * @return
+     * @return retourne nom site
      */
     public String getNom() {
         return nom;
@@ -44,7 +44,7 @@ public class Site {
     
     /**
      * set id site
-     * @param id
+     * @param id id site
      */
     public void setId(int id) {
         this.id = id;
@@ -52,7 +52,7 @@ public class Site {
     
     /**
      * set nom site
-     * @param nom
+     * @param nom nom site
      */
     public void setNom(String nom) {
         this.nom = nom;

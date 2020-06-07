@@ -65,7 +65,7 @@ public class FormConnexion extends JPanel {
     //Getters
     /**
      * retourne le bouton de connexion
-     * @return
+     * @return retourne le bouton de connexion
      */
     public JButton getBouton() { //Pour passer au site lorsqu'on appuie sur le bouton connexion
         return bouton;
@@ -73,7 +73,7 @@ public class FormConnexion extends JPanel {
     
     /**
      * retourne le texte saisi dans le champ email
-     * @return
+     * @return retourne le texte saisi dans le champ email
      */
     public String getEmail() {
         return email.getText();
@@ -81,7 +81,7 @@ public class FormConnexion extends JPanel {
     
     /**
      * retourne le texte saisi dans le champ mot de passe
-     * @return
+     * @return retourne le texte saisi dans le champ mot de passe
      */
     public String getPassword() {
         return String.valueOf(password.getPassword()); //On renvoie une String et non pas un char[]
@@ -91,8 +91,8 @@ public class FormConnexion extends JPanel {
     /**
      * "triche" connexion rapide dans main pour tests
      * fonction à supprimer ?
-     * @param email
-     * @param password
+     * @param email email de l'utilsateur
+     * @param password mot de passe de l'utilsateur
      */
     public void setEmailPassWord(String email, String password) {
         this.email.setText(email);

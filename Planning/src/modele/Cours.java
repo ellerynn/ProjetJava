@@ -21,7 +21,7 @@ public class Cours {
 
     /**
      * constructeur
-     * @param nom
+     * @param nom Nom du cours
      */
     public Cours(String nom) { //Un administrateur peut créer un nouveau cours, id s'implémente seul dans BDD
         this.nom = nom;
@@ -29,7 +29,7 @@ public class Cours {
     
     /**
      * retourne id du cours
-     * @return
+     * @return Retourne l'id du cours
      */
     public int getId() {
         return this.id;
@@ -37,7 +37,7 @@ public class Cours {
     
     /**
      * retourne nom du cours
-     * @return
+     * @return retourne nom du cours
      */
     public String getNom() {
         return this.nom;
@@ -45,7 +45,7 @@ public class Cours {
         
     /**
      * set id du cours
-     * @param id
+     * @param id Id du cours
      */
     public void setId(int id) {
         this.id = id;
@@ -53,7 +53,7 @@ public class Cours {
     
     /**
      * set nom du cours
-     * @param nom
+     * @param nom Nom du cours
      */
     public void setNom(String nom) {
         this.nom = nom;

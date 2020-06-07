@@ -3,13 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/OngletSalles.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/TreeRenderer.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/Fenetre.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/EmploiDuTemps.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/vue/OngletCours.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/controleur/Controle.java</file>
-            <file>file:/C:/Users/Camille/Desktop/ProjetJava/Planning/src/modele/SalleDAO.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/SiteDAO.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/PromotionDAO.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/TypeCoursDAO.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/Site.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/EtudiantDAO.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/GroupeDAO.java</file>
+            <file>file:/C:/Users/Emilie/Desktop/ProjetJava/Planning/src/modele/UtilisateurDAO.java</file>
         </group>
     </open-files>
 </project-private>

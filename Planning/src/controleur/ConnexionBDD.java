@@ -17,7 +17,7 @@ public class ConnexionBDD {
     
     /**
      * connection à la BDD
-     * @return
+     * @return retourne la connection
      */
     public static Connection getInstance() {
         if(connect == null){

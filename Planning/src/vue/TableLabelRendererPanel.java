@@ -14,7 +14,7 @@ public class TableLabelRendererPanel extends JScrollPane {
     
     /**
      * constructeur
-     * @param table
+     * @param table la JTable en question
      */
     public TableLabelRendererPanel(JTable table)
     {
@@ -24,8 +24,8 @@ public class TableLabelRendererPanel extends JScrollPane {
     }
     
     /**
-     *
-     * @param alea
+     * set Alea pour la couleur des component
+     * @param alea l'alea souhaité
      */
     public void setAlea(int alea) {
         this.renderer.setAlea(alea);

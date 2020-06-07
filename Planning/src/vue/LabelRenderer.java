@@ -49,14 +49,14 @@ public class LabelRenderer implements TableCellRenderer {
     }
 
     /**
-     *
-     * @param table
-     * @param value
-     * @param isSelected
-     * @param hasFocus
-     * @param row
-     * @param column
-     * @return
+     * https://docs.oracle.com/javase/7/docs/api/javax/swing/table/TableCellRenderer.html
+     * @param table the JTable that is asking the renderer to draw; can be null
+     * @param value the value of the cell to be rendered. It is up to the specific renderer to interpret and draw the value. For example, if value is the string "true", it could be rendered as a string or it could be rendered as a check box that is checked. null is a valid value
+     * @param isSelected true if the cell is to be rendered with the selection highlighted; otherwise false
+     * @param hasFocus if true, render cell appropriately. For example, put a special border on the cell, if the cell can be edited, render in the color used to indicate editing
+     * @param row the row index of the cell being drawn. When drawing the header, the value of row is -1
+     * @param column the column index of the cell being drawn
+     * @return the component used for drawing the cell.
      */
     @Override
     public Component getTableCellRendererComponent(
@@ -104,8 +104,8 @@ public class LabelRenderer implements TableCellRenderer {
     }
     
     /**
-     *
-     * @param alea
+     * set Alea pour la couleur des component
+     * @param alea l'alea souhaité
      */
     public void setAlea(int alea) {
         this.alea = alea;

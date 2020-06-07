@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class PromotionDAO extends DAO<Promotion> {
     /**
      * create
-     * @param object
-     * @return
+     * @param object Promotion à créer dans la BDD
+     * @return Retourne la promotion créé
      */
     @Override
     public Promotion create(Promotion object) {
@@ -45,8 +45,8 @@ public class PromotionDAO extends DAO<Promotion> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Promotion à supprimer de la BDD
+     * @return Retourne un boolean indiquant si supprimer ou pas de la BDD
      */
     @Override
     public boolean delete(Promotion object) {
@@ -55,8 +55,8 @@ public class PromotionDAO extends DAO<Promotion> {
     
     /**
      * upadte
-     * @param object
-     * @return
+     * @param object Promotion à mettre à jours dans la BDD
+     * @return Retourne la promotion qui a été mise à jours
      */
     @Override
     public Promotion update(Promotion object) {
@@ -81,8 +81,8 @@ public class PromotionDAO extends DAO<Promotion> {
     /**
      * find
      * trouver promo via id
-     * @param id
-     * @return
+     * @param id Id de la promotion à trouver
+     * @return Retourne la promotion trouvé
      */
     @Override
     public Promotion find(int id) {
@@ -110,8 +110,8 @@ public class PromotionDAO extends DAO<Promotion> {
     
     /**
      * trouver promo via nom
-     * @param promo
-     * @return
+     * @param promo Infos en String de la promotion à trouver
+     * @return Retourne la promotion trouvée
      */
     public Promotion findByName(String promo) {
         Promotion promotion = new Promotion();      
@@ -139,7 +139,7 @@ public class PromotionDAO extends DAO<Promotion> {
     /**
      * trouver toutes les promo
      * pour l'admin
-     * @return
+     * @return Retourne tout les promotions de la BDD
      */
     public ArrayList<Promotion> findAllPromo()
     {

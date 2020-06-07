@@ -17,8 +17,8 @@ public class SiteDAO extends DAO<Site> {
 
     /**
      * create
-     * @param object
-     * @return
+     * @param object Site à créer dans la BDD
+     * @return Retourne le site créé
      */
     @Override
     public Site create(Site object) {
@@ -46,8 +46,8 @@ public class SiteDAO extends DAO<Site> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Site à supprimer de la BDD
+     * @return Retourne si supprimé ou pas
      */
     @Override
     public boolean delete(Site object) {
@@ -56,8 +56,8 @@ public class SiteDAO extends DAO<Site> {
 
     /**
      * update
-     * @param object
-     * @return
+     * @param object Site à mettre à jours dans la BDD
+     * @return Retourne le site qui a été mise à jours
      */
     @Override
     public Site update(Site object) {
@@ -82,8 +82,8 @@ public class SiteDAO extends DAO<Site> {
     /**
      * find
      * trouver un site via id
-     * @param id
-     * @return
+     * @param id Id du site
+     * @return Retourne le site trouvé
      */
     @Override
     public Site find(int id) {
@@ -111,7 +111,7 @@ public class SiteDAO extends DAO<Site> {
     }
     
     /**
-     * pour l'admin
+     * récupère tout les sites de la BDD
      * @return un ArrayList de Sites
      */
     public ArrayList<Site> findAllSites() //NE SERA PEUT ETRE JAMAIS USE (car salles possèdent dj l'info du site)
@@ -130,7 +130,10 @@ public class SiteDAO extends DAO<Site> {
         }
         return sites;
     }
-    
+    /**
+     * Méthode qui récupère tout les noms de sites
+     * @return Retourne tout les noms de sites 
+     */
     public ArrayList<String> allSitesToString() {
         ArrayList<String> sites = new ArrayList<>();
         try {

@@ -163,8 +163,8 @@ public class OngletSalles extends JTabbedPane {
     }
     
     /**
-     *
-     * @return
+     * retourne le JComboBox semaine
+     * @return retourne le JComboBox semaine
      */
     public JComboBox getSemaine() {
         return this.semaine;
@@ -172,7 +172,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne la barre de recherche
-     * @return
+     * @return retourne la barre de recherche
      */
     public JTextField getRechercheBarre() {
         return this.rechercheBarre;
@@ -180,7 +180,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne le bouton rechercher
-     * @return
+     * @return retourne le bouton rechercher
      */
     public JButton getRechercheBouton() {
         return this.rechercheBouton;
@@ -188,7 +188,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne le JTable contenant l'edt (salles) sur une semaine
-     * @return
+     * @return retourne le JTable contenant l'edt (salles) sur une semaine
      */
     public JTable getEdt() {
         return this.tabEdt;
@@ -196,7 +196,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne le JTable contenant l'edt (salles) sur une semaine
-     * @return
+     * @return retourne le JTable contenant l'edt (salles) sur une semaine
      */
     public JTable getLibres() {
         return this.tabLibres;
@@ -204,14 +204,14 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne la JComboBox de recherche (utilisateurs de la BDD)
-     * @return
+     * @return retourne la JComboBox de recherche (utilisateurs de la BDD)
      */
     public JComboBox getRecherche() {
         return this.selectRecherche;
     }
     
      /**
-     *
+     * retourne le JLabel contenant la periode
      * @return le JLabel contenant la periode
      */
     public JLabel getPeriode() {
@@ -220,7 +220,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne la barre de recherche
-     * @return
+     * @return retourne la barre de recherche
      */
     public JTextField getRechercheBarre2() {
         return this.rechercheBarre2;
@@ -228,7 +228,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne le bouton rechercher
-     * @return
+     * @return retourne le bouton rechercher
      */
     public JButton getRechercheBouton2() {
         return this.rechercheBouton2;
@@ -236,14 +236,14 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne la JComboBox de recherche (utilisateurs de la BDD)
-     * @return
+     * @return retourne la JComboBox de recherche (utilisateurs de la BDD)
      */
     public JComboBox getRecherche2() {
         return this.selectRecherche2;
     }
     
     /**
-     *
+     * retourne le type de vue souhaité : en grille ou en liste
      * @return le type de vue souhaité : en grille ou en liste
      */
     public JComboBox getVue() {
@@ -251,7 +251,7 @@ public class OngletSalles extends JTabbedPane {
     }
     
     /**
-     *
+     * retourne le conteneur de l'edt en grille
      * @return le conteneur de l'edt en grille
      */
     public TableLabelRendererPanel getGrille() {
@@ -259,7 +259,7 @@ public class OngletSalles extends JTabbedPane {
     }
     
     /**
-     *
+     * retourne le conteneur de l'edt en liste
      * @return le conteneur de l'edt en liste
      */
     public TableLabelRendererPanel getListe() {
@@ -268,7 +268,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * retourne le JTable contenant l'edt (cours) sur une semaine
-     * @return
+     * @return retourne le JTable contenant l'edt (cours) sur une semaine
      */
     public JTable getJTListe() {
         return this.listeEdt;
@@ -276,7 +276,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * rempli les JComboBox avec les numeros de semaines sur une année
-     * @param box
+     * @param box La JComboBox en question
      */
     public void remplirComboBoxSemaine(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{"Semaine"})); 
@@ -287,9 +287,9 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * rempli un JComboBox avec un objet
-     * @param box
-     * @param intitule
-     * @param string
+     * @param box La JComboBox en question
+     * @param intitule l'intitulé de la JComboBox
+     * @param string les données à mettre dans la JComboBox
      */
     public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
@@ -300,7 +300,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * mise à jour des entêtes de l'emploi du temps (dates) selon la semaine
-     * @param semaine
+     * @param semaine la semaine en question
      */
     public void setEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine
@@ -396,9 +396,9 @@ public class OngletSalles extends JTabbedPane {
     }    
     
     /**
-     * retourne true si une année est bissextile
-     * @param annee
-     * @return
+     * Méthode qui permet de savoir si une année est bissextile
+     * @param annee l'année en question
+     * @return retourne true si une année est bissextile
      */
     public Boolean anneeBissextile(int annee) {
         if(annee%4 == 0) { 
@@ -416,7 +416,7 @@ public class OngletSalles extends JTabbedPane {
     
     /**
      * calcul de l'année scolaire en cours
-     * @return
+     * @return retourne l'année scolaire en cours
      */
     public int calculAnneeScolaire() {
         Calendar cal = Calendar.getInstance();
@@ -432,8 +432,8 @@ public class OngletSalles extends JTabbedPane {
     }
     
     /**
-     *
-     * @param semaine
+     * mise à jour de l'edt sous forme de liste en fonction de la semaine
+     * @param semaine la semaine en question
      */
     public void setListeEdt(int semaine) {
         //A partir de la semaine en parametre, on veut récupérer les jours/mois de cette semaine

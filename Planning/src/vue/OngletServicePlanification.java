@@ -345,128 +345,128 @@ public class OngletServicePlanification extends JSplitPane {
     }
     
     /**
-     * 
-     * @return
+     * retourne selectType
+     * @return retourne selectType
      */
     public JComboBox getSelectType() {
         return this.selectType;
     }
 
     /**
-     *
-     * @return
+     * retourne selectType2
+     * @return retourne selectType2
      */
     public JComboBox getSelectType2() {
         return this.selectType2;
     }
 
     /**
-     *
-     * @return
+     * retourne selectCours
+     * @return retourne selectCours
      */
     public JComboBox getSelectCours() {
         return this.selectCours;
     }
 
     /**
-     *
-     * @return
+     * retourne selectCours2
+     * @return retourne selectCours2
      */
     public JComboBox getSelectCours2() {
         return this.selectCours2;
     }
 
     /**
-     *
-     * @return
+     * retourne listeSalles
+     * @return retourne listeSalles
      */
     public JList getListeSalles() {
         return this.listeSalles;
     }
 
     /**
-     *
-     * @return
+     * retourne listeSalles2
+     * @return retourne listeSalles2
      */
     public JList getListeSalles2() {
         return this.listeSalles2;
     }
 
     /**
-     *
-     * @return
+     * retourne listeGroupes
+     * @return retourne listeGroupes
      */
     public JList getListeGroupes(){
         return this.listeGroupes;
     }
 
     /**
-     *
-     * @return
+     * retourne listeGroupes2
+     * @return retourne listeGroupes2
      */
     public JList getListeGroupes2(){
         return this.listeGroupes2;
     }
 
     /**
-     *
-     * @return
+     * retourne listeEnseignants
+     * @return retourne listeEnseignants
      */
     public JList getListeEnseignants(){
         return this.listeEnseignants;
     }
 
     /**
-     *
-     * @return
+     * retourne listeEnseignants2
+     * @return retourne listeEnseignants2
      */
     public JList getListeEnseignants2(){
         return this.listeEnseignants2;
     }
 
     /**
-     *
-     * @return
+     * retourne listeSeances
+     * @return retourne listeSeances
      */
     public JList getListeSeances(){
         return this.listeSeances;
     }
 
     /**
-     *
-     * @return
+     * retourne listeSeances2
+     * @return retourne listeSeances2
      */
     public JList getListeSeances2(){
         return this.listeSeances2;
     }
 
     /**
-     *
-     * @return
+     * retourne valider
+     * @return retourne valider
      */
     public JButton getBtnValider(){
         return this.valider;
     }
 
     /**
-     *
-     * @return
+     * retourne valider2
+     * @return retourne valider2
      */
     public JButton getBtnValider2(){
         return this.valider2;
     }
 
     /**
-     *
-     * @return
+     * retourne valider3
+     * @return retourne valider3
      */
     public JButton getBtnValider3(){
         return this.valider3;
     }
 
     /**
-     *
-     * @return
+     * retourne date sous forme de String
+     * @return retourne date sous forme de String
      */
     public String getDate() {
         String temp = String.valueOf(date.getValue()).substring(11, 19); //On récup l'heure
@@ -482,8 +482,8 @@ public class OngletServicePlanification extends JSplitPane {
     }
     
     /**
-     * 
-     * @param liste
+     * Méthode qui remplit une JList par défaut
+     * @param liste la JList en question
      */
     public void remplirListe(JList liste) {
         Vector<String> listData = new Vector();
@@ -494,9 +494,9 @@ public class OngletServicePlanification extends JSplitPane {
     
     /**
      * rempli une JComboBox avec un objet
-     * @param box
-     * @param intitule
-     * @param objet
+     * @param box la JComboBox en question
+     * @param intitule l'intitulé de la JComboBox
+     * @param objet les données à mettre dans la JComboBox
      */
     public void remplirComboBox(JComboBox box, String intitule, Object objet) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
@@ -506,8 +506,8 @@ public class OngletServicePlanification extends JSplitPane {
     }
     
     /**
-     *
-     * @param box
+     * Méthode qui remplit une JComboBox par défaut
+     * @param box la JcomboBox en question
      */
     public void remplirComboBoxType(JComboBox box) {
         box.setModel(new DefaultComboBoxModel<>(new String[] { "Veuillez sélectionner", 
@@ -524,9 +524,9 @@ public class OngletServicePlanification extends JSplitPane {
     
     /**
      * rempli une JComboBox avec un ArrayList<String> 
-     * @param box
-     * @param intitule
-     * @param string
+     * @param box la JcomboBox en question
+     * @param intitule l'intituté de la JcomboBox en question
+     * @param string les données à mettre dans la JComboBox
     */
     public void remplirComboBox(JComboBox box, String intitule, ArrayList<String> string) {
         box.setModel(new DefaultComboBoxModel<>(new String[]{intitule})); 
@@ -537,8 +537,8 @@ public class OngletServicePlanification extends JSplitPane {
 
     /**
      * rempli une liste avec un ArrayList de String
-     * @param liste
-     * @param string
+     * @param liste la JList en question
+     * @param string les données à mettre dans la JList
      */
     public void remplirListe(JList liste, ArrayList<String> string) {
         Vector<String> listData = new Vector();
@@ -548,8 +548,8 @@ public class OngletServicePlanification extends JSplitPane {
     }
 
     /**
-     *
-     * @return
+     * Retourne etatEC
+     * @return Retourne etatEC
      */
     public JRadioButton getEtatEC()
     {
@@ -557,16 +557,16 @@ public class OngletServicePlanification extends JSplitPane {
     }
 
     /**
-     *
-     * @return
+     * Retourne etatV
+     * @return Retourne etatV
      */
     public JRadioButton getEtatV()
     {
         return etatV;
     }
     /**
-     * 
-     * @return 
+     * Retourne Date2 sous forme de String
+     * @return Retourne Date2 sous forme de String 
      */
     public String getDate2()
     {
@@ -580,24 +580,24 @@ public class OngletServicePlanification extends JSplitPane {
         return temp;
     }
     /**
-     * 
-     * @return 
+     * Retourne etatEC2
+     * @return Retourne etatEC2
      */
     public JRadioButton getEtatEC2()
     {
         return etatEC2;
     }
     /**
-     * 
-     * @return 
+     * Retourne etatV2
+     * @return Retourne etatV2
      */
     public JRadioButton getEtatV2()
     {
         return etatV2;
     }
     /**
-     * 
-     * @return 
+     * Retourne etatA
+     * @return Retourne etatA
      */
     public JRadioButton getEtatA()
     {
@@ -605,7 +605,7 @@ public class OngletServicePlanification extends JSplitPane {
     }
     /**
      * Set le Jspinner date2 (date et heure)
-     * @param val 
+     * @param val la valeur voulu
      */
     public void setDate2(String val)
     {
@@ -622,7 +622,7 @@ public class OngletServicePlanification extends JSplitPane {
     
     /**
      * calcul de l'année scolaire en cours (retourne seulement le premier ex 2019/2020 = 2019)
-     * @return
+     * @return retourne l'année scolaire en cours
      */
     public int calculAnneeScolaire() {
         Calendar cal = Calendar.getInstance();
@@ -638,8 +638,8 @@ public class OngletServicePlanification extends JSplitPane {
     }
     
     /**
-     * Retourne les informations utiles saisies par l'user depuis l'onglet OngletGererCoursSP pour ajouter une séance
-     * @return
+     * Retourne les informations utiles saisies par l'user pour ajouter une séance
+     * @return Retourne les informations utiles saisies par l'user pour ajouter une séance
      */
     public ArrayList<Object> getInfosAddSeance()
     {
@@ -723,7 +723,7 @@ public class OngletServicePlanification extends JSplitPane {
     /**
      * permet de selectionner le contenu des Jcombox, JradioButton, JList 
      * de l'onglet OngletGererCoursSP dans la partie Modifier une séance en fonction d'une séance séléctionnée
-     * @param forBeingSelectedByDefault 
+     * @param forBeingSelectedByDefault les données à être selectionner par défaut dans les JcomboBox, JSpinner, JList
      */
     public void dataToBeSelectedByDefault(ArrayList<Object> forBeingSelectedByDefault)
     {
@@ -775,8 +775,8 @@ public class OngletServicePlanification extends JSplitPane {
         }//END OF IF
     }
     /**
-     * Retourne les infos modifiés par l'user sur une séance donnée issues de l'onglet OngletGererCoursSP
-     * @return 
+     * Retourne les infos modifiés par l'user sur une séance donnée
+     * @return Retourne les infos modifiés par l'user sur une séance donnée
      */
     public ArrayList<Object> getInfosModifSeance()
     {
@@ -861,7 +861,7 @@ public class OngletServicePlanification extends JSplitPane {
 
     /**
      * rempli les JComboBox de l'onglet Gérer les cours avec les types de cours
-     * @param string
+     * @param string Les données a mettre dans les JComBox dédiés aux types de cours 
      */
     public void remplirComboTypes(ArrayList<String> string) {
         remplirComboBox(getSelectType(),"type", string);
@@ -870,7 +870,7 @@ public class OngletServicePlanification extends JSplitPane {
 
     /**
      * rempli les JComboBox de l'onglet Gérer les cours avec les intitulés des cours
-     * @param string
+     * @param string Les données a mettre dans les JComBox dédiés aux intitulés des cours
      */
     public void remplirComboCours(ArrayList<String> string) {
         remplirComboBox(getSelectCours(),"cours", string);
@@ -880,7 +880,7 @@ public class OngletServicePlanification extends JSplitPane {
 
     /**
      * rempli les listes de l'onglet Gérer les cours avec les salles
-     * @param string
+     * @param string Les données a mettre dans les JList dédiés aux salles
      */
     public void remplirListSalle(ArrayList<String> string) {
         remplirListe(getListeSalles(), string);
@@ -889,7 +889,7 @@ public class OngletServicePlanification extends JSplitPane {
 
     /**
      * rempli les listes de l'onglet Gérer les cours avec les groupes
-     * @param string
+     * @param string Les données a mettre dans les JList dédiés aux groupes
      */
     public void remplirListGroupes(ArrayList<String> string) {
         remplirListe(getListeGroupes(), string);
@@ -898,7 +898,7 @@ public class OngletServicePlanification extends JSplitPane {
 
     /**
      * rempli les listes de l'onglet Gérer les cours avec les enseignants
-     * @param string
+     * @param string Les données a mettre dans les JList dédiés aux enseignants
      */
     public void remplirListEnseignants(ArrayList<String> string) {
         remplirListe(getListeEnseignants(), string);
@@ -907,7 +907,7 @@ public class OngletServicePlanification extends JSplitPane {
 
     /**
      * rempli les liste de l'onglet Gérer les cours avec les séances
-     * @param string
+     * @param string Les données a mettre dans les JList dédiés aux séances
      */
     public void remplirListSeances(ArrayList<String> string) {
         remplirListe(getListeSeances(), string);
@@ -915,7 +915,7 @@ public class OngletServicePlanification extends JSplitPane {
     }
     /**
      * Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours
-     * @return 
+     * @return Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours
      */
     public JTextField getIntitule()
     {

@@ -12,7 +12,6 @@ import modele.TypeCoursDAO;
 import modele.UtilisateurDAO;
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -63,8 +62,9 @@ public class Controle {
     }
   
     /**
-     * @param email
-     * @param password
+     * Demande de connexion de la part de l'utilisateur en fournissant les données saisies
+     * @param email email de l'utilisateur
+     * @param password mot de passe de l'utilisateur
      * @return true si on trouve dans la BDD un utilisateur correspondant a la saisie de connexion
      */
     public Boolean demandeConnexion(String email, String password) {
@@ -74,8 +74,8 @@ public class Controle {
     
     /**
      * utilisé pour set le titre de la frame
-     * @param email
-     * @param password
+     * @param email email de l'utilisateur connecté
+     * @param password mot de passe de l'utilisateur connecté
      * @return une chaine de caractère avec prenom et nom de l'utilisateur courrant
      */
     public String utilisateurCourant(String email, String password) {
@@ -85,8 +85,8 @@ public class Controle {
     
     /**
      * utilisé pour créer des listeners que seuls les admins ont
-     * @param email
-     * @param password
+     * @param email email de l'admin
+     * @param password mot de passe de l'admin
      * @return true si l'utilisateur est un admin
      */
     public Boolean admin(String email, String password) {
@@ -95,8 +95,9 @@ public class Controle {
     }
     
     /**
-     * @param email
-     * @param password
+     * Méthode qui cherche l'utilisateur en fonction du mail et du mot de passe
+     * @param email email de l'utilisateur
+     * @param password mot de passe de l'utilisateur
      * @return un utilisateur à partir de son email et password
      */
     public Utilisateur recupUtilisateur(String email, String password) {
@@ -105,6 +106,7 @@ public class Controle {
     }
     
     /**
+     * Méthode qui récupère l'ensemble des utilisateurs de la BDD
      * @return tous les utilisateurs de la BDD dans un ArrayList d'utilisateurs
      */
     public ArrayList<Utilisateur> recupUtilisateurs() {
@@ -113,6 +115,7 @@ public class Controle {
     }
     
     /**
+     * Méthode qui récupère l'ensemble des promotions de la BDD
      * @return toutes les promos de la BDD dans un ArrayList de promos
      */
     public ArrayList<Promotion> recupPromos() {
@@ -121,6 +124,7 @@ public class Controle {
     }
     
     /**
+     * Méthode qui récupère l'ensemble des groupes de la BDD
      * @return tous les groupes de la BDD
      */
     public ArrayList<Groupe> recupGroupes() {
@@ -129,7 +133,8 @@ public class Controle {
     }    
     
     /**
-     * @param utilisateur
+     * Méthode qui permet de savoir si un utilisateur donnée est un étudiant et le retourne
+     * @param utilisateur Utilisateur en question
      * @return les données étudiantes de l'utilisateur
      */
     public Etudiant recupEtudiant(Utilisateur utilisateur) {
@@ -138,7 +143,8 @@ public class Controle {
     }
 
     /**
-     * @param utilisateur
+     * Méthode qui permet de savoir si un utilisateur donnée est un enseignant et le retourne
+     * @param utilisateur Utilisateur en question
      * @return les données enseignantes de l'utilisateur
      */
     public Enseignant recupEnseignant(Utilisateur utilisateur) {
@@ -183,9 +189,10 @@ public class Controle {
     }
 
     /**
+     * Permet de convertir certaines information de l'utilisateur sous forme de String
      * utilisé pour set le titre de la frame
-     * @param email
-     * @param password
+     * @param email Email de l'utilisateur
+     * @param password Mot de passe de l'utilisateur
      * @return certaines données selon profil
      */
     public String recupInfo(String email, String password) {
@@ -315,7 +322,7 @@ public class Controle {
     }
     
     /**
-     *
+     * Permet d'obtenir tout les sites sous forme de String
      * @return un ArrayList de String (nom des sites)
      */
     public ArrayList<String> allSitesToStrings() {
@@ -347,8 +354,8 @@ public class Controle {
 
     /**
      * creations des graphes dans Home
-     * @param email
-     * @param password
+     * @param email email de l'utilisateur
+     * @param password mot de passe de l'utilisateur
      */
     public void creationGraphe(String email, String password) {
 /////////////////////////////////////////PREMIER PANEL
@@ -523,8 +530,8 @@ public class Controle {
     
     /**
      * Recherche si un user réalisée à travers la barre de recherche existe ou pas si oui, on retourne le nom, si non on retourne un null
-     * @param recherche
-     * @return 
+     * @param recherche informations d'un utilisateur à chercher : prenom et nom
+     * @return Retourne un String avec le prenom et nom de l'user si trouver, sinon null
      */
     public String rechercheUtilisateur(String recherche) {
         //Saisi d'un nom et prenom, peut etre pas complets
@@ -552,9 +559,9 @@ public class Controle {
     }
     
     /**
-     * Recherche si une salle réalisée à travers la barre de recherche existe ou pas si oui, on retourne le nom, si non on retourne un null
-     * @param recherche
-     * @return 
+     * Recherche si une salle réalisée à travers la barre de recherche existe ou pas
+     * @param recherche informations d'une salle à chercher :nom de la salle et site de la salle
+     * @return Retourn le nom de la salle et le site de la salle si salle trouver sinon, null
      */
     public String rechercheSalle(String recherche) {
         SalleDAO s2DAO = new SalleDAO();
@@ -566,7 +573,7 @@ public class Controle {
     
     /**
      * Calcul l'heure de fin à partir de l'heure de début
-     * @param debut
+     * @param debut Heure de début
      * @return l'heure de fin en ajoutant 1h30 à l'heure de début d'une séance
      */
     public String calculHeureFin(String debut)
@@ -582,7 +589,7 @@ public class Controle {
     
     /**
      * Demande d'ajout d'une séance par la vue vers le controleur en récupérant tout les données nécessaires saisies par l'user
-     * @param strings 
+     * @param strings Données d'une séance à ajouter
      */
     public void demandeAddSeance(ArrayList<Object> strings)
     {   
@@ -637,16 +644,16 @@ public class Controle {
      * Le controleur demande au model l'ajout d'une séance en lui fournissant les données issues de la vue
      * le modèle renvoie des réponses vers le controleur pour savoir si tels données sont acceptables et si 
      * toutes les données saisies sont cohérentes
-     * @param Semaine
-     * @param Date
-     * @param Heure_Debut
-     * @param Heure_Fin
-     * @param Etat
-     * @param cours
-     * @param type
-     * @param groupes
-     * @param enseignants
-     * @param salles 
+     * @param Semaine Semaine d'une séance
+     * @param Date date d'une séance 
+     * @param Heure_Debut heure de début d'une séance
+     * @param Heure_Fin heure de fin d'une séance
+     * @param Etat etat d'une séance
+     * @param cours cours d'une séance
+     * @param type type d'une séance
+     * @param groupes les gorupes d'une séance
+     * @param enseignants les enseignant d'une séance
+     * @param salles les salles d'une séance
      */
     public void ajouterSeanceInModel(int Semaine, String Date, String Heure_Debut, String Heure_Fin, int Etat, Cours cours,TypeCours type, ArrayList<Groupe> groupes, ArrayList<Enseignant> enseignants, ArrayList<Salle> salles) 
     {   
@@ -711,8 +718,8 @@ public class Controle {
     /**
      * Demande de la vue pour savoir quelles sont les informations qui doivent être séléctionner dans le vue dans l'ongletGererCoursSP
      * en fournissant au controleur l'id de cette séance
-     * @param id_seance
-     * @return 
+     * @param id_seance id de la séance
+     * @return ArrayList<Object> Retourne l'ensemble des infos d'une séance à être sélectionner si l'admin clique sur une séance dans la liste
      */
     public ArrayList<Object> demandeInfosSelectedSeance(int id_seance)
     {   //de la vue au controleur
@@ -748,8 +755,8 @@ public class Controle {
     
     /**
      * Requête de la vue pour modifier une séance en fournissant toutes les infos nécessaires saisies par l'user 
-     * @param idSeance
-     * @param strings 
+     * @param idSeance id de la séance
+     * @param strings Données d'une séance à modifier
      */
     public void demandeModifSeance(int idSeance, ArrayList<Object> strings)
     {   //Contenu du strings:
@@ -796,11 +803,12 @@ public class Controle {
 
     /**
      * Vérification/Changement d'état pour une séance sans le changer dans la BDD
-     * @param seance
-     * @param tailleGroupe
-     * @param tailleEnseignant
-     * @param choix 
-     * @return  
+     * @param seance Seance en question
+     * @param choix la valeur de l'état souhaité pour la séance
+     * @param tailleGroupe Nombre de groupes
+     * @param tailleEnseignant Nombre d'enseignants
+     * @param tailleSalles Nombre de salles
+     * @return Retourne un booléan indiquant si tout est bon pour changer d'était dans la BDD
      */
     public boolean verifAndSetSeanceEtat(Seance seance, String choix, int tailleGroupe, int tailleEnseignant, int tailleSalles)
     {
@@ -832,9 +840,9 @@ public class Controle {
 
     /**
      * Verification des edt des enseignants selectionnés pour une séance donnée
-     * @param seance
-     * @param namesSelected
-     * @return 
+     * @param seance Seance en question
+     * @param namesSelected Les infos des enseignants sélectionnés pour cette séance
+     * @return Retourne un boolean indiquant si tout les ensignants d'une séance sont bon pour être mise à jours dans la BDD
      */
     public boolean verifSeanceEnseignants(Seance seance, ArrayList<String> namesSelected){
         EnseignantDAO eDAO = new EnseignantDAO();
@@ -854,10 +862,10 @@ public class Controle {
 
     /**
      * Verification des edt des groupes et salles selectionnés pour une séance donnée
-     * @param seance
-     * @param groupesSelected
-     * @param sallesSelected
-     * @return 
+     * @param seance Seance en question
+     * @param groupesSelected Les infos des groupes sélectionnés pour cette séance
+     * @param sallesSelected Les infos des salles sélectionnés pour cette séance
+     * @return Retourne un boolean indiquant si et les groupes et les salles selectionnées d'une séance sont bon pour être mise à jours dans la BDD 
      */
     public boolean verifSeanceGroupesEtSalles(Seance seance, ArrayList<String> groupesSelected, ArrayList<String> sallesSelected)
     {
@@ -931,8 +939,8 @@ public class Controle {
 
     /**
      * Requête de MAJ du nom de cours d'une séance donnée dans la BDD
-     * @param seance
-     * @param cours 
+     * @param seance Seance en question
+     * @param cours Cours en question
      */
     public void setSeanceCoursNom(Seance seance, String cours) {
         CoursDAO cDAO = new CoursDAO();
@@ -942,8 +950,8 @@ public class Controle {
 
     /**
      * Requête de MAJ du type de cours d'une séance donnée dans la BDD
-     * @param seance
-     * @param type 
+     * @param seance Seance en question
+     * @param type type de cours en question
      */
     public void setSeanceCoursType(Seance seance, String type) {
         TypeCoursDAO tDAO = new TypeCoursDAO();
@@ -953,8 +961,8 @@ public class Controle {
 
     /**
      * Requête de MAJ des enseignants d'une séance donnée dans la BDD
-     * @param seance
-     * @param namesSelected 
+     * @param seance Seance en question
+     * @param namesSelected les enseignants sous forme de prenom et nom en question
      */
     public void setSeanceEnseignants(Seance seance,ArrayList<String> namesSelected)
     {
@@ -970,8 +978,8 @@ public class Controle {
 
     /**
      * Requête de MAJ des groupes d'une séance donnée dans la BDD
-     * @param seance
-     * @param groupesSelected 
+     * @param seance Seance en question
+     * @param groupesSelected les groupes sous forme de String en question
      */
     public void setSeanceGroupes(Seance seance,ArrayList<String> groupesSelected)
     {
@@ -986,8 +994,8 @@ public class Controle {
     
     /**
      * Requête de MAJ des salles d'une séance donnée dans la BDD
-     * @param seance
-     * @param sallesSelected 
+     * @param seance Seance en question
+     * @param sallesSelected Les salles sous forme de String en question
      */
     public void setSeanceSalles(Seance seance,ArrayList<String> sallesSelected)
     {
@@ -1003,9 +1011,9 @@ public class Controle {
     }
     
     /**
-     *
-     * @param semaine
-     * @param promo
+     * Méthode qui affiche à la vue, les séances d'une promo sur une semaine donnée
+     * @param semaine Semaine en question
+     * @param promo la promotion en question
      */
     public void majSeancesPromo(int semaine, String promo) {
         PromotionDAO pDAO = new PromotionDAO();
@@ -1047,10 +1055,10 @@ public class Controle {
     }
     
     /**
-     * affichage de l'emploi du temps dans l'onglet Cours
-     * @param semaine
-     * @param prenom
-     * @param nom
+     * affichage de l'emploi du temps d'un utilisateur dans l'onglet Cours
+     * @param semaine la semaine en question
+     * @param prenom prenom de l'utilisateur en question
+     * @param nom nom de l'utilisateur en question
      */
     public void majSeancesEdt(int semaine, String prenom, String nom) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
@@ -1060,9 +1068,9 @@ public class Controle {
     }
     
     /**
-     * affichage de l'emploi du temps dans l'onglet Cours
-     * @param semaine
-     * @param infos
+     * affichage de l'emploi du temps d'une salle dans l'onglet Cours
+     * @param semaine la semaine en question
+     * @param infos les infos de la salle sous forme de string en question
      */
     public void majSeancesSalles(int semaine, String infos) {
         SalleDAO s2DAO = new SalleDAO();
@@ -1073,9 +1081,9 @@ public class Controle {
     }
     
     /**
-     *
-     * @param semaine
-     * @param infos
+     * Méthode qui affiche les séances d'une salle sur une semaine dans la vue sous forme d'une liste
+     * @param semaine la semaine en question
+     * @param infos les infos de la salle sous forme de string en question
      */
     public void majSallesListe(int semaine, String infos) {
         System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + infos);
@@ -1128,10 +1136,10 @@ public class Controle {
     }
     
     /**
-     * affichage de l'emploi du temps dans l'onglet Cours
-     * @param semaine
-     * @param prenom
-     * @param nom
+     * affichage de l'emploi du temps de l'utilisateur sous forme de liste dans l'onglet Cours
+     * @param semaine la semaine en question
+     * @param prenom Le prenom de l'utilisateur en question
+     * @param nom le nom de l'utilisateur en question
      */
     public void majSeancesListe(int semaine, String prenom, String nom) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
@@ -1141,10 +1149,10 @@ public class Controle {
     }
     
     /**
-     * recup et affichage des séances sur une semaine
-     * @param semaine
-     * @param email
-     * @param password
+     * recup et affichage des séances d'un utilisateur sur une semaine sous forme de liste
+     * @param semaine La semaine en question
+     * @param email l'email de l'utilisateur
+     * @param password le mot de passe de l'utilisateur
      */
     public void seancesListe(int semaine, String email, String password) {
         //System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + email);
@@ -1236,9 +1244,9 @@ public class Controle {
     }
     
     /**
-     *
-     * @param semaine
-     * @param salle
+     * Méthode qui affiche les séances d'une salle sous forme de grille
+     * @param semaine la semaine de l'utilisateur
+     * @param salle la salle de l'utilisateur
      */
     public void seancesSalles(int semaine, Salle salle) {
         System.out.println("\nSEANCES EDT - On veut afficher les seances de " + salle.getNom() + " " + salle.getSite().getNom());
@@ -1350,10 +1358,10 @@ public class Controle {
     }
     
     /**
-     * recup et affichage des séances sur une semaine
-     * @param semaine
-     * @param email
-     * @param password
+     * recup et affichage des séances d'un utilisateur sur une semaine sous forme de grille
+     * @param semaine la semaine en question
+     * @param email l'email de l'utilisateur en question
+     * @param password le mot de passe de l'utilisateur en question
      */
     public void seancesEdt(int semaine, String email, String password) {
         //System.out.println("\nSEANCES EDT - On veut afficher les seances de " + email);
@@ -1518,9 +1526,9 @@ public class Controle {
     
     /**
      * affichage de l'edt d'une seule journee dans l'onglet Home
-     * @param date
-     * @param email
-     * @param password
+     * @param date la date en question
+     * @param email l'email de l'utilisateur en question
+     * @param password le mot de passe de l'utilisateur en question
      */
     public void seancesEdt(String date, String email, String password) {
         //System.out.println("On veut afficher les seances de " + email);
@@ -1673,9 +1681,9 @@ public class Controle {
     }
     
     /**
-     * affichage de l'edt d'un groupe pour référent, admin
-     * @param semaine
-     * @param recherche
+     * affichage de l'edt d'un groupe sous forme de grille pour référent, admin
+     * @param semaine la semaine en question
+     * @param recherche données du groupe en guestion sous forme de String
      */
     public void majSeancesEdt(int semaine, String recherche) {
         //Récupérer le groupe et la promo
@@ -1706,9 +1714,9 @@ public class Controle {
         seancesEdt(semaine, e.getEmail(), e.getPassword());
     }
     /**
-     * affichage de l'edt d'un groupe pour référent, admin
-     * @param semaine
-     * @param recherche 
+     * affichage de l'edt d'un groupe sous forme de liste pour référent, admin
+     * @param semaine la semaine en question
+     * @param recherche données du groupe en guestion sous forme de String
      */
     public void majSeancesListe(int semaine, String recherche){
         //Récupérer le groupe et la promo
@@ -1741,8 +1749,8 @@ public class Controle {
     
     /**
      * affichage de toutes les séances de l'année scolaire en cours
-     * @param email
-     * @param password
+     * @param email l'email de l'utilisateur en question
+     * @param password le mot de passe de l'utilisateur en question
      */
     public void seancesRecap(String email, String password) {
         SeanceDAO sDAO = new SeanceDAO();
@@ -1852,7 +1860,7 @@ public class Controle {
     
     /**
      * affichage de toutes les salles libres de ajd a ajd + 1 mois
-     * @param recherche
+     * @param recherche données de la salle sous forme de String
      */
     public void sallesLibres(String recherche) {
         SalleDAO sDAO = new SalleDAO();
@@ -2029,7 +2037,7 @@ public class Controle {
     
     /**
      * retourne true si l'annee est bissextile
-     * @param annee
+     * @param annee l'année en question
      * @return
      */
     public Boolean anneeBissextile(int annee) {
@@ -2078,8 +2086,8 @@ public class Controle {
     }
     
     /**
-     *
-     * @param recherche
+     * Méthode qui trouve l'utilisateur à partir d'un String 
+     * @param recherche données de l'utilisateur sous forme de String
      */
     public void majRecapRecherche(String recherche) {
         int pos = recherche.indexOf(" ");
@@ -2095,8 +2103,8 @@ public class Controle {
     }
   
     /**
-     *
-     * @param recherche
+     * Méthode qui trouve l'utilisateur à partir d'un String 
+     * @param recherche données de l'utilisateur sous forme de String
      */
     public void majRecapRechercheBarre(String recherche) {
         //Saisi d'un nom et prenom, peut etre pas complets
@@ -2122,7 +2130,7 @@ public class Controle {
      * La vue fournie les données utiles pour créer l'intitulé d'un cours 
      * au controleur, le Modèle le crée, le controleur renvoie les données 
      * à mettre à jour visuellement  
-     * @param name 
+     * @param name la matiàre à créer
      */
     public void createMatiere(String name)
     {

@@ -40,13 +40,13 @@ public class Seance {
     
     /**
      * constructeur
-     * @param semaine
-     * @param heure_debut
-     * @param heure_fin
-     * @param date
-     * @param etat
-     * @param cours
-     * @param type
+     * @param semaine Semaine de la séance
+     * @param heure_debut Heure de début de la séance
+     * @param heure_fin Heure de fin de la séance
+     * @param date date de la séance
+     * @param etat etat de la séance
+     * @param cours cours(matière) de la séance
+     * @param type type de cours de la séance
      */
     public Seance(int semaine, String heure_debut, String heure_fin, String date, int etat, Cours cours, TypeCours type) {
         //Un administrateur peut créer un nouveau groupe
@@ -64,7 +64,7 @@ public class Seance {
     
     /**
      * retourne id seance
-     * @return
+     * @return retourne id seance
      */
     public int getId() {
         return id;
@@ -72,7 +72,7 @@ public class Seance {
     
     /**
      * retourne semaine seance
-     * @return
+     * @return retourne semaine seance
      */
     public int getSemaine() {
         return semaine;
@@ -80,7 +80,7 @@ public class Seance {
     
     /**
      * retourne heure debut de seance
-     * @return
+     * @return retourne heure debut de seance
      */
     public String getHeureDebut() {
         return heure_debut;
@@ -88,7 +88,7 @@ public class Seance {
     
     /**
      * retourne heure fin de seance
-     * @return
+     * @return retourne heure fin de seance
      */
     public String getHeureFin() {
         return heure_fin;
@@ -96,7 +96,7 @@ public class Seance {
     
     /**
      * retourne date seance
-     * @return
+     * @return retourne date seance
      */
     public String getDate() {
         return date;
@@ -104,7 +104,7 @@ public class Seance {
     
     /**
      * retourne etat seance
-     * @return
+     * @return retourne etat seance
      */
     public int getEtat() {
         return etat;
@@ -112,7 +112,7 @@ public class Seance {
     
     /**
      * retourne cours seance
-     * @return
+     * @return retourne cours seance
      */
     public Cours getCours() {
         return cours;
@@ -120,7 +120,7 @@ public class Seance {
     
     /**
      * retourne type cours seance
-     * @return
+     * @return retourne type cours seance
      */
     public TypeCours getTypeCours() {
         return type;
@@ -128,7 +128,7 @@ public class Seance {
     
     /**
      * retourne enseignants seance
-     * @return
+     * @return retourne enseignants seance
      */
     public ArrayList<Enseignant> getEnseignants() {
         return enseignants;
@@ -136,7 +136,7 @@ public class Seance {
     
     /**
      * retourne salles seance
-     * @return
+     * @return retourne salles seance
      */
     public ArrayList<Salle> getSalles() {
         return salles;
@@ -144,23 +144,23 @@ public class Seance {
     
     /**
      * retourne groupes seance
-     * @return
+     * @return retourne groupes seance
      */
     public ArrayList<Groupe> getGroupes() {
         return groupes;
     }
     
     /**
-     * set id seance
-     * @param id
+     * set id de la seance
+     * @param id id seance
      */
     public void setId(int id) {
         this.id = id;
     }
         
     /**
-     * set semaine seance
-     * @param semaine
+     * set semaine de la seance
+     * @param semaine semaine de la seance
      */
     public void setSemaine(int semaine) {
         this.semaine = semaine;
@@ -168,7 +168,7 @@ public class Seance {
     
     /**
      * set heure debut seance
-     * @param heure_debut
+     * @param heure_debut heure de debut de la seance
      */
     public void setHeureDebut(String heure_debut) {
         this.heure_debut = heure_debut;
@@ -176,7 +176,7 @@ public class Seance {
     
     /**
      * set heure fin seance
-     * @param heure_fin
+     * @param heure_fin heure de fin de la seance
      */
     public void setHeureFin(String heure_fin) {
         this.heure_fin = heure_fin;
@@ -184,7 +184,7 @@ public class Seance {
     
     /**
      * set date seance
-     * @param date
+     * @param date date de la seance
      */
     public void setDate(String date) {
         this.date = date;
@@ -192,7 +192,7 @@ public class Seance {
     
     /**
      * set etat seance
-     * @param etat
+     * @param etat etat de la seance
      */
     public void setEtat(int etat) {
         this.etat = etat;
@@ -200,31 +200,31 @@ public class Seance {
     
     /**
      * set cours seance
-     * @param cours
+     * @param cours cours de la seance
      */
     public void setCours(Cours cours) {
         this.cours = cours;
     }
     
     /**
-     * set type cours seance
-     * @param type
+     * set type de cours de la seance
+     * @param type type de cours de la seance
      */
     public void setTypeCours(TypeCours type) {
         this.type = type;
     }
     
     /**
-     * set enseignants seance
-     * @param enseignants
+     * set les enseignants de la seance
+     * @param enseignants les enseignants de la seance
      */
     public void setEnseignants(ArrayList<Enseignant> enseignants) {
         this.enseignants = enseignants;
     }
     
     /**
-     * set groupes seance
-     * @param groupes
+     * set les groupes de la seance
+     * @param groupes les groupes de la seance
      */
     public void setGroupes(ArrayList<Groupe> groupes) {
         this.groupes = groupes;
@@ -232,7 +232,7 @@ public class Seance {
     
     /**
      * set salles seances
-     * @param salles
+     * @param salles les salles de la séances
      */
     public void setSalles(ArrayList<Salle> salles) {
         this.salles = salles;
@@ -240,7 +240,7 @@ public class Seance {
     
     /**
      * ajouter enseignant
-     * @param enseignant
+     * @param enseignant enseignant à ajouter dans séance
      */
     public void ajouterEnseignant(Enseignant enseignant) { //Un admin peut ajouter une séance à un enseignant
         this.enseignants.add(enseignant);
@@ -248,7 +248,7 @@ public class Seance {
     
     /**
      * ajouter groupe
-     * @param groupe
+     * @param groupe groupe à ajouter dans séance
      */
     public void ajouterGroupe(Groupe groupe) { //Un admin peut ajouter une séance à un groupe
         this.groupes.add(groupe);
@@ -256,7 +256,7 @@ public class Seance {
     
     /**
      * ajouer salle
-     * @param salle
+     * @param salle salle à ajouer dans séance
      */
     public void ajouterSalle(Salle salle) { //Un admin peut ajouter une séance à une salle
         this.salles.add(salle);
@@ -264,7 +264,7 @@ public class Seance {
     
     /**
      * calcul durée d'une seance
-     * @return
+     * @return Retourne la durée d'une séance en String
      */
     public String calculDuree()
     {
@@ -295,8 +295,8 @@ public class Seance {
     
     /**
      * ajuster heure seance
-     * @param duree
-     * @return
+     * @param duree L'heure à trier
+     * @return Retourne l'heure trié
      */
     public String orderingHour(String duree)
     {
@@ -324,8 +324,8 @@ public class Seance {
 
     /**
      * verifie si un groupe est dans la seance
-     * @param id
-     * @return
+     * @param id Id du groupe
+     * @return Retourne un boolean indiquant si ce groupe est dans cette séance ou pas 
      */
     public boolean isThisGroupInThisSeance(int id)
     {
@@ -342,8 +342,8 @@ public class Seance {
 
     /**
      * verifie si prof dans seance
-     * @param id
-     * @return
+     * @param id id de l'enseignant
+     * @return Retourne un boolean indiquant si cet enseignant est dans cette séance ou pas 
      */
     public boolean isThisTeacherInThisSeance(int id)
     {
@@ -360,8 +360,8 @@ public class Seance {
 
     /**
      * verifie si salle dans seance
-     * @param id
-     * @return
+     * @param id id d'une salle
+     * @return Retourne un boolean indiquant si cette salle est dans cette séance ou pas 
      */
     public boolean isThisRoomInThisSeance(int id)
     {
@@ -378,7 +378,7 @@ public class Seance {
 
     /**
      * retourne capacite salles
-     * @return
+     * @return Retourne le nombre de capacité de cette séance
      */
     public int placeInTotal()
     {
@@ -391,8 +391,8 @@ public class Seance {
     }
     
     /**
-     * ???
-     * @return
+     * Converti tout les données de la séance en String
+     * @return Retourne un String comportant tout les données de la séance
      */
     @Override
     public String toString() {
@@ -435,8 +435,8 @@ public class Seance {
     }
     
     /**
-     * retourne string des seances
-     * @return
+     * Converti tout les données de la séance en String
+     * @return Retourne une liste de String ordonnée des données de la séance
      */
     public ArrayList<String> toArrayListOfString() {      
         ArrayList<String> seance = new ArrayList<>();

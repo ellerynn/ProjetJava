@@ -22,7 +22,7 @@ public class TypeCours {
     
     /**
      * constructeur
-     * @param nom
+     * @param nom Nom du type de cours
      */
     public TypeCours (String nom) {
         this.nom = nom;
@@ -30,7 +30,7 @@ public class TypeCours {
     
     /**
      * retourne l'id d'un type de cours
-     * @return
+     * @return retourne l'id d'un type de cours
      */
     public int getId() {
         return id;
@@ -38,7 +38,7 @@ public class TypeCours {
     
     /**
      * retourne le nom d'un type de cours
-     * @return
+     * @return retourne le nom d'un type de cours
      */
     public String getNom() {
         return nom;
@@ -46,7 +46,7 @@ public class TypeCours {
     
     /**
      * set l'id d'un type de cours
-     * @param id
+     * @param id id d'un type de cours
      */
     public void setId(int id) {
         this.id = id;
@@ -54,7 +54,7 @@ public class TypeCours {
     
     /**
      * set le nom d'un type de cours
-     * @param nom
+     * @param nom nom d'un type de cours
      */
     public void setNom(String nom) {
         this.nom = nom;

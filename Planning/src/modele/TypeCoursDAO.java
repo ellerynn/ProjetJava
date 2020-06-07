@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class TypeCoursDAO extends DAO<TypeCours> {
     /**
      * create
-     * @param object
-     * @return
+     * @param object Type de cours à créer dans la BDD
+     * @return Retourne le type de cours créé
      */
     @Override
     public TypeCours create(TypeCours object) {
@@ -45,8 +45,8 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Type de cours à supprimer dans la BDD
+     * @return indique si supprimé ou pas
      */
     @Override
     public boolean delete(TypeCours object) {
@@ -55,8 +55,8 @@ public class TypeCoursDAO extends DAO<TypeCours> {
 
     /**
      * update
-     * @param object
-     * @return
+     * @param object Type de couurs à mettre à jours dans la BDD
+     * @return Retourne le type de cours qui a été mise à jours
      */
     @Override
     public TypeCours update(TypeCours object) {
@@ -81,8 +81,8 @@ public class TypeCoursDAO extends DAO<TypeCours> {
     /**
      * find
      * trouver type cours via id
-     * @param id
-     * @return
+     * @param id Id du type de cours
+     * @return Retourne le type de cours trouvé
      */
     @Override
     public TypeCours find(int id) {
@@ -111,7 +111,7 @@ public class TypeCoursDAO extends DAO<TypeCours> {
     /**
      * trouver tous les types de cours
      * pour l'admin
-     * @return
+     * @return Retourne tout les type de cours de la BDD
      */
     public ArrayList<TypeCours> findAllTypes()
     {
@@ -133,8 +133,8 @@ public class TypeCoursDAO extends DAO<TypeCours> {
      * Prend un String en paramètre et retourne une classe Type, 
      * il permet d'obtenir le type d'une cours en fonction de son nom, 
      * si rien n'est trouvé, il retourne 0
-     * @param infos
-     * @return 
+     * @param infos Nom du type de cours
+     * @return Retourne le type de cours trouvé
      */
     public TypeCours findByName(String infos){
         try {

@@ -18,8 +18,8 @@ import modele.Utilisateur;
 public class EnseignantDAO extends DAO<Enseignant> {
     /**
      * create
-     * @param object
-     * @return
+     * @param object L'enseignant à créer dans la BDD
+     * @return Retourne l'enseignant trouvé
      */
     @Override
     public Enseignant create(Enseignant object) {
@@ -67,8 +67,8 @@ public class EnseignantDAO extends DAO<Enseignant> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Enseignant à supprimer de la BDD
+     * @return Retourne un booléan indiquant si l'enseignant est supprimé ou pas
      */
     @Override
     public boolean delete(Enseignant object) {
@@ -77,8 +77,8 @@ public class EnseignantDAO extends DAO<Enseignant> {
     
     /**
      * update
-     * @param object
-     * @return
+     * @param object Enseignant à mettre à jours dans la BDD
+     * @return Retourne l'enseignant qui a été mise à jours
      */
     @Override
     public Enseignant update(Enseignant object) {
@@ -88,8 +88,8 @@ public class EnseignantDAO extends DAO<Enseignant> {
     /**
      * find
      * trouver enseignant via id
-     * @param id
-     * @return
+     * @param id Id de l'enseignant
+     * @return Retourne l'enseignant trouvé
      */
     @Override
     public Enseignant find(int id) {
@@ -130,7 +130,7 @@ public class EnseignantDAO extends DAO<Enseignant> {
     /**
      * trouver tous les enseignants
      * pour l'admin
-     * @return
+     * @return Retourne l'ensemble des enseignants trouvés
      */
     public ArrayList<Enseignant> findAllTeacher()
     {
@@ -152,8 +152,8 @@ public class EnseignantDAO extends DAO<Enseignant> {
     /**
      * Prend un String en paramètre et retourne une classe Enseignant
      * il permet d'obtenir l'enseignant en fonction de son prenom et nom dans un seul string
-     * @param infos
-     * @return 
+     * @param infos Le Prenom et nom de l'enseignant
+     * @return Retourne l'enseignant trouvé
      */
     public Enseignant findByName(String infos){
         UtilisateurDAO userD= new UtilisateurDAO();

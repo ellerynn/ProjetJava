@@ -17,8 +17,8 @@ import modele.Cours;
 public class CoursDAO extends DAO<Cours> {
     /**
      * create
-     * @param object
-     * @return
+     * @param object Cours à créer dans la BDD
+     * @return Retourne le cours créé
      */
     @Override
     public Cours create(Cours object) {
@@ -46,8 +46,8 @@ public class CoursDAO extends DAO<Cours> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Cours à supprimer dans la BDD
+     * @return Retourne un booléan pour indiquer si le cours a été supprimé
      */
     @Override
     public boolean delete(Cours object) {
@@ -56,8 +56,8 @@ public class CoursDAO extends DAO<Cours> {
 
     /**
      * update
-     * @param object
-     * @return
+     * @param object Cours à mettre à jours dans la BDD
+     * @return Retourne le cours qui a été mise à jours
      */
     @Override
     public Cours update(Cours object) {
@@ -82,8 +82,8 @@ public class CoursDAO extends DAO<Cours> {
     /**
      * find
      * trouver cours via ID
-     * @param id
-     * @return
+     * @param id Id du cours à trouver dans la BDD
+     * @return Retourne le cours qui a été trouvé dans la BDD
      */
     @Override
     public Cours find(int id) {
@@ -112,7 +112,7 @@ public class CoursDAO extends DAO<Cours> {
     /**
      * trouver tous les cours
      * pour l'admin
-     * @return
+     * @return Retourne la liste des cours de la BDD
      */
     public ArrayList<Cours> findAllCours()
     {
@@ -133,7 +133,7 @@ public class CoursDAO extends DAO<Cours> {
     /**
      * Prend un String en paramètre et retourne une classe Cours 
      * il permet d'obtenir le cours en fonction de son nom 
-     * @param infos
+     * @param infos Nom du cours
      * @return 
      */
     public Cours findByName(String infos){

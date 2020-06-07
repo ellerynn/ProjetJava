@@ -23,10 +23,10 @@ public class Enseignant extends Utilisateur {
 
     /**
      * constructeur
-     * @param email
-     * @param password
-     * @param nom
-     * @param prenom
+     * @param email email de l'enseignant
+     * @param password mot de passe de l'enseignant
+     * @param nom nom de l'enseignant
+     * @param prenom prenom de l'enseignant
      */
     public Enseignant(String email, String password, String nom, String prenom) {
         //Un administrateur peut créer un nouvel enseignant
@@ -37,15 +37,15 @@ public class Enseignant extends Utilisateur {
     
     /**
      * retourne les cours de l'enseignant
-     * @return
+     * @return Retourne les cours de l'enseignant
      */
     public ArrayList<Cours> getCours(){
         return cours;
     }
     
     /**
-     * retourner les seances de l'enseignants
-     * @return
+     * retourne les seances de l'enseignants
+     * @return Retourne les séances de l'enseignant
      */
     public ArrayList<Seance> getSeances() {
         return seances;
@@ -53,7 +53,7 @@ public class Enseignant extends Utilisateur {
     
     /**
      * set les cours de l'enseignant
-     * @param cours
+     * @param cours l'ensemble des cours de l'enseignant
      */
     public void setCours(ArrayList<Cours> cours){
         this.cours = cours;
@@ -61,7 +61,7 @@ public class Enseignant extends Utilisateur {
     
     /**
      * set les seances de l'enseignant
-     * @param seances
+     * @param seances l'ensemble des séances de l'enseignant
      */
     public void setSeances(ArrayList<Seance> seances){
         this.seances = seances;
@@ -69,7 +69,7 @@ public class Enseignant extends Utilisateur {
     
     /**
      * ajouter un cours
-     * @param cours
+     * @param cours le cours à ajouter dans les cours de l'enseignant
      */
     public void ajouterCours(Cours cours) { //Un admin peut ajouter un cours à un enseignant
         this.cours.add(cours);        
@@ -77,7 +77,7 @@ public class Enseignant extends Utilisateur {
     
     /**
      * ajouter une seance
-     * @param seance
+     * @param seance la séance à ajouter dans les séances de l'enseignant
      */
     public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un enseignant
         this.seances.add(seance); 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class SeanceDAO extends DAO<Seance> {
     /**
-     * @param object
+     * @param object Seance à créer dans la BDD
      * @return une nouvelle seance
      */
     @Override
@@ -104,8 +104,8 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     /**
-     * @param object
-     * @return false
+     * @param object Seance à supprimer de la BDD
+     * @return boolean indiquant si cette seance a été supprimée ou pas
      */
     @Override
     public boolean delete(Seance object) {
@@ -113,8 +113,8 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param object
-     * @return une seance mise a jour
+     * @param object Seance à mettre à jours dans la BDD
+     * @return une seance qui été mise à jours
      */
     @Override
     public Seance update(Seance object) {
@@ -155,8 +155,8 @@ public class SeanceDAO extends DAO<Seance> {
     
     /**
      * find
-     * @param id
-     * @return seance via id
+     * @param id Id de la seance
+     * @return retourne la séance trouvée
      */
     @Override
     public Seance find(int id) {
@@ -227,9 +227,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param id
-     * @param semaine
-     * @return seance via id utilisateur et semaine
+     * @param id id de l'utilisateur
+     * @param semaine semaine des seances à trouver
+     * @return les seances via id utilisateur et semaine
      */
     public ArrayList<Seance> findSeancesByUserAndWeek(int id, int semaine){
         ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
@@ -274,11 +274,11 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param id
-     * @param jour
-     * @param mois
-     * @param annee
-     * @return seance via utilisateur et jour
+     * @param id id de l'utilisateur
+     * @param jour jours 
+     * @param mois mois
+     * @param annee annee 
+     * @return les seances via utilisateur et jour
      */
     public ArrayList<Seance> findSeancesByUserAndDay(int id, int jour, int mois, int annee){
         ArrayList<Seance> listSeancesbyDay = new ArrayList<>();
@@ -333,9 +333,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param id
-     * @param semaine
-     * @return seance via id groupe et semaine
+     * @param id id d'un groupe
+     * @param semaine semaine des séances à trouver
+     * @return les seances via id groupe et semaine
      */
     public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
     {
@@ -362,9 +362,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param id
-     * @param semaine
-     * @return seance via id promo et semaine
+     * @param id id de la promotion
+     * @param semaine semaine des séances à trouver
+     * @return les seances via id promo et semaine
      */
     public ArrayList<Seance> findSeancesByPromoAndWeek(int id, int semaine)
     {
@@ -392,9 +392,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param id
-     * @param semaine
-     * @return seance via id salle et semaine
+     * @param id id d'une salle
+     * @param semaine semaine des séances à trouver de la salle
+     * @return les seances via id salle et semaine
      */
     public ArrayList<Seance> findSeancesBySalle(int id, int semaine)
     {
@@ -422,9 +422,9 @@ public class SeanceDAO extends DAO<Seance> {
     }
        
     /**
-     * @param id
-     * @param debut
-     * @param fin
+     * @param id id de l'utilisateur
+     * @param debut heure de début
+     * @param fin heure de fin
      * @return toutes les seances d'un utilisateur dans l'ordre
      */
     public ArrayList<ArrayList<Seance>> findSeancesOfUserByDate(int id, String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
@@ -495,7 +495,12 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return seancesOrdered;
     }
-    
+    /**
+     * Trouve et retourne toute les séances sur une fourchette
+     * @param debut Heure de début
+     * @param fin Heure de fin
+     * @return Retourne toute les séances rangés par matière et groupes
+     */
      public ArrayList<ArrayList<Seance>> findAllSeancesByDate( String debut, String fin) //Le récapitulatif de la personne d'ID id en fonction de 2 dates
     {
         //Explication de cette array d'array:
@@ -509,7 +514,12 @@ public class SeanceDAO extends DAO<Seance> {
             if(result.first())
             {
                 String requete = new String();
-                requete = "SELECT Seance.ID FROM Seance\n";
+                requete = "SELECT Seance.ID FROM Seance " +
+                          "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
+                          "WHERE Seance.Date >= '" + debut + "' " +
+                          "AND Seance.Date <= '" + fin + "' " +
+                          "AND Seance.Etat = 2 " +
+                          "ORDER BY cours.Nom, Date, Heure_debut";
 
                 ResultSet resultSeances = connect.createStatement().executeQuery(requete);
             
@@ -548,9 +558,10 @@ public class SeanceDAO extends DAO<Seance> {
     
     
     /**
-     * @param fourreTout
-     * @param indice
-     * @param toCompare
+     * Méthode qui appel la méthode reccursive de trie, elle retourne une liste de séance avec même maitière et groupes
+     * @param fourreTout Liste comportant toute les séances qui faut trier
+     * @param indice Indice à laquelle il faut comparer
+     * @param toCompare La matière et les groupes à comparer
      * @return un array liste avec que les séances d'une matière avec les mêmes Groupes
      */
     public ArrayList<Seance> rec1 (ArrayList<Seance> fourreTout, int indice, ArrayList<Object> toCompare)
@@ -561,10 +572,12 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param fourreTout
-     * @param identique
-     * @param indice
-     * @param toCompare
+     * Méthode qui cherche toute les séances de même matière et groupes, une fois trouvé, 
+     * elle le stock dans une autre variable et le supprime de la liste à trié 
+     * @param fourreTout Liste comportant toute les séances qui faut trier
+     * @param identique la séance qui récupère tout les séances de même matière et groupes (données qui sont dans toCompare)
+     * @param indice Indice à laquelle il faut comparer
+     * @param toCompare La matière et les groupes à comparer
      */
     public void rec2 (ArrayList<Seance> fourreTout ,ArrayList<Seance> identique, int indice, ArrayList<Object> toCompare)
     {
@@ -611,7 +624,8 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param liste
+     * Méthode qui somme toute les durées de chaque séance entrée en paramètre
+     * @param liste Liste de séance
      * @return le nombre total d'heures des seances
      */
     public String heureTotalSeances(ArrayList<Seance> liste)
@@ -645,7 +659,7 @@ public class SeanceDAO extends DAO<Seance> {
     /**
      * trouver toutes les seances
      * pour admin
-     * @return
+     * @return Retourne toute les séances
      */
     public ArrayList<Seance> findAllSeances()
     {
@@ -664,10 +678,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * vérifie si le prof qu'on veut add est dispo et non en doublon
-     * @param seance
-     * @param id_enseignant
-     * @return 
+     * vérifie si le prof qu'on veut add est dispo et non en doublon pour cette séance
+     * @param seance Seance en question
+     * @param id_enseignant l'id de l'enseignant en question
+     * @return Retourne un boolean indiquant si ce prof peut être ajouter à cette séance
      */
     public boolean canIAjouterEnseignantSeance(Seance seance, int id_enseignant) {
         boolean youCan = false;
@@ -687,10 +701,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     /**
-     * vérifie si la salle a add est dispo et non doublon
-     * @param seance
-     * @param id_salle
-     * @return
+     * vérifie si la salle a add est dispo et non doublon pour cette séance
+     * @param seance la séance en question
+     * @param id_salle l'id de la salle en question 
+     * @return Retourne un boolean indiquant si cette salle peut être ajouter à cette séance
      */
     public boolean canIAjouterSalleSeance(Seance seance, int id_salle) {
         boolean youCan = false;
@@ -710,10 +724,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     /**
-     * vérifie si on peut add un groupe (dispo/non doublon/capa)
-     * @param seance
-     * @param id_groupe
-     * @return
+     * vérifie si on peut add un groupe (dispo/non doublon/capa) pour cette séance
+     * @param seance la séance en question
+     * @param id_groupe l'id du groupe en question
+     * @return Retourne un boolean indiquant si ce groupe peut être ajouter à cette séance
      */
     public boolean canIAjoutGroupeSeance(Seance seance, int id_groupe) {
         boolean youCan = false;
@@ -742,10 +756,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
  
     /**
-     * retourne true si un groupe a deja une seance prevue
-     * @param id_groupe
-     * @param seance
-     * @return
+     * Méthode qui vérifie si ce groupe est disponible pour cette séance
+     * @param id_groupe l'id du groupe en question
+     * @param seance la séance en question
+     * @return retourne true si ce groupe a deja une seance prevue
      */
     public Boolean isGroupNotFreeForThisSeance (int id_groupe, Seance seance ){
         try
@@ -770,10 +784,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
  
     /**
-     * retourne true si un enseignant a deja une seance prevue
-     * @param id_enseignant
-     * @param seance
-     * @return
+     * Méthode qui vérifie si cet enseignant est disponible pour cette séance
+     * @param id_enseignant id de l'enseignant en question
+     * @param seance la séance en question
+     * @return retourne true si cet enseignant a deja une seance prevue
      */
     public Boolean isTeacherNotFreeForThisSeance (int id_enseignant, Seance seance ){
         try
@@ -798,9 +812,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * @param id_salle
-     * @param seance
-     * @return true si une salle a deja une seance prevue
+     * Méthode qui vérifie si cette salle est disponible pour cette séance
+     * @param id_salle id de la salle en question
+     * @param seance la séance en question
+     * @return true si cette salle a deja une seance prevue
      */
     public Boolean isSalleNotFreeForThisSeance (int id_salle, Seance seance ){
         try
@@ -825,10 +840,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     /**
-     * ?????
-     * @param id_groupe
-     * @param id_seance
-     * @return
+     * Calcul le nombre d'étudiant d'un groupe ou des groupes d'une séance
+     * @param id_groupe id du groupe en question
+     * @param id_seance id de la seance en question
+     * @return Retourne le nombre d'étudiant d'un groupe ou des groupes d'une séance
      */
 
     public int find_capacite_groupes_total(int id_groupe, int id_seance ){
@@ -852,10 +867,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     /**
-     * ajouter un enesignant/groupe/salle
-     * @param idSeance
-     * @param idAutre
-     * @param table
+     * ajouter un enesignant/groupe/salle dans la BDD
+     * @param idSeance id de la séance en question
+     * @param idAutre id de la donnée (id d'un enseignant, groupe ou salle ) en question
+     * @param table id de la table dans la BDD en question
      */
     public void insertInJonction(int idSeance, int idAutre, int table)
     {
@@ -910,10 +925,10 @@ public class SeanceDAO extends DAO<Seance> {
     }
     
     /**
-     * supprimer un enseignant/groupe/salle
-     * @param idSeance
-     * @param idAutre
-     * @param table
+     * supprimer un enseignant/groupe/salle de la BDD
+     * @param idSeance id de la séance en question
+     * @param idAutre id de la donnée (id d'un enseignant, groupe ou salle ) en question
+     * @param table id de la table dans la BDD en question
      */
     public void DeleteInJonction(int idSeance, int idAutre, int table)
     {

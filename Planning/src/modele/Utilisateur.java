@@ -28,11 +28,11 @@ public class Utilisateur {
     
     /**
      * constructeur
-     * @param email
-     * @param password
-     * @param nom
-     * @param prenom
-     * @param droit
+     * @param email email de l'utilisateur
+     * @param password mot de passe de l'utilisateur
+     * @param nom nom de l'utilisateur
+     * @param prenom prenom de l'utilisateur
+     * @param droit droit de l'utilisateur
      */
     public Utilisateur(String email, String password, String nom, String prenom, int droit) { 
         //Un administrateur peut créer un nouvel utilisateur, id s'incrémente seul dans BDD
@@ -45,7 +45,7 @@ public class Utilisateur {
        
     /**
      * retourne l'id d'un utilisateur
-     * @return
+     * @return retourne l'id d'un utilisateur
      */
     public int getId() {
         return id;
@@ -53,7 +53,7 @@ public class Utilisateur {
     
     /**
      * retourne le droit d'un utilisateur
-     * @return
+     * @return retourne le droit d'un utilisateur
      */
     public int getDroit() {
         return droit;
@@ -61,7 +61,7 @@ public class Utilisateur {
     
     /**
      * retourne le nom d'un utilisateur
-     * @return
+     * @return retourne le nom d'un utilisateur
      */
     public String getNom() {
         return nom;
@@ -69,7 +69,7 @@ public class Utilisateur {
     
     /**
      * retourne le prenom d'un utilisateur
-     * @return
+     * @return retourne le prenom d'un utilisateur
      */
     public String getPrenom() {
         return prenom;
@@ -77,7 +77,7 @@ public class Utilisateur {
     
     /**
      * retourne le mail d'un utilisateur
-     * @return
+     * @return retourne le mail d'un utilisateur
      */
     public String getEmail() {
         return email;
@@ -85,7 +85,7 @@ public class Utilisateur {
     
     /**
      * retourne le mot de passe d'un utilisateur
-     * @return
+     * @return retourne le mot de passe d'un utilisateur
      */
     public String getPassword() {
         return password;
@@ -93,7 +93,7 @@ public class Utilisateur {
     
     /**
      * set l'id d'un utilisateur
-     * @param id
+     * @param id id d'un utilisateur
      */
     public void setId(int id) {
         this.id = id;
@@ -101,7 +101,7 @@ public class Utilisateur {
     
     /**
      * set le droit d'un utilisateur
-     * @param droit
+     * @param droit droit d'un utilisateur
      */
     public void setDroit(int droit) {
         this.droit = droit;
@@ -109,7 +109,7 @@ public class Utilisateur {
     
     /**
      * set le nom d'un utilisateur
-     * @param nom
+     * @param nom nom d'un utilisateur
      */
     public void setNom(String nom) {
         this.nom = nom;
@@ -117,7 +117,7 @@ public class Utilisateur {
     
     /**
      * set le prenom d'un utilisateur
-     * @param prenom
+     * @param prenom le prenom d'un utilisateur
      */
     public void setPrenom(String prenom) {
         this.prenom = prenom;
@@ -125,7 +125,7 @@ public class Utilisateur {
     
     /**
      * set le mail d'un utilisateur
-     * @param email
+     * @param email le mail d'un utilisateur
      */
     public void setEmail(String email) {
         this.email = email;
@@ -133,7 +133,7 @@ public class Utilisateur {
     
     /**
      *set le mot de passe d'un utilisateur
-     * @param password
+     * @param password le mot de passe d'un utilisateur
      */
     public void setPassword(String password) {
         this.password = password;
@@ -141,7 +141,7 @@ public class Utilisateur {
     
     /**
      * copie un utilisateur passé en paramètre
-     * @param utilisateur
+     * @param utilisateur Utilisateur à copier
      */
     public void copierUtilisateur(Utilisateur utilisateur){
         //Renommer SETUtilisateur ?
@@ -156,7 +156,7 @@ public class Utilisateur {
 
     /**
      * retourne this
-     * @return
+     * @return retourne this
      */
     public Utilisateur getUtilisateur(){ //Pour update
         //ESSAYER JUSTE CA : return this;

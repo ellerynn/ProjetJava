@@ -18,8 +18,8 @@ import modele.Utilisateur;
 public class EtudiantDAO extends DAO<Etudiant> {
     /**
      * create
-     * @param object
-     * @return
+     * @param object Etudiant à créer dans la BDD
+     * @return Retourne l'étudiant créé
      */
     @Override
     public Etudiant create(Etudiant object) {
@@ -61,8 +61,8 @@ public class EtudiantDAO extends DAO<Etudiant> {
 
     /**
      * delete
-     * @param object
-     * @return
+     * @param object Etudiant à supprimer
+     * @return Retourne un boolean indiquant si supprimer ou pas de la BDD
      */
     @Override
     public boolean delete(Etudiant object) {
@@ -71,8 +71,8 @@ public class EtudiantDAO extends DAO<Etudiant> {
 
     /**
      * update
-     * @param object
-     * @return
+     * @param object Etudiant à mettre à jours dans la BDD
+     * @return Retourne l'etudiant qui a été mise à jours
      */
     @Override
     public Etudiant update(Etudiant object) {
@@ -82,8 +82,8 @@ public class EtudiantDAO extends DAO<Etudiant> {
     /**
      * find
      * trouver etudiant via id
-     * @param id
-     * @return
+     * @param id Id de l'étudiant
+     * @return Retourne l'étudiant trouvé
      */
     @Override
     public Etudiant find(int id) {
@@ -133,8 +133,8 @@ public class EtudiantDAO extends DAO<Etudiant> {
     
     /**
      * trouver enseignants via id de son groupe
-     * @param id
-     * @return
+     * @param id Id d'un groupe
+     * @return Retourne un étudiant de ce groupe
      */
     public Etudiant findByGroup(int id) {
         Etudiant etudiant = new Etudiant();      
@@ -168,7 +168,7 @@ public class EtudiantDAO extends DAO<Etudiant> {
     /**
      * trouver tous les étudiants
      * pour l'admin
-     * @return
+     * @return Retourne tout les étudiants de la BDD
      */
     public ArrayList<Etudiant> findAllStudents()
     {

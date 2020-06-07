@@ -113,6 +113,7 @@ public class OngletHome extends JSplitPane {
     }
     
     /**
+     * retourne le bouton-lien dans Home vers l'edt par semaine dans Cours
      * @return le bouton-lien dans Home vers l'edt par semaine dans Cours
      */
     public JButton getBouton() {
@@ -120,6 +121,7 @@ public class OngletHome extends JSplitPane {
     }
     
     /**
+     * retourne le bouton de déconnexion dans Home
      * @return le bouton de déconnexion dans Home
      */
     public JButton getBoutonDeco() {
@@ -127,6 +129,7 @@ public class OngletHome extends JSplitPane {
     }
     
     /**
+     * retourne le JSpinner contenant la date dans l'onglet Home
      * @return le JSpinner contenant la date dans l'onglet Home
      */
     public JSpinner getDateHome() {
@@ -134,6 +137,7 @@ public class OngletHome extends JSplitPane {
     }
     
     /**
+     * retourne le Jtable contenant l'edt sur un jour dans l'onglet Home
      * @return le Jtable contenant l'edt sur un jour dans l'onglet Home
      */
     public JTable getTabCoursHome() {
@@ -141,7 +145,7 @@ public class OngletHome extends JSplitPane {
     }
     
     /**
-     *
+     * retourne le conteneur de l'edt home en grille
      * @return le conteneur de l'edt home en grille
      */
     public TableLabelRendererPanel getGrille() {

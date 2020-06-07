@@ -25,15 +25,14 @@ public class Etudiant extends Utilisateur {
     
     /**
      * constructeur
-     * @param email
-     * @param password
-     * @param nom
-     * @param prenom
-     * @param numero
-     * @param groupe
-     * @param promotion
+     * @param email email de l'étudiant
+     * @param password mot de passe de l'étudiant
+     * @param nom nom de l'étudiant
+     * @param prenom prenom de l'étudiant
+     * @param numero numero de l'étudiant
+     * @param groupe groupe de l'étudiant
      */
-    public Etudiant(String email, String password, String nom, String prenom, int numero, Groupe groupe, Promotion promotion) {
+    public Etudiant(String email, String password, String nom, String prenom, int numero, Groupe groupe) {
         //Un administrateur peut créer un nouvel étudiant
         super(email, password, nom, prenom, 4);
         this.numero = numero;
@@ -43,7 +42,7 @@ public class Etudiant extends Utilisateur {
     
     /**
      * retourne le numero etudiant
-     * @return
+     * @return retourne le numero etudiant
      */
     public int getNumero() {
         return numero;
@@ -51,7 +50,7 @@ public class Etudiant extends Utilisateur {
     
     /**
      * retourne le groupe etudiant
-     * @return
+     * @return retourne le groupe etudiant
      */
     public Groupe getGroupe() {
         return groupe;
@@ -59,7 +58,7 @@ public class Etudiant extends Utilisateur {
     
     /**
      * retourne les seances etudiant
-     * @return
+     * @return retourne les seances etudiant
      */
     public ArrayList<Seance> getSeances() {
         return seances;
@@ -67,7 +66,7 @@ public class Etudiant extends Utilisateur {
     
     /**
      * set le numero etudiant
-     * @param numero
+     * @param numero le numero etudiant
      */
     public void setNumero(int numero) {
         this.numero = numero;
@@ -75,7 +74,7 @@ public class Etudiant extends Utilisateur {
     
     /**
      * set le groupe etudiant
-     * @param groupe
+     * @param groupe le groupe etudiant
      */
     public void setGroupe(Groupe groupe) {
         this.groupe = groupe;
@@ -83,7 +82,7 @@ public class Etudiant extends Utilisateur {
     
     /**
      * set les seances etudiant
-     * @param seances
+     * @param seances les seances etudiant
      */
     public void setSeances(ArrayList<Seance> seances) {
         this.seances = seances;
@@ -91,7 +90,7 @@ public class Etudiant extends Utilisateur {
     
     /**
      * ajouter une seance
-     * @param seance
+     * @param seance la séance à ajouter parmi les séances
      */
     public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un étudiant
         this.seances.add(seance);

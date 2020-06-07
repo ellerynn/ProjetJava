@@ -164,9 +164,7 @@ public class SalleDAO extends DAO<Salle>{
         
         if(espace != -1) {
             String salle = infos.substring(0,espace);
-            System.out.println(salle + "/");
             String site = infos.substring(espace+1, infos.length());
-            System.out.println(site + "/");
             
             try {
                 ResultSet result=connect.createStatement()

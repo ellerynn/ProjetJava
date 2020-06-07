@@ -65,9 +65,6 @@ public class OngletServicePlanification extends JSplitPane {
     //Ajouter un cours
     private JTextField intitule;
     private JButton valider3;
-    //Supprimer un cours
-    private JComboBox<String> selectCours3;
-    private JButton supprimer;
     
     /**
      * constructeur
@@ -98,10 +95,7 @@ public class OngletServicePlanification extends JSplitPane {
         
         intitule = new JTextField();
         valider3 = new JButton("Valider");
-        
-        selectCours3 = new JComboBox<String>();
-        supprimer = new JButton("Supprimer");
-                
+                       
         //Liste des séances a droite
         JScrollPane container1 = new JScrollPane(listeSeances);
         remplirListe(listeSeances);
@@ -166,11 +160,10 @@ public class OngletServicePlanification extends JSplitPane {
         container2.add(type, c);
         
         c.gridx = 2;
-        //remplirComboBoxType(selectType);
         container2.add(selectType, c);
         
         c.gridy = 5; c.gridx = 1;
-        JLabel profs = new JLabel("Enseignants : ");
+        JLabel profs = new JLabel("Enseignants :                  ");
         container2.add(profs, c);
         
         c.gridx = 2;
@@ -181,8 +174,9 @@ public class OngletServicePlanification extends JSplitPane {
         JLabel salles = new JLabel("Salles : ");
         container2.add(salles, c);
         
+        c.fill = GridBagConstraints.BOTH;
         JScrollPane container3 = new JScrollPane(listeEnseignants);
-        listeEnseignants.setVisibleRowCount(2);
+        listeEnseignants.setVisibleRowCount(4);
         remplirListe(listeEnseignants);
 	c.insets = new Insets(5,0,10,10);  //padding
 	c.gridx = 1;       //aligned with date
@@ -191,18 +185,19 @@ public class OngletServicePlanification extends JSplitPane {
         container2.add(container3, c);
         
         JScrollPane container4 = new JScrollPane(listeGroupes);
-        listeGroupes.setVisibleRowCount(2);
+        listeGroupes.setVisibleRowCount(4);
         remplirListe(listeGroupes);
 	c.gridx = 2;       //aligned with date
         container2.add(container4, c);
         
         JScrollPane container5 = new JScrollPane(listeSalles);
-        listeSalles.setVisibleRowCount(2);
+        listeSalles.setVisibleRowCount(4);
         remplirListe(listeSalles);
         c.gridwidth = 2;
 	c.gridx = 3;       //aligned with date
         container2.add(container5, c);
         
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;  
         c.gridx = 7;
         c.gridy = 6;
@@ -272,8 +267,9 @@ public class OngletServicePlanification extends JSplitPane {
         JLabel salles2 = new JLabel("Salles : ");
         container2.add(salles2, c);
         
+        c.fill = GridBagConstraints.BOTH;
         JScrollPane container6 = new JScrollPane(listeEnseignants2);
-        listeEnseignants2.setVisibleRowCount(2);
+        listeEnseignants2.setVisibleRowCount(4);
         remplirListe(listeEnseignants2);
 	c.insets = new Insets(5,0,10,10);  //padding
 	c.gridx = 1;       //aligned with date
@@ -281,18 +277,19 @@ public class OngletServicePlanification extends JSplitPane {
         container2.add(container6, c);
         
         JScrollPane container7 = new JScrollPane(listeGroupes2);
-        listeGroupes2.setVisibleRowCount(2);
+        listeGroupes2.setVisibleRowCount(4);
         remplirListe(listeGroupes2);
 	c.gridx = 2;       //aligned with date
         container2.add(container7, c);
         
         JScrollPane container8 = new JScrollPane(listeSalles2);
-        listeSalles2.setVisibleRowCount(2);
+        listeSalles2.setVisibleRowCount(4);
         remplirListe(listeSalles2);
         c.gridwidth = 2;   //2 columns wide
 	c.gridx = 3;       //aligned with date
         container2.add(container8, c);  
         
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;  
         c.gridx = 7;
         c.gridy = 13;
@@ -321,24 +318,6 @@ public class OngletServicePlanification extends JSplitPane {
         c.gridy = 15;
         c.insets = new Insets(0,0,0,10);
         container2.add(valider3, c);
-        
-        /***********************************SUPPRIMER UN COURS***********************************/
-        c.insets = new Insets(0,10,0,0);
-        JLabel titre4 = new JLabel("Supprimer un cours"); //JLabel titre
-
-        c.gridx = 0; c.gridy = 16; //Position
-        container2.add(titre4, c); //Ajout au conteneur
-        
-        c.insets = new Insets(0,0,0,0);
-        remplirComboBox(selectCours3, "Veuillez sélectionner", "Cours");
-        c.gridx = 1; c.gridy = 17; c.gridwidth = 1; //On décalle tout de 1
-        container2.add(selectCours3, c);
-        
-        c.gridwidth = 1;  
-        c.gridx = 7;
-        c.gridy = 17;
-        c.insets = new Insets(0,0,0,10);
-        container2.add(supprimer, c);
                 
         this.setLeftComponent(container2);
         

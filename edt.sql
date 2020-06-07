@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  sam. 06 juin 2020 à 10:53
+-- Généré le :  Dim 07 juin 2020 à 18:54
 -- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.3.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `cours` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Nom` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `cours`
@@ -42,7 +42,9 @@ CREATE TABLE IF NOT EXISTS `cours` (
 INSERT INTO `cours` (`ID`, `Nom`) VALUES
 (1, 'Web dynamique'),
 (2, 'Java'),
-(3, 'C++');
+(3, 'C++'),
+(4, 'Mathématiques'),
+(5, 'Physique');
 
 -- --------------------------------------------------------
 
@@ -152,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `promotion` (
 
 INSERT INTO `promotion` (`ID`, `Nom`) VALUES
 (1, 'Ing1'),
-(2, 'Ing1'),
+(2, 'Ing2'),
 (3, 'Ing3');
 
 -- --------------------------------------------------------
@@ -202,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `seance` (
   PRIMARY KEY (`ID`),
   KEY `ID_cours` (`ID_cours`),
   KEY `ID_type` (`ID_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `seance`
@@ -227,7 +229,13 @@ INSERT INTO `seance` (`ID`, `Semaine`, `Date`, `Heure_debut`, `Heure_fin`, `Etat
 (16, 22, '2020-05-26', '15:45:00', '17:15:00', 1, 3, 3),
 (17, 22, '2020-05-25', '14:00:00', '15:30:00', 2, 1, 1),
 (18, 21, '2020-05-19', '10:15:00', '11:45:00', 2, 2, 4),
-(19, 22, '2020-05-26', '15:30:00', '17:00:00', 2, 3, 3);
+(19, 22, '2020-05-26', '15:30:00', '17:00:00', 2, 3, 3),
+(20, 24, '2020-06-08', '15:30:00', '17:00:00', 2, 4, 2),
+(21, 24, '2020-06-09', '15:30:00', '17:00:00', 2, 5, 3),
+(22, 24, '2020-06-09', '16:00:00', '17:30:00', 2, 2, 6),
+(23, 24, '2020-06-09', '17:45:00', '19:15:00', 2, 2, 6),
+(24, 23, '2020-06-02', '11:45:00', '13:15:00', 2, 3, 3),
+(25, 24, '2020-06-10', '18:30:00', '20:00:00', 2, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -266,7 +274,14 @@ INSERT INTO `seance_enseignants` (`ID_seance`, `ID_enseignant`) VALUES
 (16, 17),
 (17, 17),
 (18, 18),
-(19, 18);
+(19, 18),
+(20, 2),
+(21, 16),
+(22, 2),
+(23, 2),
+(23, 16),
+(24, 16),
+(25, 18);
 
 -- --------------------------------------------------------
 
@@ -308,7 +323,15 @@ INSERT INTO `seance_groupes` (`ID_seance`, `ID_groupe`) VALUES
 (16, 1),
 (17, 1),
 (18, 6),
-(19, 2);
+(19, 2),
+(20, 2),
+(21, 2),
+(22, 1),
+(23, 1),
+(23, 2),
+(24, 4),
+(25, 3),
+(25, 4);
 
 -- --------------------------------------------------------
 
@@ -340,13 +363,25 @@ INSERT INTO `seance_salles` (`ID_seance`, `ID_salle`) VALUES
 (8, 2),
 (9, 5),
 (10, 6),
+(11, 3),
+(12, 2),
 (13, 1),
 (13, 2),
 (14, 5),
 (15, 1),
+(16, 4),
 (17, 6),
 (18, 3),
-(19, 5);
+(19, 5),
+(20, 1),
+(20, 2),
+(21, 4),
+(22, 1),
+(22, 2),
+(23, 1),
+(23, 2),
+(24, 3),
+(25, 2);
 
 -- --------------------------------------------------------
 

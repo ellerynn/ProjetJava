@@ -532,7 +532,7 @@ public class Fenetre extends JFrame {
      * rempli la combobox avec les groupes de la BDD
      */
     public void remplirListGroupes(){//Je ne sais pas s'il y a myn de fusionner avec remplirComboGroupes
-        ArrayList<String> ttLesGrps = controle.allGroupsToStrings();
+        ArrayList<String> ttLesGrps = controle.allGroupsToStrings();        
         edt.setGroupes(ttLesGrps);
     }
     

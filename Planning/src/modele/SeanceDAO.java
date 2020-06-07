@@ -657,7 +657,6 @@ public class SeanceDAO extends DAO<Seance> {
                 System.out.println("Impossible d'ajouter car cet enseignant est occupé à ce créneau");
             }else{
                     youCan = true;
-                    System.out.println("Possible d'add cet enseignant ! ");
             }         
         }
         else {

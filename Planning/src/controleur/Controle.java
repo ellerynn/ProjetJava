@@ -247,8 +247,9 @@ public class Controle {
         ArrayList<Groupe> groupes = recupGroupes();
         ArrayList<String> gp = new ArrayList<>();
         
-        for(int i=0;i<groupes.size();i++)
+        for(int i=0;i<groupes.size();i++) {
             gp.add(groupes.get(i).getNom() + " " + groupes.get(i).getPromotion().getNom());
+        }
          
         return gp;
     }
@@ -377,7 +378,12 @@ public class Controle {
         SeanceDAO sDAO = new SeanceDAO();
         Utilisateur u = recupUtilisateur(email, password);
         ArrayList<ChartPanel> t = new ArrayList();
-        ArrayList<ArrayList<Seance>> seancesheure = sDAO.findAllSeancesByDate(debut, fin);//heure
+        ArrayList<ArrayList<Seance>> seancesheure = new ArrayList<>();
+        if(u.getId() == 1)
+            seancesheure = sDAO.findAllSeancesByDate(debut, fin);//heure
+        else
+            seancesheure = sDAO.findSeancesOfUserByDate(u.getId(), debut, fin);
+        
         int calculheuretotal = 0; //heure
         int comparaison = 0;
         
@@ -388,8 +394,8 @@ public class Controle {
         DefaultPieDataset pieDataset5 = new DefaultPieDataset();//heure
         
         for (int i = 0 ; i <salles.size(); i++){ //GRAPHE 1
-            pieDataset.setValue("Site: "+salles.get(i).getSite().getNom()+","+salles.get(i).getNom()+",Capacité :"+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
-           }
+            pieDataset.setValue(salles.get(i).getSite().getNom()+","+salles.get(i).getNom()+","+salles.get(i).getCapacite(), new Integer(salles.get(i).getCapacite()));
+        }
 
         
         for (int i = 0 ; i <seancesheure.size(); i++){ //GRAPHE 2
@@ -406,18 +412,18 @@ public class Controle {
             if (i+1 < seancesheure.size() ){
                 if(!seancesheure.get(i+1).get(0).getCours().getNom().equals(seancesheure.get(i).get(0).getCours().getNom())){
                     if(calculheuretotal!=0)
-                        pieDataset5.setValue(" Nombre d'Heure total du cours "+ seancesheure.get(i).get(0).getCours().getNom()+" est: "+ comparaison + "h"+calculheuretotal, new Integer(comparaison));
+                        pieDataset5.setValue(seancesheure.get(i).get(0).getCours().getNom()+", "+ comparaison + "h"+calculheuretotal, new Integer(comparaison));
                     if(calculheuretotal==0)
-                        pieDataset5.setValue(" Nombre d'Heure total du cours "+ seancesheure.get(i).get(0).getCours().getNom()+" est: "+ comparaison+"h", new Integer(comparaison));
+                        pieDataset5.setValue(seancesheure.get(i).get(0).getCours().getNom()+", "+ comparaison+"h", new Integer(comparaison));
                     comparaison=0;
                     calculheuretotal=0;
                 }   
             }
             if(i == seancesheure.size()-1){
                if(calculheuretotal!=0)
-                   pieDataset5.setValue(" Nombre d'Heure total du cours "+ seancesheure.get(i).get(0).getCours().getNom()+" est: "+ comparaison + "h"+calculheuretotal, new Integer(comparaison));
+                   pieDataset5.setValue(seancesheure.get(i).get(0).getCours().getNom()+", "+ comparaison + "h"+calculheuretotal, new Integer(comparaison));
                if(calculheuretotal==0)
-                   pieDataset5.setValue(" Nombre d'Heure total du cours "+ seancesheure.get(i).get(0).getCours().getNom()+" est: "+ comparaison+"h", new Integer(comparaison));
+                   pieDataset5.setValue(seancesheure.get(i).get(0).getCours().getNom()+", "+ comparaison+"h", new Integer(comparaison));
                comparaison=0;
                calculheuretotal=0;
             }  
@@ -425,12 +431,12 @@ public class Controle {
             }     
 
         //Second panel = deux graphes
-        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour tous les sites", pieDataset, true, true, true);//eiffel 1
+        JFreeChart chart = ChartFactory.createPieChart("Capacité des salles", pieDataset, true, true, true);//eiffel 1
         PiePlot P=(PiePlot)chart.getPlot();
         ChartPanel p = new ChartPanel(chart);
         c.add(p); 
         
-        JFreeChart chart5 = ChartFactory.createPieChart("Nombres d'heures total d'un cours dans un semestre", pieDataset5, true, true, true);//eiffel 1
+        JFreeChart chart5 = ChartFactory.createPieChart("Nombre total d'heures", pieDataset5, true, true, true);//eiffel 1
         PiePlot P5=(PiePlot)chart5.getPlot();
         ChartPanel p5 = new ChartPanel(chart5);
         c.add(p5);
@@ -459,12 +465,12 @@ public class Controle {
             if (i+1 < seances.size() ){
                 if(!seances.get(i+1).get(0).getCours().getNom().equals(seances.get(i).get(0).getCours().getNom())){
                     //On peut prendre j = 0 car pour tout j il aura le même nom
-                    pieDataset3.setValue("Séance : "+seances.get(i).get(0).getCours().getNom()+" Nombre de séances: " + compteur, new Integer(compteur));
+                    pieDataset3.setValue(seances.get(i).get(0).getCours().getNom()+", " + compteur + " séance(s)", new Integer(compteur));
                     compteur=0;
                 }
             }
             if(i == seances.size()-1){
-                pieDataset3.setValue("Séance : "+seances.get(i).get(0).getCours().getNom()+" Nombre de séances: " + compteur, new Integer(compteur));
+                pieDataset3.setValue(seances.get(i).get(0).getCours().getNom()+", "+ compteur + " séance(s)", new Integer(compteur));
                 compteur=0;
             } 
         }
@@ -487,7 +493,7 @@ public class Controle {
                     if(!seances2.get(l+1).get(0).getCours().getNom().equals(seances2.get(l).get(0).getCours().getNom())){
                         //On peut prendre j = 0 car pour tout j il aura le même nom
                         if(pas_afficher==0){
-                            pieDataset4.setValue("Séance : "+seances2.get(l).get(0).getCours().getNom()+" Nombre de séances: " + compteur2, new Integer(compteur2));
+                            pieDataset4.setValue(seances2.get(l).get(0).getCours().getNom()+", " + compteur2 + " séance(s)", new Integer(compteur2));
                             compteur2=0;
                         }else
                             pas_afficher=0;
@@ -495,7 +501,7 @@ public class Controle {
                 }
                 if(l == seances2.size()-1){
                     if(pas_afficher==0){
-                        pieDataset4.setValue("Séance : "+seances2.get(l).get(0).getCours().getNom()+" Nombre de séances: " + compteur2, new Integer(compteur2));
+                        pieDataset4.setValue(seances2.get(l).get(0).getCours().getNom()+", " + compteur2 + " séance(s)", new Integer(compteur2));
                         compteur2=0;
                     }
                     else
@@ -504,13 +510,13 @@ public class Controle {
         }
 
         if(!seances.isEmpty()) {
-            JFreeChart chart2 = ChartFactory.createPieChart("Nombres de séances par cours", pieDataset3, true, true, true);
+            JFreeChart chart2 = ChartFactory.createPieChart("Nombre total de séances", pieDataset3, true, true, true);
             PiePlot P3 =(PiePlot)chart2.getPlot();
             ChartPanel p3 = new ChartPanel(chart2);
             t.add(p3);
         }
         if(!seances2.isEmpty()) {
-            JFreeChart chart4 = ChartFactory.createPieChart("Nombres de séances par cours restant de l'année", pieDataset4, true, true, true);
+            JFreeChart chart4 = ChartFactory.createPieChart("Séances restantes cette année", pieDataset4, true, true, true);
             PiePlot P4 =(PiePlot)chart4.getPlot();
             ChartPanel p4 = new ChartPanel(chart4);
             t.add(p4);
@@ -530,7 +536,7 @@ public class Controle {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         Utilisateur u = new Utilisateur();
         if(pos != -1) {
-            String prenom = recherche.substring(0, pos-1);
+            String prenom = recherche.substring(0, pos);
             String nom = recherche.substring(pos+1);
             u = uDAO.findByName(prenom, nom);
         }
@@ -690,7 +696,6 @@ public class Controle {
         if (okForCreate) //Si tout les conditions sont réunis, on create, si il y a eu un faux, on ne create pas.
         {
             seance = sDAO.create(seance);
-            System.out.println("Ajouter avec succes");
             majAllSeances();
         }
         else {
@@ -1965,7 +1970,6 @@ public class Controle {
         Cours monCours = new Cours();
         monCours.setNom(name);
         monCours = cDAO.create(monCours);
-        System.out.println("matière ajouté avec succès");
         fenetre.remplirComboCours();
     }
 }

@@ -144,8 +144,6 @@ public class Utilisateur {
      * @param utilisateur Utilisateur à copier
      */
     public void copierUtilisateur(Utilisateur utilisateur){
-        //Renommer SETUtilisateur ?
-        //Essayer this = utilisateur;
         id = utilisateur.getId();
         email = utilisateur.getEmail();
         password = utilisateur.getPassword();
@@ -159,7 +157,6 @@ public class Utilisateur {
      * @return retourne this
      */
     public Utilisateur getUtilisateur(){ //Pour update
-        //ESSAYER JUSTE CA : return this;
         Utilisateur user = new Utilisateur(email, password, nom, prenom, droit);
         user.setId(getId());
         return user;

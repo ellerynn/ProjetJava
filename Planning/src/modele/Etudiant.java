@@ -24,23 +24,6 @@ public class Etudiant extends Utilisateur {
     }
     
     /**
-     * constructeur
-     * @param email email de l'étudiant
-     * @param password mot de passe de l'étudiant
-     * @param nom nom de l'étudiant
-     * @param prenom prenom de l'étudiant
-     * @param numero numero de l'étudiant
-     * @param groupe groupe de l'étudiant
-     */
-    public Etudiant(String email, String password, String nom, String prenom, int numero, Groupe groupe) {
-        //Un administrateur peut créer un nouvel étudiant
-        super(email, password, nom, prenom, 4);
-        this.numero = numero;
-        this.groupe = groupe;
-        seances = new ArrayList();
-    }
-    
-    /**
      * retourne le numero etudiant
      * @return retourne le numero etudiant
      */
@@ -86,13 +69,5 @@ public class Etudiant extends Utilisateur {
      */
     public void setSeances(ArrayList<Seance> seances) {
         this.seances = seances;
-    }
-    
-    /**
-     * ajouter une seance
-     * @param seance la séance à ajouter parmi les séances
-     */
-    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un étudiant
-        this.seances.add(seance);
     }
 }

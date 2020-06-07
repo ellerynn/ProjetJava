@@ -19,14 +19,6 @@ public class Site {
     }
     
     /**
-     * constructeur
-     * @param nom Nom du site
-     */
-    public Site(String nom) {
-        this.nom = nom;
-    }
-    
-    /**
      * retourne id site
      * @return retourne id site
      */

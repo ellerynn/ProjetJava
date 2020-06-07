@@ -500,7 +500,6 @@ public class OngletSalles extends JTabbedPane {
         
         ((DefaultTableModel) listeEdt.getModel()).setColumnCount(1);
         ((DefaultTableModel) listeEdt.getModel()).setRowCount(dates.length);
-        System.out.println("lignes " + dates.length);
         
         for(int i=0;i<dates.length;i++)
             listeEdt.setValueAt(dates[i], i, 0);

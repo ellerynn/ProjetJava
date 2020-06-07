@@ -21,14 +21,6 @@ public class TypeCours {
     }
     
     /**
-     * constructeur
-     * @param nom Nom du type de cours
-     */
-    public TypeCours (String nom) {
-        this.nom = nom;
-    }
-    
-    /**
      * retourne l'id d'un type de cours
      * @return retourne l'id d'un type de cours
      */

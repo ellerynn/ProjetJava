@@ -65,12 +65,13 @@ public class OngletHome extends JSplitPane {
         c.gridx = 1;
         container1.add(date, c);
         
-        linkCours.setIcon(new ImageIcon("images\\icon_redimensionner.png")); //Ajout d'une image dans le bouton
         c.gridx = 2;
         c.anchor = GridBagConstraints.LINE_END;
         c.fill = GridBagConstraints.NONE;
-        linkCours.setMaximumSize(new Dimension(10,10)); //MARCHE PAS ???
-        c.insets = new Insets(10,100,10,10);
+        linkCours.setIcon(new ImageIcon("images\\icon_redimensionner.png")); //Ajout d'une image dans le bouton
+        linkCours.setPreferredSize(new Dimension(15,15));
+        linkCours.setMaximumSize(new Dimension(15,15));
+        linkCours.setMinimumSize(new Dimension(15,15));
         container1.add(linkCours, c);
         
         setEdt();
@@ -99,7 +100,9 @@ public class OngletHome extends JSplitPane {
         t.fill = GridBagConstraints.NONE;
         t.anchor = GridBagConstraints.LINE_END;
         t.weightx = 1;
-        //deconnexion.setMaximumSize(new Dimension(25,25));
+        deconnexion.setMaximumSize(new Dimension(25,25));
+        deconnexion.setPreferredSize(new Dimension(25,25));
+        deconnexion.setMinimumSize(new Dimension(25,25));
         container2.add(deconnexion, t);
         
         t.gridy = 1; t.gridx = 0;
@@ -204,9 +207,7 @@ public class OngletHome extends JSplitPane {
         graphes.setLayout(new GridBagLayout()); //Initialisation du container
         GridBagConstraints g = new GridBagConstraints(); //Contraintes d'ajout des composants
         g.fill = GridBagConstraints.BOTH;
-        //t.insets = new Insets(10,10,10,10);
         g.gridx = 0; g.gridy = 0;
-        //t.anchor = GridBagConstraints.FIRST_LINE_START;
         g.weightx = 1; g.weighty = 1;
         
         graphes.setBackground(Color.yellow);
@@ -214,14 +215,12 @@ public class OngletHome extends JSplitPane {
         for(int i=0;i<c.size();i++) {
             graphes.add(c.get(i), g);
             g.gridx++;
-            //System.out.println("gridx = " + g.gridx);
         }
         
         g.gridy = 1; g.gridx = 0;
         for(int i=0;i<t.size();i++) {
             graphes.add(t.get(i), g);
             g.gridx++;
-            //System.out.println("gridx = " + g.gridx);
         }
     }
 }

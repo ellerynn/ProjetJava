@@ -37,20 +37,6 @@ public class Salle {
     }
     
     /**
-     * cosntructeur
-     * @param nom Nom de la salle
-     * @param capacite capacité de la salle
-     * @param site site de la salle
-     */
-    public Salle(String nom, int capacite, Site site) {
-        //Un administrateur peut créer une nouvelle salle
-        this.nom = nom;
-        this.capacite = capacite;
-        this.site = site;
-        seances = new ArrayList<>();
-    }
-    
-    /**
      * retourne id salle
      * @return retourne id salle
      */
@@ -75,15 +61,13 @@ public class Salle {
     }
     
     /**
-     * retourne site salle
      * @return retourne site salle
      */
     public Site getSite() {
         return site;
     }
 
-    /** retourne seances salle
-     *
+    /** 
      * @return retourne seances salle
      */
     public ArrayList<Seance> getSeances() {
@@ -120,13 +104,5 @@ public class Salle {
      */
     public void setSite(Site site) {
         this.site = site;
-    }
-    
-    /**
-     * ajouter seance
-     * @param seance seance à ajouter parmis les séances de la salle
-     */
-    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à une salle
-        this.seances.add(seance);
     }
 }

@@ -20,20 +20,6 @@ public class Enseignant extends Utilisateur {
         cours = new ArrayList<>();
         seances = new ArrayList<>();
     }
-
-    /**
-     * constructeur
-     * @param email email de l'enseignant
-     * @param password mot de passe de l'enseignant
-     * @param nom nom de l'enseignant
-     * @param prenom prenom de l'enseignant
-     */
-    public Enseignant(String email, String password, String nom, String prenom) {
-        //Un administrateur peut créer un nouvel enseignant
-        super(email, password, nom, prenom, 3);
-        cours = new ArrayList<>();
-        seances = new ArrayList<>();
-    }
     
     /**
      * retourne les cours de l'enseignant
@@ -52,14 +38,6 @@ public class Enseignant extends Utilisateur {
     }
     
     /**
-     * set les cours de l'enseignant
-     * @param cours l'ensemble des cours de l'enseignant
-     */
-    public void setCours(ArrayList<Cours> cours){
-        this.cours = cours;
-    }
-    
-    /**
      * set les seances de l'enseignant
      * @param seances l'ensemble des séances de l'enseignant
      */
@@ -73,13 +51,5 @@ public class Enseignant extends Utilisateur {
      */
     public void ajouterCours(Cours cours) { //Un admin peut ajouter un cours à un enseignant
         this.cours.add(cours);        
-    }
-    
-    /**
-     * ajouter une seance
-     * @param seance la séance à ajouter dans les séances de l'enseignant
-     */
-    public void ajouterSeance(Seance seance) { //Un admin peut ajouter une séance à un enseignant
-        this.seances.add(seance); 
     }
 }

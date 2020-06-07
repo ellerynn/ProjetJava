@@ -83,10 +83,7 @@ public class GroupeDAO extends DAO<Groupe> {
             DAO<Promotion> promotionDAO = new PromotionDAO();
             Promotion pro = object.getPromotion();
             pro = promotionDAO.find(pro.getId());
-            promotionDAO.update(pro);
-                  
-            
-                
+            promotionDAO.update(pro);   
         } catch (SQLException e) {
                 e.printStackTrace();
         }
@@ -201,17 +198,9 @@ public class GroupeDAO extends DAO<Groupe> {
                 while(result.next()) {
                     GroupeDAO gDAO = new GroupeDAO();
                     group = gDAO.find(result.getInt("ID"));
-                      /*                  
-                    PromotionDAO pDAO = new PromotionDAO();
-                    Promotion promo = pDAO.find(result.getInt("ID_promotion"));
-                    group.setPromotion(promo);
-                                        */
                     groupes.add(group);
                 }
             }
-            
-            /*for(Groupe s : groupes)
-                System.out.println("groupe " + s.getNom() + " promo " + s.getPromotion().getNom());*/
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -220,6 +209,7 @@ public class GroupeDAO extends DAO<Groupe> {
                
         return groupes;
     }
+    
     /**
      * Prend un String en paramètre et une classe Groupe, 
      * il permet d'obtenir un groupe en fonction du nom du groupe et de sa promotion

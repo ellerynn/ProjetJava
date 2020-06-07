@@ -17,14 +17,6 @@ public class Promotion {
         id = 0;
         nom = new String();
     }
-
-    /**
-     * constructeur
-     * @param nom Nom de la promotion
-     */
-    public Promotion(String nom) {
-        this.nom = nom;
-    }
     
     /**
      * retourne id promo

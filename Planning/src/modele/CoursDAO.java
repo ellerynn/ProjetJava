@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import modele.Cours;
 
 /**
  *
@@ -130,11 +129,12 @@ public class CoursDAO extends DAO<Cours> {
         }
         return cours;
     }
+    
     /**
      * Prend un String en paramètre et retourne une classe Cours 
      * il permet d'obtenir le cours en fonction de son nom 
      * @param infos Nom du cours
-     * @return 
+     * @return un cours selon son nom
      */
     public Cours findByName(String infos){
         try {

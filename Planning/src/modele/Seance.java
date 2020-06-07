@@ -215,30 +215,6 @@ public class Seance {
     }
     
     /**
-     * set les enseignants de la seance
-     * @param enseignants les enseignants de la seance
-     */
-    public void setEnseignants(ArrayList<Enseignant> enseignants) {
-        this.enseignants = enseignants;
-    }
-    
-    /**
-     * set les groupes de la seance
-     * @param groupes les groupes de la seance
-     */
-    public void setGroupes(ArrayList<Groupe> groupes) {
-        this.groupes = groupes;
-    }
-    
-    /**
-     * set salles seances
-     * @param salles les salles de la séances
-     */
-    public void setSalles(ArrayList<Salle> salles) {
-        this.salles = salles;
-    }
-    
-    /**
      * ajouter enseignant
      * @param enseignant enseignant à ajouter dans séance
      */
@@ -333,7 +309,7 @@ public class Seance {
         {
             if(groupes.get(i).getId() == id)
             {
-                i = 100; //???
+                i = 100; 
                 return true;
             }
         }

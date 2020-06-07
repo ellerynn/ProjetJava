@@ -358,11 +358,7 @@ public class Controle {
      * @param password mot de passe de l'utilisateur
      */
     public void creationGraphe(String email, String password) {
-/////////////////////////////////////////PREMIER PANEL
-////////////////////////////////////////
-///////////////////////////////////////
-//////////////////////////////////////GRAPHES SITES
-/////////////////////////////////////DEBUT DECLARATION
+        //Premier panel = deux graphes
         ArrayList<Salle> salles = recupAllSalles();
         ArrayList<String> sites = allSitesToStrings();
         ArrayList<ChartPanel> c = new ArrayList<>();
@@ -381,16 +377,14 @@ public class Controle {
         SeanceDAO sDAO = new SeanceDAO();
         Utilisateur u = recupUtilisateur(email, password);
         ArrayList<ChartPanel> t = new ArrayList();
-        //ArrayList<ArrayList<Seance>> seancesheure = sDAO.findSeancesOfUserByDate(1, debut, fin);//heure
         ArrayList<ArrayList<Seance>> seancesheure = sDAO.findAllSeancesByDate(debut, fin);//heure
         int calculheuretotal = 0; //heure
         int comparaison = 0;
         
         ArrayList<ArrayList<Seance>> seances;
         ArrayList<ArrayList<Seance>> seances2;
-/////////////////////////////FIN DECLARATION
         
-        DefaultPieDataset pieDataset = new DefaultPieDataset();//eiffel 1
+        DefaultPieDataset pieDataset = new DefaultPieDataset();//salles
         DefaultPieDataset pieDataset5 = new DefaultPieDataset();//heure
         
         for (int i = 0 ; i <salles.size(); i++){ //GRAPHE 1
@@ -430,10 +424,7 @@ public class Controle {
                 
             }     
 
-/////////////////////////////////////////DEUXIEME PANEL
-////////////////////////////////////////
-///////////////////////////////////////
-
+        //Second panel = deux graphes
         JFreeChart chart = ChartFactory.createPieChart("Capacité des salles pour tous les sites", pieDataset, true, true, true);//eiffel 1
         PiePlot P=(PiePlot)chart.getPlot();
         ChartPanel p = new ChartPanel(chart);
@@ -548,14 +539,13 @@ public class Controle {
             u = uDAO.findForSearch(recherche);
         }
         
-        if(u.getId() != 0)
-        {
+        if(u.getId() != 0) {
             //On a trouvé la personne, on selectionne par défaut dans le menu des users dans l'onglet cours
             //ça enclenche le listener du menu user, qui va update la séance de ce user
             return u.getPrenom()+" "+u.getNom();
-        }else
+        }
+        else
             return null;
-            
     }
     
     /**
@@ -702,7 +692,8 @@ public class Controle {
             seance = sDAO.create(seance);
             System.out.println("Ajouter avec succes");
             majAllSeances();
-        }else{
+        }
+        else {
             System.out.println("La seance n'a pas été ajouté");
         }
     }
@@ -719,7 +710,7 @@ public class Controle {
      * Demande de la vue pour savoir quelles sont les informations qui doivent être séléctionner dans le vue dans l'ongletGererCoursSP
      * en fournissant au controleur l'id de cette séance
      * @param id_seance id de la séance
-     * @return ArrayList<Object> Retourne l'ensemble des infos d'une séance à être sélectionner si l'admin clique sur une séance dans la liste
+     * @return ArrayList Retourne l'ensemble des infos d'une séance à être sélectionner si l'admin clique sur une séance dans la liste
      */
     public ArrayList<Object> demandeInfosSelectedSeance(int id_seance)
     {   //de la vue au controleur
@@ -786,7 +777,6 @@ public class Controle {
             //Etape 2 Changement de données
             if(okEtat && okEnseignants && okGroupesSalles)
             {  
-                System.out.println("Verification RAS, modification des données OK pous séance : "+idSeance);
                 //Changement de données dans la variable seance (localement) et dans celui BDD
                 //Etat est déjà set localement
                 setSeanceEnseignants(seance,(ArrayList<String>)strings.get(6));
@@ -902,36 +892,33 @@ public class Controle {
         }
         //Si tout est bon nv horaire (si on a pas quitté la méthode)
         //Cas groupes
-        if(sallesSelected.isEmpty()) //Si aucune salle n'est selectionné, pas bsn de vérif capa groupe et salle
-        {
-            System.out.println("oui");
+        if(sallesSelected.isEmpty()) { //Si aucune salle n'est selectionné, pas bsn de vérif capa groupe et salle
             okForGrps = true;
-        }else{ //Si des salles sont déjà affectés à cette séance, on est oblgés de vérifier la capacité
-            if(capaciteGroupe <= capaciteSalle) //Capa groupe doit être <= capa salles
-            {
+        }
+        else { //Si des salles sont déjà affectés à cette séance, on est oblgés de vérifier la capacité
+            if(capaciteGroupe <= capaciteSalle) { //Capa groupe doit être <= capa salles
                 okForGrps = true;
-            }else{
+            }
+            else {
                 System.out.println("Ensemble de groupe trop grand");
             }
         }
         //Cas salles
-        if(groupesSelected.isEmpty()) 
-        {   
+        if(groupesSelected.isEmpty()) {   
             okForSalles = true;
-        }else if(!sallesSelected.isEmpty()){ //Si des groupes sont dans cette séance
-            if(capaciteSalle >= capaciteGroupe) //On vérifie si toute les salles peuvent supporter le nb
-            {   //Si les salles supportent les groupes
+        }
+        else if(!sallesSelected.isEmpty()) { //Si des groupes sont dans cette séance
+            if(capaciteSalle >= capaciteGroupe) { //On vérifie si toute les salles peuvent supporter le nb
+               //Si les salles supportent les groupes
                 okForSalles = true;
             }
             else
                 System.out.print("Capacité insuffisante");
         }
-        if(sallesSelected.isEmpty())
-        {
+        if(sallesSelected.isEmpty()) {
             okForSalles = true; //Si salle vide jusqu'en bas, alors c'est Ok, pas bsn pour groupe car il est vérif avant salle
         }
-        if(okForGrps && okForSalles) //Si tout est Ok
-        {
+        if(okForGrps && okForSalles) { //Si tout est Ok  
             return true;
         }
         return false;
@@ -944,7 +931,6 @@ public class Controle {
      */
     public void setSeanceCoursNom(Seance seance, String cours) {
         CoursDAO cDAO = new CoursDAO();
-        SeanceDAO sDAO = new SeanceDAO();
         seance.setCours(cDAO.findByName(cours));
     }
 
@@ -955,7 +941,6 @@ public class Controle {
      */
     public void setSeanceCoursType(Seance seance, String type) {
         TypeCoursDAO tDAO = new TypeCoursDAO();
-        SeanceDAO sDAO = new SeanceDAO();
         seance.setTypeCours(tDAO.findByName(type));
     }
 
@@ -969,11 +954,11 @@ public class Controle {
         EnseignantDAO eDAO = new EnseignantDAO();
         SeanceDAO sDAO = new SeanceDAO();
         //On supprime tout, pour éviter tout doublons
-            for (int i = 0 ; i < seance.getEnseignants().size() ; i++)
-                sDAO.DeleteInJonction(seance.getId(), seance.getEnseignants().get(i).getId(), 1);
-            if(!namesSelected.isEmpty()) //Si c'est pas vide, on re/ajoute tous les enseignants saisies pas l'user
-                for (int i = 0 ; i < namesSelected.size() ; i++)
-                    sDAO.insertInJonction(seance.getId(), eDAO.findByName(namesSelected.get(i)).getId(), 1);
+        for (int i = 0 ; i < seance.getEnseignants().size() ; i++)
+            sDAO.DeleteInJonction(seance.getId(), seance.getEnseignants().get(i).getId(), 1);
+        if(!namesSelected.isEmpty()) //Si c'est pas vide, on re/ajoute tous les enseignants saisies pas l'user
+            for (int i = 0 ; i < namesSelected.size() ; i++)
+                sDAO.insertInJonction(seance.getId(), eDAO.findByName(namesSelected.get(i)).getId(), 1);
     }
 
     /**
@@ -1006,7 +991,6 @@ public class Controle {
         }
         for (int i = 0 ; i < sallesSelected.size() ; i++) {
             sDAO.insertInJonction(seance.getId(), salleDAO.findByName(sallesSelected.get(i)).getId(), 3); //On ajoute tout ce qui a été select
-
         }    
     }
     
@@ -1028,11 +1012,9 @@ public class Controle {
             
         for(int j=seances.size()-1;j>-1;j--) { //Pour toutes les seances            
             String dateBDD = seances.get(j).getDate();
-            System.out.println(dateBDD); //AAAA-MM-JJ
                 
             //Convertir la dateBDD en jour
             String jourBDD = dateBDD.substring(8, 10); 
-            System.out.println(jourBDD);
             
             //LIGNE DEBUT
             for(int i=0;i<fenetre.getListeCours().getRowCount();i++) { 
@@ -1043,7 +1025,6 @@ public class Controle {
                 }
                                     
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     strSeances = seances.get(j).getHeureDebut() + " à " + seances.get(j).getHeureFin() + " " + seances.get(j).toString();
                     Vector os = null;
                     ((DefaultTableModel) fenetre.getListeCours().getModel()).insertRow(i+1, os);
@@ -1063,7 +1044,6 @@ public class Controle {
     public void majSeancesEdt(int semaine, String prenom, String nom) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         Utilisateur u = uDAO.findByName(prenom, nom);
-        System.out.println("dans maj seances edt semaine prenom nom" + u.getPrenom() + " " + u.getNom());
         seancesEdt(semaine, u.getEmail(), u.getPassword());
     }
     
@@ -1075,7 +1055,6 @@ public class Controle {
     public void majSeancesSalles(int semaine, String infos) {
         SalleDAO s2DAO = new SalleDAO();
         Salle s2 = s2DAO.findByName(infos);
-        System.out.println("la salle que je recherche:"+ infos);
         if(s2 != null) //Si la salle est trouvé
             seancesSalles(semaine, s2); //Partie affichage de l'edt dans la vue
     }
@@ -1086,7 +1065,6 @@ public class Controle {
      * @param infos les infos de la salle sous forme de string en question
      */
     public void majSallesListe(int semaine, String infos) {
-        System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + infos);
         SeanceDAO sDAO = new SeanceDAO();
         SalleDAO s2DAO = new SalleDAO();
         Salle s = s2DAO.findByName(infos);
@@ -1095,24 +1073,17 @@ public class Controle {
         String strSeances; //Conteneur des string relative a une seance
         
         for(int i=0;i<seances.size();i++) {
-            System.out.println("Taille seances = " + seances.size());
-            System.out.print("Etat = " + seances.get(i).getEtat() + " ");
-            System.out.println(seances.get(i).toString());
-            System.out.println("Tour de boucle" + i);
             if(seances.get(i).getEtat() == 1) {
-                seances.remove(i); //Effacer la séance
-                System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
+                seances.remove(i); //Effacer la séance car en cours de validation
                 i--; //On retourne une case en arrière
             }
         }
                       
         for(int j=seances.size()-1;j>-1;j--) { //Pour toutes les seances            
             String dateBDD = seances.get(j).getDate();
-            System.out.println(dateBDD); //AAAA-MM-JJ
                 
             //Convertir la dateBDD en jour
             String jourBDD = dateBDD.substring(8, 10); 
-            System.out.println(jourBDD);
             
             //LIGNE DEBUT
             for(int i=0;i<fenetre.getListeCours().getRowCount();i++) {
@@ -1123,9 +1094,7 @@ public class Controle {
                 }
                                     
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     strSeances = seances.get(j).getHeureDebut() + " à " + seances.get(j).getHeureFin() + " " + seances.get(j).toString();
-                    System.out.println(strSeances);
                     Vector os = null;
                     ((DefaultTableModel) fenetre.getListeSalles().getModel()).insertRow(i+1, os);
                     fenetre.getListeSalles().setValueAt(strSeances, i+1, 0);
@@ -1144,7 +1113,6 @@ public class Controle {
     public void majSeancesListe(int semaine, String prenom, String nom) {
         UtilisateurDAO uDAO = new UtilisateurDAO();
         Utilisateur u = uDAO.findByName(prenom, nom);
-        //System.out.println("dans maj seances edt semaine prenom nom" + u.getPrenom() + " " + u.getNom());
         seancesListe(semaine, u.getEmail(), u.getPassword());
     }
     
@@ -1155,7 +1123,6 @@ public class Controle {
      * @param password le mot de passe de l'utilisateur
      */
     public void seancesListe(int semaine, String email, String password) {
-        //System.out.println("\nSEANCES LISTE - On veut afficher les seances de " + email);
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -1171,7 +1138,6 @@ public class Controle {
         {
             //On récupère les données de l'utilisateurs selon son profil (étudiant, enseignant dont référent)
             if(u.getDroit() == 3 || u.getDroit() == 2) {
-                System.out.println("enseignant");
                 //On ne récupère que les séances de la semaine courante
                 en = recupEnseignant(u);
                 en.setSeances(sDAO.findSeancesByUserAndWeek(en.getId(), semaine));
@@ -1180,13 +1146,8 @@ public class Controle {
                 if(u.getDroit() == 3) {
                     //Ne doit pas voir les séances en cours de validation (etat = 1)
                     for(int i=0;i<seances.size();i++) {
-                        /*System.out.println("Taille seances = " + seances.size());
-                        System.out.print("Etat = " + seances.get(i).getEtat() + " ");
-                        System.out.println(seances.get(i).toString());
-                        System.out.println("Tour de boucle" + i);*/
                         if(seances.get(i).getEtat() == 1) {
                             seances.remove(i); //Effacer la séance
-                            System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
                             i--; //On retourne une case en arrière
                         }
                     }
@@ -1200,28 +1161,21 @@ public class Controle {
 
                 //Ne doit pas voir les séances en cours de validation (etat = 1)
                 for(int i=0;i<seances.size();i++) {
-                    /*System.out.println("Taille seances = " + seances.size());
-                    System.out.print("Etat = " + seances.get(i).getEtat() + " ");
-                    System.out.println(seances.get(i).toString());
-                    System.out.println("Tour de boucle" + i);*/
                     if(seances.get(i).getEtat() == 1) {
                         seances.remove(i); //Effacer la séance
-                        System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
                         i--; //On retourne une case en arrière
                     }
                 }
             }
-        }else //On affiche TOUUT de la personne en question ou de celui selectionné
-        {
+        }
+        else { //On affiche TOUUT de la personne en question ou de celui selectionné
             seances = sDAO.findSeancesByUserAndWeek(u.getId(), semaine);
         }       
         for(int j=seances.size()-1;j>-1;j--) { //Pour toutes les seances            
             String dateBDD = seances.get(j).getDate();
-            System.out.println(dateBDD); //AAAA-MM-JJ
                 
             //Convertir la dateBDD en jour
             String jourBDD = dateBDD.substring(8, 10); 
-            System.out.println(jourBDD);
             
             //LIGNE DEBUT
             for(int i=0;i<fenetre.getListeCours().getRowCount();i++) { 
@@ -1232,7 +1186,6 @@ public class Controle {
                 }
                                     
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     strSeances = seances.get(j).getHeureDebut() + " à " + seances.get(j).getHeureFin() + " " + seances.get(j).toString();
                     Vector os = null;
                     ((DefaultTableModel) fenetre.getListeCours().getModel()).insertRow(i+1, os);
@@ -1249,19 +1202,13 @@ public class Controle {
      * @param salle la salle de l'utilisateur
      */
     public void seancesSalles(int semaine, Salle salle) {
-        System.out.println("\nSEANCES EDT - On veut afficher les seances de " + salle.getNom() + " " + salle.getSite().getNom());
         SeanceDAO sDAO = new SeanceDAO();
         ArrayList<Seance> seances = sDAO.findSeancesBySalle(salle.getId(), semaine);
         ArrayList<String> strSeances = new ArrayList<>();
         
         for(int i=0;i<seances.size();i++) {
-            System.out.println("Taille seances = " + seances.size());
-            System.out.print("Etat = " + seances.get(i).getEtat() + " ");
-            System.out.println(seances.get(i).toString());
-            System.out.println("Tour de boucle" + i);
             if(seances.get(i).getEtat() == 1 || seances.get(i).getEtat() == 3) {
                 seances.remove(i); //Effacer la séance
-                System.out.println("Cette séance est en cours de validation/annulée, on ne l'affiche pas");
                 i--; //On retourne une case en arrière
             }
         }
@@ -1274,32 +1221,23 @@ public class Controle {
             fenetre.getEdt().getGrilleSalles().setAlea(couleur);
             
             String heure1 = seances.get(j).getHeureDebut();
-            System.out.println("Heure début de la seance " + heure1);
-            
             String heure2 = seances.get(j).getHeureFin();
-            System.out.println("Heure fin de la seance " + heure2);
             
             //Convertir l'heure1BDD en heureEdt : 12:00:00 -> 12h00
             String heure1BDD = heure1.substring(0, 2) + "h" + heure1.substring(3, 5); 
-            System.out.println(heure1BDD);
             
             //Convertir l'heure2BDD en heureEdt : 12:00:00 -> 12h00
             String heure2BDD = heure2.substring(0, 2) + "h" + heure2.substring(3, 5); 
-            System.out.println(heure2BDD);
-            
             String date = seances.get(j).getDate();
-            System.out.println(date); //AAAA-MM-JJ
                 
             //Convertir la dateBDD en jour
             String jourBDD = date.substring(8, 10); 
-            System.out.println(jourBDD);
             
             //LIGNE DEBUT
             for(int i=0;i<fenetre.getEdtSalles().getRowCount();i++) { 
                 String heureEdt = fenetre.getEdtSalles().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure1BDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
                     ligne1 = i;
                 }
             }
@@ -1309,7 +1247,6 @@ public class Controle {
                 String heureEdt = fenetre.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure2BDD)) { //Si l'heure correspond, récupérer la ligne
-                    System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
                     ligne2 = i;
                 }
             }
@@ -1322,31 +1259,23 @@ public class Controle {
                 }
                                     
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    //System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     colonne = i;strSeances = seances.get(j).toArrayListOfString();
                     break;
                 }
                 
                 if(!jourEdt.equals(jourBDD)) {
-                    //System.out.println("Ces deux jour sont différents : " + jourBDD + " et " + jourEdt);
                     colonne = 0;
-                    //System.out.println(colonne);
                 }
             }
             
-            //System.out.println("strSeances :");
-            
-            //System.out.println(strSeances);
             //RAPPEL cf. méthode dans Seance.java
             //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
             //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
             //!! SI LA SEANCE EST VALIDEE = 5 CASES
             
             if(colonne != 0)  {    
-                System.out.println("dans le if colonne");
                 for(int i=0;i<strSeances.size();i++) {
                     fenetre.getEdtSalles().setValueAt(strSeances.get(i), ligne1+i, colonne);
-                    System.out.println("ajout de " + strSeances.get(i) + " l." + (ligne1+i) + " c." + colonne);
                     
                     //Si la séance est validée
                     if(!strSeances.get(0).equals("ANNULEE") && !strSeances.get(0).equals("EN COURS DE VALIDATION")) {
@@ -1364,7 +1293,6 @@ public class Controle {
      * @param password le mot de passe de l'utilisateur en question
      */
     public void seancesEdt(int semaine, String email, String password) {
-        //System.out.println("\nSEANCES EDT - On veut afficher les seances de " + email);
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -1380,7 +1308,6 @@ public class Controle {
         {  
             //On récupère les données de l'utilisateurs selon son profil (étudiant, enseignant dont référent)
             if(u.getDroit() == 3 || u.getDroit() == 2) {
-                //System.out.println("enseignant");
                 //On ne récupère que les séances de la semaine courante
                 en = recupEnseignant(u);
                 en.setSeances(sDAO.findSeancesByUserAndWeek(en.getId(), semaine));
@@ -1389,13 +1316,8 @@ public class Controle {
                 if(u.getDroit() == 3) {
                     //Ne doit pas voir les séances en cours de validation (etat = 1) ni annulé (3)
                     for(int i=0;i<seances.size();i++) {
-                        /*System.out.println("Taille seances = " + seances.size());
-                        System.out.print("Etat = " + seances.get(i).getEtat() + " ");
-                        System.out.println(seances.get(i).toString());
-                        System.out.println("Tour de boucle" + i);*/
                         if(seances.get(i).getEtat() == 1) {
                             seances.remove(i); //Effacer la séance
-                            //System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
                             i--; //On retourne une case en arrière
                         }
                     }
@@ -1409,13 +1331,8 @@ public class Controle {
 
                 //Ne doit pas voir les séances en cours de validation (etat = 1)
                 for(int i=0;i<seances.size();i++) {
-                    /*System.out.println("Taille seances = " + seances.size());
-                    System.out.print("Etat = " + seances.get(i).getEtat() + " ");
-                    System.out.println(seances.get(i).toString());
-                    System.out.println("Tour de boucle" + i);*/
                     if(seances.get(i).getEtat() ==  1) {
                         seances.remove(i); //Effacer la séance
-                        //System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
                         i--; //On retourne une case en arrière
                     }
                 }
@@ -1425,13 +1342,6 @@ public class Controle {
         {
             seances = sDAO.findSeancesByUserAndWeek(u.getId(), semaine);
         }
-        /*for(int i=0;i<seances.size();i++) {
-                System.out.println("Taille seances = " + seances.size());
-                System.out.print("Etat = " + seances.get(i).getEtat() + " ");
-                System.out.println(seances.get(i).toString());
-                System.out.println("Tour de boucle" + i);
-        }*/
-       
         //Trouver la ligne -> HEURE - Récuperer string, comparer a ce qui est dans seances de l'utilisateur
         int ligne1 = 0; int ligne2 = 0; int colonne = 0; 
         
@@ -1440,32 +1350,25 @@ public class Controle {
             fenetre.getEdt().getGrilleCours().setAlea(couleur);
                                   
             String heure1 = seances.get(j).getHeureDebut();
-            //System.out.println("Heure début de la seance " + heure1);
             
             String heure2 = seances.get(j).getHeureFin();
-            //System.out.println("Heure fin de la seance " + heure2);
             
             //Convertir l'heure1BDD en heureEdt : 12:00:00 -> 12h00
             String heure1BDD = heure1.substring(0, 2) + "h" + heure1.substring(3, 5); 
-            //System.out.println(heure1BDD);
             
             //Convertir l'heure2BDD en heureEdt : 12:00:00 -> 12h00
             String heure2BDD = heure2.substring(0, 2) + "h" + heure2.substring(3, 5); 
-            //System.out.println(heure2BDD);
             
             String date = seances.get(j).getDate();
-            //System.out.println(date); //AAAA-MM-JJ
                 
             //Convertir la dateBDD en jour
             String jourBDD = date.substring(8, 10); 
-            //System.out.println(jourBDD);
             
             //LIGNE DEBUT
             for(int i=0;i<fenetre.getEdtCours().getRowCount();i++) { 
                 String heureEdt = fenetre.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure1BDD)) { //Si l'heure correspond, récupérer la ligne
-                    //System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
                     ligne1 = i;
                 }
             }
@@ -1475,7 +1378,6 @@ public class Controle {
                 String heureEdt = fenetre.getEdtCours().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure2BDD)) { //Si l'heure correspond, récupérer la ligne
-                    //System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
                     ligne2 = i;
                 }
             }
@@ -1488,7 +1390,6 @@ public class Controle {
                 }
                                     
                 if(jourEdt.equals(jourBDD)) { //Si l'heure correspond, récupérer la ligne
-                    //System.out.println("Ces deux jour sont pareils : " + jourBDD + " et " + jourEdt);
                     colonne = i;
                     //Un cours dure forcément 1h30 = 6 cases
                     strSeances = seances.get(j).toArrayListOfString();
@@ -1496,24 +1397,18 @@ public class Controle {
                 }
                 
                 if(!jourEdt.equals(jourBDD)) {
-                    //System.out.println("Ces deux jour sont différents : " + jourBDD + " et " + jourEdt);
                     colonne = 0;
-                    //System.out.println(colonne);
                 }
             }
                      
-            System.out.println("strSeances :");
-            System.out.println(strSeances);
             //RAPPEL cf. méthode dans Seance.java
             //seance[0] = etat ; seance[1] = intitulé du cours; seance[2] = enseignants ; 
             //seance[3] = groupes; seance[4] = salles; seance[5] = type du cours;
             //!! SI LA SEANCE EST VALIDEE = 5 CASES
             
             if(colonne != 0)  {               
-                //System.out.println("dans le if colonne");
                 for(int i=0;i<strSeances.size();i++) {
                     fenetre.getEdtCours().setValueAt(strSeances.get(i), ligne1+i, colonne);
-                    //System.out.println("ajout de " + strSeances.get(i) + " l." + (ligne1+i) + " c." + colonne);
                     
                     //Si la séance est validée
                     if(!strSeances.get(0).equals("ANNULEE") && !strSeances.get(0).equals("EN COURS DE VALIDATION")) {
@@ -1531,7 +1426,6 @@ public class Controle {
      * @param password le mot de passe de l'utilisateur en question
      */
     public void seancesEdt(String date, String email, String password) {
-        //System.out.println("On veut afficher les seances de " + email);
         SeanceDAO sDAO = new SeanceDAO();
         Etudiant et = new Etudiant();
         Enseignant en = new Enseignant();
@@ -1544,14 +1438,11 @@ public class Controle {
         
         int pos = date.indexOf(' '); //Premier espace -> après le jour
         jour = Integer.parseInt(date.substring(0, pos)); //On récup le jour
-        //System.out.println("jour " + jour);
         
         date = date.substring(pos+1); //On récupère la string de base sans le jour ni l'espace
-        //System.out.println("tampon " + date);
         
         pos = date.indexOf(' '); //Premier espace -> après le jour
         String month = date.substring(0, pos); //On récup le mois
-        //System.out.println("mois " + month);
         
         switch(month) {
             case "janvier" :
@@ -1592,10 +1483,7 @@ public class Controle {
                 break;
         }
         
-        //System.out.println("mois " + mois);
-        
         annee = Integer.parseInt(date.substring(pos+1)); //L'annee
-        //System.out.println("annee " + annee);
         
         //On récupère les données de l'utilisateurs selon son profil (étudiant, enseignant dont référent)
         if(u.getDroit() == 3 || u.getDroit() == 2) {
@@ -1615,7 +1503,6 @@ public class Controle {
                 
                 if(seances.get(i).getEtat() == 1) {
                     seances.remove(i); //Effacer la séance
-                    //System.out.println("Cette séance est en cours de validation, on ne l'affiche pas");
                     i--; //On retourne une case en arrière
                 }
             }
@@ -1629,25 +1516,20 @@ public class Controle {
             fenetre.getEdt().getGrilleHome().setAlea(couleur);
                 
             String heure1 = seances.get(j).getHeureDebut();
-            //System.out.println("Heure début de la seance " + heure1);
             
             String heure2 = seances.get(j).getHeureFin();
-            //System.out.println("Heure fin de la seance " + heure2);
             
             //Convertir l'heure1BDD en heureEdt : 12:00:00 -> 12h00
             String heure1BDD = heure1.substring(0, 2) + "h" + heure1.substring(3, 5); 
-            //System.out.println(heure1BDD);
             
             //Convertir l'heure2BDD en heureEdt : 12:00:00 -> 12h00
             String heure2BDD = heure2.substring(0, 2) + "h" + heure2.substring(3, 5); 
-            //System.out.println(heure2BDD);
                         
             //LIGNE DEBUT
             for(int i=0;i<fenetre.getEdtHome().getRowCount();i++) { 
                 String heureEdt = fenetre.getEdtHome().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure1BDD)) { //Si l'heure correspond, récupérer la ligne
-                    //System.out.println("DEBUT - Ces deux heures sont pareilles : " + heure1BDD + " et " + heureEdt);
                     ligne1 = i;
                 }
             }
@@ -1657,7 +1539,6 @@ public class Controle {
                 String heureEdt = fenetre.getEdtHome().getValueAt(i, 0).toString(); //08h00 dans EDT -> 08:00:00 dans BDD
                 
                 if(heureEdt.equals(heure2BDD)) { //Si l'heure correspond, récupérer la ligne
-                    //System.out.println("FIN - Ces deux heures sont pareilles : " + heure2BDD + " et " + heureEdt);
                     ligne2 = i;
                 }
             }
@@ -1689,28 +1570,20 @@ public class Controle {
         //Récupérer le groupe et la promo
         String groupe = recherche.substring(0, 4);
         String promo = recherche.substring(5, 9);
-
-        //System.out.println("recherche : " + groupe + " " + promo);
-        
+       
         //Trouver un etudiant qui appartient a ce groupe
         //Trouver l'id de la promo
         PromotionDAO pDAO = new PromotionDAO();
         Promotion p = pDAO.findByName(promo);
         
-        //System.out.println("promo recup " + p.getNom());
-        
         //Trouver l'id du groupe
         GroupeDAO gDAO = new GroupeDAO();
         Groupe g = gDAO.findByNameAndPromo(groupe, p.getId());
-        
-        //System.out.println("groupe recup " + g.getNom() + "de la promo " + g.getPromotion().getNom());
-        
+                
         //Trouver etudiant by group -> email, password
         EtudiantDAO eDAO = new EtudiantDAO();
         Etudiant e = eDAO.findByGroup(g.getId());
-        
-        //System.out.println("etudiant recup " + e.getEmail() + " " + e.getPassword());
-        
+                
         seancesEdt(semaine, e.getEmail(), e.getPassword());
     }
     /**
@@ -1722,28 +1595,20 @@ public class Controle {
         //Récupérer le groupe et la promo
         String groupe = recherche.substring(0, 4);
         String promo = recherche.substring(5, 9);
-
-        //System.out.println("recherche : " + groupe + " " + promo);
         
         //Trouver un etudiant qui appartient a ce groupe
         //Trouver l'id de la promo
         PromotionDAO pDAO = new PromotionDAO();
         Promotion p = pDAO.findByName(promo);
-        
-        //System.out.println("promo recup " + p.getNom());
-        
+                
         //Trouver l'id du groupe
         GroupeDAO gDAO = new GroupeDAO();
         Groupe g = gDAO.findByNameAndPromo(groupe, p.getId());
-        
-        //System.out.println("groupe recup " + g.getNom() + "de la promo " + g.getPromotion().getNom());
-        
+                
         //Trouver etudiant by group -> email, password
         EtudiantDAO eDAO = new EtudiantDAO();
         Etudiant e = eDAO.findByGroup(g.getId());
-        
-        //System.out.println("etudiant recup " + e.getEmail() + " " + e.getPassword());
-        
+                
         seancesListe(semaine, e.getEmail(), e.getPassword());
     }
     
@@ -1763,11 +1628,9 @@ public class Controle {
         //On récupère l'utilisateur
         Utilisateur u = recupUtilisateur(email, password);
         
-        //System.out.println("\n" + fenetre.calculAnneeScolaire());
         String debut = fenetre.calculAnneeScolaire().substring(0, 4) + "-09-01";
         int pos = fenetre.calculAnneeScolaire().indexOf("/");
         String fin = fenetre.calculAnneeScolaire().substring(pos+1) + "-08-01";
-        //System.out.println("\n" + d + "/" + f);
         
         String periode = "  du " + debut + " au " + fin + ".";
         fenetre.getEdt().getPeriode().setText(periode);
@@ -1791,9 +1654,6 @@ public class Controle {
         
         for (int i = 0 ; i < seances.size() ; i++)
         {
-            //fenetre.getEdtCours().setValueAt(strSeances.get(i), ligne1+i, colonne);
-            //System.out.println("******************************************");
-            //System.out.println("Matiere - Public:");
             String nom = seances.get(i).get(0).getCours().getNom();
             
             if(u.getDroit() == 1) {
@@ -1813,46 +1673,28 @@ public class Controle {
                 nom += "[" + seances.get(i).get(j).getDate() + " " + seances.get(i).get(j).getHeureDebut() + " " + seances.get(i).get(j).getHeureFin() + "]";
             }
             
-            System.out.println(nom);
-            /*for (int a = 0; a<seances.get(i).get(0).getGroupes().size(); a++)
-            {
-                nom += " "+seances.get(i).get(0).getGroupes().get(a).getNom();
-                nom += " - "+seances.get(i).get(0).getGroupes().get(a).getPromotion().getNom();
-            }*/
-            
             fenetre.getRecapCours().setValueAt(nom, i, 0);
             
-            //System.out.println(nom);
-            //System.out.println("Premiere séance:");
             String premiereSeance = seances.get(i).get(0).getDate() + " de "+ seances.get(i).get(0).getHeureDebut() +" à "+ seances.get(i).get(0).getHeureFin();
             fenetre.getRecapCours().setValueAt(premiereSeance, i, 1);
-            //System.out.println(premiereSeance);
-            
-            //System.out.println("Dernière séance:");
             int dernier = seances.get(i).size()-1;
             String derniereSeance = seances.get(i).get(dernier).getDate() + " de "+ seances.get(i).get(dernier).getHeureDebut() +" à "+ seances.get(i).get(dernier).getHeureFin(); 
             fenetre.getRecapCours().setValueAt(derniereSeance, i, 2);
-            //System.out.println(derniereSeance);
             
-            //System.out.println("SI ON CLIQUE SUR L'ICONE PLUS DE DETAIL:");
             int heure = 0;
             int minute = 0;
             String duree = new String();
             for (int a = 0 ; a < seances.get(i).size() ; a++)
             {
                 duree = seances.get(i).get(a).calculDuree(); //On récupère la durée de la séance i
-                //System.out.println(seances.get(i).get(a).getDate() + " de "+ seances.get(i).get(a).getHeureDebut() +" à "+ seances.get(i).get(a).getHeureFin() + " ("+duree +")");
                 int p; //Première occurence de la lettre h de la durée
                 p = duree.indexOf('h');
                 heure += Integer.parseInt(duree.substring(0,p)); //On somme tout les heures
                 minute += Integer.parseInt(duree.substring(p+1,duree.length())); //On somme tout les minutes
             }
             duree = seances.get(i).get(0).orderingHour(heure+"h"+minute); //On appel n'importe que séance, nous souhaitons juste ranger les heures/minutes
-            //System.out.println("Durée globale:");
-            //System.out.println(duree);
             fenetre.getRecapCours().setValueAt(duree, i, 3);
             
-            //System.out.println("Nb");
             String nb = String.valueOf(dernier+1);
             fenetre.getRecapCours().setValueAt(nb, i, 4);
         }      
@@ -1882,11 +1724,8 @@ public class Controle {
                                 "20:00:00","20:15:00","20:30:00","20:45:00"};
 
             int jour = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-            System.out.println("jour " + jour);
             int mois = Calendar.getInstance().get(Calendar.MONTH)+1;
-            System.out.println("mois " + mois);
             int annee = Calendar.getInstance().get(Calendar.YEAR);
-            System.out.println("annee " + annee);
             int tampon = mois;
 
             String d = new String();
@@ -1900,8 +1739,6 @@ public class Controle {
             else m = String.valueOf(tampon);
 
             debut = annee + "-" + m + "-" + d;
-
-            System.out.println("date debut " + debut);
 
             int pos = fenetre.calculAnneeScolaire().indexOf("/");
             String fin = new String();
@@ -1919,7 +1756,6 @@ public class Controle {
             else m = String.valueOf(tampon);
 
             fin = annee + "-" + m + "-" + d;
-            System.out.println("date fin " + fin);
 
             String periode = "  du " + debut + " au " + fin + ".";
             fenetre.getEdt().getPeriode2().setText(periode);
@@ -1970,7 +1806,6 @@ public class Controle {
                 else month = String.valueOf(mois);
 
                 date = annee + "-" + month + "-" + day;
-                //System.out.println("date : " + date);
                 joursRestants.add(date);
             }        
 
@@ -1994,8 +1829,6 @@ public class Controle {
                         htamp.set(j, "X");
                     }
                 }
-    //            for(int j=0;j<htamp.length;j++)
-    //                System.out.println(htamp[j]);
 
                 StringBuilder tamp = new StringBuilder();
                 for(int j=0;j<htamp.size();j++) {
@@ -2009,14 +1842,10 @@ public class Controle {
                         }
 
                         if(j == htamp.size()-1) {
-                            //System.out.println("fin boucle");
                             tamp.insert(tamp.indexOf("/"), " à " + htamp.get(j));
                             tamp.deleteCharAt(tamp.length()-1);
                             h = tamp.toString();
                             tamp.delete(0, tamp.length());
-                            //System.out.println("horaires" + Arrays.toString(horaires));
-                            //System.out.println("nouveau htamp" + htamp.toString());
-                            //System.out.println("delete" + tamp);
                         }
                     }
                     else {
@@ -2073,7 +1902,7 @@ public class Controle {
     }
     
     /**
-     * cf. fonction précédente
+     * redimensionner la hauteur des lignes d'un tableau (ici recap)
      */
     public void updateRowHeights()
     {       
@@ -2092,9 +1921,7 @@ public class Controle {
     public void majRecapRecherche(String recherche) {
         int pos = recherche.indexOf(" ");
         String prenom = recherche.substring(0, pos);
-        System.out.println(prenom);
         String nom = recherche.substring(pos+1);
-        System.out.println(nom);
         
         UtilisateurDAO uDAO = new UtilisateurDAO();
         Utilisateur u = uDAO.findByName(prenom, nom);

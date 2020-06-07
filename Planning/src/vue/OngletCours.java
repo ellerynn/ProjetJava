@@ -65,7 +65,7 @@ public class OngletCours extends JTabbedPane {
         p = new TableLabelRendererPanel(tabEdt);
         p1 = new TableLabelRendererPanel(listeEdt);
         //Cours -> Récapitulatifs des cours
-        periode = new JLabel("du X au X");
+        periode = new JLabel();
         tabRecap = new JTable();
         p2 = new TableTreeRendererPanel(tabRecap);
         rechercheBarre2 = new JTextField();
@@ -402,7 +402,6 @@ public class OngletCours extends JTabbedPane {
         
         ((DefaultTableModel) listeEdt.getModel()).setColumnCount(1);
         ((DefaultTableModel) listeEdt.getModel()).setRowCount(dates.length);
-        System.out.println("lignes " + dates.length);
         
         for(int i=0;i<dates.length;i++)
             listeEdt.setValueAt(dates[i], i, 0);

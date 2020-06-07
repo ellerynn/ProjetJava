@@ -543,8 +543,7 @@ public class EmploiDuTemps extends JTabbedPane {
      * Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours issu du service de planification
      * @return Retourne ce que l'utilisateur à saisie pour l'intitulé d'un cours issu du service de planification
      */
-    public JTextField getIntitule()
-    {
+    public JTextField getIntitule() {
         return ongletSP.getIntitule();
     }
 }

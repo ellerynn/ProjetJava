@@ -145,8 +145,6 @@ public class SeanceDAO extends DAO<Seance> {
             TypeCours tp = object.getTypeCours();
             tp = typescoursDAO.find(tp.getId());
             typescoursDAO.update(tp);  
-            
-            
         } catch (SQLException e) {
                 e.printStackTrace();
         }
@@ -294,7 +292,6 @@ public class SeanceDAO extends DAO<Seance> {
         else day = String.valueOf(jour);
         
         String dateBDD = annee + "-" + month + "-" + jour; //aaaa-mm-jj
-        System.out.println("date BDD " + dateBDD);
         
         try {
             ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
@@ -330,35 +327,6 @@ public class SeanceDAO extends DAO<Seance> {
                 e.printStackTrace();
         }
         return listSeancesbyDay;
-    }
-    
-    /**
-     * @param id id d'un groupe
-     * @param semaine semaine des séances à trouver
-     * @return les seances via id groupe et semaine
-     */
-    public ArrayList<Seance> findSeancesByGroupAndWeek(int id, int semaine)
-    {
-        ArrayList<Seance> listSeancesbyWeek = new ArrayList<>();
-        try{
-            ResultSet resultSeances = connect.createStatement()
-                                             .executeQuery("SELECT seance.ID FROM seance\n" +
-                                                            "LEFT JOIN seance_groupes SG ON SG.ID_seance = seance.ID\n" +
-                                                            "WHERE seance.Semaine = "+semaine+" AND SG.ID_groupe = "+id+ 
-                                                            " ORDER BY Seance.Date, seance.Heure_debut");
-            if(resultSeances.first()) //On regarde si une ligne existe
-            {
-                resultSeances.beforeFirst(); //On retourne à la première ligne car on sait jamais il y a pas plusieurs lignes
-                while(resultSeances.next())  //On recupère les données de toute les lignes
-                {
-                    SeanceDAO sDAO = new SeanceDAO();
-                    listSeancesbyWeek.add(sDAO.find(resultSeances.getInt("ID")));
-                }
-            }
-        }catch (SQLException e) {
-                e.printStackTrace();
-        }
-        return listSeancesbyWeek;
     }
     
     /**
@@ -434,7 +402,6 @@ public class SeanceDAO extends DAO<Seance> {
         //à chaque .get(i).get(j) se trouve les séances de même matière et de même groupes rangé par date et heure
         ArrayList<ArrayList<Seance>> seancesOrdered = new ArrayList<>();
         ArrayList<Seance> unFourreTout = new ArrayList<>();
-        System.out.println("id " + id);
         try
         {
             ResultSet result = connect.createStatement().executeQuery("SELECT Droit FROM utilisateur WHERE ID = "+ id);
@@ -495,6 +462,7 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return seancesOrdered;
     }
+    
     /**
      * Trouve et retourne toute les séances sur une fourchette
      * @param debut Heure de début
@@ -554,8 +522,6 @@ public class SeanceDAO extends DAO<Seance> {
         }
         return seancesOrdered;
     }
-
-    
     
     /**
      * Méthode qui appel la méthode reccursive de trie, elle retourne une liste de séance avec même maitière et groupes
@@ -596,7 +562,7 @@ public class SeanceDAO extends DAO<Seance> {
                     for(int i = 0 ; i < groupes.size() ; i++)
                     {
                         if(groupes.get(i).getId() != groupesToCompare.get(i).getId())
-                        {   //
+                        {  
                             sameValues = false;
                             i = groupes.size(); //Pour terminer for
                         }
@@ -713,9 +679,9 @@ public class SeanceDAO extends DAO<Seance> {
         if(!seance.isThisRoomInThisSeance(id_salle)){ // Si cet salle n'est pas dans la séance
             if(sDAO.isSalleNotFreeForThisSeance(id_salle, seance)){//METHODE N°14 DANS SEANCEDAO
                 System.out.println("Impossible d'ajouter car cet salle est occupé à ce créneau");
-            }else{
+            }
+            else{
                     youCan = true;
-                    System.out.println("Possible d'add cet salle ! ");
             }         
         }else{
             System.out.println("Cet salle est déjà dans cet séance");
@@ -744,9 +710,7 @@ public class SeanceDAO extends DAO<Seance> {
                 }
                 capGroupes += sDAO.find_capacite_groupes_total(id_groupe,0); //Le groupe qu'on veut add
                 if(seance.getSalles().isEmpty() || (seance.placeInTotal() >= capGroupes)){//METHODE N°16 DANS SEANCEDAO
-                
                     youCan = true;
-                    System.out.println("Possible d'add ce groupe ! ");
                 }else{System.out.println("Le nombre d'eleves dans le groupe depasse la capacité maximale de la seance");}
             }         
         }else{

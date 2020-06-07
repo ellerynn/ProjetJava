@@ -85,10 +85,7 @@ public class SalleDAO extends DAO<Salle>{
             DAO<Site> siteDAO = new SiteDAO();
             Site sit = object.getSite();
             sit = siteDAO.find(sit.getId());
-            siteDAO.update(sit);
-                   
-            
-                
+            siteDAO.update(sit); 
         } catch (SQLException e) {
                 e.printStackTrace();
         }

@@ -129,6 +129,7 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         }
         return tcours;
     }
+    
     /**
      * Prend un String en paramètre et retourne une classe Type, 
      * il permet d'obtenir le type d'une cours en fonction de son nom, 

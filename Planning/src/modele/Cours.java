@@ -18,15 +18,6 @@ public class Cours {
         nom = new String();
     }
     
-
-    /**
-     * constructeur
-     * @param nom Nom du cours
-     */
-    public Cours(String nom) { //Un administrateur peut créer un nouveau cours, id s'implémente seul dans BDD
-        this.nom = nom;
-    }
-    
     /**
      * retourne id du cours
      * @return Retourne l'id du cours

@@ -113,14 +113,6 @@ public class EtudiantDAO extends DAO<Etudiant> {
 
                 GroupeDAO dDAO = new GroupeDAO();
                 etudiant.setGroupe(dDAO.find(result.getInt("ID_groupe")));
-
-                //Pour l'instant, pas de RECUP COMPLETE DES SEANCES
-                /*result.beforeFirst(); // retourne à la première ligne
-                SeanceDAO sDAO = new SeanceDAO();
-                while(result.next()) {
-                    if (result.getInt("ID_seance") != 0)
-                        etudiant.ajouterSeance(sDAO.find(result.getInt("ID_seance")));
-                }*/
             }
 
         }

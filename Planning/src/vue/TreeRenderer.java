@@ -74,18 +74,14 @@ public class TreeRenderer implements TableCellRenderer {
                 p1 = text.indexOf("[");
                 String str = text.substring(0, p1);
                 text = text.substring(p1);
-                //System.out.println("Noeud tree : " + str);
                 
                 DefaultMutableTreeNode tree = new DefaultMutableTreeNode(str); 
-                
-                //System.out.println("reste : " + text);
-                    
+                                   
                 p1 = text.indexOf("[");
                 p2 = text.indexOf("]");
                 while(p1 != -1) {
                     str = text.substring(p1+1, p2);
                     text = text.substring(p2+1);
-                    //System.out.println("Noeud tree : " + str);
                     DefaultMutableTreeNode noeud = new DefaultMutableTreeNode(str);   
                     tree.add(noeud); 
                     p1 = text.indexOf("[");

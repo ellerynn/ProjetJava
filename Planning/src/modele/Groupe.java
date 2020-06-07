@@ -21,17 +21,6 @@ public class Groupe {
     }
     
     /**
-     * constructeur
-     * @param nom Nom du groupe
-     * @param promotion Promotion du groupe
-     */
-    public Groupe(String nom, Promotion promotion) {
-        //Un administrateur peut créer un nouveau groupe
-        this.nom = nom;
-        this.promotion = promotion;
-    }
-    
-    /**
      * retourne id groupe
      * @return retourne id groupe
      */

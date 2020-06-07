@@ -514,7 +514,12 @@ public class SeanceDAO extends DAO<Seance> {
             if(result.first())
             {
                 String requete = new String();
-                requete = "SELECT Seance.ID FROM Seance\n";
+                requete = "SELECT Seance.ID FROM Seance " +
+                          "LEFT JOIN cours ON cours.ID = Seance.ID_cours " +
+                          "WHERE Seance.Date >= '" + debut + "' " +
+                          "AND Seance.Date <= '" + fin + "' " +
+                          "AND Seance.Etat = 2 " +
+                          "ORDER BY cours.Nom, Date, Heure_debut";
 
                 ResultSet resultSeances = connect.createStatement().executeQuery(requete);
             

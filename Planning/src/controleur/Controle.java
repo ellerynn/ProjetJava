@@ -479,8 +479,9 @@ public class Controle {
                 } 
             }
             for(int l=0;l<seances2.size();l++) { //graphe 4
-                String dateblindage=seances.get(l).get(0).getDate();
-                int heureblindage=Integer.parseInt(seances.get(l).get(0).getHeureDebut().substring(0,2));
+                String dateblindage=seances2.get(l).get(0).getDate();
+                int heureblindage=Integer.parseInt(seances2.get(l).get(0).getHeureDebut().substring(0,2));
+                
                     for(int j=0;j<seances2.get(l).size();j++) {
                         if(debut2.equals(dateblindage)){
                             if(heureblindage > heure){

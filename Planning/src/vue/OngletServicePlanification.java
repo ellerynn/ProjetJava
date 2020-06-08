@@ -502,7 +502,7 @@ public class OngletServicePlanification extends JSplitPane {
     }
     
     /**
-     * rempli une JComboBox avec un ArrayList<String> 
+     * rempli une JComboBox avec un ArrayList de string 
      * @param box la JcomboBox en question
      * @param intitule l'intituté de la JcomboBox en question
      * @param string les données à mettre dans la JComboBox

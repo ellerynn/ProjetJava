@@ -83,8 +83,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
       
     /**
      * Trouve l'utilisateur à partir de son mail et mot de passe
-     * @param email
-     * @param psw
+     * @param email string email de l'utilisateur
+     * @param psw string mot de passe de l'utilisateur
      * @return utilisateur via email et password
      */
     public Utilisateur find(String email, String psw) {
@@ -96,8 +96,8 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     
     /**
      * Trouve l'utilisateur à partir de prénom et nom
-     * @param prenom
-     * @param nom
+     * @param prenom string prenom de l'utilisateur
+     * @param nom string nom de l'utilisateur
      * @return utilisateur via nom et prenom
      */
     public Utilisateur findByName(String prenom, String nom) {

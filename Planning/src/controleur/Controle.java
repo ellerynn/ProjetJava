@@ -54,7 +54,7 @@ public class Controle {
     /**
      * main
      * simple ouverture du controle
-     * @param args
+     * @param args argument du main
      */
     public static void main(String[] args) {       
         //Ouverture interface graphique        
@@ -1870,9 +1870,8 @@ public class Controle {
     }
     
     /**
-     * retourne true si l'annee est bissextile
      * @param annee l'année en question
-     * @return
+     * @return true si l'annee est bissextile
      */
     public Boolean anneeBissextile(int annee) {
         if(annee%4 == 0) { 

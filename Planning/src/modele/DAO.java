@@ -8,7 +8,7 @@ import java.sql.Connection;
  * @author Camille
  * @author Sutharsan
  * @author Emilie
- * @param <T>
+ * @param <T> objet recu par le DAO ex. Seance
  */
 public abstract class DAO<T> {
 

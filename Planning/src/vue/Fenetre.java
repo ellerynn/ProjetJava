@@ -36,7 +36,7 @@ public class Fenetre extends JFrame {
 
     /**
      * constructeur
-     * @param controle
+     * @param controle objet Controle
      */
     public Fenetre(Controle controle) {
         this.controle = controle;
